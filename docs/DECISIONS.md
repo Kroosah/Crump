@@ -136,3 +136,22 @@ en logt dat. Springt hij bij (geen enkele camera actief), dan is dat een
 `warn`, want dan is er iets mis in de scèneopbouw. **Consequentie**: elk
 volgend level krijgt óf een eigen camera óf een speler; "geen camera" is
 vanaf nu een testfout in plaats van een raadsel.
+
+## D-017 — Godot's vorm van project.godot is de canon; intenties borgen we in tests
+**Datum**: 2026-07-27 · **Wie**: GD (besluit) / LD (onderzoek) · **Status**: actief
+De Godot-editor herschrijft `project.godot` bij het openen: hij vervangt het
+header-commentaar door zijn eigen boilerplate en laat elke instelling weg die
+gelijk is aan de engine-default. We nemen die vorm over in plaats van hem
+terug te draaien. **Waarom**: reverten levert dezelfde diff op bij élke keer
+dat het project geopend wordt, en wie went aan ruis in `git status` ziet een
+échte wijziging (een omgevallen renderer bijvoorbeeld) een keer over het hoofd.
+**Prijs**: `renderer/rendering_method="forward_plus"`, `physics_ticks_per_second=60`
+en `window/size/mode=0` stonden er als bewuste keuze uit taak 001 en zijn nu
+impliciet. Ze terugzetten werkt niet — Godot strijkt ze bij de volgende save
+weer weg. **Daarom**: die intenties zijn verplaatst naar de smoke-suite, die
+ze via `ProjectSettings` toetst. Verandert een toekomstige Godot-versie een
+default, dan valt de test om in plaats van dat het project stilzwijgend
+meebeweegt. **Regel hieruit**: een projectinstelling die bewust op de
+engine-default staat, hoort in een test — niet in een comment.
+**Gerelateerd**: `.gitattributes` dwingt LF af op alle tekstbestanden, zodat
+`core.autocrlf` op Windows nooit een hele `.tscn` als gewijzigd kan tonen.

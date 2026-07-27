@@ -1,0 +1,50 @@
+# CRUMP — regeleindes en bestandstypen
+#
+# Waarom dit bestand bestaat: op Windows staat Git standaard op
+# core.autocrlf=true en zet het bij checkout LF om naar CRLF. Zonder deze
+# regels levert dat vroeg of laat een commit op waarin álle regels van een
+# .tscn gewijzigd lijken — en dan is een échte scene-wijziging niet meer
+# terug te vinden in de diff. Deze instellingen winnen van autocrlf, op
+# elke machine (D-017).
+
+# Alles wat tekst is: in de repo én in de werkmap altijd LF.
+* text=auto eol=lf
+
+# Godot-tekstformaten expliciet — deze moeten leesbaar blijven in diffs
+# (CLAUDE.md: .tscn/.tres blijven tekstformaat, nooit binair).
+*.gd        text eol=lf
+*.gdshader  text eol=lf
+*.tscn      text eol=lf
+*.tres      text eol=lf
+*.godot     text eol=lf
+*.cfg       text eol=lf
+*.uid       text eol=lf
+*.import    text eol=lf
+*.md        text eol=lf
+*.json      text eol=lf
+*.csv       text eol=lf
+
+# Binair: nooit converteren, nooit als tekst diffen.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.svg   text eol=lf
+*.exr   binary
+*.hdr   binary
+*.ogg   binary
+*.wav   binary
+*.mp3   binary
+*.glb   binary
+*.gltf  binary
+*.fbx   binary
+*.blend binary
+*.obj   binary
+*.ttf   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+*.zip   binary
+*.pck   binary
+*.exe   binary
+*.dll   binary

@@ -93,6 +93,21 @@ static func run(bootstrap: Node) -> int:
 	# 10. Zichtbaarheid van de dev room (KI-001: geen camera = egaal grijs beeld)
 	failures = _check_dev_room_visible(tree, failures)
 
+	# 11. Bewuste projectinstellingen die tóevallig gelijk zijn aan de
+	# engine-default. Godot schrijft zulke waarden niet weg in project.godot
+	# (D-017), dus dit is de enige plek waar de keuze nog hard vastligt —
+	# verandert een toekomstige Godot-versie zijn default, dan valt het hier om.
+	var expected_settings := {
+		"rendering/renderer/rendering_method": "forward_plus",
+		"physics/common/physics_ticks_per_second": 60,
+		"display/window/size/mode": Window.MODE_WINDOWED,
+	}
+	for key in expected_settings:
+		var actual: Variant = ProjectSettings.get_setting(key)
+		failures = _check(actual == expected_settings[key],
+			"projectinstelling %s staat op %s (gevonden: %s)"
+			% [key, str(expected_settings[key]), str(actual)], failures)
+
 	return failures
 
 
