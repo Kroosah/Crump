@@ -1,0 +1,18 @@
+# Godot 4 — gegenereerde en machine-lokale bestanden
+.godot/
+/builds/
+export_presets.cfg
+
+# Godot import-restanten
+*.import
+.import/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*~
+
+# Logs
+*.log
