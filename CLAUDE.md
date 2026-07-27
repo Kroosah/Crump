@@ -7,7 +7,7 @@ sessie in deze repository.
 
 CRUMP: first person psychological horror in **Godot 4.7**, studio Kroosah
 Interactive. Doelplatform Windows, later Steam. De projectmap heet
-`nachtdienst` (werktitel van het repo); de game heet CRUMP.
+`crump`; de game heet CRUMP.
 
 ## Rolverdeling (vastgesteld 27-07-2026)
 
@@ -62,7 +62,7 @@ hooguit voor.
   Bij akkoord: licentie meeleveren in `addons/<naam>/LICENSE`.
 - **`builds/` en `.godot/` zijn wegwerp.** Nooit committen (staat in
   .gitignore), nooit met de hand bewerken.
-- **Blijf binnen deze repo.** Niets buiten `~/projects/nachtdienst` wijzigen
+- **Blijf binnen deze repo.** Niets buiten `~/projects/crump` wijzigen
   voor dit project.
 
 ## Headless-omgeving (deze VPS)

@@ -46,7 +46,7 @@ Vereisten: **Godot 4.7.1** (official build). Geen extra dependencies.
 ## Mappenstructuur
 
 ```
-nachtdienst/
+crump/
 ├── game/            # Alle scènes en scripts (de daadwerkelijke game)
 │   ├── autoload/    # Singletons (GameState, AudioDirector, ...)
 │   ├── actors/      # Speler, CRUMP (de dreiging)
