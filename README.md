@@ -79,11 +79,22 @@ Waarom deze indeling: zie [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 | [LEVEL_GUIDELINES.md](docs/LEVEL_GUIDELINES.md) | Hoe een CRUMP-ruimte ontworpen wordt |
 | [QA_CHECKLIST.md](docs/QA_CHECKLIST.md) | Wat er getest wordt vóór iets "af" heet |
 
+**Studio-administratie** (levend, verplicht bijgewerkt bij elke taak):
+
+| Document | Inhoud |
+|---|---|
+| [DECISIONS.md](docs/DECISIONS.md) | Beslissingenlogboek: wat, waarom, alternatief |
+| [CHANGELOG.md](docs/CHANGELOG.md) | Versiegeschiedenis per taak/wijziging |
+| [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) | Bekende bugs en beperkingen, met ernst en status |
+| [TECH_DEBT.md](docs/TECH_DEBT.md) | Bewuste tijdelijke oplossingen, met aflosmoment |
+
 ## Werkwijze
 
 - Elke bouwsteen heeft een dossier in `tasks/` met doel, aanpak en acceptatiecriteria.
 - Er wordt pas aan een taak gebouwd als het dossier gelezen is.
 - Elke wijziging wordt gecommit met een duidelijke boodschap (zie CODING_STANDARDS).
+- Na elke taak: studio-administratie bijwerken (DECISIONS/CHANGELOG/
+  KNOWN_ISSUES/TECH_DEBT) en het vier-vragen-rapport (zie CLAUDE.md).
 - AI-assistentie (Claude Code) werkt volgens de afspraken in [CLAUDE.md](CLAUDE.md).
 
 ---

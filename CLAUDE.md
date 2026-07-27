@@ -101,7 +101,25 @@ Een taak is pas af als:
 2. `godot --headless --path . --import` schoon draait.
 3. Relevante checks uit `docs/QA_CHECKLIST.md` zijn gedaan.
 4. Het taakdossier in `tasks/` is bijgewerkt (status + wat er gebouwd is).
-5. Alles gecommit is.
+5. **De studio-administratie is bijgewerkt**:
+   - `docs/CHANGELOG.md` — nieuwe versie-entry voor deze taak;
+   - `docs/DECISIONS.md` — elke betekenisvolle keuze als D-entry;
+   - `docs/KNOWN_ISSUES.md` — nieuwe bevindingen erin, opgeloste afgesloten;
+   - `docs/TECH_DEBT.md` — elke tijdelijke oplossing als TD-entry met
+     aflosmoment (tijdelijk zonder entry = niet toegestaan).
+6. Alles gecommit is.
+
+## Vier-vragen-rapport (vaste regel Kroosah Interactive)
+
+Na **iedere** afgeronde taak beantwoord je in je rapportage expliciet:
+
+1. **Wat heb ik gebouwd?**
+2. **Waarom heb ik het zo gebouwd?**
+3. **Welke risico's zie ik?**
+4. **Wat raad ik aan voor de volgende taak?**
+
+Kort en eerlijk — het doel is inzicht in de technische keuzes, niet een
+verkooppraatje. Twijfels en zwaktes benoemen hoort er juist bij.
 
 ## Toon en aanpak
 
