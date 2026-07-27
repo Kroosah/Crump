@@ -8,10 +8,10 @@ dit document getoetst voordat het "af" heet.*
 
 ## 1. Filosofie: de plek is een personage
 
-De Crump is geen decor maar een verteller (GAME_BIBLE pijler 2). Een ruimte
-moet vóór er iets gebeurt al iets zeggen: over wie hier werkte, wat er misging,
-en waarom je hier 's nachts niet wil zijn. Als een lege ruimte niets vertelt,
-is hij nog niet af.
+Sportpark Oostpolder is geen decor maar een verteller (GAME_BIBLE pijler 2).
+Een ruimte moet vóór er iets gebeurt al iets zeggen: over wie hier net nog
+waren, wat hier elke zaterdag gebeurt, en wat er dus mist nu iedereen weg is.
+Als een lege ruimte niets vertelt, is hij nog niet af.
 
 ## 2. De gouden regels
 
@@ -20,24 +20,29 @@ is hij nog niet af.
    ruimte waarin je alleen bij daglicht wegwijs wordt, is een ontwerpfout.
 2. **Elke ruimte heeft een reden om er te zijn** — een taak, een vondst, een
    doorgang, een beslissing. Ruimtes-om-de-ruimte bestaan niet.
-3. **Oriëntatiepunten.** Herkenbare ankers (de koffiehoek, de rode
-   nooddeur, het grote raam) zodat de speler een mentale kaart bouwt — nodig
-   om "het is veranderd"-momenten te laten landen.
-4. **Meerdere routes waar het telt.** Zeker in monster-ruimtes: minstens
-   twee manieren erdoor/eruit, en een verstopplek die eerlijk zichtbaar is.
+3. **Oriëntatiepunten.** Herkenbare ankers (de bar, de trofeeënkast, de
+   tv-hoek, de doorgang naar de kleedkamers) zodat de speler een mentale
+   kaart bouwt — nodig om "het is veranderd"-momenten te laten landen.
+4. **Meerdere routes waar het telt.** Zeker in ruimtes waar CRUMP kan komen:
+   minstens twee manieren erdoor/eruit, en een verstopplek die eerlijk
+   zichtbaar is.
 5. **Sightlines zijn ontwerp.** Wat de speler wel/niet kan zien vanaf welk
    punt is bewust geplaatst — voor suggestie (iets nét buiten beeld) en voor
-   eerlijkheid (het monster zien aankomen als het mag).
+   eerlijkheid (de dreiging zien aankomen als het mag).
 
-## 3. De rondgang als ruggengraat
+## 3. De vertrouwde route als ruggengraat
 
-De verplichte controleronde (STORY §5) is de leidraad voor de plattegrond:
+De opening (STORY §3) legt de basisroute vast: kantine → gang → kleedkamer
+→ terug. Die aangeleerde route is de leidraad voor de plattegrond:
 
-- De route is een **lus** die de speler herhaaldelijk langs dezelfde plekken
-  brengt — dat maakt afwijkingen leesbaar (HORROR_GUIDELINES §7).
-- Onderweg liggen de **taakpunten** (meterkast, logboek, sleutelkast) op
-  logische, uit elkaar gelegen plekken.
-- Hoofdstuk 1 leert de lus in zijn "normale" staat; latere hoofdstukken
+- De speler keert **herhaaldelijk langs dezelfde plekken** terug — dat maakt
+  afwijkingen leesbaar (HORROR_GUIDELINES §7). De kantine is de referentie-
+  staat van het hele spel: elke wijziging t.o.v. de openingsscène is
+  informatie.
+- Latere doelen (bijgebouwen, velden, de rand van het park) haken aan op
+  deze basisroute, zodat de speler zijn mentale kaart uitbreidt in plaats
+  van steeds opnieuw begint.
+- Hoofdstuk 1 leert de route in zijn "normale" staat; latere hoofdstukken
   schenden precies die aangeleerde verwachting.
 
 ## 4. Spanningskaart per ruimte
@@ -70,15 +75,17 @@ rij (afstomping), nooit alleen maar "Adem" (verveling).
 ## 6. Schaal, tempo en navigatie
 
 - **Menselijke maat.** Deurhoogtes, gangbreedtes, plafonds realistisch;
-  De Crump moet aanvoelen als een echt Nederlands bedrijfspand, niet als een
-  game-level. Het alledaagse is de basis waar de horror tegen afsteekt.
-- **Bewuste krapte en ruimte** als ritme-instrument: nauwe gangen (kwetsbaar,
-  geen ontsnapping) tegenover een grote hal (blootgesteld, ver zicht).
+  Sportpark Oostpolder moet aanvoelen als een echt Nederlands sportcomplex
+  (clubhuis, kleedkamergang, materiaalhok), niet als een game-level. Het
+  alledaagse is de basis waar de horror tegen afsteekt.
+- **Bewuste krapte en ruimte** als ritme-instrument: de nauwe kleedkamergang
+  (kwetsbaar, geen ontsnapping) tegenover een open veld onder lichtmasten
+  (blootgesteld, ver zicht).
 - **Loopafstanden dienen het tempo, niet de padding.** Nooit lange lege
   loopstukken zonder betekenis; als de speler ergens heen loopt, gebeurt er
   onderweg iets of vertelt de ruimte iets.
-- **Backtracking mag** (past bij de rondgang) maar verandert de tweede keer:
-  ander licht, andere staat, andere dreiging.
+- **Backtracking mag** (past bij de vertrouwde route) maar verandert de
+  tweede keer: ander licht, andere staat, andere dreiging.
 
 ## 7. Technische bouwstandaard
 
@@ -91,7 +98,7 @@ rij (afstomping), nooit alleen maar "Adem" (verveling).
 - **Collision klopt met de visuals**: geen onzichtbare muren, geen geometrie
   waar de speler doorheen valt. Wordt in QA expliciet gelopen.
 - **Navigatie-mesh** per ruimte gebakken en aansluitend op de buren, zodat
-  het monster naadloos kan navigeren (taak 007).
+  CRUMP naadloos kan navigeren (taak 007).
 - **Props uit `game/props/`** worden geïnstantieerd, niet gedupliceerd;
   ruimte-specifieke staat (welke deur op slot) leeft in `GameState`.
 - **Occlusion/performance**: grote panden worden in secties opgedeeld zodat
@@ -100,13 +107,14 @@ rij (afstomping), nooit alleen maar "Adem" (verveling).
 
 ## 8. Environmental storytelling in de praktijk
 
-- **Toon, vertel niet.** Een omgevallen stoel + een koud kopje koffie +
-  een half ingevuld logboek vertelt Ruuds laatste nacht zonder één regel
-  uitleg.
+- **Toon, vertel niet.** Een half getapt biertje, een telefoon die nog op
+  tafel ligt, een stoel die half naar achteren staat — de verdwijning
+  verteld in stillevens, zonder één regel uitleg.
 - **Leesbaar in seconden.** Documenten zijn kort en scanbaar; de speler mag
   nooit een leesmuur voor de kiezen krijgen om verder te mogen.
-- **Consistentie met de canon.** Elke vondst klopt met STORY.md; data en
-  namen (jaartallen 1931–1963, personages) blijven consistent.
+- **Consistentie met de canon.** Elke vondst klopt met STORY.md; namen en
+  details (VV Drechtstreek, Sportpark Oostpolder, de spelregels rond CRUMP
+  als mysterie) blijven consistent.
 - **Gelaagd, niet verplicht.** De hoofdlijn is voor iedereen leesbaar; de
   diepere waarheid beloont wie zoekt. Nooit essentiële voortgang achter
   optionele lore verstoppen.

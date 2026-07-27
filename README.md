@@ -49,7 +49,7 @@ Vereisten: **Godot 4.7.1** (official build). Geen extra dependencies.
 nachtdienst/
 ├── game/            # Alle scènes en scripts (de daadwerkelijke game)
 │   ├── autoload/    # Singletons (GameState, AudioDirector, ...)
-│   ├── actors/      # Speler, monster, NPC's
+│   ├── actors/      # Speler, CRUMP (de dreiging)
 │   ├── systems/     # Herbruikbare systemen (interactie, inventory, saves)
 │   ├── levels/      # Hoofdstukken en ruimtes
 │   ├── props/       # Interacteerbare objecten (deuren, laden, items)

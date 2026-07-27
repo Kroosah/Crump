@@ -36,7 +36,7 @@ afwijken mag alleen met een goede reden die hier vervolgens wordt vastgelegd.*
 ```
 game/
 ├── autoload/    # Singletons — zo min mogelijk, elk met één taak
-├── actors/      # Alles wat "leeft": speler, monster (elk in eigen submap)
+├── actors/      # Alles wat "leeft": speler, CRUMP (elk in eigen submap)
 ├── systems/     # Interactie, inventory, saves, events (scene-onafhankelijk)
 ├── levels/      # Hoofdstukken; elke ruimte een eigen scène
 ├── props/       # Interacteerbare objecten, herbruikbaar over levels
@@ -67,9 +67,9 @@ Waarom zo weinig: elke autoload is globale staat, en globale staat is waar
 onderhoudbaarheid sterft. Nieuw autoload-voorstel = architectuurbeslissing.
 
 **De event-bus is dun.** Signalen erop zijn feiten ("er is een geluid gemaakt
-op positie X met luidheid Y"), geen commando's ("monster, ga naar X"). Wie er
-wat mee doet, beslist de ontvanger. Dit houdt het monster testbaar zonder
-speler, en de speler testbaar zonder monster.
+op positie X met luidheid Y"), geen commando's ("CRUMP, ga naar X"). Wie er
+wat mee doet, beslist de ontvanger. Dit houdt CRUMP testbaar zonder
+speler, en de speler testbaar zonder CRUMP.
 
 ## 5. Kernsystemen (ontwerp op hoofdlijnen)
 
@@ -89,8 +89,8 @@ ertussen.
 
 ### 5.3 Geluid als gameplay (`tasks/005`)
 - Elke luide actie publiceert `geluid_gemaakt(positie, luidheid)` op de bus.
-- Het monster **abonneert** zich daarop; er is geen directe koppeling
-  speler→monster. Hierdoor is "hoorbaarheid" één systeem voor deuren,
+- CRUMP **abonneert** zich daarop; er is geen directe koppeling
+  speler→CRUMP. Hierdoor is "hoorbaarheid" één systeem voor deuren,
   voetstappen, vallende objecten.
 
 ### 5.4 Monster-AI (`tasks/007`)

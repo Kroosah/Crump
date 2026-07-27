@@ -3,8 +3,8 @@
 **Fase**: 2 (Het gereedschap) · **Status**: ⬜ open · **Vereist**: 003
 
 Een kleine, diegetische inventory (GAME_BIBLE §8: geen 40-slots-grid).
-De speler draagt een handvol betekenisvolle spullen — sleutels, Ruuds
-logboek, de zaklamp, een enkel verhaalobject.
+De speler draagt een handvol betekenisvolle spullen — de kleedkamersleutel
+van de barman, een zaklamp, een gevonden telefoon, een enkel verhaalobject.
 
 ## Doel
 
@@ -27,7 +27,7 @@ gebruik ervan via de EventBus verloopt, met een sobere UI die bij de toon past.
 - **Diegetische UI** in `game/ui/`: sobere weergave (geen HUD-clutter);
   past bij "de speler is een gewoon mens", niet bij een RPG-menu. Openen/
   sluiten met eigen input.
-- Enkele voorbeeld-items als `.tres` (sleutel, logboek, zaklamp) om het
+- Enkele voorbeeld-items als `.tres` (sleutel, telefoon, zaklamp) om het
   systeem te bewijzen — nog geen echte spelinhoud.
 
 **Niet:**
@@ -37,7 +37,7 @@ gebruik ervan via de EventBus verloopt, met een sobere UI die bij de toon past.
 ## Aanpak
 
 1. Definieer `ItemResource` met getypte velden en documentatie per veld.
-2. Maak de voorbeeld-`.tres`-items aan (sleutel, logboek, zaklamp).
+2. Maak de voorbeeld-`.tres`-items aan (sleutel, telefoon, zaklamp).
 3. Bouw het inventory-systeem als node/service; state hangt in `GameState`
    zodat het meesaveT.
 4. Sluit props aan: oppakken → `add_item`; slot-check → `has_key(key_id)`.

@@ -8,15 +8,16 @@ geen implementatiedetail.*
 
 ## 1. Eén zin
 
-Je bent alleen op een plek waar je 's nachts niet hoort te zijn, en iets weet
-dat je er bent.
+Na een gewone wedstrijdavond stap je de kleedkamer uit — en iedereen is
+verdwenen.
 
 ## 2. De kern-ervaring (speler-fantasie)
 
-De speler moet zich voelen als een gewoon mens in een omgeving die eerst
-vertrouwd en saai is, en langzaam onbetrouwbaar wordt. Geen soldaat, geen held:
-iemand met een zaklamp, zweethanden en een reden om te blijven terwijl elke
-gezonde instinct zegt: ga weg.
+De speler **is de hoofdpersoon**: naamloos, zonder opgelegd achtergrondverhaal
+(STORY §2). Hij moet zich voelen als een gewoon mens — een clublid dat net
+gedoucht heeft — in een omgeving die eerst vertrouwd en gezellig is, en van
+het ene op het andere moment onverklaarbaar wordt. Geen soldaat, geen held:
+iemand met natte haren, een sporttas en een vraag die steeds groter wordt.
 
 De drie gevoelens die we bij de speler willen oproepen, in volgorde van
 belangrijkheid:
@@ -44,20 +45,21 @@ er gebeurd is (environmental storytelling). Zie `STORY.md`.
 
 ### Pijler 3 — Onmacht, geen actie
 Er zijn geen wapens. De werkwoorden van de speler zijn: kijken, luisteren,
-lopen, sluipen, verstoppen, oppakken, lezen, kiezen. Het monster is een
-probleem dat je ontwijkt en leert lezen, nooit iets dat je oplost met geweld.
+lopen, sluipen, verstoppen, oppakken, lezen, kiezen. CRUMP is een probleem
+dat je ontwijkt en leert lezen, nooit iets dat je oplost met geweld.
 
 ### Pijler 4 — Eerlijke angst
 Angst komt uit anticipatie en consequentie, niet uit willekeur. De speler mag
 sterven doordat hij een risico verkeerd inschatte, nooit doordat de game
 oneerlijk was. Jumpscares zijn schaars gereedschap met strikte regels
-(`HORROR_GUIDELINES.md` §5).
+(`HORROR_GUIDELINES.md` §5b).
 
 ## 4. Toon en stijl
 
 - **Toon**: ingehouden, realistisch, Nederlands-nuchter dat langzaam kantelt.
-  Denk *nachtdienst-gevoel*: TL-balken, zoemende apparaten, koffie die koud
-  wordt. Het bovennatuurlijke sijpelt binnen in plaats van dat het binnenvalt.
+  Denk *de kantine na de wedstrijd*: muziek uit een speaker, natte jassen,
+  een tv die aanstaat, bier dat verschaalt op tafel. Het onverklaarbare
+  sijpelt binnen in plaats van dat het binnenvalt.
 - **Visueel**: gegrond realisme. Geen gore als versiering; sporen van iets
   vreselijks zijn effectiever dan het vreselijke zelf. Duisternis is nooit
   pikzwart-zonder-informatie: de speler moet altijd nét genoeg zien om bang
@@ -75,27 +77,36 @@ oneerlijk was. Jumpscares zijn schaars gereedschap met strikte regels
   geluid en gedrag (ademhaling, hartslag). Falen = gepakt worden, en de game
   herstart bij een eerlijk checkpoint.
 
-## 6. Het monster (visie op hoog niveau)
+## 6. CRUMP: de dreiging (visie op hoog niveau)
 
-*Implementatie volgt pas in taak 007; dit is het ontwerpkader.*
+*Implementatie volgt pas in taak 007; dit is het ontwerpkader. CRUMP is de
+naam van het mysterie/de dreiging — géén locatie, géén club (STORY §5).
+Vorm en betekenis blijven bewust onbeschreven tot de ontwerpsessie daarover.*
 
-- Er is (in elk geval hoofdstuk 1–3) **één** dreiging. Eén monster dat de
-  speler leert kennen is enger dan tien die je vergeet.
-- Het monster is een **systeem**, geen scripted schrikmoment: het patrouilleert,
-  hoort, onderzoekt en onthoudt kort. De speler kan het leren lezen (geluid,
-  ritme, signalen) en dat lezen is de kern van de spanning.
-- Het monster wordt **spaarzaam getoond**. Suggestie eerst: geluid, schaduw,
-  iets dat verplaatst is. Volledig zicht is een climax, geen routine.
-- Regel: het monster "spawnt" nooit in het zicht van de speler en teleporteert
+- Er is **één** dreiging: CRUMP. Eén dreiging die de speler leert kennen is
+  enger dan tien die je vergeet.
+- CRUMP verschijnt **pas veel later** in het spel; tot dat moment bestaat het
+  uitsluitend als suggestie, afwijking en aanwezigheid. **De eerste 15 minuten
+  bevatten géén monster, géén achtervolging en géén jumpscares** — alleen
+  subtiele veranderingen in de omgeving. De speler moet eerst alleen denken:
+  *"er klopt iets niet."*
+- Zodra CRUMP een actieve dreiging wordt, is het een **systeem**, geen
+  scripted schrikmoment: het patrouilleert, hoort, onderzoekt en onthoudt
+  kort. De speler kan het leren lezen (geluid, ritme, signalen) en dat lezen
+  is de kern van de spanning.
+- CRUMP wordt **spaarzaam getoond**. Suggestie eerst: geluid, schaduw, iets
+  dat verplaatst is. Volledig zicht is een climax, geen routine.
+- Regel: CRUMP "spawnt" nooit in het zicht van de speler en teleporteert
   nooit aantoonbaar. De illusie dat het ergens vandaan kwam moet altijd kloppen.
 
 ## 7. Structuur van het spel
 
 - **Omvang**: 4 hoofdstukken, samen 3–5 uur speeltijd. Kwaliteit boven lengte.
-- **Opbouw**: hoofdstuk 1 is vrijwel monstervrij (vertrouwen en onbehagen
-  opbouwen), hoofdstuk 2 introduceert de dreiging als systeem, hoofdstuk 3
-  escaleert en geeft de speler middelen én dilemma's, hoofdstuk 4 is de
-  afrekening en de onthulling. Details: `STORY.md`.
+- **Opbouw**: hoofdstuk 1 opent met de normale clubavond en de verdwijning
+  (STORY §3) en blijft daarna pure suggestie; hoofdstuk 2 vergroot de wereld
+  en introduceert aanwezigheid; hoofdstuk 3 maakt CRUMP een systeem om mee te
+  leven en escaleert; hoofdstuk 4 is de confrontatie met wat CRUMP is.
+  Details: `STORY.md`.
 - **Save-systeem**: checkpoints op veilige momenten + save bij verlaten.
   Geen quicksave (spanning lekt weg als elke situatie herlaadbaar is).
 

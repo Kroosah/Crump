@@ -35,14 +35,15 @@ Hoe lager op de ladder, hoe vaker het mag voorkomen. Trede 5 is een budget:
 
 ## 3. Geluid (pijler 1 in de praktijk)
 
-- **Stilte is de standaard.** De ambient-laag van De Crump (zoemende TL,
-  ventilatie, verre snelweg) is het nulpunt; elke afwijking dáárvan is
-  informatie.
+- **Stilte is de standaard.** De ambient-laag van het verlaten sportpark
+  (zoemende koeling achter de bar, de tv die nog aanstaat, wind langs de
+  lichtmasten, de verre provincialeweg) is het nulpunt; elke afwijking
+  dáárvan is informatie.
 - **Diegetisch eerst**: geluiden komen uit de wereld (leidingen, deuren,
   iets dat valt). Niet-diegetische stingers zijn zeldzaam en gekoppeld aan
   echte gebeurtenissen, nooit "sfeer-spam".
 - **Geluid is tweerichtingsverkeer**: de speler máákt ook geluid (rennen,
-  deuren, vallende props) en het monster hoort dat (event-bus,
+  deuren, vallende props) en CRUMP hoort dat (event-bus,
   ARCHITECTURE §5.3). Het volume dat de speler hoort ≈ de luidheid die de
   wereld registreert; zo leert de speler intuïtief wat "te luid" is.
 - **Richtinghoren moet kloppen.** 3D-audio positioneel correct; de speler
@@ -63,7 +64,22 @@ Hoe lager op de ladder, hoe vaker het mag voorkomen. Trede 5 is een budget:
   wereld (meterkast, storing), geen willekeurige spookjes. In hoofdstuk 1
   is elke flikkering nog verklaarbaar; pas later wordt dat onzeker.
 
-## 5. Jumpscares: het contract
+## 5a. De eerste 15 minuten (harde regel)
+
+De openingsfase van het spel — vanaf het moment dat de speler de lege
+kantine ontdekt — is heilig:
+
+1. **Geen monster.** CRUMP verschijnt pas veel later in het spel.
+2. **Geen achtervolging.**
+3. **Geen goedkope jumpscares.**
+4. **Alleen subtiele veranderingen in de omgeving** (ladder-trede 1–2):
+   dingen die nét anders staan, geluiden die nét niet kloppen.
+
+Doelgevoel van deze fase, letterlijk: *"er klopt iets niet."* Niet meer.
+Wie hier spanning wil "helpen" met een schrikmoment, breekt de hele opbouw
+van het spel — deze regel heeft geen uitzonderingen.
+
+## 5b. Jumpscares: het contract
 
 Jumpscares zijn kruiden, geen hoofdgerecht. Regels:
 
@@ -79,14 +95,15 @@ Jumpscares zijn kruiden, geen hoofdgerecht. Regels:
    probleem zijn — als de scène alleen werkt met perfecte camerarichting,
    is het geen goede scène.
 
-## 6. Het monster inzetten
+## 6. CRUMP inzetten
 
-*Gedragssysteem in taak 007; dit zijn de regels voor hoe het gebruikt wordt.*
+*Gedragssysteem in taak 007; dit zijn de regels voor hoe de dreiging gebruikt
+wordt zodra hij — veel later in het spel — actief wordt.*
 
-- **Zeldzaamheid = waarde.** Elke seconde vol zicht op het monster verlaagt
+- **Zeldzaamheid = waarde.** Elke seconde vol zicht op CRUMP verlaagt
   zijn prijs. Suggestie en aanwezigheid (ladder 1–3) zijn het dagelijkse
   gereedschap; volledig zicht is een climax.
-- **Eerlijk en leesbaar**: het monster heeft hoorbare/zichtbare tells, het
+- **Eerlijk en leesbaar**: CRUMP heeft hoorbare/zichtbare tells, het
   spawnt nooit in beeld en teleporteert nooit aantoonbaar (GAME_BIBLE §6).
   De speler moet achteraf altijd kunnen reconstrueren hoe het hem vond.
 - **Geen scripted kill zonder uitweg.** Elke dreigingssituatie heeft
@@ -98,10 +115,11 @@ Jumpscares zijn kruiden, geen hoofdgerecht. Regels:
 
 ## 7. Psychologische horror: de CRUMP-specialiteit
 
-- **De routine is het paard van Troje.** De verplichte ronde (STORY §5) laat
-  de speler dezelfde plekken herhaaldelijk bezoeken; afwijking-van-bekend is
-  ons krachtigste wapen. Daarom is hoofdstuk 1 bijna veilig: het bouwt het
-  "normaal" op dat we daarna kunnen schenden.
+- **Het vertrouwde is het paard van Troje.** De opening (STORY §3) laat de
+  speler de kantine en kleedkamer in hun normale, levende staat zien; daarna
+  keert hij er telkens terug. Afwijking-van-bekend is ons krachtigste wapen —
+  daarom is de openingsscène zo gewoon: ze bouwt het "normaal" op dat we de
+  rest van het spel kunnen schenden.
 - **Kleine afwijkingen winnen**: een stoel die 30 cm verschoven is, is enger
   dan een omgegooide kast. De speler moet twijfelen of hij het zich verbeeldt.
 - **Onzekerheid boven uitleg**: we bevestigen of ontkennen zo laat en zo min
@@ -132,5 +150,5 @@ Vijf vragen die bij review beantwoord moeten worden:
 2. Wat is hier het "normaal", en wat schendt het?
 3. Kan de speler achteraf reconstrueren wat er gebeurde? (eerlijkheid)
 4. Werkt de scène ook als de speler nét de verkeerde kant op kijkt?
-5. Zou de scène nog werken zónder muziek en zónder monster? Zo nee, doet de
+5. Zou de scène nog werken zónder muziek en zónder CRUMP? Zo nee, doet de
    ruimte zelf te weinig werk.

@@ -61,7 +61,7 @@ Deze draaien op de VPS en later in CI:
 
 ### Gehoor-veiligheid
 - [ ] Geen enkele sound-cue overschrijdt de vastgestelde piek-limiet
-      (zodat schrikken geen fysieke pijn wordt, HORROR_GUIDELINES §5.4).
+      (zodat schrikken geen fysieke pijn wordt, HORROR_GUIDELINES §5b.4).
 - [ ] Master- en effect-volume laag genoeg instelbaar voor gevoelige spelers.
 
 ## 5. Licht & sfeer (editor/hardware)
@@ -72,13 +72,13 @@ Deze draaien op de VPS en later in CI:
 - [ ] Elke lichtbron heeft een zichtbare wereld-oorzaak (LEVEL_GUIDELINES §5).
 - [ ] Lichtbudget per ruimte gerespecteerd; geen framedrops bij lichtwissels.
 
-## 6. Monster & AI (editor/hardware, vanaf taak 007)
+## 6. CRUMP & AI (editor/hardware, vanaf taak 007)
 
 - [ ] AI reageert uitsluitend op gedefinieerde zintuigen (gehoor via
       event-bus, zicht via cone+LOS) — geen wallhacks (HORROR_GUIDELINES §6).
 - [ ] Spawnt nooit in beeld, geen aantoonbare teleportatie.
 - [ ] Elke dreigingssituatie heeft een leesbare overlevingsoptie.
-- [ ] Navigatie soepel; monster loopt niet vast en "glitcht" niet door muren.
+- [ ] Navigatie soepel; CRUMP loopt niet vast en "glitcht" niet door muren.
 - [ ] Toestandsovergangen (patrouille→onderzoek→achtervolging→verliezen)
       kloppen en zijn voor de speler leesbaar aan tells.
 - [ ] Gepakt-worden → eerlijk checkpoint, herstart binnen enkele minuten.
@@ -115,7 +115,7 @@ Bovenop alle bovenstaande, voor een build die naar buiten gaat:
 - [ ] Windows-export start schoon op een kale machine (geen dev-dependencies).
 - [ ] Geen console-errors/warnings tijdens een volledige speelsessie.
 - [ ] Opties-menu volledig functioneel; instellingen blijven bewaard.
-- [ ] Alle drie de eindes (STORY §6) bereikbaar en correct.
+- [ ] Alle eindes (STORY §8) bereikbaar en correct.
 - [ ] Lokalisatie-strings compleet voor de talen in de build.
 - [ ] Externe playtest verwerkt; geen bekende immersie-brekende bugs open.
 

@@ -10,7 +10,7 @@ mixstructuur, ambience-lagen, en geluid-als-gameplay.
 
 Een `AudioDirector`-autoload die de mix, ambience en cues beheert, plus de
 koppeling die van speler-acties hoorbare gebeurtenissen maakt — en die
-gebeurtenissen leesbaar houdt voor het monster (taak 007).
+gebeurtenissen leesbaar houdt voor CRUMP (taak 007).
 
 ## Scope
 

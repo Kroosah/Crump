@@ -2,7 +2,7 @@
 
 *Fasering van fundering tot Steam. Geen datums maar mijlpalen: een fase is af
 als de exit-criteria gehaald zijn, niet als de kalender dat zegt. Volgorde is
-bewust: eerst voelen (speler + geluid), dan vrezen (monster), dan vertellen
+bewust: eerst voelen (speler + geluid), dan vrezen (CRUMP), dan vertellen
 (hoofdstukken).*
 
 ---
@@ -49,7 +49,7 @@ zonder dat er ook maar iets gebeurt. Dat is de lat.
 
 ## Fase 3 — De dreiging (taak 007)
 
-**Doel**: het monster als leesbaar systeem.
+**Doel**: CRUMP als leesbare, systemische dreiging.
 
 - [ ] **007** AI: state machine, navigatie, gehoor via event-bus, zicht,
       spanningsregels (afstand-audio, muziekcues via AudioDirector).
@@ -59,12 +59,12 @@ zonder dat er ook maar iets gebeurt. Dat is de lat.
 **Exit-criteria**: 15 minuten kat-en-muis in de testruimte is spannend zonder
 één gescript moment. Playtest met ≥3 personen buiten het team.
 
-## Fase 4 — Hoofdstuk 1: "Eerste dienst" (taak 008)
+## Fase 4 — Hoofdstuk 1: "De derde helft" (taak 008)
 
 **Doel**: het eerste speelbare verhaaldeel, verticale slice-kwaliteit.
 
-- [ ] Blockout van De Crump (begane grond + kantoren) volgens LEVEL_GUIDELINES.
-- [ ] Routine-loop (ronde, logboek, meterkast) + omgevingsvertelling hfst 1.
+- [ ] Blockout van het clubhuis (kantine, kleedkamergang, entree) volgens LEVEL_GUIDELINES.
+- [ ] De opening (levende kantine → kleedkamer → verdwijning, STORY §3) + de eerste-15-minutenfase (HORROR_GUIDELINES §5a) + omgevingsvertelling hfst 1.
 - [ ] Save/checkpoints in de praktijk; opties-menu (audio, gevoeligheid,
       helderheid, toegankelijkheid-basis).
 - [ ] Eerste externe playtest-ronde + verwerking.
@@ -76,9 +76,9 @@ playtesters willen weten hoe het verdergaat.
 
 **Doel**: het volledige verhaal, met per hoofdstuk dezelfde slice-kwaliteit.
 
-- [ ] Hoofdstuk 2 (dreiging als systeem in het echte gebouw).
-- [ ] Hoofdstuk 3 (escalatie + keuzes; ontwerpsessie vooraf, zie STORY §9).
-- [ ] Hoofdstuk 4 (kelder + eindes).
+- [ ] Hoofdstuk 2 (het sportpark wordt groter en vreemder; eerste sporen van het woord CRUMP).
+- [ ] Hoofdstuk 3 (escalatie + keuzes; CRUMP-ontwerpsessie vooraf, zie STORY §8).
+- [ ] Hoofdstuk 4 (de confrontatie met wat CRUMP is + eindes).
 - [ ] Volledige playthrough-playtests per toevoeging.
 
 **Exit-criteria**: complete run van 3–5 uur, alle eindes bereikbaar,

@@ -64,7 +64,7 @@ plus de eerste handvol props die het bewijzen.
 
 ## Ontwerpnotitie
 
-Het contract moet zó generiek zijn dat een lichtschakelaar, een telefoon
-(STORY: Halberstadt), of een kluis er later moeiteloos op passen — maar we
+Het contract moet zó generiek zijn dat een lichtschakelaar, een achtergelaten
+telefoon, of de tv in de kantine er later moeiteloos op passen — maar we
 bouwen nu alleen de vier props die fase 1 nodig heeft. Weersta de neiging het
 contract "vast alvast" uit te breiden voor onbestaande props.

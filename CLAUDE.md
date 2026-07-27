@@ -9,6 +9,37 @@ CRUMP: first person psychological horror in **Godot 4.7**, studio Kroosah
 Interactive. Doelplatform Windows, later Steam. De projectmap heet
 `nachtdienst` (werktitel van het repo); de game heet CRUMP.
 
+## Rolverdeling (vastgesteld 27-07-2026)
+
+| Rol | Wie | Verantwoordelijkheid |
+|---|---|---|
+| **Game Director** | Randy | Creatieve keuzes, geeft opdrachten, beslist |
+| **Technical Director** | ChatGPT | Architectuur, ontwikkelstrategie, roadmap |
+| **Lead Developer** | Claude Code (deze sessies) | Voert de gevraagde taak uit volgens de documentatie |
+
+Praktisch: jij (Claude) voert uit wat de Game Director opdraagt, binnen de
+kaders van de documentatie. Architectuur- en roadmapwijzigingen komen via de
+Game Director (eventueel op advies van de Technical Director) — jij stelt ze
+hooguit voor.
+
+## Ontwikkelregels (bindend)
+
+1. Werk altijd aan **exact één taak** tegelijk.
+2. Begin **nooit zelfstandig** aan volgende taken.
+3. Lees vóór iedere taak minimaal: `CLAUDE.md`, `docs/GAME_BIBLE.md`,
+   `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` en het betreffende
+   `tasks/`-document.
+4. Wijzig nooit systemen buiten de actieve taak, tenzij noodzakelijk voor
+   een bugfix (en benoem dat expliciet).
+5. Maak na iedere afgeronde taak een korte samenvatting van: gewijzigde
+   bestanden, technische keuzes, mogelijke risico's.
+6. Bouw geen tijdelijke hacks.
+7. Houd de code uitbreidbaar.
+8. Denk je dat een ontwerpbeslissing beter kan? Doe een **voorstel** — voer
+   hem niet zelfstandig door.
+9. De documentatie is de bron van waarheid.
+10. Wacht na iedere taak op de volgende opdracht.
+
 ## Begin élke sessie zo
 
 1. Lees `docs/ROADMAP.md` om te zien in welke fase we zitten.
