@@ -11,6 +11,19 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.6 — 2026-07-27
+**GitHub gekoppeld + sessiestatus ingericht**
+- Repository gekoppeld aan `git@github.com:Kroosah/Crump.git` (privé, SSH
+  deploy key); `main` gepusht met upstream-tracking. **GitHub is vanaf nu de
+  officiële bron van waarheid.**
+- `docs/SESSION_STATE.md` toegevoegd: laatste taak, commit, GitHub-status,
+  projectstatus, volgende taak en open aandachtspunten.
+- CLAUDE.md: vaste leesvolgorde bij sessiestart (SESSION_STATE → DECISIONS →
+  GAME_BIBLE → ARCHITECTURE → actieve taak); Definitie van "af" uitgebreid
+  met SESSION_STATE, de verwijderbaarheidstest en verplicht pushen.
+- Definition of Done voor taak 001 herbevestigd: import exit 0, smoke-suite
+  31/31 groen, werkmap schoon, registers compleet.
+
 ## v0.0.5 — 2026-07-27
 **Modulariteit vastgelegd als harde eis**
 - D-015: elke feature moet volledig verwijderbaar zijn; gameplay-systemen

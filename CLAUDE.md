@@ -47,10 +47,20 @@ hooguit voor.
 
 ## Begin élke sessie zo
 
-1. Lees `docs/ROADMAP.md` om te zien in welke fase we zitten.
-2. Lees het relevante dossier in `tasks/` vóór je aan een bouwsteen werkt.
-3. Check `git log --oneline -10` om te zien wat er recent gebeurd is.
-4. Werk aan **één taak tegelijk**; meng geen taken in één commit.
+Lees in deze volgorde — alleen dit bestand wordt automatisch geladen, de rest
+moet je zélf openen:
+
+1. **`docs/SESSION_STATE.md`** — waar staan we, laatste commit, volgende taak,
+   open aandachtspunten. Altijd als eerste.
+2. **`docs/DECISIONS.md`** — de genomen beslissingen en waarom (D-001 t/m …).
+3. **`docs/GAME_BIBLE.md`** — wat CRUMP is: visie, pijlers, wat het níét is.
+4. **`docs/ARCHITECTURE.md`** — hoe de codebase in elkaar zit, inclusief de
+   modulariteitseis (§4a).
+5. **Het actieve taakdossier** in `tasks/` — vóór je ook maar iets bouwt.
+6. **`docs/ROADMAP.md`** bij twijfel over de fase, en `git log --oneline -10`
+   voor wat er recent gebeurde.
+
+Werk daarna aan **één taak tegelijk**; meng geen taken in één commit.
 
 ## Harde regels
 
@@ -111,8 +121,11 @@ Een taak is pas af als:
    - `docs/DECISIONS.md` — elke betekenisvolle keuze als D-entry;
    - `docs/KNOWN_ISSUES.md` — nieuwe bevindingen erin, opgeloste afgesloten;
    - `docs/TECH_DEBT.md` — elke tijdelijke oplossing als TD-entry met
-     aflosmoment (tijdelijk zonder entry = niet toegestaan).
-6. Alles gecommit is.
+     aflosmoment (tijdelijk zonder entry = niet toegestaan);
+   - `docs/SESSION_STATE.md` — laatste taak, commit, status, volgende stap.
+6. De **verwijderbaarheidstest** (ARCHITECTURE §4a) is gedaan.
+7. Alles gecommit **én gepusht** is naar `origin/main` (GitHub = bron van
+   waarheid).
 
 ## Vier-vragen-rapport (vaste regel Kroosah Interactive)
 
