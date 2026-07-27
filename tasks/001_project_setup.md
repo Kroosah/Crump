@@ -13,6 +13,10 @@
 >   in taak 005 vanuit de behoefte ontworpen.
 > - Te beoordelen in de editor (GD): dev room-maten, debug overlay (F3),
 >   pauze (Esc) — zie de instructies in het taakrapport.
+> - **Nagekomen bugfix (2026-07-27)**: de dev room had geen camera en toonde
+>   daardoor alleen de default clear color (KI-001). Opgelost met een vaste
+>   testcamera, drie lichtbronnen en contrasterende materialen (D-016);
+>   smoke-suite van 31 naar 48 controles.
 
 De technische geboorte van het Godot-project: van lege repo naar een
 importeerbaar, getest, correct geconfigureerd project **met een werkende

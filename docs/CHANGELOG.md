@@ -11,6 +11,26 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.7 — 2026-07-27
+**Bugfix: developer room toonde een egaal grijs beeld (KI-001)**
+- **Oorzaak**: het project bevatte nergens een `Camera3D`. Zonder actieve
+  camera rendert Godot de 3D-wereld niet en vult de viewport met
+  `rendering/environment/defaults/default_clear_color` — precies het
+  egale grijs (0.3, 0.3, 0.3) dat op de dev-pc te zien was.
+- Vaste testcamera `TestCamera` toegevoegd aan de dev room (D-016), met
+  `dev_camera.gd` die het beeld aan een latere spelerscamera laat.
+- Dev room visueel robuust gemaakt: contrasterende materialen (vloer donker
+  blauwgrijs, muren licht warmgrijs, zes gekleurde testobjecten), extra
+  primitieven (bol, cilinder, capsule op 1,8 m als hoogtereferentie),
+  en verlichting van één naar drie bronnen (DirectionalLight + twee omni's,
+  twee daarvan met schaduw — binnen het lichtbudget van LEVEL_GUIDELINES §5).
+- Achtergrondkleur bewust wég van het default-grijs gezet, zodat een écht
+  kapot beeld voortaan te onderscheiden is van een werkende render.
+- Smoke-suite uitgebreid van 31 naar 48 controles met een
+  zichtbaarheidsblok: actieve camera, near/far, camera niet in geometrie,
+  kijkrichting, aantal meshes, materiaalcontrast, actieve lichten en
+  environment-instellingen.
+
 ## v0.0.6 — 2026-07-27
 **GitHub gekoppeld + sessiestatus ingericht**
 - Repository gekoppeld aan `git@github.com:Kroosah/Crump.git` (privé, SSH

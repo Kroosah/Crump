@@ -22,19 +22,24 @@ smoke-test-suite van 31 controles.
 Daarna nog vastgelegd: **modulariteit als harde eis** (D-015) — elke feature
 moet volledig verwijderbaar zijn zonder de rest te breken.
 
+Daarna volgde één gerichte bugfix: **KI-001 — de developer room toonde een
+egaal grijs beeld** omdat het project nergens een `Camera3D` had. Opgelost met
+een vaste testcamera, zwaardere tijdelijke verlichting, contrasterende
+materialen en 17 extra smoke-controles (D-016, CHANGELOG v0.0.7).
+
 ## 2. Laatste commit
 
 ```
-a570461  [docs] Voeg SESSION_STATE toe en scherp sessie-instructies aan
+[fix] Maak developer room zichtbaar met testcamera, licht en contrast
 ```
 
-16 commits op `main`; werkmap schoon.
+Werkmap schoon; `main` gepusht naar `origin/main`.
 
 ## 3. GitHub-status
 
 - **Remote**: `origin` → `git@github.com:Kroosah/Crump.git` (privé, SSH)
 - **Branch**: `main`, met upstream-tracking naar `origin/main`
-- **Synchroon**: lokaal `a570461` = remote `a570461` (16/16 commits gepusht)
+- **Synchroon**: alle commits gepusht (`git status` schoon, geen ahead/behind)
 - **Authenticatie**: deploy key met schrijfrechten (`crump-deploy@VPS-Focus`),
   privésleutel `/root/.ssh/id_ed25519_github`, ssh-config-entry voor github.com
 - **GitHub is de officiële bron van waarheid**: elke afgeronde taak wordt
@@ -50,13 +55,15 @@ a570461  [docs] Voeg SESSION_STATE toe en scherp sessie-instructies aan
 | Taken 003–008 | ⬜ open |
 
 **Technische staat**: het project draait. `godot --headless --path . --import`
-is schoon (exit 0), de smoke-suite geeft 31/31 groen (exit 0), de bootstrap
+is schoon (exit 0), de smoke-suite geeft 48/48 groen (exit 0), de bootstrap
 laadt de developer room, en de vier registers (DECISIONS/CHANGELOG/
 KNOWN_ISSUES/TECH_DEBT) zijn bijgewerkt.
 
 **Nog niet visueel beoordeeld**: de developer room en de debug overlay zijn
 alleen headless gevalideerd. De Game Director bekijkt ze in de Godot-editor
-op Windows (F5 = starten, F3 = overlay, Esc = pauze).
+op Windows (F5 = starten, F3 = overlay, Esc = pauze). Na de KI-001-fix hoort
+F5 een verlichte ruimte te tonen met donkere vloer, lichte muren en zes
+gekleurde objecten — géén egaal grijs meer.
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
@@ -86,7 +93,9 @@ korte instructie wat de Game Director in de editor moet testen.
   release-default staat nog op ontwikkelwaarde. Aflossen bij taak 006/fase 6.
 - **TD-003** (Laag): `brightness` wordt opgeslagen maar nog nergens toegepast
   — koppelen in taak 006 (licht & sfeer).
-- **KNOWN_ISSUES**: leeg; geen bekende bugs.
+- **KNOWN_ISSUES**: geen open issues; KI-001 (grijs beeld dev room) is
+  opgelost. Les eruit: "de logs zijn schoon" bewijst niet dat er beeld is —
+  daarom toetst de smoke-suite nu ook de rendervoorwaarden.
 - **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB) — pas
   nodig bij de eerste echte export.
 - **Verwijderbaarheidstest** (D-015) is vanaf nu onderdeel van elke taak:

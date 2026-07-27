@@ -1,4 +1,6 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=25 format=3]
+
+[ext_resource type="Script" path="res://game/levels/dev_room/dev_camera.gd" id="1"]
 
 [sub_resource type="BoxMesh" id="floor_mesh"]
 size = Vector3(20, 0.5, 20)
@@ -24,119 +26,233 @@ size = Vector3(2, 2, 2)
 [sub_resource type="BoxShape3D" id="big_crate_shape"]
 size = Vector3(2, 2, 2)
 
-[sub_resource type="StandardMaterial3D" id="mat_grey"]
-albedo_color = Color(0.55, 0.55, 0.58, 1)
+[sub_resource type="SphereMesh" id="sphere_mesh"]
+radius = 0.6
+height = 1.2
+
+[sub_resource type="SphereShape3D" id="sphere_shape"]
+radius = 0.6
+
+[sub_resource type="CylinderMesh" id="cylinder_mesh"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.6
+
+[sub_resource type="CylinderShape3D" id="cylinder_shape"]
+radius = 0.5
+height = 1.6
+
+[sub_resource type="CapsuleMesh" id="capsule_mesh"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="capsule_shape"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.16, 0.18, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+albedo_color = Color(0.68, 0.66, 0.62, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="mat_red"]
+albedo_color = Color(0.8, 0.16, 0.16, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_orange"]
+albedo_color = Color(0.9, 0.45, 0.1, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_blue"]
+albedo_color = Color(0.16, 0.36, 0.85, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_green"]
+albedo_color = Color(0.16, 0.7, 0.28, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_yellow"]
+albedo_color = Color(0.92, 0.8, 0.15, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="mat_white"]
+albedo_color = Color(0.93, 0.93, 0.95, 1)
+roughness = 0.75
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
-background_color = Color(0.04, 0.04, 0.05, 1)
+background_color = Color(0.05, 0.06, 0.09, 1)
 ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.2
+ambient_light_color = Color(0.55, 0.6, 0.72, 1)
+ambient_light_energy = 0.5
 
 [node name="DevRoom" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("env")
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="TestCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.987441, -0.157991, 0, 0.157991, 0.987441, 0, 2.6, 9)
+current = true
+fov = 70.0
+near = 0.05
+far = 100.0
+script = ExtResource("1")
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="SunKey" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.788011, 0, 0.615662, 0.485148, 0.615662, -0.620961, -0.379039, 0.788011, 0.485148, 0, 6, 4)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="CeilingLightCenter" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 16.0
+
+[node name="CeilingLightNorth" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, -6)
+light_energy = 1.5
+shadow_enabled = false
+omni_range = 14.0
+
+[node name="Structure" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Structure"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 collision_layer = 1
 collision_mask = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+[node name="Mesh" type="MeshInstance3D" parent="Structure/Floor"]
 mesh = SubResource("floor_mesh")
-surface_material_override/0 = SubResource("mat_grey")
+surface_material_override/0 = SubResource("mat_floor")
 
-[node name="Collision" type="CollisionShape3D" parent="Floor"]
+[node name="Collision" type="CollisionShape3D" parent="Structure/Floor"]
 shape = SubResource("floor_shape")
 
-[node name="WallNorth" type="StaticBody3D" parent="."]
-collision_layer = 1
-collision_mask = 0
+[node name="WallNorth" type="StaticBody3D" parent="Structure"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -10)
-
-[node name="Mesh" type="MeshInstance3D" parent="WallNorth"]
-mesh = SubResource("wall_mesh")
-surface_material_override/0 = SubResource("mat_grey")
-
-[node name="Collision" type="CollisionShape3D" parent="WallNorth"]
-shape = SubResource("wall_shape")
-
-[node name="WallSouth" type="StaticBody3D" parent="."]
 collision_layer = 1
 collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Structure/WallNorth"]
+mesh = SubResource("wall_mesh")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="Collision" type="CollisionShape3D" parent="Structure/WallNorth"]
+shape = SubResource("wall_shape")
+
+[node name="WallSouth" type="StaticBody3D" parent="Structure"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
-
-[node name="Mesh" type="MeshInstance3D" parent="WallSouth"]
-mesh = SubResource("wall_mesh")
-surface_material_override/0 = SubResource("mat_grey")
-
-[node name="Collision" type="CollisionShape3D" parent="WallSouth"]
-shape = SubResource("wall_shape")
-
-[node name="WallEast" type="StaticBody3D" parent="."]
 collision_layer = 1
 collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Structure/WallSouth"]
+mesh = SubResource("wall_mesh")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="Collision" type="CollisionShape3D" parent="Structure/WallSouth"]
+shape = SubResource("wall_shape")
+
+[node name="WallEast" type="StaticBody3D" parent="Structure"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10, 1.5, 0)
-
-[node name="Mesh" type="MeshInstance3D" parent="WallEast"]
-mesh = SubResource("wall_mesh")
-surface_material_override/0 = SubResource("mat_grey")
-
-[node name="Collision" type="CollisionShape3D" parent="WallEast"]
-shape = SubResource("wall_shape")
-
-[node name="WallWest" type="StaticBody3D" parent="."]
 collision_layer = 1
 collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Structure/WallEast"]
+mesh = SubResource("wall_mesh")
+surface_material_override/0 = SubResource("mat_wall")
+
+[node name="Collision" type="CollisionShape3D" parent="Structure/WallEast"]
+shape = SubResource("wall_shape")
+
+[node name="WallWest" type="StaticBody3D" parent="Structure"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10, 1.5, 0)
+collision_layer = 1
+collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="WallWest"]
+[node name="Mesh" type="MeshInstance3D" parent="Structure/WallWest"]
 mesh = SubResource("wall_mesh")
-surface_material_override/0 = SubResource("mat_grey")
+surface_material_override/0 = SubResource("mat_wall")
 
-[node name="Collision" type="CollisionShape3D" parent="WallWest"]
+[node name="Collision" type="CollisionShape3D" parent="Structure/WallWest"]
 shape = SubResource("wall_shape")
 
-[node name="Crate1" type="StaticBody3D" parent="."]
-collision_layer = 1
-collision_mask = 0
+[node name="TestObjects" type="Node3D" parent="."]
+
+[node name="CrateSmall" type="StaticBody3D" parent="TestObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, -2)
-
-[node name="Mesh" type="MeshInstance3D" parent="Crate1"]
-mesh = SubResource("crate_mesh")
-surface_material_override/0 = SubResource("mat_grey")
-
-[node name="Collision" type="CollisionShape3D" parent="Crate1"]
-shape = SubResource("crate_shape")
-
-[node name="Crate2" type="StaticBody3D" parent="."]
 collision_layer = 1
 collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/CrateSmall"]
+mesh = SubResource("crate_mesh")
+surface_material_override/0 = SubResource("mat_red")
+
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/CrateSmall"]
+shape = SubResource("crate_shape")
+
+[node name="CrateMedium" type="StaticBody3D" parent="TestObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 3)
-
-[node name="Mesh" type="MeshInstance3D" parent="Crate2"]
-mesh = SubResource("crate_mesh")
-surface_material_override/0 = SubResource("mat_grey")
-
-[node name="Collision" type="CollisionShape3D" parent="Crate2"]
-shape = SubResource("crate_shape")
-
-[node name="BigCrate" type="StaticBody3D" parent="."]
 collision_layer = 1
 collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/CrateMedium"]
+mesh = SubResource("crate_mesh")
+surface_material_override/0 = SubResource("mat_orange")
+
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/CrateMedium"]
+shape = SubResource("crate_shape")
+
+[node name="CrateLarge" type="StaticBody3D" parent="TestObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -6)
+collision_layer = 1
+collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="BigCrate"]
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/CrateLarge"]
 mesh = SubResource("big_crate_mesh")
-surface_material_override/0 = SubResource("mat_grey")
+surface_material_override/0 = SubResource("mat_blue")
 
-[node name="Collision" type="CollisionShape3D" parent="BigCrate"]
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/CrateLarge"]
 shape = SubResource("big_crate_shape")
 
-[node name="CeilingLight" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-omni_range = 14.0
-light_energy = 1.2
-shadow_enabled = true
+[node name="TestSphere" type="StaticBody3D" parent="TestObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.6, 3.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/TestSphere"]
+mesh = SubResource("sphere_mesh")
+surface_material_override/0 = SubResource("mat_green")
+
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/TestSphere"]
+shape = SubResource("sphere_shape")
+
+[node name="TestCylinder" type="StaticBody3D" parent="TestObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.8, 0.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/TestCylinder"]
+mesh = SubResource("cylinder_mesh")
+surface_material_override/0 = SubResource("mat_yellow")
+
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/TestCylinder"]
+shape = SubResource("cylinder_shape")
+
+[node name="HeightReference" type="StaticBody3D" parent="TestObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.9, -1.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TestObjects/HeightReference"]
+mesh = SubResource("capsule_mesh")
+surface_material_override/0 = SubResource("mat_white")
+
+[node name="Collision" type="CollisionShape3D" parent="TestObjects/HeightReference"]
+shape = SubResource("capsule_shape")

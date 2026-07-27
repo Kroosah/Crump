@@ -31,8 +31,23 @@ ook. Een bug die alleen in een gesprek of een hoofd bestaat, bestaat niet.
 
 ## Open issues
 
-*Geen — het project bevat nog geen code (fase 0: fundering).*
+*Geen.*
 
 ## Opgeloste issues
 
-*Nog geen.*
+## KI-001 — Developer room toont een egaal grijs beeld
+**Datum**: 2026-07-27 · **Ernst**: Blocker · **Status**: opgelost (CHANGELOG v0.0.7)
+**Waar**: `game/levels/dev_room/dev_room.tscn`
+**Omschrijving**: bij `F5` op de dev-pc (Windows, Vulkan Forward+, Intel UHD
+Graphics, preset DEVELOPMENT_LOW) vulde het venster zich met egaal grijs,
+terwijl de logs schoon waren en meldden dat de dev room geladen was.
+**Oorzaak**: het project bevatte geen enkele `Camera3D`. Zonder actieve camera
+rendert Godot de 3D-wereld niet; de viewport wordt dan gevuld met
+`rendering/environment/defaults/default_clear_color` = `(0.3, 0.3, 0.3)`.
+Het grijs was dus geen render van de grijze blockout maar de *afwezigheid*
+van een render — GPU, preset en materialen hadden er niets mee te maken.
+**Verwacht**: de blockout met vloer, muren en objecten in beeld.
+**Opgelost door**: `TestCamera` in de dev room (D-016), zwaardere tijdelijke
+verlichting, contrasterende materialen, en 17 extra smoke-controles die deze
+klasse fout voortaan headless afvangen (bewezen: met de camera weggehaald
+faalt de suite met exitcode 1).

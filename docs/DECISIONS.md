@@ -121,3 +121,18 @@ Vijf presets (DEVELOPMENT_LOW/LOW/MEDIUM/HIGH/ULTRA) die renderschaal, MSAA
 en schaduw-atlas runtime zetten. Dev-default = DEVELOPMENT_LOW zodat de
 Game Director soepel kan testen; de game moet op HIGH/ULTRA kunnen draaien
 en het release-default wordt in fase 6 bepaald (TD-002).
+
+## D-016 — De developer room heeft een eigen testcamera die opzij stapt
+**Datum**: 2026-07-27 · **Wie**: LD (bugfix KI-001) · **Status**: actief
+De dev room bevat een vaste `TestCamera` met `dev_camera.gd`. Zonder camera
+rendert Godot niets en toont de viewport de default clear color — een egaal
+grijs scherm dat als kapotte render gelezen wordt (KI-001). **Waarom in de
+dev room en niet in de bootstrap**: de ruimte moet los in de editor te openen
+en te beoordelen zijn (LEVEL_GUIDELINES §7), en de bootstrap moet levels
+kunnen laden zonder aannames over hun inhoud. **Waarom hij opzij stapt**: een
+ontwikkelhulpmiddel mag gameplay nooit overschrijven — zodra er een echte
+camera het beeld heeft (de spelerscamera uit taak 002) laat de testcamera los
+en logt dat. Springt hij bij (geen enkele camera actief), dan is dat een
+`warn`, want dan is er iets mis in de scèneopbouw. **Consequentie**: elk
+volgend level krijgt óf een eigen camera óf een speler; "geen camera" is
+vanaf nu een testfout in plaats van een raadsel.
