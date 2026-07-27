@@ -30,7 +30,7 @@ materialen en 17 extra smoke-controles (D-016, CHANGELOG v0.0.7).
 ## 2. Laatste commit
 
 ```
-[fix] Maak developer room zichtbaar met testcamera, licht en contrast
+[chore] Normaliseer project.godot en leg Git/ProjectSettings vast
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -55,7 +55,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 003–008 | ⬜ open |
 
 **Technische staat**: het project draait. `godot --headless --path . --import`
-is schoon (exit 0), de smoke-suite geeft 48/48 groen (exit 0), de bootstrap
+is schoon (exit 0), de smoke-suite geeft 51/51 groen (exit 0), de bootstrap
 laadt de developer room, en de vier registers (DECISIONS/CHANGELOG/
 KNOWN_ISSUES/TECH_DEBT) zijn bijgewerkt.
 

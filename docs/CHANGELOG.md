@@ -11,6 +11,24 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.9 — 2026-07-27
+**project.godot genormaliseerd; regeleindes en projectintenties vastgelegd**
+- De Godot-editor herschrijft `project.godot` bij het openen: eigen
+  header-commentaar wordt vervangen door engine-boilerplate, en instellingen
+  die gelijk zijn aan de engine-default worden weggelaten
+  (`window/size/mode=0`, `physics_ticks_per_second=60`,
+  `renderer/rendering_method="forward_plus"`). Functioneel verandert er niets
+  — geverifieerd tegen de engine-defaults. Deze vorm is vanaf nu de canon;
+  reverten had alleen tot een terugkerende diff geleid (D-017).
+- **`.gitattributes` toegevoegd**: alle tekstbestanden LF in repo én werkmap,
+  binaire assets uitgesloten van conversie. Voorkomt dat `core.autocrlf` op
+  Windows ooit een hele `.tscn` als gewijzigd laat zien.
+- **Smoke-suite 48 → 51 controles**: renderer (`forward_plus`), physics-ticks
+  (60) en window-mode (`MODE_WINDOWED`) worden nu expliciet getoetst via
+  `ProjectSettings`. Die keuzes stonden voorheen als documentatie in
+  `project.godot`; nu ze impliciete defaults zijn, is de test de enige plek
+  waar ze nog vastliggen.
+
 ## v0.0.8 — 2026-07-27
 **Testcamera op ooghoogte + notatiefout in Transform3D blootgelegd**
 - `TestCamera` van (0, 2.6, 9) met 9° kanteling naar **(0, 1.7, 9) horizontaal**:
