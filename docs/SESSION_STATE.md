@@ -25,16 +25,16 @@ moet volledig verwijderbaar zijn zonder de rest te breken.
 ## 2. Laatste commit
 
 ```
-95f48ce  [docs] Leg modulariteit vast als harde eis (D-015)
+a570461  [docs] Voeg SESSION_STATE toe en scherp sessie-instructies aan
 ```
 
-15 commits op `main`; werkmap schoon.
+16 commits op `main`; werkmap schoon.
 
 ## 3. GitHub-status
 
 - **Remote**: `origin` → `git@github.com:Kroosah/Crump.git` (privé, SSH)
 - **Branch**: `main`, met upstream-tracking naar `origin/main`
-- **Synchroon**: lokaal `95f48ce` = remote `95f48ce` (15/15 commits gepusht)
+- **Synchroon**: lokaal `a570461` = remote `a570461` (16/16 commits gepusht)
 - **Authenticatie**: deploy key met schrijfrechten (`crump-deploy@VPS-Focus`),
   privésleutel `/root/.ssh/id_ed25519_github`, ssh-config-entry voor github.com
 - **GitHub is de officiële bron van waarheid**: elke afgeronde taak wordt
