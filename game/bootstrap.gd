@@ -7,6 +7,9 @@ extends Node
 ## Het level dat de bootstrap tijdens ontwikkeling laadt (de developer room).
 const DEV_ROOM_SCENE := "res://game/levels/dev_room/dev_room.tscn"
 
+## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
+const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
+
 ## Autoloads die aanwezig moeten zijn vóór het spel verder mag.
 const REQUIRED_AUTOLOADS: Array[String] = [
 	"EventBus", "GameState", "AudioDirector", "SaveManager",
@@ -28,7 +31,21 @@ func _ready() -> void:
 		str(OS.is_debug_build()),
 	])
 	_verify_autoloads()
+	_add_debug_tools()
 	_load_level(DEV_ROOM_SCENE)
+
+
+## Naam van het geladen level (gebruikt door de debug overlay).
+func get_current_level_name() -> String:
+	return _current_level.name if _current_level != null else "geen"
+
+
+## Debug-gereedschap alleen in debugbuilds: in een release bestaat het niet.
+func _add_debug_tools() -> void:
+	if not OS.is_debug_build():
+		return
+	var overlay: Node = load(DEBUG_OVERLAY_SCENE).instantiate()
+	add_child(overlay)
 
 
 ## Laadt een level onder de SceneHost; ruimt het vorige level op.
