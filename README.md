@@ -54,7 +54,8 @@ crump/
 │   ├── levels/      # Hoofdstukken en ruimtes
 │   ├── props/       # Interacteerbare objecten (deuren, laden, items)
 │   └── ui/          # Menu's, HUD, ondertitels
-├── assets/          # Bronbestanden: audio, modellen, textures, shaders
+├── assets/          # Bronbestanden: audio, modellen, textures, shaders,
+│                    # ui, branding, concept_art, reference
 ├── addons/          # Third-party plugins (met bronvermelding + licentie)
 ├── docs/            # Alle ontwerpen en richtlijnen (start hier!)
 ├── tasks/           # Uitgewerkte taakdossiers per bouwsteen

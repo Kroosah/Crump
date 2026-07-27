@@ -48,9 +48,13 @@ Regels:
 - **Een scène + haar script + haar lokale resources horen bij elkaar** in
   dezelfde map (`game/actors/player/player.tscn` + `player.gd` +
   `player_footsteps.tres`).
-- `assets/` bevat **bronmateriaal** (audio, modellen, textures); `game/`
-  bevat **samenstellingen** (scènes die assets gebruiken). Assets weten
-  niets van scènes.
+- `assets/` bevat **bronmateriaal** (audio, modellen, textures, ui,
+  branding); `game/` bevat **samenstellingen** (scènes die assets
+  gebruiken). Assets weten niets van scènes.
+- `assets/concept_art/` en `assets/reference/` zijn **studiomateriaal**
+  (schetsen, moodboards, referentiefoto's): ze horen in de repo maar nooit
+  in de game-build — bij het opzetten van de export-presets (fase 6) worden
+  ze expliciet uitgesloten.
 - Gedeeld gedrag → `game/systems/`. Iets dat maar in één level bestaat →
   bij dat level.
 
