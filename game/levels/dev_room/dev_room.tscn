@@ -95,7 +95,7 @@ ambient_light_energy = 0.5
 environment = SubResource("env")
 
 [node name="TestCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.987441, -0.157991, 0, 0.157991, 0.987441, 0, 2.6, 9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 9)
 current = true
 fov = 70.0
 near = 0.05

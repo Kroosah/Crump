@@ -59,11 +59,13 @@ is schoon (exit 0), de smoke-suite geeft 48/48 groen (exit 0), de bootstrap
 laadt de developer room, en de vier registers (DECISIONS/CHANGELOG/
 KNOWN_ISSUES/TECH_DEBT) zijn bijgewerkt.
 
-**Nog niet visueel beoordeeld**: de developer room en de debug overlay zijn
-alleen headless gevalideerd. De Game Director bekijkt ze in de Godot-editor
-op Windows (F5 = starten, F3 = overlay, Esc = pauze). Na de KI-001-fix hoort
-F5 een verlichte ruimte te tonen met donkere vloer, lichte muren en zes
-gekleurde objecten — géén egaal grijs meer.
+**Visueel bevestigd (2026-07-27)**: de Game Director heeft de dev room op
+Windows in beeld gehad — vloer, muren en zes gekleurde objecten met schaduwen.
+KI-001 is daarmee ook visueel dicht, en Forward+ met schaduwwerpende lichten
+draait aantoonbaar op de Intel UHD Graphics. Daarna is de testcamera op
+ooghoogte gezet (v0.0.8); dat beeld moet nog opnieuw bekeken worden.
+
+**Nog niet visueel beoordeeld**: de debug overlay (F3) en de pauze (Esc).
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:

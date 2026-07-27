@@ -11,6 +11,20 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.8 — 2026-07-27
+**Testcamera op ooghoogte + notatiefout in Transform3D blootgelegd**
+- `TestCamera` van (0, 2.6, 9) met 9° kanteling naar **(0, 1.7, 9) horizontaal**:
+  menselijk perspectief en een betere basis voor taak 002 (GD-besluit).
+- Gemeten effect (headless, via `unproject_position`): lege achtergrond boven
+  de muren van 60% → 45% van het beeld, vloer van 28% → 44%.
+- **Bevinding**: de 12-float `Transform3D(...)`-notatie in een `.tscn` is
+  **rij-georiënteerd** en dus getransponeerd t.o.v. de GDScript-constructor
+  `Basis(x_as, y_as, z_as)`. De in v0.0.7 berekende transforms stonden
+  daardoor gespiegeld: de camera keek 9° omhoog i.p.v. omlaag. De nieuwe
+  camerabasis is de identiteit en is immuun voor deze fout.
+- Zelfde oorzaak treft `Lighting/SunKey`, die nu omhoog schijnt → **KI-002**
+  (open; wacht op akkoord van de Game Director, want fixen verandert het licht).
+
 ## v0.0.7 — 2026-07-27
 **Bugfix: developer room toonde een egaal grijs beeld (KI-001)**
 - **Oorzaak**: het project bevatte nergens een `Camera3D`. Zonder actieve
