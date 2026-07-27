@@ -33,6 +33,8 @@ func _ready() -> void:
 	_verify_autoloads()
 	_add_debug_tools()
 	_load_level(DEV_ROOM_SCENE)
+	if "--smoke-test" in OS.get_cmdline_user_args():
+		_run_smoke_test.call_deferred()
 
 
 ## Naam van het geladen level (gebruikt door de debug overlay).
@@ -82,6 +84,17 @@ func _toggle_pause() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		shutdown()
+
+
+## Draait de smoke-suite en sluit af met de uitslag als exitcode (CI-bruikbaar).
+func _run_smoke_test() -> void:
+	var suite := load("res://tests/smoke_test.gd")
+	var failures: int = suite.run(self)
+	if failures == 0:
+		Log.info("Smoke-test: alle controles groen")
+	else:
+		Log.error("Smoke-test: %d controle(s) gefaald" % failures)
+	shutdown(0 if failures == 0 else 1)
 
 
 ## De enige nette uitgang van het spel.
