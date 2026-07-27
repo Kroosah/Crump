@@ -18,6 +18,13 @@ afwijken mag alleen met een goede reden die hier vervolgens wordt vastgelegd.*
    mogelijk; communicatie loopt via Godot-signalen en een centrale event-bus.
 5. **Alles is tekst.** Scènes (`.tscn`), resources (`.tres`) en scripts
    (`.gd`) blijven tekstbestanden → leesbare diffs, bruikbare code-reviews.
+6. **Elke feature is verwijderbaar.** Ieder gameplay-systeem moet volledig
+   uit het project te halen zijn zonder dat de rest breekt (D-015).
+   Praktisch: systemen kennen elkaar niet rechtstreeks — ze publiceren en
+   consumeren signalen op de EventBus. Een ontbrekende ontvanger is nooit
+   een fout; een ontbrekende zender betekent alleen dat het signaal nooit
+   komt. Verwijder je een systeem, dan verdwijnen zijn map, zijn signalen-
+   abonnementen en zijn scène-instanties — en niets anders merkt het.
 
 ## 2. Engine en versie
 
@@ -78,6 +85,43 @@ onderhoudbaarheid sterft. Nieuw autoload-voorstel = architectuurbeslissing.
 op positie X met luidheid Y"), geen commando's ("CRUMP, ga naar X"). Wie er
 wat mee doet, beslist de ontvanger. Dit houdt CRUMP testbaar zonder
 speler, en de speler testbaar zonder CRUMP.
+
+## 4a. Modulariteit: de verwijderbaarheidstest
+
+*Vastgelegd als D-015 op verzoek van de Game Director. Dit is een **harde
+eis**, geen streven — elke taak wordt eraan getoetst.*
+
+**De test**: gooi de map van één gameplay-systeem weg (bijv.
+`game/actors/monster/`), draai `godot --headless --path . --import` en de
+smoke-suite. Blijft alles groen en start het spel? Dan is de module goed
+ontkoppeld. Zo niet, dan zit er een verboden afhankelijkheid.
+
+**Regels die dat garanderen:**
+
+1. **Gameplay-systemen kennen elkaar niet.** Geen `get_node("/root/...")`
+   naar een ander systeem, geen `preload()` van een andere systeem-scène,
+   geen class-verwijzing over systeemgrenzen heen. Communicatie loopt via
+   de EventBus of via een expliciet contract (`Interactable`).
+2. **Signalen zijn feiten, geen commando's** (§4). Een zender heeft nooit
+   een ontvanger nodig: `noise_made` uitzenden werkt ook zonder monster.
+   Een ontvanger zonder zender wacht simpelweg eeuwig — geen fout.
+3. **Autoloads zijn infrastructuur, geen gameplay.** EventBus, GameState,
+   AudioDirector, SettingsManager en SaveManager bevatten nooit
+   feature-specifieke logica; ze weten niet wat een monster of een
+   inventory is. Daarom overleven ze het verwijderen van elke feature.
+4. **Optioneel opzoeken, nooit hard aannemen.** Heb je toch een verwijzing
+   nodig (bv. de debug overlay die de spelerspositie toont), gebruik dan
+   `get_first_node_in_group()` / `get_node_or_null()` en handel `null`
+   netjes af — precies zoals de overlay nu doet (toont "—" zonder speler).
+5. **Één map per feature.** Alles wat bij een systeem hoort (scène, script,
+   resources, tests) staat bij elkaar, zodat "verwijderen" letterlijk één
+   map weggooien is. Gedeelde onderdelen horen in `game/systems/`.
+6. **Registratie boven bedrading.** Levels bezitten hun eigen inhoud; de
+   bootstrap laadt een level en weet verder niets van wat erin zit.
+
+**Toegestane koppelingen** (de enige uitzonderingen):
+autoloads (infrastructuur), `Log`, gedeelde contracten in `game/systems/`,
+en de Godot-API zelf.
 
 ## 5. Kernsystemen (ontwerp op hoofdlijnen)
 

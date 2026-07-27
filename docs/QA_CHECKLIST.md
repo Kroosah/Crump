@@ -20,6 +20,10 @@ Voor elke afgeronde taak, ongeacht wat het is:
 - [ ] Bestaande tests draaien nog groen.
 - [ ] Taakdossier bijgewerkt; gecommit volgens CODING_STANDARDS §6.
 - [ ] Scène(s) los te instantiëren zonder crash (nodig voor tests én reuse).
+- [ ] **Verwijderbaarheidstest** (ARCHITECTURE §4a, D-015): map van het
+      nieuwe systeem tijdelijk weghalen → `--import` en smoke-suite blijven
+      groen, spel start nog. Geen directe verwijzingen naar andere
+      gameplay-systemen (alleen EventBus, contracten, autoloads, `Log`).
 
 ## 2. Headless-tests (automatiseerbaar in `tests/`)
 

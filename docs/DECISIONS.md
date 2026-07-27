@@ -103,6 +103,18 @@ autoloads en projectconfig worden zo mét het spel getest (geen aparte
 MainLoop-context), nul dependencies, CI-klaar. **Heroverwegen bij**: behoefte
 aan echte unit-test-isolatie (dan GUT of de ingebouwde runner alsnog wegen).
 
+## D-015 — Modulariteit als harde eis: elke feature volledig verwijderbaar
+**Datum**: 2026-07-27 · **Wie**: GD · **Status**: actief
+Elke nieuwe feature moet uit het project te verwijderen zijn zonder de rest
+te breken; gameplay-systemen mogen geen onderlinge afhankelijkheden hebben.
+**Waarom**: houdt het project jarenlang wendbaar — features kunnen sneuvelen
+na een playtest zonder sloopwerk, en systemen blijven los testbaar.
+**Hoe geborgd**: ARCHITECTURE §4a (de verwijderbaarheidstest + zes regels),
+CLAUDE.md ontwikkelregel 11, en een toets per taak. De EventBus is hiervoor
+het centrale mechanisme: signalen zijn feiten zonder verplichte ontvanger.
+**Consequentie**: geen directe cross-systeem-verwijzingen meer, ook niet
+"heel even" — een tijdelijke koppeling is een TECH_DEBT-entry of niet.
+
 ## D-014 — Grafische presets met DEVELOPMENT_LOW als dev-default
 **Datum**: 2026-07-27 · **Wie**: GD (aanleiding: zwakkere dev-pc) / LD · **Status**: actief
 Vijf presets (DEVELOPMENT_LOW/LOW/MEDIUM/HIGH/ULTRA) die renderschaal, MSAA

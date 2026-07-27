@@ -39,6 +39,11 @@ hooguit voor.
    hem niet zelfstandig door.
 9. De documentatie is de bron van waarheid.
 10. Wacht na iedere taak op de volgende opdracht.
+11. **Elke nieuwe feature moet volledig te verwijderen zijn zonder de rest
+    te breken.** Werk modulair; gameplay-systemen kennen elkaar niet
+    rechtstreeks maar communiceren uitsluitend via de EventBus (of expliciete
+    contracten zoals `Interactable`). Toets bij elke taak: "als ik deze map
+    weggooi, draait de rest dan nog?" (ARCHITECTURE §1.6, D-015).
 
 ## Begin élke sessie zo
 

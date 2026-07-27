@@ -11,6 +11,17 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.5 — 2026-07-27
+**Modulariteit vastgelegd als harde eis**
+- D-015: elke feature moet volledig verwijderbaar zijn; gameplay-systemen
+  hebben geen onderlinge afhankelijkheden.
+- ARCHITECTURE §1.6 en nieuw §4a: de verwijderbaarheidstest + zes regels
+  (signalen als feiten, autoloads = infrastructuur, één map per feature,
+  optioneel opzoeken, registratie boven bedrading).
+- CLAUDE.md: ontwikkelregel 11; QA_CHECKLIST: verwijderbaarheidstest per taak.
+- Bestaande code getoetst: geen cross-systeem-verwijzingen; spel blijft
+  draaien met de developer room verwijderd.
+
 ## v0.0.4 — 2026-07-27
 **Taak 001 afgerond: project-setup & bootstrap — CRUMP is nu een draaiend Godot-project**
 - `project.godot`: Forward+, input-map, benoemde physics-layers, audiobussen
