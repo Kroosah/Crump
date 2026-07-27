@@ -30,7 +30,7 @@ materialen en 17 extra smoke-controles (D-016, CHANGELOG v0.0.7).
 ## 2. Laatste commit
 
 ```
-[chore] Normaliseer project.godot en leg Git/ProjectSettings vast
+[001] Los KI-002 op: SunKey schijnt omlaag; scherp lichtcontroles aan
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -55,7 +55,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 003–008 | ⬜ open |
 
 **Technische staat**: het project draait. `godot --headless --path . --import`
-is schoon (exit 0), de smoke-suite geeft 51/51 groen (exit 0), de bootstrap
+is schoon (exit 0), de smoke-suite geeft 52/52 groen (exit 0), de bootstrap
 laadt de developer room, en de vier registers (DECISIONS/CHANGELOG/
 KNOWN_ISSUES/TECH_DEBT) zijn bijgewerkt.
 
@@ -95,9 +95,10 @@ korte instructie wat de Game Director in de editor moet testen.
   release-default staat nog op ontwikkelwaarde. Aflossen bij taak 006/fase 6.
 - **TD-003** (Laag): `brightness` wordt opgeslagen maar nog nergens toegepast
   — koppelen in taak 006 (licht & sfeer).
-- **KNOWN_ISSUES**: geen open issues; KI-001 (grijs beeld dev room) is
-  opgelost. Les eruit: "de logs zijn schoon" bewijst niet dat er beeld is —
-  daarom toetst de smoke-suite nu ook de rendervoorwaarden.
+- **KNOWN_ISSUES**: geen open issues; KI-001 (grijs beeld) en KI-002
+  (zon schijnt omhoog) zijn opgelost. Les eruit: "de logs zijn schoon"
+  bewijst niet dat er beeld is, en `.tscn`-Transform3D's zijn rij-
+  georiënteerd — de smoke-suite toetst nu rendervoorwaarden én lichtrichting.
 - **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB) — pas
   nodig bij de eerste echte export.
 - **Verwijderbaarheidstest** (D-015) is vanaf nu onderdeel van elke taak:

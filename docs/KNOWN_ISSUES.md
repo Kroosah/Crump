@@ -31,8 +31,12 @@ ook. Een bug die alleen in een gesprek of een hoofd bestaat, bestaat niet.
 
 ## Open issues
 
+*Geen.*
+
+## Opgeloste issues
+
 ## KI-002 — DirectionalLight van de dev room schijnt omhoog
-**Datum**: 2026-07-27 · **Ernst**: Klein · **Status**: open (fix ligt klaar, wacht op GD)
+**Datum**: 2026-07-27 · **Ernst**: Klein · **Status**: opgelost (CHANGELOG v0.0.10, op aanwijzing GD)
 **Waar**: `game/levels/dev_room/dev_room.tscn`, node `Lighting/SunKey`
 **Omschrijving**: de key-light heeft lichtrichting `(-0.62, +0.62, -0.49)` —
 de y-component is positief, dus het licht gaat de lucht in en draagt niets bij
@@ -44,17 +48,14 @@ De transform is met de kolom-conventie berekend en staat dus gespiegeld; bij
 een rotatiematrix is de transpose de inverse rotatie. Zelfde oorzaak als de
 camerakanteling die in v0.0.8 is verholpen.
 **Verwacht**: licht van boven-voor, richting ongeveer `(0.38, -0.79, -0.49)`.
-**Waarom nog niet gefixt**: de Game Director heeft het huidige beeld visueel
-goedgekeurd; de fix verandert de belichting merkbaar en hoort daarom een
-bewuste keuze te zijn, niet een stille wijziging.
-**Fix**: `transform` van `SunKey` vervangen door de getransponeerde variant
-`Transform3D(0.788011, 0.485148, -0.379039, 0, 0.615662, 0.788011, 0.615662,
--0.620961, 0.485148, 0, 6, 4)`.
-**Naar aanleiding hiervan te overwegen**: de smoke-controle "camera is op het
-midden van de ruimte gericht" liet de 9°-fout door (drempel `dot > 0.9` ≈ 25°
-speling). Aanscherpen naar `> 0.99` vangt deze klasse fout wél.
-
-## Opgeloste issues
+**Opgelost door**: `transform` van `SunKey` vervangen door de getransponeerde
+variant; gemeten lichtrichting nu `(0.38, -0.79, -0.49)`. De fix is bewust
+even blijven liggen tot de Game Director hem opdroeg, omdat het eerdere beeld
+al visueel was goedgekeurd en de belichting merkbaar verandert. Twee
+smoke-controles erbij: DirectionalLights moeten omlaag schijnen (bewezen: met
+de oude transform faalt de suite met exitcode 1), en de kijkrichting-drempel
+van de camera is aangescherpt van `dot > 0.9` naar `> 0.99` — de oude drempel
+liet de 9°-fout van v0.0.8 nog door.
 
 ## KI-001 — Developer room toont een egaal grijs beeld
 **Datum**: 2026-07-27 · **Ernst**: Blocker · **Status**: opgelost (CHANGELOG v0.0.7)

@@ -177,16 +177,24 @@ static func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 		% meshes.size(), failures)
 
 	# Kijkrichting: de camera moet het midden van de ruimte in beeld hebben.
+	# Drempel 0.99 (~8 graden): de oude 0.9 liet de 9-graden-transponeerfout
+	# van KI-002/v0.0.8 nog door.
 	var to_center := (Vector3(0.0, 1.0, 0.0) - cam_pos).normalized()
-	failures = _check((-active.global_basis.z).dot(to_center) > 0.9,
+	failures = _check((-active.global_basis.z).dot(to_center) > 0.99,
 		"camera is op het midden van de ruimte gericht", failures)
 
-	# Licht: minstens twee bronnen die daadwerkelijk energie geven.
+	# Licht: minstens twee bronnen die daadwerkelijk energie geven, en géén
+	# DirectionalLight die omhoog schijnt (KI-002: getransponeerde basis).
 	var lit := 0
 	for node in level.find_children("", "Light3D", true, false):
 		var light := node as Light3D
 		if light.is_visible_in_tree() and light.light_energy > 0.0:
 			lit += 1
+		if light is DirectionalLight3D:
+			var light_dir := -light.global_basis.z
+			failures = _check(light_dir.y < -0.2,
+				"DirectionalLight '%s' schijnt omlaag (y-richting %.2f)"
+				% [light.name, light_dir.y], failures)
 	failures = _check(lit >= 2,
 		"tijdelijke verlichting is aan (%d actieve lichten)" % lit, failures)
 

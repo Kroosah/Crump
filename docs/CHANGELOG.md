@@ -11,6 +11,18 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.10 — 2026-07-27
+**KI-002 opgelost: SunKey schijnt weer omlaag — taak 001 definitief dicht**
+- `SunKey`-transform vervangen door de getransponeerde variant; lichtrichting
+  van `(-0.62, +0.62, -0.49)` (omhoog, deed niets) naar `(0.38, -0.79, -0.49)`
+  (boven-voor, zoals bedoeld in v0.0.7).
+- Smoke-suite 51 → 52: DirectionalLights in de dev room moeten omlaag
+  schijnen (`y < -0.2`); met de oude transform faalt de suite aantoonbaar.
+- Kijkrichting-controle van de camera aangescherpt van `dot > 0.9` naar
+  `> 0.99` (~8°), zodat de 9°-transponeerfout uit v0.0.8 voortaan ook
+  gevangen wordt.
+- Geen open issues meer; taak 001 is hiermee volledig afgerond.
+
 ## v0.0.9 — 2026-07-27
 **project.godot genormaliseerd; regeleindes en projectintenties vastgelegd**
 - De Godot-editor herschrijft `project.godot` bij het openen: eigen
