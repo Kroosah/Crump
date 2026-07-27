@@ -20,6 +20,7 @@ buses/default_bus_layout="res://game/audio_bus_layout.tres"
 EventBus="*res://game/autoload/event_bus.gd"
 GameState="*res://game/autoload/game_state.gd"
 AudioDirector="*res://game/autoload/audio_director.gd"
+SettingsManager="*res://game/autoload/settings_manager.gd"
 SaveManager="*res://game/autoload/save_manager.gd"
 
 [display]

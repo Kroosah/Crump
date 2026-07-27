@@ -12,7 +12,7 @@ const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
 ## Autoloads die aanwezig moeten zijn vóór het spel verder mag.
 const REQUIRED_AUTOLOADS: Array[String] = [
-	"EventBus", "GameState", "AudioDirector", "SaveManager",
+	"EventBus", "GameState", "AudioDirector", "SettingsManager", "SaveManager",
 ]
 
 var _current_level: Node = null
