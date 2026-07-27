@@ -11,6 +11,22 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.4 — 2026-07-27
+**Taak 001 afgerond: project-setup & bootstrap — CRUMP is nu een draaiend Godot-project**
+- `project.godot`: Forward+, input-map, benoemde physics-layers, audiobussen
+  (Master → SFX/Ambience/Music/Voice).
+- Vijf autoloads: EventBus (signalen-contract), GameState (+serialisatie),
+  AudioDirector (busbeheer), SettingsManager (D-011), SaveManager
+  (JSON + save_version).
+- Bootstrap + lifecycle: level-laden onder SceneHost, pauze, nette shutdown.
+- Developer room (grijze blockout 20×20 m) als vaste testruimte.
+- Log-systeem (statische klasse, D-012): console + user://logs met rotatie.
+- Debug overlay (F3, alleen debugbuilds): fps/frametijd/level + haken.
+- Instellingen: volumes, muisgevoeligheid, head-bob, helderheid, grafische
+  presets DEVELOPMENT_LOW t/m ULTRA (D-014).
+- Smoke-test-suite (D-013): 31 controles, allemaal groen; exitcode voor CI.
+- Commits: `887eaa3`…`4319d6a` (blokken 1–8) + registerblok.
+
 ## v0.0.3 — 2026-07-27
 **Studio-administratie toegevoegd**
 - DECISIONS.md, CHANGELOG.md, KNOWN_ISSUES.md en TECH_DEBT.md aangemaakt en

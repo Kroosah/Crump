@@ -80,3 +80,32 @@ de vervangen premisse.
 Vier levende documenten die bij elke taak worden bijgewerkt; onderdeel van de
 Definitie van "af" in CLAUDE.md. **Waarom**: beslissingen, wijzigingen, bugs
 en tijdelijke oplossingen mogen nooit alleen in gespreksgeschiedenis leven.
+
+## D-011 — SettingsManager als vijfde autoload, los van GameState
+**Datum**: 2026-07-27 · **Wie**: GD (richting) / LD (uitvoering) · **Status**: actief · **wijzigt D-005**
+Instellingen bestaan onafhankelijk van een actieve spelsessie (hoofdmenu
+heeft ze al nodig, een nieuw spel mag ze niet resetten) en staan daarom in
+een eigen autoload, niet in GameState. D-005 ("vier autoloads") is hiermee
+bijgesteld naar **vijf**; de lat voor een zesde blijft even hoog.
+
+## D-012 — Log als statische klasse, geen autoload
+**Datum**: 2026-07-27 · **Wie**: LD · **Status**: actief
+`Log` (game/systems/log.gd) heeft geen node-lifecycle nodig; een statische
+klasse houdt het autoload-aantal klein en werkt overal, ook in resources en
+statische context. Console + user://logs/ met rotatie (max 5), flush per
+regel. **Alternatief**: autoload-node — afgewezen als onnodige globale staat.
+
+## D-013 — Testrunner: eigen smoke-suite in het spel, geen plugin
+**Datum**: 2026-07-27 · **Wie**: GD (kader: geen externe plugin) / LD · **Status**: actief
+Tests draaien in het échte spel: `godot --headless --path . -- --smoke-test`
+laat de bootstrap `tests/smoke_test.gd` uitvoeren; exitcode 0/1. **Waarom**:
+autoloads en projectconfig worden zo mét het spel getest (geen aparte
+MainLoop-context), nul dependencies, CI-klaar. **Heroverwegen bij**: behoefte
+aan echte unit-test-isolatie (dan GUT of de ingebouwde runner alsnog wegen).
+
+## D-014 — Grafische presets met DEVELOPMENT_LOW als dev-default
+**Datum**: 2026-07-27 · **Wie**: GD (aanleiding: zwakkere dev-pc) / LD · **Status**: actief
+Vijf presets (DEVELOPMENT_LOW/LOW/MEDIUM/HIGH/ULTRA) die renderschaal, MSAA
+en schaduw-atlas runtime zetten. Dev-default = DEVELOPMENT_LOW zodat de
+Game Director soepel kan testen; de game moet op HIGH/ULTRA kunnen draaien
+en het release-default wordt in fase 6 bepaald (TD-002).

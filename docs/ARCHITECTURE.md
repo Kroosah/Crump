@@ -58,14 +58,18 @@ Regels:
 - Gedeeld gedrag → `game/systems/`. Iets dat maar in één level bestaat →
   bij dat level.
 
-## 4. Autoloads (bewust maar vier)
+## 4. Autoloads (bewust maar vijf — zie D-011)
 
 | Autoload | Verantwoordelijkheid |
 |---|---|
-| `EventBus` | Centrale signalen tussen systemen (`speler_gezien`, `hoofdstuk_gestart`, `geluid_gemaakt(positie, luidheid)`). Geen logica, alleen doorgeefluik. |
+| `EventBus` | Centrale signalen tussen systemen (`noise_made(position, loudness)`, `chapter_started`, `player_spotted`, ...). Geen logica, alleen doorgeefluik. |
 | `GameState` | Spelvoortgang: hoofdstuk, vlaggen, gelezen documenten. Serialiseerbaar voor saves. |
 | `AudioDirector` | Mixgroepen, ambience-lagen, muziek-cues, ducking. Het enige systeem dat rechtstreeks met audio-bussen praat. |
+| `SettingsManager` | Gebruikersinstellingen (volumes, gevoeligheid, comfort, grafische presets) — los van de spelsessie; laadt/bewaart `user://settings.cfg`. |
 | `SaveManager` | Checkpoints, laden/opslaan van `GameState`, save-bestandsversies. |
+
+Daarnaast bestaat `Log` (game/systems/log.gd) als **statische klasse** —
+bewust geen autoload (D-012).
 
 Waarom zo weinig: elke autoload is globale staat, en globale staat is waar
 onderhoudbaarheid sterft. Nieuw autoload-voorstel = architectuurbeslissing.

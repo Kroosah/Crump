@@ -20,7 +20,7 @@ De volledige visie staat in [docs/GAME_BIBLE.md](docs/GAME_BIBLE.md).
 | Fase | Status |
 |---|---|
 | Fundering (structuur, documentatie) | ✅ afgerond |
-| Project-setup in Godot | ⬜ [tasks/001](tasks/001_project_setup.md) |
+| Project-setup in Godot | ✅ [tasks/001](tasks/001_project_setup.md) |
 | Player controller | ⬜ [tasks/002](tasks/002_player_controller.md) |
 | Interactiesysteem | ⬜ [tasks/003](tasks/003_interaction_system.md) |
 | Inventory | ⬜ [tasks/004](tasks/004_inventory.md) |

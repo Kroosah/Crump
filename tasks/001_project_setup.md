@@ -1,6 +1,18 @@
 # Taak 001 — Project-setup & bootstrap
 
-**Fase**: 1 (De wandeling) · **Status**: ⬜ open · **Vereist**: —
+**Fase**: 1 (De wandeling) · **Status**: ✅ afgerond (2026-07-27) · **Vereist**: —
+
+> **Uitvoeringsnotities (2026-07-27)**
+> - Alle blokken A–H gebouwd; smoke-suite: 31 controles groen, exitcode 0.
+> - Volgorde-afwijking: Log (blok E) vóór bootstrap (blok C) gebouwd —
+>   bootstrap logt vanaf zijn eerste regel.
+> - Keuzes vastgelegd: D-011 (SettingsManager als 5e autoload), D-012 (Log
+>   statisch), D-013 (eigen smoke-runner), D-014 (grafische presets,
+>   dev-default DEVELOPMENT_LOW). Schuld: TD-002, TD-003.
+> - AudioDirector kreeg bewust geen loze ambience/muziek-stubs; die API wordt
+>   in taak 005 vanuit de behoefte ontworpen.
+> - Te beoordelen in de editor (GD): dev room-maten, debug overlay (F3),
+>   pauze (Esc) — zie de instructies in het taakrapport.
 
 De technische geboorte van het Godot-project: van lege repo naar een
 importeerbaar, getest, correct geconfigureerd project **met een werkende

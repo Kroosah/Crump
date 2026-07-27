@@ -44,6 +44,26 @@ downloaden zonder noodzaak).
 **Aflossing**: officiële templates van de 4.7.1-release installeren en het
 export-preset + build-script in `tools/` opzetten (ROADMAP fase 6).
 
+## TD-002 — Grafische presets zijn een eerste ruwe versie
+**Datum**: 2026-07-27 · **Status**: Middel · **Aflosmoment**: fase 6 (Polish & Steam), deels al bij taak 006
+**Waar**: game/autoload/settings_manager.gd (`PRESET_VALUES`, `_apply_graphics`)
+**Schuld**: presets zetten alleen renderschaal, MSAA en schaduw-atlas; zaken
+als SSAO/SSIL, volumetrische mist en licht-kwaliteit per preset bestaan nog
+niet (die systemen bestaan zelf nog niet). Het release-default staat
+bovendien nog op ontwikkelwaarde.
+**Aflossing**: bij taak 006 de licht/omgevings-opties per preset uitbreiden;
+in fase 6 de presets kalibreren op echte hardware en het release-default
+(HIGH) vastzetten.
+
+## TD-003 — Helderheid-instelling wordt opgeslagen maar nog nergens toegepast
+**Datum**: 2026-07-27 · **Status**: Laag · **Aflosmoment**: taak 006 (licht & sfeer)
+**Waar**: game/autoload/settings_manager.gd (`brightness`)
+**Schuld**: de instelling bestaat (opslag + laden werkt) maar er is nog geen
+WorldEnvironment-koppeling om hem op toe te passen — die ontstaat pas in
+taak 006.
+**Aflossing**: in taak 006 `brightness` koppelen aan de tonemap/exposure van
+de omgeving en opnemen in de QA-check "helderheid-slider werkt".
+
 ## Afgeloste schuld
 
 *Nog geen.*
