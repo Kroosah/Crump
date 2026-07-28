@@ -177,3 +177,29 @@ die consequentie uitsluitend akoestisch: rennen draagt 14 m op de EventBus
 houdt taak 002 vrij van een stamina-systeem dat pas betekenis krijgt als er
 iets is dat je hoort (007). **Heroverwegen**: als playtests uitwijzen dat
 onbeperkt rennen de spanning breekt, is een uithoud-systeem een eigen taak.
+
+## D-020 — De interactor gebruikt de actieve viewport-camera, niet "de speler"
+**Datum**: 2026-07-28 · **Wie**: LD (binnen GD-kaders van 2026-07-28) · **Status**: actief
+De interactor raycast vanaf `get_viewport().get_camera_3d()` — wie er ook
+kijkt. Hij kent geen speler, geen level en geen proptypes; zijn enige
+wereldkennis is het `Interactable`-contract, en de prompt is letterlijk wat
+`prompt_text()` teruggeeft (harde eisen GD: geen typechecks, prompt volledig
+data-gedreven; de toets-hint komt later in de UI-laag uit de InputMap).
+**Waarom**: nul koppelingen — speler weg betekent interactor idle, niet
+kapot; en het werkt met elke toekomstige camera (cutscene, debug).
+**Consequentie**: props staan op layer wereld+interactable zodat één ray
+(eerste hit telt) occlusie gratis meeneemt en de speler er niet doorheen
+loopt. De bootstrap spawnt de interactor met bestaanscheck (patroon D-018).
+
+## D-021 — Verwijdereenheid van een feature: het systeem als geheel, half is stuk
+**Datum**: 2026-07-28 · **Wie**: LD (uitwerking van D-015) · **Status**: actief
+De D-015-verwijdertest voor het interactiesysteem geldt voor de hele
+feature: contract + interactor + props sámen. Alles weg → suite groen, spel
+draait. Een hálve verwijdering (props weg, interactor aanwezig) faalt de
+suite bewust luid — dat is geen ontbreken maar een kapotte tussentoestand,
+en die stil laten passeren zou een echte regressie (per ongeluk verwijderde
+prop) onvindbaar maken. **Les daarbij**: testcode noemt global classes van
+verwijderbare systemen nooit bij naam — `is Interactable` in de suite was
+een parse-time-afhankelijkheid waardoor de suite zélf niet meer laadde
+zonder het systeem; contracten in tests toets je duck-typed
+(`has_method(...)`).

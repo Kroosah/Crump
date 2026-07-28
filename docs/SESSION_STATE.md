@@ -5,31 +5,31 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (na KI-003-fix, v0.0.12)
+**Laatst bijgewerkt**: 2026-07-28 (na taak 003, v0.0.13)
 
 ---
 
 ## 1. Laatste afgeronde taak
 
-**Taak 002 — Player controller** ✅ (v0.0.11 + KI-003-fix in v0.0.12,
-**goedgekeurd door de Game Director op 2026-07-28** na lokale test: WASD,
-muislook, sprint, sluipen, bukken, F3 én de Esc-pauze werken).
+**Taak 003 — Interactiesysteem** ✅ gebouwd (v0.0.13) — **wacht op visuele
+beoordeling door de Game Director** (beoordelingslijstje in
+`tasks/003_interaction_system.md`).
 
-Opgeleverd: `game/actors/player/` met vier gangmodi (lopen/sluipen/rennen/
-bukken, prioriteit bukken > sluipen > rennen), acceleratie/deceleratie,
-muis-look zonder versnelling, uitschakelbare head-bob, buk-ooghoogte en
-voetstap-events op de EventBus (luidheid per modus: 2/2.5/6/14 m). Spawn via
-`PlayerSpawn`-marker (D-018); ren-consequentie is geluid, geen stamina
-(D-019). Smoke-suite van 52 → 75 controles met echte input-simulatie;
-verwijderbaarheidstest in beide richtingen geverifieerd.
+Opgeleverd: `Interactable`-contract + interactor (raycast vanaf de actieve
+viewport-camera, D-020) met de prompt letterlijk uit `prompt_text()` op de
+EventBus; vier props zonder class_name (deur met slot, ladekast met
+item-haak, oppakbaar object, leesbaar briefje met `document_opened`);
+TestProps-spawner in de dev room; suite 81 → 117. Beide harde GD-eisen
+geborgd: geen typechecks op props, prompt volledig data-gedreven.
+Verwijdereenheid = hele systeem (D-021).
 
-Daarvóór (2026-07-27): taak 001 volledig afgerond en goedgekeurd (52/52),
-KI-001 en KI-002 gesloten.
+Eerder vandaag: taak 002 afgerond en goedgekeurd (incl. KI-003-fix:
+Esc-pauze werkt).
 
 ## 2. Laatste commit
 
 ```
-[002] Bouw player controller met gangmodi en voetstap-events
+[docs] Werk administratie bij voor taak 003
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -48,20 +48,23 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 
 | Onderdeel | Status |
 |---|---|
-| Fase 0 — Fundering (structuur + documentatie) | ✅ afgerond |
+| Fase 0 — Fundering | ✅ afgerond |
 | Taak 001 — Project-setup & bootstrap | ✅ afgerond en goedgekeurd |
 | Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
-| Taak 003 — Interactiesysteem | ⬜ **volgende** (wacht op startsein) |
+| Taak 003 — Interactiesysteem | ✅ gebouwd, **visuele beoordeling open** |
 | Taken 004–008 | ⬜ open |
 
-**Technische staat**: `godot --headless --path . --import` schoon (exit 0),
-smoke-suite **81/81 groen** (exit 0). Verwijderbaarheidstest D-015: zonder
-`game/actors/player/` blijft de suite 54/54 groen en springt de testcamera
-bij. `config/version` = 0.0.12.
+Na akkoord op 003 is **fase 1 (De wandeling) compleet** — exit-criterium is
+"bewegen en interacteren voelt goed", te beoordelen door de GD.
 
-**Visueel beoordeeld door de GD (2026-07-28)**: alles werkt — WASD, muislook,
-sprint, sluipen, bukken, F3-overlay én (na de KI-003-fix, door de GD
-herbevestigd) de Esc-pauze met muis-vrijgave en hervatten.
+**Technische staat**: import schoon (exit 0), smoke-suite **117/117 groen**.
+D-015 geverifieerd in drie richtingen: zonder interactiesysteem 82/82,
+zonder speler 61/61, alles aanwezig 117/117; halve verwijdering faalt
+bewust luid (D-021). `config/version` = 0.0.13.
+
+**Nog niet visueel beoordeeld**: de interactieronde uit het
+003-taakdossier (prompts, deur/la/sleutel/briefje, op-slot-deur,
+interactie-afstand 2,5 m).
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
@@ -69,28 +72,26 @@ herbevestigd) de Esc-pauze met muis-vrijgave en hervatten.
 
 ## 5. Volgende taak
 
-**Op startsein van de Game Director**: **Taak 003 — Interactiesysteem**
-(`tasks/003_interaction_system.md`): raycast vanaf de spelerscamera, het
-`Interactable`-contract in `game/systems/`, en de interactieprompt via
-`EventBus.interact_prompt_changed`. De haak ervoor bestaat al (input-actie
-`interact`, het EventBus-signaal, en de spelerscamera als raycast-oorsprong).
+**Eerst**: GD beoordeelt taak 003 in de editor (lijstje onderaan
+`tasks/003_interaction_system.md`). Daarmee sluit ook fase 1.
+
+**Daarna, op startsein**: **Taak 004 — Inventory** (fase 2). De haken
+liggen klaar: `item_found` (la), `picked_up` (pickup) en
+`EventBus.item_used`.
 
 ## 6. Open aandachtspunten
 
-- **TD-004** (Laag, nieuw): bukken verkleint de collider niet — kruipruimtes
-  bestaan nog niet; aflossen zodra een level er een krijgt.
-- **TD-002** (Middel): grafische presets eerste ruwe versie; release-default
-  op ontwikkelwaarde. Aflossen bij taak 006/fase 6.
-- **TD-003** (Laag): `brightness` opgeslagen maar nog niet toegepast —
-  koppelen in taak 006 (licht & sfeer).
+- **TD-005** (Laag, nieuw): deur/la bewegen instant — tween zodra audio
+  (005) het ritme geeft.
+- **TD-004** (Laag): bukken verkleint de collider niet — aflossen bij de
+  eerste kruipruimte.
+- **TD-002** (Middel): grafische presets eerste ruwe versie — taak 006/fase 6.
+- **TD-003** (Laag): `brightness` nog niet toegepast — taak 006.
 - **KNOWN_ISSUES**: geen open issues.
-- **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB) — pas
-  nodig bij de eerste echte export.
-- **Verwijderbaarheidstest** (D-015) blijft onderdeel van elke taak; voor de
-  speler is hij tweezijdig geborgd (bootstrap-bestaanscheck + conditionele
-  spelertests in de suite).
-- **Pushen vanaf de VPS** kan door de auto-mode-classifier haperen; de kale
-  vorm `git push -u origin main` (zonder pipes) werkte.
-- **Openstaande ontwerpsessie**: wát CRUMP is (aard, vorm, verklaring van de
-  verdwijning) — zie `STORY.md` §8. Nodig vóór hoofdstuk 3/4, niet vóór
-  taak 003.
+- **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB).
+- **Testcode-les (D-021)**: global classes van verwijderbare systemen nooit
+  bij naam noemen in de suite — duck-typen met `has_method()`.
+- **Pushen vanaf de VPS**: de kale vorm `git push -u origin main` (zonder
+  pipes) werkt het betrouwbaarst.
+- **Openstaande ontwerpsessie**: wát CRUMP is — zie `STORY.md` §8. Nodig
+  vóór hoofdstuk 3/4, niet vóór taak 004.

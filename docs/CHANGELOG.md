@@ -11,6 +11,30 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.13 — 2026-07-28
+**Taak 003: interactiesysteem — contract, interactor en de eerste vier props**
+- `game/systems/interaction/`: `Interactable`-contract (StaticBody3D-basis,
+  `can_interact`/`interact`/`prompt_text`) + interactor die raycast vanaf de
+  **actieve viewport-camera** — geen speler-, level- of propkennis (D-020).
+  Prompt gaat letterlijk uit `prompt_text()` naar
+  `EventBus.interact_prompt_changed`; harde eisen GD geborgd: geen
+  typechecks op props, prompt volledig data-gedreven, toets-hint is
+  UI-werk.
+- `game/props/`: `door_wooden` (scharnier, op-slot met hoorbare rammel),
+  `drawer_cabinet` (schuift, eenmalig `item_found`), `pickup_item`
+  (`picked_up`, verdwijnt), `note_readable` (`document_opened` + GameState,
+  bewust stil). Props hebben **geen class_name** — er bestaat geen type om
+  op te checken. EventBus + `document_opened`-signaal.
+- Dev room: `TestProps`-spawner plaatst de props alleen als hun scènes
+  bestaan; bootstrap spawnt de interactor met bestaanscheck.
+- **Smoke-suite 81 → 117**: volledige keten per prop (prompt → interact →
+  eigen gedrag/geluid/signalen → prompt-verloop), wegkijken en
+  niet-interactable. Verwijdereenheid = hele systeem (D-021): zonder = 82
+  groen, zonder speler = 61 groen; halve verwijdering faalt bewust luid.
+  Suite toetst het contract duck-typed — `is Interactable` in de suite zelf
+  bleek een parse-time-afhankelijkheid die de D-015-run liet hangen.
+- `config/version` → 0.0.13.
+
 ## v0.0.12 — 2026-07-28
 **KI-003 opgelost: Escape pauzeert nu echt (spelwereld op PAUSABLE)**
 - De bootstrap zette zichzelf op `PROCESS_MODE_ALWAYS`; kinderen erfden dat,

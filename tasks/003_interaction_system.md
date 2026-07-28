@@ -1,6 +1,6 @@
 # Taak 003 — Interactiesysteem
 
-**Fase**: 1 (De wandeling) · **Status**: ⬜ open · **Vereist**: 002
+**Fase**: 1 (De wandeling) · **Status**: ✅ gebouwd, wacht op visuele beoordeling · **Vereist**: 002
 
 De werkwoorden van CRUMP zijn kijken, oppakken, openen, lezen (GAME_BIBLE §5).
 Deze taak bouwt het systeem waarmee de speler met de wereld praat — generiek,
@@ -53,14 +53,54 @@ plus de eerste handvol props die het bewijzen.
 
 ## Acceptatiecriteria
 
-- [ ] Interactor detecteert alleen `interactable`-objecten binnen bereik.
-- [ ] Prompt-signaal verschijnt/verdwijnt correct bij aankijken.
-- [ ] Alle vier props implementeren het contract en werken los-instantieerbaar.
-- [ ] Deur/la publiceren `noise_made` met passende luidheid.
-- [ ] Op-slot-deur weigert zonder crash en meldt dat (prompt).
-- [ ] Geen directe parent-aanroepen; alles via contract + signalen.
-- [ ] Headless-import schoon; prop- en interactie-tests groen. Dossier +
-      README bijgewerkt.
+- [x] Interactor detecteert alleen `interactable`-objecten binnen bereik
+      *(ray-mask wereld+interactable: eerste hit telt, muren blokkeren)*.
+- [x] Prompt-signaal verschijnt/verdwijnt correct bij aankijken *(smoke:
+      per prop, plus wegkijken en niet-interactable)*.
+- [x] Alle vier props implementeren het contract en werken los-instantieerbaar.
+- [x] Deur/la publiceren `noise_made` met passende luidheid *(deur 7 m,
+      la 4 m, slot-rammel 4 m, oppakken 2 m; briefje bewust stil)*.
+- [x] Op-slot-deur weigert zonder crash en meldt dat (prompt "Op slot").
+- [x] Geen directe parent-aanroepen; alles via contract + signalen.
+- [x] Headless-import schoon; suite 117/117 groen. Dossier + README
+      bijgewerkt.
+
+## Wat er gebouwd is (2026-07-28)
+
+- `game/systems/interaction/` — `interactable.gd` (contract, class_name,
+  StaticBody3D-basis met layer-waarschuwing) + `interactor.tscn/gd`:
+  raycast vanaf de **actieve viewport-camera** (geen spelerkennis, D-020),
+  prompt letterlijk uit `prompt_text()` op `EventBus.interact_prompt_changed`,
+  alleen emitten bij verandering. Bootstrap spawnt hem met bestaanscheck.
+- `game/props/` — vier mappen, elk scène+script, **zonder class_name**
+  (er bestaat geen type om op te checken) en alle teksten/tuning als exports:
+  `door_wooden` (draait om scharnier-oorsprong, `locked`, rammelt op slot,
+  `toggled`-signaal), `drawer_cabinet` (schuift langs eigen as, eenmalig
+  `item_found`), `pickup_item` (`picked_up` + verdwijnt), `note_readable`
+  (`document_opened` + GameState; lezen is stil).
+- Dev room: `TestProps`-spawner (`dev_props.gd`) plaatst deur, op-slot-deur,
+  la-met-sleutel, sleutel en briefje — uitsluitend als de scènes bestaan.
+- EventBus: nieuw signaal `document_opened(document_id, text)`.
+- Smoke-suite 81 → 117 met de volledige keten per prop. **Verwijdereenheid
+  = contract + interactor + props sámen** (D-021): alles weg = 82/82 groen;
+  halve verwijdering faalt bewust luid.
+
+## Te beoordelen in de editor (VPS kan dit niet)
+
+F5 en loop de props langs (deuren links-achter, kast+sleutel rechts-achter,
+briefje op de noordmuur):
+
+1. Kijk naar de **deur** → "Open deur"; **E** → klapt open (bewust instant,
+   TD-005) en je hóórt hem straks pas (audio is taak 005) — nu is het effect
+   zichtbaar + prompt wisselt naar "Sluit deur" (even meelopen om het paneel).
+2. **Op-slot-deur** (verder naar links) → "Op slot"; E doet zichtbaar niets.
+3. **La** → "Open la"; E → schuift uit; log meldt de sleutelvondst (F3/console).
+4. **Sleutel** op de rode kist → "Pak sleutel op"; E → verdwijnt, prompt weg.
+5. **Briefje** (noordmuur) → "Lees briefje"; E → nog geen leesvenster (komt
+   in fase 2/4), wel een `document_opened`-signaal — zichtbaar in de log.
+6. Kijk weg / kijk naar een kale kist → geen prompt.
+7. Prompt-afstand is 2,5 m (export `max_distance` op de Interactor) — voelt
+   dat goed?
 
 ## Ontwerpnotitie
 

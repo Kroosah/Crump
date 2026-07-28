@@ -76,6 +76,16 @@ nog geen enkele plek waar kruipen iets betekent.
 opstaan, zodra een level een lage doorgang krijgt; dan ook een smoke-controle
 "gebukt onder een obstakel door, rechtop geblokkeerd" toevoegen.
 
+## TD-005 — Props bewegen instant: deur klapt om, la schuift zonder overgang
+**Datum**: 2026-07-28 · **Status**: Laag · **Aflosmoment**: taak 005 (audio, dan krijgen interacties hun ritme) of de eerste sfeerpass (fase 2, taak 006)
+**Waar**: game/props/door_wooden/door_wooden.gd (`interact`), game/props/drawer_cabinet/drawer_cabinet.gd (`interact`)
+**Schuld**: deur en la wisselen hun stand in één physics-frame — bewust
+buiten scope gehouden (opdracht 003: geen deuranimaties). Voor het
+horrorgevoel is het tempo van een opengaande deur straks juist betekenis
+(HORROR_GUIDELINES §3): een deur die traag opent ís de spanning.
+**Aflossing**: korte tween/AnimationPlayer per prop zodra audio (005) het
+ritme aangeeft; de contract-API verandert daarbij niet.
+
 ## Afgeloste schuld
 
 *Nog geen.*
