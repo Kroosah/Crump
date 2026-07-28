@@ -1,6 +1,6 @@
 # Taak 005 — Audio-fundament
 
-**Fase**: 2 (Het gereedschap) · **Status**: ✅ gebouwd conform ontwerp (v0.0.16), **wacht op lokale GD-test** · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: ✅ afgerond, lokaal goedgekeurd door de GD (2026-07-28) · **Vereist**: 001, 002
 
 > **Gebouwd 2026-07-28** in vier blokken. Suite 145 → 166 (alle
 > kader-tests §10.1 incl. finished-release — de headless-driver bleek
@@ -8,6 +8,15 @@
 > D-015: zonder audio 145, zonder interactie 109, alles 166. AudioDirector
 > ongegroeid. Canonnotitie: de zeldzame CRUMP-schreeuw wordt later een
 > gewone cue via dit fundament (007+), geen gedrag in 005.
+>
+> **Lokale GD-acceptatie (2026-07-28, hardware)**: stilte-nulpunt, per-gait
+> voetstappen, positionele deur/pickup-audio, verdwijnende-bronprop-gedrag,
+> ambience en Esc-pauze bevestigd; normale F5-run zonder onverwachte
+> warnings/errors. Na één tuningronde (`c5c5509`) zijn de
+> **voetstapvolumes definitief**: rennen −8 dB, lopen −14 dB, bukken
+> −18 dB, sluipen −20 dB — lopen niet meer dominant, rennen hoorbaar
+> onderscheidend, hiërarchie behouden. Gameplay-luidheden (`noise_made`)
+> bleven onaangeroerd.
 >
 > **Doelentabel placeholder-geluiden (kader §8)** — elk geluid dient een
 > benoemd doel:

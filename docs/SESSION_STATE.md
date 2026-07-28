@@ -11,14 +11,16 @@ regels en ontwerp blijven de andere docs.*
 
 ## 1. Laatste afgeronde taak
 
-**Taak 005 — Audio-fundament** ✅ gebouwd conform het goedgekeurde
-ontwerp (v0.0.16) — **wacht op lokale GD-test** (hardware: mix,
-3D-positionering, oor). Opgeleverd: `audio_cue`-kanaal strikt gescheiden
-van `noise_made`; `game/systems/audio/` (resolver, one-shot-pool 12+4,
-ambience-lagen standaard uit, muziek-API zonder triggers); AudioDirector
-ongegroeid; 11 SoundResources + 15 gegenereerde placeholder-WAV's met
-doelentabel; speler/deur/la/pickup zenden beide feiten; dev room zet zijn
-nulpunt-laag zelf aan; F3 toont actieve geluiden. Suite 145 → 166.
+**Taak 005 — Audio-fundament** ✅ afgerond en **lokaal goedgekeurd door
+de GD (2026-07-28)** na hardware-test: stilte-nulpunt, per-gait
+voetstappen, positionele audio, verdwijnende-bronprop, ambience en
+Esc-pauze bevestigd; F5-run zonder onverwachte warnings. Eén tuningronde
+(`c5c5509`): voetstappen definitief op run −8 / walk −14 / crouch −18 /
+sneak −20 dB (hiërarchie behouden; noise_made onaangeroerd). Opgeleverd:
+gescheiden `audio_cue`-kanaal, `game/systems/audio/` (resolver,
+one-shot-pool 12+4, ambience standaard uit, muziek-API), AudioDirector
+ongegroeid, 11 SoundResources + 15 placeholder-WAV's, F3-regel.
+Suite 145 → 166.
 
 Eerder vandaag: taken 002 t/m 004 afgerond en goedgekeurd; fase 1
 compleet; Design Pillars (7 pijlers) vastgesteld.
@@ -62,8 +64,9 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | Taak 004 — Inventory | ✅ afgerond en lokaal goedgekeurd |
-| Taak 005 — Audio-fundament | ✅ gebouwd, **lokale GD-test open** |
-| Taken 006–008 | ⬜ open |
+| Taak 005 — Audio-fundament | ✅ afgerond en lokaal goedgekeurd |
+| Taak 006 — Licht & sfeer | ⬜ **volgende** (sluit fase 2 af) |
+| Taken 007–008 | ⬜ open |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **166/166
 groen**. D-015 geverifieerd: zonder audiosysteem 145/145 (spel draait
@@ -83,12 +86,14 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende taak
 
-**Eerst**: GD test taak 005 op hardware (stappen in het dossier /
-vier-vragen-rapport: voetstappen per gait, deur/pickup positioneel,
-nulpunt-laag, stilte, Esc). **Daarna, op startsein**: taak 006 (licht &
-sfeer) of de door de GD gekozen stap. Openstaande vervolghaken: TD-005
-(deur/la-tween op het nieuwe audioritme), sleutel-deur, la-koppeling,
-save-integratie, inventory-UI/HUD (lost ook TD-006 af).
+**Taak 006 — Licht & sfeer** (`tasks/006_lighting.md`), **op startsein
+van de GD**: zaklamp (het zien-kost-zichtbaarheid-dilemma, P3),
+lichtbudget, donker-maar-leesbaar, eerste sfeerpass op de testruimte —
+sluit fase 2 af (exit-lat: de testruimte is 's nachts onaangenaam zonder
+dat er iets gebeurt). Lost onderweg TD-002/TD-003 (presets, brightness)
+deels af. Verdere openstaande vervolghaken: TD-005 (deur/la-tween op het
+audioritme), sleutel-deur, la-koppeling, save-integratie,
+inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6).
 
 ## 6. Open aandachtspunten
 

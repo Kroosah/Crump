@@ -40,8 +40,10 @@ GD in de editor beoordeeld, headless-tests groen, tuning via exports.
 - [x] **004** Inventory + items als resources *(afgerond 28-07-2026;
       de diegetische UI is bij de ontwerp-review bewust uit 004 gehaald en
       volgt in een eigen UI-taak — zie tasks/004 §1)*.
-- [ ] **005** Audio-fundament: mixbussen, ambience-lagen, geluid-als-event,
-      AudioDirector.
+- [x] **005** Audio-fundament: mixbussen, ambience-lagen, gescheiden
+      audio_cue-kanaal, one-shot-pool, muziek-API *(afgerond 28-07-2026;
+      "geluid-als-event" is conform het bindende kader gesplitst in
+      gameplay-gehoor en hoorbare audio — zie tasks/005)*.
 - [ ] **006** Licht & sfeer: zaklamp, lichtbudget, donker-maar-leesbaar-kaders,
       eerste sfeerpass op de testruimte.
 - [ ] Beslismoment: git-lfs nodig? (assets > ~500 MB)
