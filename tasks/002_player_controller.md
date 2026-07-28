@@ -1,6 +1,6 @@
 # Taak 002 — Player Controller
 
-**Fase**: 1 (De wandeling) · **Status**: ✅ gebouwd, wacht op visuele beoordeling · **Vereist**: 001
+**Fase**: 1 (De wandeling) · **Status**: ✅ afgerond, goedgekeurd door de GD (2026-07-28) · **Vereist**: 001
 
 De speler ís de camera in een first person horror. Deze taak maakt het bewegen
 zó goed dat rondlopen in een lege ruimte al bevredigend is (ROADMAP fase 1).

@@ -11,9 +11,9 @@ regels en ontwerp blijven de andere docs.*
 
 ## 1. Laatste afgeronde taak
 
-**Taak 002 — Player controller** ✅ gebouwd (v0.0.11) — **wacht op visuele
-beoordeling door de Game Director** (het loopgevoel is headless niet te
-toetsen; zie het beoordelingslijstje in `tasks/002_player_controller.md`).
+**Taak 002 — Player controller** ✅ (v0.0.11 + KI-003-fix in v0.0.12,
+**goedgekeurd door de Game Director op 2026-07-28** na lokale test: WASD,
+muislook, sprint, sluipen, bukken, F3 én de Esc-pauze werken).
 
 Opgeleverd: `game/actors/player/` met vier gangmodi (lopen/sluipen/rennen/
 bukken, prioriteit bukken > sluipen > rennen), acceleratie/deceleratie,
@@ -50,8 +50,8 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 |---|---|
 | Fase 0 — Fundering (structuur + documentatie) | ✅ afgerond |
 | Taak 001 — Project-setup & bootstrap | ✅ afgerond en goedgekeurd |
-| Taak 002 — Player controller | ✅ gebouwd, **visuele beoordeling open** |
-| Taak 003 — Interactiesysteem | ⬜ volgende (na akkoord op 002) |
+| Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
+| Taak 003 — Interactiesysteem | ⬜ **volgende** (wacht op startsein) |
 | Taken 004–008 | ⬜ open |
 
 **Technische staat**: `godot --headless --path . --import` schoon (exit 0),
@@ -59,11 +59,9 @@ smoke-suite **81/81 groen** (exit 0). Verwijderbaarheidstest D-015: zonder
 `game/actors/player/` blijft de suite 54/54 groen en springt de testcamera
 bij. `config/version` = 0.0.12.
 
-**Visueel beoordeeld door de GD (2026-07-28)**: WASD, muislook, sprint,
-sluipen, bukken en F3-overlay werken. Zijn Esc-bevinding was **KI-003**
-(spelwereld erfde ALWAYS van de bootstrap en pauzeerde nooit) — opgelost in
-v0.0.12; **Esc moet lokaal opnieuw getest worden** (pauze + muis vrij +
-hervatten).
+**Visueel beoordeeld door de GD (2026-07-28)**: alles werkt — WASD, muislook,
+sprint, sluipen, bukken, F3-overlay én (na de KI-003-fix, door de GD
+herbevestigd) de Esc-pauze met muis-vrijgave en hervatten.
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
@@ -71,12 +69,7 @@ hervatten).
 
 ## 5. Volgende taak
 
-**Eerst**: Game Director beoordeelt taak 002 in de editor (F5 in de dev
-room; het lijstje staat onderaan `tasks/002_player_controller.md`).
-Tuning-feedback gaat via de export-groepen op de Player-node — waarden
-aanpassen is geen code-wijziging.
-
-**Daarna, op startsein**: **Taak 003 — Interactiesysteem**
+**Op startsein van de Game Director**: **Taak 003 — Interactiesysteem**
 (`tasks/003_interaction_system.md`): raycast vanaf de spelerscamera, het
 `Interactable`-contract in `game/systems/`, en de interactieprompt via
 `EventBus.interact_prompt_changed`. De haak ervoor bestaat al (input-actie
