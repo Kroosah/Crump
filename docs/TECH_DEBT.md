@@ -87,15 +87,17 @@ horrorgevoel is het tempo van een opengaande deur straks juist betekenis
 ritme aangeeft; de contract-API verandert daarbij niet.
 
 ## TD-006 — Debug-prompt overbrugt het ontbreken van de echte HUD
-**Datum**: 2026-07-28 · **Status**: Laag · **Aflosmoment**: de taak die de echte interactie-HUD bouwt (fase 2/4)
+**Datum**: 2026-07-28 · **Status**: Laag · **Aflosmoment**: **DebugPrompt wordt verwijderd zodra de eerste echte gameplay-HUD `EventBus.interact_prompt_changed` consumeert** (fase 2/4) — geen "ooit", maar die concrete taak
 **Waar**: game/ui/debug_prompt/ + de spawn in game/bootstrap.gd (`_add_debug_tools`)
 **Schuld**: op verzoek van de GD (visuele beoordeling taak 003) toont een
 debug-label onderin beeld de interactieprompt. Strikt debug: alleen
 debugbuilds, luistert uitsluitend naar `EventBus.interact_prompt_changed`,
 geen eigen logica, toets dynamisch uit de InputMap.
-**Aflossing**: zodra de echte HUD dit signaal tekent, de map
-`game/ui/debug_prompt/` weggooien en de spawn-regels + const uit de
-bootstrap halen (D-015-geverifieerd: zonder de map blijft alles groen).
+**Aflossing**: in dezelfde taak waarin de echte HUD zich op dit signaal
+abonneert: de map `game/ui/debug_prompt/` weggooien en de spawn-regels +
+const uit de bootstrap halen (D-015-geverifieerd: zonder de map blijft
+alles groen). Twee gelijktijdige consumenten van de prompt is de
+waarschuwing dat dit moment is aangebroken.
 
 ## Afgeloste schuld
 
