@@ -33,6 +33,11 @@ const LIGHT_TL_SCENE := "res://game/props/light_tl/light_tl.tscn"
 ## blijven documenten registreren en zenden — er verschijnt geen paneel.
 const DOCUMENT_READER_SCENE := "res://game/ui/document_reader/document_reader.tscn"
 
+## De eerste echte locatie (VS-fase C). De suite draait op de dev room
+## en wisselt aan het EINDE zelf naar het clubgebouw voor de
+## locatiecontroles; zonder deze map draait alles op de dev room (D-015).
+const CLUBGEBOUW_SCENE := "res://game/levels/clubgebouw/clubgebouw.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -214,6 +219,14 @@ func run(bootstrap: Node) -> int:
 		failures = await _check_document_reader(tree, failures)
 	else:
 		Log.info("TEST INFO · documentlezer ontbreekt — readertests overgeslagen (D-015)")
+
+	# 19. Clubgebouw (VS-fase C) — als allerlaatste: de suite wisselt
+	# zelf van level (de dev-room-tests zijn dan klaar) en toetst de
+	# echte locatie op maat, staten, budget en deuren.
+	if ResourceLoader.exists(CLUBGEBOUW_SCENE):
+		failures = await _check_clubgebouw(tree, bootstrap, failures)
+	else:
+		Log.info("TEST INFO · clubgebouw ontbreekt — locatietests overgeslagen (D-015)")
 
 	return failures
 
@@ -1798,6 +1811,134 @@ func _check_document_reader(tree: SceneTree, failures: int) -> int:
 		failures = _check(tree.get_nodes_in_group("document_reader").size() == 1
 			and not fresh.is_open(),
 			"verse documentlezer teruggeplaatst en gesloten", failures)
+	return failures
+
+
+## Clubgebouw-locatietests (VS-fase C): het level laadt via de echte
+## bootstrap-route; daarna toetsen we nachtstaat, TL-samenstelling,
+## schaduwbudget, deurtoestanden, menselijke schaal (vloer- en
+## plafondmetingen per ruimte) en het ambience-nulpunt.
+func _check_clubgebouw(tree: SceneTree, bootstrap: Node, failures: int) -> int:
+	bootstrap._load_level(CLUBGEBOUW_SCENE)
+	await _wait_physics_frames(tree, 20)
+	var level: Node = tree.root.find_child("Clubgebouw", true, false)
+	failures = _check(level != null, "clubgebouw geladen via de bootstrap",
+		failures)
+	if level == null:
+		return failures
+
+	# Nachtstaat is de gecommitte standaard; werklicht is debug.
+	var rig: Node3D = level.find_child("Werklicht", true, false)
+	failures = _check(
+		rig != null and not rig.visible and level.get("werklicht") == false,
+		"clubgebouw start in de nachtstaat (werklicht uit)", failures)
+
+	# Speler gespawnd bij het hek, op de vloer.
+	var player = tree.get_first_node_in_group("player")
+	failures = _check(player != null, "speler gespawnd in het clubgebouw",
+		failures)
+	if player == null:
+		return failures
+	await _wait_physics_frames(tree, 30)
+	failures = _check(
+		player.is_on_floor()
+		and player.global_position.distance_to(Vector3(0, 0, 12.6)) < 1.5,
+		"speler staat op het voorplein bij het hek (%s)"
+		% str(player.global_position.round()), failures)
+
+	# TL-samenstelling: weinig werkend licht is het punt (5 stabiel,
+	# 1 flikkerbuis in de gang, rest defect).
+	if ResourceLoader.exists(LIGHT_TL_SCENE):
+		var stable := 0
+		var flickering := 0
+		var broken := 0
+		for tl in tree.get_nodes_in_group("light_tl"):
+			if not tl.has_method("get_tl_state"):
+				continue
+			match tl.get_tl_state():
+				0: stable += 1
+				1: broken += 1
+				2: flickering += 1
+		failures = _check(stable == 5 and flickering == 1 and broken == 8,
+			"nachtstaat clubgebouw: 5 stabiel / 1 flikkerend / 8 defect (%d/%d/%d)"
+			% [stable, flickering, broken], failures)
+
+	# Schaduwbudget: max 3 level-lampen (bar-TL + gang-TL + lichtmast);
+	# het vierde slot blijft van de zaklamp (D-026).
+	var shadow_lights := 0
+	for node in level.find_children("", "Light3D", true, false):
+		var light := node as Light3D
+		if light.shadow_enabled and light.is_visible_in_tree():
+			shadow_lights += 1
+	failures = _check(shadow_lights <= 3,
+		"clubgebouw blijft binnen het schaduwbudget (%d/3 + zaklampslot)"
+		% shadow_lights, failures)
+
+	# Deurtoestanden volgens tasks/008 §3 (onderhoudsruimte bewust open
+	# in fase C — het slot hoort bij de sleutelflow van fase D).
+	if ResourceLoader.exists("res://game/props/door_wooden/door_wooden.tscn"):
+		var expected_doors := {
+			"DeurHoofdentree": false, "DeurHalKantine": false,
+			"DeurBestuurskamer": true, "DeurHalGang": false,
+			"DeurKeuken": true, "DeurTerras": true,
+			"DeurKleedkamer3": false, "DeurKleedkamer4": false,
+			"DeurOnderhoudsruimte": false, "DeurToiletten": false,
+			"Nooddeur": false,
+		}
+		var doors_ok := true
+		for door_name in expected_doors:
+			var door: Node = level.find_child(door_name, true, false)
+			if door == null or door.get("locked") != expected_doors[door_name]:
+				doors_ok = false
+				Log.error("deur '%s' ontbreekt of heeft de verkeerde slotstand"
+					% door_name)
+		failures = _check(doors_ok,
+			"alle 11 deuren aanwezig met de juiste begintoestand", failures)
+
+	# Menselijke schaal: per ruimte een meetpunt — vloer op y 0 en het
+	# plafond op de ontworpen hoogte (buiten: geen plafond). LEVEL §6.
+	var space: PhysicsDirectSpaceState3D = player.get_world_3d().direct_space_state
+	var probes := [
+		["hal", Vector2(0.0, 4.6), 2.6],
+		["kantine", Vector2(7.6, 0.5), 2.7],
+		["kantine-bar", Vector2(10.6, 1.7), 2.7],
+		["gang-oost", Vector2(-3.0, 4.3), 2.4],
+		["gang-west", Vector2(-13.0, 4.3), 2.4],
+		["kleedkamer 3", Vector2(-4.7, 1.0), 2.5],
+		["douche 3", Vector2(-3.8, -3.0), 2.3],
+		["kleedkamer 4", Vector2(-9.3, 1.0), 2.5],
+		["toiletten", Vector2(-5.1, 6.0), 2.4],
+		["onderhoudsruimte", Vector2(-13.2, 1.2), 2.3],
+		["voorplein", Vector2(0.0, 10.5), -1.0],
+		["pad langs het veld", Vector2(-5.0, -5.8), -1.0],
+	]
+	for probe in probes:
+		var at: Vector2 = probe[1]
+		var floor_query := PhysicsRayQueryParameters3D.create(
+			Vector3(at.x, 1.2, at.y), Vector3(at.x, -1.0, at.y), 1)
+		var floor_hit: Dictionary = space.intersect_ray(floor_query)
+		var floor_ok: bool = not floor_hit.is_empty() \
+			and absf(floor_hit["position"].y) < 0.1
+		var ceiling_query := PhysicsRayQueryParameters3D.create(
+			Vector3(at.x, 1.2, at.y), Vector3(at.x, 6.0, at.y), 1)
+		var ceiling_hit: Dictionary = space.intersect_ray(ceiling_query)
+		var expected_height: float = probe[2]
+		var ceiling_ok: bool
+		if expected_height < 0.0:
+			ceiling_ok = ceiling_hit.is_empty()
+		else:
+			ceiling_ok = not ceiling_hit.is_empty() \
+				and absf(ceiling_hit["position"].y - expected_height) < 0.12
+		failures = _check(floor_ok and ceiling_ok,
+			"%s: vloer op 0 en plafond op %.1f m" % [probe[0], expected_height]
+			if expected_height >= 0.0 else "%s: vloer op 0, open lucht" % probe[0],
+			failures)
+
+	# Het stilte-nulpunt van het gebouw staat aan (koeling/tl-zoem).
+	var audio = tree.get_first_node_in_group("audio_system")
+	if audio != null and audio.has_method("get_active_ambience"):
+		failures = _check(&"amb_hum_koeling" in audio.get_active_ambience(),
+			"clubgebouw activeerde zijn nulpunt-laag", failures)
 	return failures
 
 
