@@ -1,7 +1,8 @@
 # Taak 007 — Minimale documentlezer
 
 **Fase**: 2½ (Vertical Slice, productiefase B) · **Status**: 🔵
-technisch ontwerp ter review (GD), geen implementatie · **Vereist**:
+technisch ontwerp v1.1 (correctieronde verwerkt), wacht op expliciete
+implementatie-go · **Vereist**:
 003 (ReadableNote + `document_opened`) · **Maakt mogelijk**: de vijf
 documenten van de Vertical Slice (tasks/008 §6)
 
@@ -25,7 +26,8 @@ en het spel draait door alsof er nooit een lees-UI was.
 **Wel:**
 - Een klein `DocumentResource`-datamodel (documentinhoud als data).
 - `ReadableNote` (bestaande prop) leest zijn inhoud voortaan uit die
-  resource; het bus-contract blijft ongewijzigd.
+  resource; het bus-contract wordt eenmalig gecorrigeerd naar drie
+  basistypen (id, titel, tekst — keuze A).
 - Eén verwijderbare `DocumentReader`-UI-luisteraar die `document_opened`
   toont, input blokkeert en met Esc sluit.
 - Dev-room-briefje omgezet naar het nieuwe datamodel; suite bijgewerkt.
@@ -37,7 +39,15 @@ de reader (de reader kent alleen tekst, nooit props of soorten).
 
 ---
 
-# Technisch ontwerp (v1, 2026-07-28 — ter review GD)
+# Technisch ontwerp (v1.1, 2026-07-28 — correctieronde na GD-review)
+
+*v1.1 verwerkt de GD-correctieronde: het buscontract draagt voortaan
+ook de titel (drie basistypen, §1/§2 — eenmalig gecorrigeerd nu er nog
+geen productieconsumer bestaat), dezelfde-E-druk-bescherming via
+deferred arming (§4a), exact pauze-/muisherstel met ownershipregels
+(§4b), gedefinieerde vervang-semantiek bij een tweede document-event
+(§4c), datavalidatie en lange-tekstgedrag (§4d) en het aangevulde
+testplan (§6). Scope en architectuur verder ongewijzigd.*
 
 ## 1. Architectuur — nieuwe en gewijzigde onderdelen
 
@@ -49,20 +59,41 @@ game/props/note_readable/note_readable.gd      ← leest uit de resource
 game/ui/document_reader/                       ← verwijdereenheid: de lees-UI
  └─ document_reader.tscn/gd                       (bootstrap-spawn, groep
                                                   "document_reader")
-EventBus                                       ← ongewijzigd: document_opened
-                                                  (document_id, text) blijft exact
+EventBus                                       ← document_opened krijgt de titel
+                                                  erbij (3 basistypen, keuze A)
 ```
 
-**Keuze A — het bus-contract wijzigt niet.** *(D-021/D-022-regime)*
-`document_opened(document_id: StringName, text: String)` bestaat sinds
-003, draagt uitsluitend basistypen en is precies genoeg: de reader
-heeft alleen tekst nodig. De resource gaat dus **niet** over de bus —
-de prop "plat" zijn data naar het bestaande feit. Daardoor kent de
-reader geen enkel proptype en geen resource-klasse (eis GD: geen
-concrete briefje-types in de reader), en overleeft élke kant het
-verwijderen van de andere. **Verworpen**: `document_opened(resource)`
-(klasse over de bus = D-021-breuk); een tweede signaal (bestaand
-contract is toereikend, P4).
+**Keuze A — het bus-contract wordt eenmalig gecorrigeerd: de titel
+reist mee als derde basistype.** *(besluit GD 2026-07-28;
+D-021/D-022-regime)* Definitieve signatuur:
+
+```gdscript
+## Een leesbaar document is geopend (taak 003/007). De lees-UI toont
+## title en text letterlijk; lege title = geen titelregel. Het briefje
+## zelf heeft GameState al bijgewerkt. Lezen is stil — dit signaal gaat
+## bewust niet vergezeld van noise_made (pijler 1).
+signal document_opened(document_id: StringName, title: String, text: String)
+```
+
+- `ReadableNote` leest **id, titel en tekst** uit zijn
+  `DocumentResource` en zendt **uitsluitend deze drie basistypen** —
+  de resource gaat nooit over de bus.
+- `DocumentReader` kent geen ReadableNote-, DocumentResource- of enig
+  ander concreet proptype: hij consumeert alleen het feit.
+- Er komt **geen centraal documentregister of lookup** alleen om een
+  titel terug te vinden — de titel reist gewoon mee in het feit.
+- Dit is een wijziging van een bestaand signaal (003), maar er bestaat
+  nog **geen productieconsumer**: alleen de suite-recorder luistert.
+  Dáárom wordt het contract nú eenmalig gecorrigeerd, vóór het breder
+  wordt gebruikt — hierna geldt het D-022-regime (wijzigen = breaking
+  change met eigen D-entry). De signaturentest gaat van 2 naar 3
+  argumenten; de 003-notetest wordt in dezelfde beweging bijgewerkt.
+
+**Verworpen**: `document_opened(resource)` (klasse over de bus =
+D-021-breuk); titel vóór de tekst in de payload plakken (de
+v1-oplossing — verstopt structuur in een string en dwingt de UI tot
+parsen); een apart titel-opzoekkanaal (register = precies het
+documentensysteem dat we niet bouwen, P4).
 
 **Keuze B — het datamodel ligt bij de prop, niet bij de reader.**
 *(ARCHITECTURE §3: een scène + haar resources horen bij elkaar)* De
@@ -97,15 +128,16 @@ extends Resource
 
 `ReadableNote` verandert minimaal: de exports `document_id` +
 `document_text` worden vervangen door één `@export var document:
-DocumentResource`. `interact()` blijft:
+DocumentResource`. `interact()` wordt:
 `GameState.mark_document_read(document.id)` +
-`EventBus.document_opened.emit(document.id, document.text)` — met een
-null-guard (prop zonder document weigert stil met een `push_warning`;
-zelfde regime als de pickup zonder item). De titel gaat als onderdeel
-van de tekst-payload mee? **Nee** — keuze: de titel gaat níét over de
-bus (contract wijzigt niet); de prop plakt hem vóór de tekst
-(`"KOP\n\ntekst"`) zodat het bestaande tweeargument-feit volstaat. De
-reader toont letterlijk wat hij krijgt.
+`EventBus.document_opened.emit(document.id, document.title,
+document.text)` — de drie waarden letterlijk uit de resource, niets
+erbij verzonnen, niets samengeplakt. Guards aan de bron (§4d): geen
+resource, lege `id` of lege `text` → stil geweigerd met een duidelijke
+`push_warning`, geen emissie én geen GameState-mutatie (zelfde regime
+als de pickup zonder item). `DocumentResource` is runtime read-only
+configuratiedata (zelfde regel als ItemResource/SoundResource): niemand
+muteert de velden.
 
 **Migratie**: het dev-room-briefje wordt
 `documents/briefje_dev_room.tres`; de dev_props-tabel verwijst met een
@@ -119,10 +151,12 @@ geen koppeling (eis GD).
 ```
 speler → interact (003-keten, ongewijzigd)
   ReadableNote.interact()
-    ├─ GameState.mark_document_read(id)        (bestaand)
-    └─ EventBus.document_opened(id, tekst)     (bestaand feit)
+    ├─ GameState.mark_document_read(id)             (bestaand)
+    └─ EventBus.document_opened(id, titel, tekst)   (keuze A, 3 basistypen)
          └─ DocumentReader (indien aanwezig, groep-guard):
-              toont paneel · pauzeert de boom · Esc sluit → hervat
+              valideert (§4d) · bewaart pauze-/muisstatus (§4b) ·
+              toont paneel · wapent zich deferred (§4a) ·
+              Esc/E sluit → herstelt exact (§4b)
 ```
 
 - De reader is een `CanvasLayer` die éénmalig door de bootstrap wordt
@@ -158,21 +192,109 @@ Waarom dit de juiste blokkering is:
   interactor is PAUSABLE — dus openen-tijdens-pauze kan niet, en
   dubbel-openen evenmin.
 
-**Sluiten en de Esc-botsing**: de bootstrap luistert in
-`_unhandled_input` (ALWAYS) naar `pause`. De reader vangt zijn
-sluit-input daarom in **`_input`** (eerder in de pijplijn) en markeert
-het event als afgehandeld (`set_input_as_handled`) — één druk op Esc
-sluit dus alléén het document en opent nooit tegelijk de pauze;
-daarná werkt Esc weer gewoon als pauze. Sluiten kan met `pause` (Esc)
-én `interact` (E) — beide voelen natuurlijk. De reader raakt de
-bootstrap nooit aan; hij eet alleen het event op vóórdat het daar
-aankomt.
+### 4a. Dezelfde-E-druk-bescherming: deferred arming
 
-**Randgevallen, vastgelegd**: opent nooit zonder tekst-feit; sluit
-zichzelf en geeft de pauze terug in `_exit_tree` als hij verwijderd
-wordt terwijl hij open staat (geen eeuwig bevroren spel); als iets
-anders ooit óók pauzeert (toekomstig menu), geeft de reader de pauze
-alleen terug als hij hem zelf bezat (`_owns_pause`-vlag).
+E opent (via de interactor) én mag sluiten. Hetzelfde fysieke
+inputevent mag nooit beide doen. De oplossing is een expliciete
+lifecycle-toestand, geen timer en geen cooldown:
+
+- De reader opent in de toestand **OPEN_ONGEWAPEND**: het paneel is
+  zichtbaar, maar sluit-input wordt nog niet geaccepteerd.
+- Direct bij het openen plant hij `_arm.call_deferred()`; die zet de
+  toestand op **OPEN_GEWAPEND** aan het **einde van de huidige frame-
+  verwerking** — dus gegarandeerd nádat de dispatch van het openende
+  E-event volledig is afgerond, en vóórdat welk volgend inputevent dan
+  ook wordt bezorgd. Deterministisch (engine-volgorde, geen tijdsduur)
+  en headless testbaar: input in hetzelfde frame injecteren sluit
+  niet, input in het volgende frame wél.
+- Alleen in OPEN_GEWAPEND accepteert `_input` de sluitacties `pause`
+  (Esc) en `interact` (E). **Esc is hierdoor de facto altijd direct**:
+  Esc kan nooit het openende event zijn (openen loopt uitsluitend via
+  interact), dus elk Esc-event is per definitie een volgend event en
+  treft een gewapende reader. Eén E-druk toont het document daarmee
+  minimaal tot een volgende, afzonderlijke inputactie.
+- Tweede verdedigingslinie (gratis, geen aparte logica): binnen de
+  dispatch van het openende event draait `_input` van de reader
+  sowieso vóór `_unhandled_input` van de interactor — op het moment
+  dat het openen plaatsvindt, is het event de reader al gepasseerd.
+  De arming maakt dit expliciet en testbaar in plaats van impliciet.
+
+**Verworpen**: een tijd-/cooldownvenster (racegevoelig, ontestbaar
+deterministisch); sluiten op key-release (voelt traag en wijkt af van
+alle andere input in het spel).
+
+### 4b. Pauze- en muis-ownership: exact herstellen, exact één keer
+
+De reader bewaart **vóór** het openen drie dingen, en alleen bij een
+échte opening (niet bij vervanging, §4c):
+
+1. `_prev_paused := get_tree().paused`
+2. `_prev_mouse_mode := Input.mouse_mode`
+3. `_owns_pause := not _prev_paused` — alleen als de boom nog niet
+   gepauzeerd was, zet de reader zelf de pauze en bezit hij die claim.
+
+Openen: als `_owns_pause` → `paused = true`; daarna muis zichtbaar
+(voor het latere scrollen/lezen). Sluiten (of `_exit_tree` terwijl
+open — verwijderd worden telt als sluiten) herstelt **uitsluitend wat
+de reader zelf wijzigde**, in deze vaste volgorde:
+
+1. paneel verbergen en interne staat naar GESLOTEN;
+2. `Input.mouse_mode = _prev_mouse_mode` — exact de oude modus;
+3. alléén als `_owns_pause`: `paused = false`. Een boom die al
+   gepauzeerd wás vóór het openen wordt dus **nooit** onbedoeld actief
+   gemaakt, en het (latere) pauzemenu wordt nooit onder de reader
+   vandaan getrokken.
+
+Stap 3 ná stap 2 is bewust: het hervatten triggert de bestaande
+NOTIFICATION_UNPAUSED van de speler (muis vangen) — de spelerlogica
+is en blijft de eigenaar van muis-in-gameplay; het herstel van de
+reader is alleen relevant wanneer er géén hervatting volgt (boom was
+al gepauzeerd). Herstel gebeurt exact één keer: de sluitroutine is
+idempotent (GESLOTEN → no-op).
+
+**Eén Esc = één gevolg**: de reader vangt zijn sluit-input in
+`_input` (eerder in de pijplijn dan `_unhandled_input` van de
+bootstrap) en markeert het event met `set_input_as_handled` — één druk
+op Esc sluit alléén het document en bereikt de pauze-toggle van de
+bootstrap nooit; de éérstvolgende Esc werkt weer gewoon als pauze. De
+reader raakt de bootstrap zelf nooit aan.
+
+### 4c. Tweede document_opened terwijl de reader open staat
+
+Kan in normale gameplay niet voorkomen (de wereld staat stil), maar
+het gedrag is gedefinieerd en getest voor robuustheid:
+
+- een tweede **geldig** feit vervangt id, titel en tekst **atomair**
+  (één toewijzing van alle drie, scrollpositie terug naar boven);
+- er ontstaat géén tweede overlay en géén extra pauzeclaim — de
+  open-routine slaat bij een al-open reader de statusopname van §4b
+  volledig over;
+- de oorspronkelijk bewaarde `_prev_paused`/`_prev_mouse_mode`/
+  `_owns_pause` blijven onaangetast;
+- sluiten herstelt die oorspronkelijke toestand exact één keer;
+- een **ongeldig** tweede feit (§4d) wordt geweigerd en laat de
+  getoonde inhoud ongemoeid.
+
+### 4d. Datavalidatie en lange tekst
+
+Validatie gebeurt primair aan de bron (de prop, §2); de reader
+herhaalt de guard zodat ook handmatige emissies (tests, toekomstige
+zenders) veilig falen:
+
+- **lege `document_id`**: veilig weigeren + duidelijke `push_warning`
+  ("DocumentReader: feit met lege id genegeerd") — reader opent niet
+  resp. prop zendt niet;
+- **lege `text`**: idem — een leeg document bestaat niet;
+- **lege `title`**: toegestaan; de titelregel (aparte Label) wordt
+  verborgen, de tekst schuift op — geen lege kopruimte;
+- het tekstgebied is een **ScrollContainer**: lange documenten
+  scrollen en breken de layout nooit (paneel heeft vaste maximale
+  maat, tekst wrapt);
+- **geen hardgecodeerde maximale tekstlengte** in runtimecode — "kort
+  en scanbaar" (LEVEL §8) is en blijft een redactionele regel voor de
+  ontwerpers, geen code-limiet;
+- `DocumentResource` blijft runtime **read-only**; reader noch prop
+  muteert ooit een veld.
 
 ## 5. Debugbaarheid
 
@@ -184,28 +306,58 @@ alleen terug als hij hem zelf bezat (`_owns_pause`-vlag).
 
 ## 6. Teststrategie
 
-1. **Contract**: `document_opened` ongewijzigd (2 argumenten) in de
-   signaturentest; documents-map-scan: elke `.tres` laadt met geldige,
-   unieke `id` en niet-lege `text` (zelfde discipline als items/sounds).
+1. **Contract**: `document_opened` met **3 argumenten** in de
+   signaturentest (de 003-notetest gaat in dezelfde beweging mee);
+   documents-map-scan: elke `.tres` laadt met geldige, unieke `id` en
+   niet-lege `text` (zelfde discipline als items/sounds).
 2. **Prop**: ReadableNote instantieert los; met resource → interact
-   zendt exact één feit met de juiste id/tekst en registreert in
-   GameState; zonder resource → stil geweigerd (warning is het bewijs),
-   geen feit, geen crash; lezen blijft stil (geen `noise_made`).
-3. **Reader-keten (e2e)**: briefje aankijken + interact → paneel
-   zichtbaar, tekst letterlijk gelijk aan de resource, boom gepauzeerd;
-   bewegingsinput verplaatst de speler aantoonbaar niet; Esc → paneel
-   dicht, boom hervat, speler beweegt weer; daarná pauzeert Esc het
-   spel gewoon (het opgegeten event lekt niet).
-4. **Sluiten via interact**: zelfde round-trip met de E-toets.
-5. **Guard**: tweede reader-instantie blijft doof (één feit → één
+   zendt exact één feit waarin **id, titel én tekst letterlijk** uit de
+   resource komen, en registreert in GameState; zonder resource, met
+   lege `id` of met lege `text` → veilig geweigerd (warning is het
+   bewijs), geen feit, geen GameState-mutatie, geen crash; lezen blijft
+   stil (geen `noise_made`).
+3. **Titel end-to-end**: de titel uit de resource verschijnt letterlijk
+   via de bus in de titel-Label van de reader; een **lege titel**
+   verbergt uitsluitend de titelregel — de tekst blijft normaal
+   leesbaar.
+4. **Dezelfde-E-druk (arming, §4a)**: één E-druk opent het paneel en
+   sluit het aantoonbaar níét in datzelfde frame (paneel is ná de
+   dispatch nog zichtbaar); een volgende, afzonderlijke E-druk sluit
+   wél. Idem: een handmatig geïnjecteerd sluit-event binnen het
+   openingsframe wordt genegeerd (OPEN_ONGEWAPEND), hetzelfde event
+   één frame later niet.
+5. **Reader-keten (e2e)**: briefje aankijken + interact → paneel
+   zichtbaar, boom gepauzeerd; bewegingsinput verplaatst de speler
+   aantoonbaar niet; Esc → paneel dicht, boom hervat, speler beweegt
+   weer; **en Esc opende niet in hetzelfde event het pauzemenu** — de
+   éérstvolgende Esc pauzeert het spel gewoon (het opgegeten event
+   lekt niet).
+6. **Exact herstel (§4b)**: de `Input.mouse_mode` van vóór het openen
+   wordt exact hersteld (headless beperkt meetbaar — VISIBLE blijft
+   VISIBLE; de capture-kant is GD-hardware-punt, zelfde voorbehoud als
+   de pauzetests van 002); een **vooraf gepauzeerde boom** (feit
+   handmatig gezonden terwijl `paused == true`) blijft ná het sluiten
+   gepauzeerd — de reader claimde niets en geeft dus niets vrij.
+7. **Vervang-semantiek (§4c)**: tweede geldig feit terwijl open →
+   getoonde id/titel/tekst atomair vervangen, geen tweede overlay,
+   geen extra pauzeclaim (bewaarde status ongewijzigd); sluiten
+   herstelt de oorspronkelijke toestand exact één keer. Ongeldig
+   tweede feit → inhoud ongemoeid.
+8. **Lange tekst**: een gegenereerd lang testdocument blijft via de
+   ScrollContainer bruikbaar (scrollbereik > 0, paneel binnen zijn
+   maximale maat) — geen layoutbreuk, geen afkapping in code.
+9. **Guard**: tweede reader-instantie blijft doof (één feit → één
    paneel).
-6. **D-015 beide richtingen**: zonder `game/ui/document_reader/` blijft
-   alles parsebaar en groen — interactie werkt, GameState registreert,
-   er verschijnt alleen geen paneel (het 003-gedrag van vandaag);
-   zonder `game/props/note_readable/` draait de rest incl. reader-spawn
-   gewoon door. Testcode noemt geen klassen (D-021, duck-typed).
-7. **Reader verwijderd terwijl open** (unit): pauze komt terug bij de
-   boom, geen bevroren spel.
+10. **D-015 beide richtingen**: zonder `game/ui/document_reader/`
+    blijft alles parsebaar en stabiel — interactie werkt, GameState
+    registreert, er verschijnt alleen geen paneel (het 003-gedrag van
+    vandaag); zonder `game/props/note_readable/` (prop + documenten)
+    draait de rest incl. reader-spawn gewoon door — de reader wacht op
+    een feit dat nooit komt. Testcode noemt geen klassen (D-021,
+    duck-typed).
+11. **Reader verwijderd terwijl open** (unit): `_exit_tree` herstelt de
+    eigen wijzigingen (§4b) — pauzeclaim vrijgegeven, muismodus terug,
+    geen bevroren spel.
 
 ## 7. Risico's
 
@@ -214,7 +366,8 @@ alleen terug als hij hem zelf bezat (`_owns_pause`-vlag).
 | Esc-botsing reader ↔ bootstrap-pauze geeft dubbelgedrag | middel | `_input` + `set_input_as_handled` vóór de bootstrap; expliciete suite-test (3) op "Esc sluit alleen het document" |
 | Pauze-eigenaarschap botst met een toekomstig menu/HUD | laag | `_owns_pause`-vlag + vastgelegde semantiek (§4); het latere menu erft dit patroon |
 | Tekstweergave (font/grootte) is op de VPS niet te beoordelen | laag | leesbaarheid is een GD-hardware-punt; opmaak minimaal houden (P4), tuning is data |
-| Migratie breekt de 003-tests (document_id/document_text weg) | laag | suite in dezelfde fase mee; het bus-contract zelf wijzigt niet |
+| Migratie breekt de 003-tests (document_id/document_text weg; signatuur naar 3 argumenten) | laag | suite en signaturentest in dezelfde fase mee; het contract wordt eenmalig gecorrigeerd vóór er een productieconsumer bestaat (keuze A) en valt daarna onder het D-022-regime |
+| Zelfde-E-druk sluit het net geopende paneel | middel | deferred arming (§4a): sluit-input pas geaccepteerd ná de dispatch van het openende event; expliciete suite-test (§6.4) |
 
 ## 8. Lokale GD-acceptatie
 

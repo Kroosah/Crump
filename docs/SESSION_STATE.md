@@ -89,12 +89,15 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 ## 5. Volgende stap (voor de verse sessie)
 
 **Het technisch ontwerp van taak 007 (minimale documentlezer, VS-fase B)
-staat in `tasks/007_document_reader.md` en wacht op GD-review +
-expliciete implementatie-go.** Kern: DocumentResource bij de prop,
-bus-contract `document_opened` ongewijzigd, verwijderbare
-DocumentReader-UI (bootstrap-spawn, groep-guard) die de boom pauzeert
-tijdens het lezen en Esc/E via `_input` + set_input_as_handled opeet
-zodat één Esc alleen het document sluit. Tot de go: géén
+staat als v1.1 in `tasks/007_document_reader.md` (correctieronde
+2026-07-28 verwerkt) en wacht op de expliciete implementatie-go.**
+Kern: DocumentResource bij de prop; bus-contract eenmalig gecorrigeerd
+naar `document_opened(document_id, title, text)` (3 basistypen, nog
+geen productieconsumer); verwijderbare DocumentReader-UI
+(bootstrap-spawn, groep-guard) die de boom pauzeert met exact
+ownership-herstel (§4b), dezelfde-E-druk-bescherming via deferred
+arming (§4a), vervang-semantiek bij een tweede feit (§4c) en
+datavalidatie + scrollbare lange tekst (§4d). Tot de go: géén
 code/assets/scènes.
 
 Daarna volgens het productieplan (tasks/008 §15): fase C greybox (kan
