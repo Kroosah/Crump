@@ -169,11 +169,155 @@ const BUITEN: Array[Dictionary] = [
 	{"pos": Vector3(0.0, 2.49, -24.0), "size": Vector3(7.42, 0.1, 0.1), "mat": &"wit"},
 ]
 
-## Binnenwanden — gevuld in bouwblok 2.
-const INTERIEUR: Array[Dictionary] = []
+## Binnenwanden (0,2 m dik, tot y 2,9) met deuropeningen + lateien.
+const INTERIEUR: Array[Dictionary] = [
+	# Hal-oost (x 2,0..2,2): doorgang kantine + deur bestuurskamer.
+	{"pos": Vector3(2.1, 1.45, 4.27), "size": Vector3(0.2, 2.9, 1.9), "mat": &"wand"},
+	{"pos": Vector3(2.1, 1.45, 6.62), "size": Vector3(0.2, 2.9, 0.76), "mat": &"wand"},
+	{"pos": Vector3(2.1, 2.51, 2.81), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
+	{"pos": Vector3(2.1, 2.51, 5.73), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
+	# Hal-west: deur naar de kleedkamergang.
+	{"pos": Vector3(-2.1, 1.45, 3.05), "size": Vector3(0.2, 2.9, 1.5), "mat": &"wand"},
+	{"pos": Vector3(-2.1, 1.45, 5.91), "size": Vector3(0.2, 2.9, 2.18), "mat": &"wand"},
+	{"pos": Vector3(-2.1, 2.51, 4.31), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
+	# Hal-noord (dicht).
+	{"pos": Vector3(0.0, 1.45, 2.2), "size": Vector3(4.4, 2.9, 0.2), "mat": &"wand"},
+	# Kantine-zuid: keukendeur + doorgeefluik boven de bar.
+	{"pos": Vector3(5.5, 1.45, 3.6), "size": Vector3(6.6, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(9.91, 1.45, 3.6), "size": Vector3(0.18, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(11.85, 1.45, 3.6), "size": Vector3(0.7, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(9.31, 2.51, 3.6), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	{"pos": Vector3(10.75, 0.525, 3.6), "size": Vector3(1.5, 1.05, 0.2), "mat": &"wand"},
+	{"pos": Vector3(10.75, 2.425, 3.6), "size": Vector3(1.5, 0.95, 0.2), "mat": &"wand"},
+	# Bestuurskamer- en keukenwanden.
+	{"pos": Vector3(6.1, 1.45, 5.35), "size": Vector3(0.2, 2.9, 3.3), "mat": &"wand"},
+	{"pos": Vector3(8.5, 1.45, 5.35), "size": Vector3(0.2, 2.9, 3.3), "mat": &"wand"},
+	# Gang-noord: deuren kleedkamer 3, kleedkamer 4 en onderhoudsruimte.
+	{"pos": Vector3(-14.21, 1.45, 3.3), "size": Vector3(1.58, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-11.11, 1.45, 3.3), "size": Vector3(2.58, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-6.61, 1.45, 3.3), "size": Vector3(4.38, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-2.8, 1.45, 3.3), "size": Vector3(1.2, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-12.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-9.31, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-3.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	# Gang-zuid: toilettendeur + open schoonmaaknis.
+	{"pos": Vector3(-11.8, 1.45, 5.3), "size": Vector3(6.4, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-6.5, 1.45, 5.3), "size": Vector3(1.8, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-3.39, 1.45, 5.3), "size": Vector3(2.38, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-5.09, 2.51, 5.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-8.0, 2.55, 5.3), "size": Vector3(1.2, 0.7, 0.2), "mat": &"wand"},
+	# Kleedkamerblok: oostwand, tussenwand, leidingkoker tussen de douches.
+	{"pos": Vector3(-2.3, 1.45, -0.65), "size": Vector3(0.2, 2.9, 7.7), "mat": &"wand"},
+	{"pos": Vector3(-7.1, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"wand"},
+	{"pos": Vector3(-6.4, 1.45, -3.0), "size": Vector3(2.4, 2.9, 3.0), "mat": &"wand"},
+	# Kleedkamer 3 → douche 3 (open doorgang, geen deur).
+	{"pos": Vector3(-5.75, 1.45, -1.4), "size": Vector3(2.5, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-2.95, 1.45, -1.4), "size": Vector3(1.1, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-4.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"wand"},
+	# Kleedkamer 4 → douche 4.
+	{"pos": Vector3(-10.45, 1.45, -1.4), "size": Vector3(1.9, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-7.85, 1.45, -1.4), "size": Vector3(1.3, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-9.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-10.5, 1.45, -3.0), "size": Vector3(0.2, 2.9, 3.0), "mat": &"wand"},
+	# Onderhoudsruimte (west van kleedkamer 4).
+	{"pos": Vector3(-11.5, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"wand"},
+	{"pos": Vector3(-13.2, 1.45, -1.0), "size": Vector3(3.6, 2.9, 0.2), "mat": &"wand"},
+	# Toiletten + schoonmaaknis (zuid van de gang).
+	{"pos": Vector3(-6.7, 1.45, 6.2), "size": Vector3(0.2, 2.9, 1.6), "mat": &"wand"},
+	{"pos": Vector3(-3.5, 1.45, 6.2), "size": Vector3(0.2, 2.9, 1.6), "mat": &"wand"},
+	{"pos": Vector3(-8.7, 1.45, 5.8), "size": Vector3(0.2, 2.9, 0.8), "mat": &"wand"},
+	{"pos": Vector3(-7.3, 1.45, 5.8), "size": Vector3(0.2, 2.9, 0.8), "mat": &"wand"},
+	{"pos": Vector3(-8.0, 1.45, 6.3), "size": Vector3(1.6, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-8.0, 2.25, 5.8), "size": Vector3(1.6, 0.1, 0.8), "mat": &"plafond"},
+	{"pos": Vector3(-5.17, 1.05, 6.5), "size": Vector3(0.06, 2.1, 1.0), "mat": &"wand"},
+]
 
-## Meubel- en herkenningsvolumes — gevuld in bouwblok 2.
-const MEUBELS: Array[Dictionary] = []
+## Meubel- en herkenningsvolumes: de greybox vertelt de functie.
+const MEUBELS: Array[Dictionary] = [
+	# Hal: prikbord + kapstokrail met haken.
+	{"pos": Vector3(-1.3, 1.6, 6.96), "size": Vector3(1.2, 0.8, 0.06), "mat": &"hout", "nc": true},
+	{"pos": Vector3(0.0, 1.69, 2.36), "size": Vector3(3.2, 0.08, 0.1), "mat": &"hout"},
+	{"pos": Vector3(-1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(0.0, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	# Kantine: bar met blad en doorgeefopening erachter, achterwerkblad,
+	# meterkast, tv, trofeeënkast, twee pilaren, tafels/stoelen, krukken.
+	{"pos": Vector3(10.6, 0.55, 2.9), "size": Vector3(2.4, 1.1, 0.6), "mat": &"hout"},
+	{"pos": Vector3(10.6, 1.13, 2.9), "size": Vector3(2.6, 0.06, 0.8), "mat": &"hout_donker"},
+	{"pos": Vector3(10.6, 0.45, 3.4), "size": Vector3(2.4, 0.9, 0.2), "mat": &"hout"},
+	{"pos": Vector3(8.28, 1.1, 3.42), "size": Vector3(0.56, 2.0, 0.16), "mat": &"metaal"},
+	{"pos": Vector3(12.13, 2.0, -3.8), "size": Vector3(0.14, 0.6, 0.8), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(2.4, 1.1, -0.6), "size": Vector3(0.4, 2.2, 2.0), "mat": &"hout"},
+	{"pos": Vector3(5.4, 1.35, -0.5), "size": Vector3(0.25, 2.7, 0.25), "mat": &"wand"},
+	{"pos": Vector3(8.6, 1.35, -0.5), "size": Vector3(0.25, 2.7, 0.25), "mat": &"wand"},
+	{"pos": Vector3(4.2, 0.375, -2.6), "size": Vector3(0.8, 0.75, 0.8), "mat": &"hout"},
+	{"pos": Vector3(6.8, 0.375, -1.0), "size": Vector3(0.8, 0.75, 0.8), "mat": &"hout"},
+	{"pos": Vector3(4.6, 0.375, 0.9), "size": Vector3(0.8, 0.75, 0.8), "mat": &"hout"},
+	{"pos": Vector3(9.0, 0.375, -3.0), "size": Vector3(0.8, 0.75, 0.8), "mat": &"hout"},
+	{"pos": Vector3(6.2, 0.375, 2.0), "size": Vector3(0.8, 0.75, 0.8), "mat": &"hout"},
+	{"pos": Vector3(3.4, 0.225, -2.6), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(4.9, 0.225, -3.3), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(6.1, 0.225, -1.7), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(7.5, 0.225, -0.6), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(3.9, 0.225, 0.9), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(5.3, 0.225, 1.5), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(8.3, 0.225, -3.6), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(6.9, 0.225, 2.4), "size": Vector3(0.42, 0.45, 0.42), "mat": &"hout_donker"},
+	{"pos": Vector3(9.8, 0.325, 2.2), "size": Vector3(0.35, 0.65, 0.35), "mat": &"hout_donker"},
+	{"pos": Vector3(10.6, 0.325, 2.2), "size": Vector3(0.35, 0.65, 0.35), "mat": &"hout_donker"},
+	{"pos": Vector3(11.4, 0.325, 2.2), "size": Vector3(0.35, 0.65, 0.35), "mat": &"hout_donker"},
+	# Kleedkamer 3: banken, kapstokrails, lockers.
+	{"pos": Vector3(-6.77, 0.24, 0.95), "size": Vector3(0.34, 0.48, 3.9), "mat": &"hout"},
+	{"pos": Vector3(-2.63, 0.24, 0.45), "size": Vector3(0.34, 0.48, 2.9), "mat": &"hout"},
+	{"pos": Vector3(-6.88, 1.68, 0.95), "size": Vector3(0.1, 0.08, 3.9), "mat": &"hout", "nc": true},
+	{"pos": Vector3(-2.52, 1.68, 0.45), "size": Vector3(0.1, 0.08, 2.9), "mat": &"hout", "nc": true},
+	{"pos": Vector3(-2.78, 0.9, 2.6), "size": Vector3(0.6, 1.8, 1.0), "mat": &"metaal"},
+	# Douche 3: douchekoppen (hoog) + afvoerputten.
+	{"pos": Vector3(-4.8, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-4.0, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-3.2, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-4.8, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-4.0, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-3.2, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-3.8, 0.005, -2.5), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	# Kleedkamer 4: banken + rails (bewust geen lockers — variatie).
+	{"pos": Vector3(-11.17, 0.24, 0.95), "size": Vector3(0.34, 0.48, 3.9), "mat": &"hout"},
+	{"pos": Vector3(-7.43, 0.24, 0.45), "size": Vector3(0.34, 0.48, 2.9), "mat": &"hout"},
+	{"pos": Vector3(-11.28, 1.68, 0.95), "size": Vector3(0.1, 0.08, 3.9), "mat": &"hout", "nc": true},
+	{"pos": Vector3(-7.32, 1.68, 0.45), "size": Vector3(0.1, 0.08, 2.9), "mat": &"hout", "nc": true},
+	# Douche 4.
+	{"pos": Vector3(-9.9, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-9.1, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-8.3, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
+	{"pos": Vector3(-9.9, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-9.1, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-8.3, 0.005, -3.9), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	{"pos": Vector3(-9.0, 0.005, -2.5), "size": Vector3(0.25, 0.012, 0.25), "mat": &"beton_donker", "nc": true},
+	# Toiletten: twee hokjes, wasbak met spiegel, urinoir.
+	{"pos": Vector3(-5.9, 0.25, 6.75), "size": Vector3(0.4, 0.5, 0.45), "mat": &"keramiek"},
+	{"pos": Vector3(-4.45, 0.25, 6.75), "size": Vector3(0.4, 0.5, 0.45), "mat": &"keramiek"},
+	{"pos": Vector3(-3.85, 0.87, 5.8), "size": Vector3(0.44, 0.1, 0.7), "mat": &"keramiek"},
+	{"pos": Vector3(-3.62, 1.55, 5.8), "size": Vector3(0.04, 0.7, 0.7), "mat": &"spiegel", "nc": true},
+	{"pos": Vector3(-6.5, 0.75, 5.75), "size": Vector3(0.3, 0.6, 0.35), "mat": &"keramiek"},
+	# Onderhoudsruimte: stellingrek, kast, cv-ketel, kratten, emmer.
+	{"pos": Vector3(-14.7, 0.5, 1.5), "size": Vector3(0.5, 0.06, 2.8), "mat": &"metaal"},
+	{"pos": Vector3(-14.7, 1.1, 1.5), "size": Vector3(0.5, 0.06, 2.8), "mat": &"metaal"},
+	{"pos": Vector3(-14.7, 1.7, 1.5), "size": Vector3(0.5, 0.06, 2.8), "mat": &"metaal"},
+	{"pos": Vector3(-14.7, 0.95, 0.13), "size": Vector3(0.5, 1.9, 0.06), "mat": &"metaal"},
+	{"pos": Vector3(-14.7, 0.95, 2.87), "size": Vector3(0.5, 1.9, 0.06), "mat": &"metaal"},
+	{"pos": Vector3(-12.0, 0.9, 2.7), "size": Vector3(0.8, 1.8, 0.9), "mat": &"metaal"},
+	{"pos": Vector3(-12.0, 1.45, -0.62), "size": Vector3(0.6, 1.1, 0.45), "mat": &"wit"},
+	{"pos": Vector3(-13.4, 0.16, 0.3), "size": Vector3(0.5, 0.32, 0.35), "mat": &"hout_donker"},
+	{"pos": Vector3(-13.0, 0.16, 2.9), "size": Vector3(0.5, 0.32, 0.35), "mat": &"hout_donker"},
+	{"pos": Vector3(-11.8, 0.15, 1.6), "size": Vector3(0.28, 0.3, 0.28), "mat": &"metaal"},
+	# Schoonmaaknis: plank, emmer, bezem. En een brandblusser in de gang.
+	{"pos": Vector3(-8.0, 1.5, 5.8), "size": Vector3(1.3, 0.05, 0.7), "mat": &"hout"},
+	{"pos": Vector3(-8.3, 0.15, 5.75), "size": Vector3(0.28, 0.3, 0.28), "mat": &"metaal"},
+	{"pos": Vector3(-7.6, 0.65, 5.6), "size": Vector3(0.04, 1.3, 0.04), "mat": &"hout", "nc": true},
+	{"pos": Vector3(-6.1, 1.0, 5.34), "size": Vector3(0.16, 0.45, 0.14), "mat": &"accent_rood", "nc": true},
+]
 
 ## Deuren (echte props, bestaanscheck) — gevuld in bouwblok 3.
 const DEUREN: Array[Dictionary] = []
