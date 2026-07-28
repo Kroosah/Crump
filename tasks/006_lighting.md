@@ -1,6 +1,6 @@
 # Taak 006 — Licht & sfeer
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2.1 (tweede, kleine correctieronde verwerkt), wacht op expliciete implementatie-go · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: 🟡 gebouwd conform ontwerp v2.1 (2026-07-28, suite 208 groen) — **wacht op lokale GD-test** · **Vereist**: 001, 002
 
 Licht is in CRUMP zowel gameplay (zaklamp: zien kost gezien worden) als de
 duurste technische post (ARCHITECTURE §7). Deze taak legt het lichtfundament en
@@ -54,14 +54,15 @@ waarmaakt.
 
 ## Acceptatiecriteria
 
-- [ ] Zaklamp werkt (aan/uit), tuning via exports, afweging gedocumenteerd.
-- [ ] WorldEnvironment levert donker-maar-leesbaar; nergens pikzwart-zonder-
-      contour.
-- [ ] Lichtbudget-werkwijze vastgelegd; helper (indien gebouwd) telt correct.
-- [ ] Helderheid-instelling aanwezig als opties-haak.
-- [ ] Sfeerpass op de testruimte: elke lichtbron heeft een wereld-oorzaak;
-      één ontworpen lichtgebeurtenis werkt.
-- [ ] Headless-import schoon; toggle-/helper-tests groen. Dossier + README
+- [x] Zaklamp werkt (aan/uit), tuning via exports, afweging gedocumenteerd.
+- [x] WorldEnvironment levert donker-maar-leesbaar; nergens pikzwart-zonder-
+      contour *(headless: ambient > 0 + herijkte checks; het beeld zelf is
+      de GD-hardware-test)*.
+- [x] Lichtbudget-werkwijze vastgelegd; helper telt correct (suite + F3).
+- [x] Helderheid-instelling aanwezig als opties-haak én werkend (TD-003).
+- [x] Sfeerpass op de testruimte: elke lichtbron heeft een wereld-oorzaak;
+      één ontworpen lichtgebeurtenis werkt (de flikkerbuis noordoost).
+- [x] Headless-import schoon; toggle-/helper-tests groen. Dossier + README
       bijgewerkt.
 
 ## Te beoordelen in de editor (VPS kan dit niet)
@@ -606,3 +607,63 @@ TL-staten in het geladen level.
    zaklampbundel voelt echt; de TL-hoek met flikkerbuis is onaangenaam;
    het geheel — nulpunt-zoem + near-black + schaarse TL's — maakt de
    testruimte 's nachts onaangenaam *zonder dat er iets gebeurt*.
+
+---
+
+# Uitvoeringsverslag (2026-07-28, gebouwd conform ontwerp v2.1)
+
+Gebouwd in vier blokken, commit per blok: nacht-environment +
+brightness/TD-003 → zaklampsysteem → TL-prop + budget-bewaking +
+sfeerpass → tests/F3 (+ dit register-commit). Suite **166 → 208**
+controles, alles groen; import exit 0; normale F5-run warning-vrij.
+
+**Afwijkingen/verduidelijkingen t.o.v. het ontwerp** (klein, geen
+gedragswijziging):
+
+1. **TL-plaatsing als data, niet als scène-instanties**: het ontwerp liet
+   open hoe de dev room de armaturen krijgt; harde `ExtResource`-verwijzing
+   naar de prop zou het level breken bij verwijdering. De dev room plaatst
+   ze daarom via een datatabel + bestaanscheck in `dev_room.gd` (patroon
+   dev_props, ARCHITECTURE §4a.6). Aantoonbaar: zonder
+   `game/props/light_tl/` blijft alles parsebaar (suite 176 groen).
+2. **§5 "de zaklamp is geen level-kind"**: de zaklamp wordt (conform keuze
+   D) wél als level-kind gespawnd, zoals de interactor; de budget-bewaking
+   sluit haar uit via de groep `flashlight` in plaats van via parenting.
+   Het gereserveerde slot werkt identiek; de suite toont het aan.
+3. **Werklicht-wisseling**: via de export `werklicht` op de dev-room-root
+   in de editor (F5 opnieuw starten), zoals ontworpen; een luide
+   `Log.warn` herinnert eraan dat hij nooit aan gecommit mag worden en de
+   suite bewaakt de default.
+
+**D-015-richtingen aangetoond** (0 fouten, telkens): zonder
+`game/systems/flashlight/` 188 · zonder complete lighting (flashlight +
+light_budget + light_tl) 176 · zonder `game/systems/inventory/` 169
+(zaklamp faalt gesloten) · alles aanwezig 208.
+
+**Nieuwe registers**: D-025 (betrouwbare zaklamp + gesloten bezit),
+D-026 (schaduwbudget + gereserveerd slot), D-027 (brightness 0.8–1.2);
+TD-003 afgelost; KI-004 (pre-existente, incidentele exit-leak-warning
+van de ambience — geen 006-regressie) geregistreerd.
+
+## Te beoordelen in de editor / op hardware (GD-ronde)
+
+De hele sfeer-acceptatie is een hardware-oordeel; headless is alleen
+gedrag en data getoetst. Concreet te beoordelen:
+
+1. **Nacht zonder zaklamp** (gewoon F5): bijna zwart maar navigeerbaar op
+   silhouetten en de twee stabiele TL-ankers; details verdwijnen; de
+   flikkerbuis in de noordoosthoek is onaangenaam; verte lost op in de
+   fog. Kalibratie gebeurt op brightness 1.0 op jouw scherm — de
+   contour-garantie moet dáár kloppen (waarden zijn data: Environment in
+   `dev_room.tscn`, TL-exports).
+2. **Nacht met zaklamp**: zaklamp oprapen op de oranje kist ("Pak zaklamp
+   op"), toggelen met **F**: warme realistische bundel, details lokaal
+   leesbaar, periferie blijft donker; klik hoorbaar; bundel volgt de blik
+   met lichte na-ijling (handheld-gevoel; `follow_speed` is de knop).
+3. **Werklicht** (editor: `werklicht = true` op DevRoom, daarna F5):
+   heldere inspectiestand voor geometrie en props; daarna terugzetten.
+4. **F3**: de twee nieuwe regels (`zaklamp: …`, `licht: …`) + fps-effect
+   van de zaklamp-schaduw (D-026-meting op jouw GPU).
+5. **Brightness**: nog geen opties-UI (volgt met de HUD/menu-taak) — test
+   via `user://settings.cfg` → `[video] brightness=0.8` resp. `1.2`: het
+   verschil moet subtiel blijven en nacht mag nooit dag worden.

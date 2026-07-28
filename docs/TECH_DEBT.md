@@ -45,7 +45,7 @@ downloaden zonder noodzaak).
 export-preset + build-script in `tools/` opzetten (ROADMAP fase 6).
 
 ## TD-002 — Grafische presets zijn een eerste ruwe versie
-**Datum**: 2026-07-27 · **Status**: Middel · **Aflosmoment**: fase 6 (Polish & Steam), deels al bij taak 006
+**Datum**: 2026-07-27 · **Status**: Middel · **Aflosmoment**: fase 6 (Polish & Steam) — in taak 006 bewust níét opgepakt: presets uitbreiden met fog-/SSAO-kwaliteit is kalibratiewerk dat pas zin heeft mét beeld (dossier 006 §5)
 **Waar**: game/autoload/settings_manager.gd (`PRESET_VALUES`, `_apply_graphics`)
 **Schuld**: presets zetten alleen renderschaal, MSAA en schaduw-atlas; zaken
 als SSAO/SSIL, volumetrische mist en licht-kwaliteit per preset bestaan nog
@@ -56,13 +56,15 @@ in fase 6 de presets kalibreren op echte hardware en het release-default
 (HIGH) vastzetten.
 
 ## TD-003 — Helderheid-instelling wordt opgeslagen maar nog nergens toegepast
-**Datum**: 2026-07-27 · **Status**: Laag · **Aflosmoment**: taak 006 (licht & sfeer)
+**Datum**: 2026-07-27 · **Status**: ✅ afgelost in taak 006 (CHANGELOG v0.0.17)
 **Waar**: game/autoload/settings_manager.gd (`brightness`)
-**Schuld**: de instelling bestaat (opslag + laden werkt) maar er is nog geen
-WorldEnvironment-koppeling om hem op toe te passen — die ontstaat pas in
-taak 006.
-**Aflossing**: in taak 006 `brightness` koppelen aan de tonemap/exposure van
-de omgeving en opnemen in de QA-check "helderheid-slider werkt".
+**Schuld**: de instelling bestond (opslag + laden werkte) maar er was geen
+WorldEnvironment-koppeling om hem op toe te passen.
+**Afgelost door**: `set_brightness()` + `brightness_changed`-signaal in
+SettingsManager (clamp 0.8–1.2, D-027) en de herbruikbare
+`environment_tuner` op de WorldEnvironment van elk level, die de waarde
+als `adjustment_brightness` toepast. Suite-tests dekken default, clamping
+(setter én schijf) en het daadwerkelijke volgen van de environment.
 
 ## TD-004 — Bukken verlaagt alleen de camera, niet de collider
 **Datum**: 2026-07-28 · **Status**: Laag · **Aflosmoment**: de eerste taak/level met een kruipruimte (verwacht: fase 3+, leveldesign hoofdstuk 2)

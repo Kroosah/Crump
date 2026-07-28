@@ -5,42 +5,38 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (taak 005 afgerond; **ontwerp 006 ter
-review** — sessie hier afgesloten, verse sessie pakt de GD-review op)
+**Laatst bijgewerkt**: 2026-07-28 (taak 006 **gebouwd**, suite 208 groen —
+status: **wacht op lokale GD-test**; nog niet lokaal goedgekeurd markeren)
 
 ---
 
-## 1. Laatste afgeronde taak
+## 1. Laatste taak
 
-**Taak 005 — Audio-fundament** ✅ afgerond en **lokaal goedgekeurd door
-de GD (2026-07-28)** na hardware-test: stilte-nulpunt, per-gait
-voetstappen, positionele audio, verdwijnende-bronprop, ambience en
-Esc-pauze bevestigd; F5-run zonder onverwachte warnings. Eén tuningronde
-(`c5c5509`): voetstappen definitief op run −8 / walk −14 / crouch −18 /
-sneak −20 dB (hiërarchie behouden; noise_made onaangeroerd). Opgeleverd:
-gescheiden `audio_cue`-kanaal, `game/systems/audio/` (resolver,
-one-shot-pool 12+4, ambience standaard uit, muziek-API), AudioDirector
-ongegroeid, 11 SoundResources + 15 placeholder-WAV's, F3-regel.
-Suite 145 → 166.
+**Taak 006 — Licht & sfeer** 🟡 gebouwd conform ontwerp v2.1 (drie
+GD-reviewrondes, expliciete go), **wacht op lokale GD-test**. Opgeleverd:
+nacht-environment op de dev room (near-black, koele ambient-vloer > 0,
+diepte-fog, filmische tonemap, debanding) met verborgen werklicht-rig
+(export, default uit); `game/systems/flashlight/` (camera-volgend,
+betrouwbaar — flikkert nooit, D-025; gesloten bezit-gate op het
+zaklamp-item via eventgedreven `has_item`-hercontrole; toggle = exact één
+emissie per kanaal: nieuw busfeit `flashlight_toggled(is_on)` + klik-cue +
+noise op de spelerpositie; `debug_bezit_bypass` default uit);
+`game/props/light_tl/` (staten STABIEL/DEFECT/FLIKKEREND, seed-
+deterministisch patroon mét rust; dev room: 2 stabiel + 1 flikkerend + 5
+defect, als data geplaatst); `game/systems/light_budget/` (max 3
+level-schaduwlichten + gereserveerd zaklampslot, deterministische
+degradatie op boomvolgorde, D-026); brightness werkt (0.8–1.2, D-027,
+TD-003 afgelost) via `environment_tuner`; zaklamp-pickup via de echte
+flow; F3-regels `zaklamp:` en `licht:`. Suite **166 → 208**.
 
-Eerder vandaag: taken 002 t/m 004 afgerond en goedgekeurd; fase 1
-compleet; Design Pillars (7 pijlers) vastgesteld.
-
-Opgeleverd: `ItemResource` (minimaal, runtime read-only) + drie
-voorbeelditems; inventory-node (capaciteit 6, geen stacking D-023,
-`add_item -> bool` als enig besliskanaal, weigeren = nul mutatie); één
-autoritatieve inventory (groep-guard in bootstrap + zelfcheck + test);
-pickupflow via `item_pickup_requested`/`item_pickup_resolved` (D-022) —
-prop verdwijnt uitsluitend na geldige accepted-response in zijn eigen
-synchrone venster en bezit zijn eigen feedback; F3-regel
-`inventory: n/cap · id's`. Suite 120 → 145.
-
-Eerder vandaag: taken 002 en 003 afgerond en goedgekeurd; fase 1 compleet.
+Eerder vandaag: taken 002 t/m 005 afgerond en lokaal goedgekeurd; fase 1
+compleet; Design Pillars vastgesteld; 006-ontwerp in drie rondes
+goedgekeurd (v1 → v2 → v2.1, zie het dossier).
 
 ## 2. Laatste commit
 
 ```
-[docs] Werk administratie bij voor taak 003
+[docs] Werk administratie bij voor taak 006 (gebouwd, wacht op GD-test)
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -60,26 +56,24 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Onderdeel | Status |
 |---|---|
 | Fase 0 — Fundering | ✅ afgerond |
-| Taak 001 — Project-setup & bootstrap | ✅ afgerond en goedgekeurd |
-| Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
-| Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
+| Taken 001–005 | ✅ afgerond en (lokaal) goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
-| Taak 004 — Inventory | ✅ afgerond en lokaal goedgekeurd |
-| Taak 005 — Audio-fundament | ✅ afgerond en lokaal goedgekeurd |
-| Taak 006 — Licht & sfeer | 🔵 **technisch ontwerp ter review bij de GD** (commit `5c547d4`) |
+| Taak 006 — Licht & sfeer | 🟡 **gebouwd; wacht op lokale GD-test** |
 | Taken 007–008 | ⬜ open |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **166/166
-groen**. D-015 geverifieerd: zonder audiosysteem 145/145 (spel draait
-stil), zonder interactiesysteem 109/109, alles aanwezig 166/166; eerdere
-richtingen (zonder speler/inventory) blijven gedekt door dezelfde
-conventies. `config/version` = 0.0.16. Warnings in de suite-output zijn
-uitsluitend de bewust geteste luide faalpaden — normale opstart is
-schoon (geverifieerd). Debug-prompt (TD-006) blijft tot de echte HUD.
+**Technische staat**: import schoon (exit 0), smoke-suite **208/208
+groen**. D-015 geverifieerd (0 fouten): zonder zaklampsysteem 188, zonder
+complete lighting (flashlight + light_budget + light_tl) 176, zonder
+inventory 169 (zaklamp faalt gesloten, alles parsebaar), alles aanwezig
+208. `config/version` = 0.0.17. Warnings in de suite-output zijn
+uitsluitend de bewust geteste luide faalpaden (incl. de geforceerde
+budgetoverschrijding) — normale opstart is schoon (geverifieerd).
+Incidentele exit-leak-warning van de ambience is pre-existent en
+geregistreerd als KI-004. Debug-prompt (TD-006) blijft tot de echte HUD.
 
-**Nog niet visueel beoordeeld**: de interactieronde uit het
-003-taakdossier (prompts, deur/la/sleutel/briefje, op-slot-deur,
-interactie-afstand 2,5 m).
+**Nog niet visueel beoordeeld**: de interactieronde uit het 003-dossier én
+de volledige 006-sfeerpass (het fase 2-exit-criterium "onaangenaam" is een
+hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag.
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
@@ -87,47 +81,44 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**Het technisch ontwerp van taak 006 staat volledig uitgewerkt in
-`tasks/006_lighting.md` en wacht op GD-review** (commit `5c547d4`).
-Werkwijze conform het inmiddels vaste ritme: eerst GD-review van het
-ontwerp (evt. correctierondes, alleen docs) → **expliciete
-implementatie-go** → bouw in de vier geplande blokken met commit per
-blok (nacht-environment + brightness/TD-003 → zaklamp-systeem →
-TL-prop + sfeerpass → tests/registers) → vier-vragen-rapport → status
-"wacht op lokale GD-test" → GD test op hardware → formele afronding.
+**De GD test taak 006 lokaal op hardware** volgens het stappenplan in
+`tasks/006_lighting.md` §"Te beoordelen in de editor / op hardware":
+nacht zonder zaklamp (oriëntatie/silhouetten/flikkerhoek), nacht met
+zaklamp (pickup op de oranje kist, toggle **F**, bundel + na-ijling),
+werklicht-stand (editor-export), F3-regels + fps, brightness-kalibratie op
+1.0. Daarna: tuningronde(s) op GD-aanwijzing (alle knoppen zijn data) →
+formele afronding 006 → ROADMAP-vinkje + fase 2-exit-oordeel.
 
-Belangrijkste reviewpunten in het 006-ontwerp: de verworpen
-zaklamp-flikker (HORROR §7/P7-argument), de budgetregel (zaklamp = 1
-van 4), het veiligheids-suggestie-beleid (nooit een safe-zone-mechanic)
-en de nachtstaat + werklicht-toggle van de dev room.
-
-Openstaande vervolghaken daarna: TD-005 (deur/la-tween op het
-audioritme), sleutel-deur, la-koppeling, save-integratie,
-inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6).
+Openstaande vervolghaken daarna: taak 007 (monster-AI; abonneert op
+`flashlight_toggled` en `noise_made`), TD-005 (deur/la-tween), TD-004
+(bukken-collider), sleutel-deur/la-koppeling, save-integratie,
+inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6),
+KI-004 (exit-leak, batchen bij audio-/bootstrap-werk).
 
 ## 6. Open aandachtspunten
 
-- **TD-005** (Laag, nieuw): deur/la bewegen instant — tween zodra audio
-  (005) het ritme geeft.
+- **KI-004** (Klein, nieuw): incidentele "ObjectDB leaked"-warning bij
+  afsluiten (ambience-teardown-race); pre-existent, geen 006-regressie.
+- **TD-005** (Laag): deur/la bewegen instant — tween zodra gewenst (audio
+  geeft het ritme al).
 - **TD-004** (Laag): bukken verkleint de collider niet — aflossen bij de
   eerste kruipruimte.
-- **TD-002** (Middel): grafische presets eerste ruwe versie — taak 006/fase 6.
-- **TD-003** (Laag): `brightness` nog niet toegepast — taak 006.
-- **KNOWN_ISSUES**: geen open issues.
+- **TD-002** (Middel): grafische presets eerste ruwe versie — fase 6; in
+  006 bewust niet uitgebreid (kalibratie vergt beeld).
+- **TD-003**: ✅ afgelost in 006 (brightness werkt, D-027).
 - **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB).
 - **Testcode-les (D-021)**: global classes van verwijderbare systemen nooit
-  bij naam noemen in de suite — duck-typen met `has_method()`.
+  bij naam noemen in de suite — duck-typen met `has_method()`; en (les
+  006) lambda-recorders mogen geen referenties vasthouden naar instanties
+  die de test later vriest — waarde vooraf lokaal vangen.
 - **Pushen vanaf de VPS**: de kale vorm `git push -u origin main` (zonder
   pipes) werkt het betrouwbaarst.
 - **Canon-correctieronde nodig (geregistreerd 2026-07-28, opdracht GD bij
   005)**: de GD heeft CRUMP nader bepaald — een **monster** dat door het
   stadion en over het terrein zwerft, de speler achtervolgt en besluipt,
   vaker gehoord dan gezien, met zeer zeldzaam een harde onmenselijke
-  schreeuw (geen timer-jumpscare; in 005 alleen als toekomstige cue
-  mogelijk gemaakt, geen AI-gedrag). Dit vervangt deels "vorm en aard
+  schreeuw (geen timer-jumpscare). Dit vervangt deels "vorm en aard
   bewust onbeschreven" in GAME_BIBLE §6 en STORY §5/§8 — die documenten in
   een aparte, gerichte canon-ronde bijwerken; géén brede lore-herbouw.
-  Nergens in de bestaande docs staat een "speler = CRUMP"-implicatie
-  (gecontroleerd).
 - **Openstaande ontwerpsessie**: de verklaring achter CRUMP en de
   verdwijning — zie `STORY.md` §8. Nodig vóór hoofdstuk 3/4.

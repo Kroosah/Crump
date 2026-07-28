@@ -25,7 +25,7 @@ De volledige visie staat in [docs/GAME_BIBLE.md](docs/GAME_BIBLE.md).
 | Interactiesysteem | ✅ [tasks/003](tasks/003_interaction_system.md) |
 | Inventory | ✅ [tasks/004](tasks/004_inventory.md) |
 | Audio-fundament | ✅ [tasks/005](tasks/005_audio.md) |
-| Licht & sfeer | ⬜ [tasks/006](tasks/006_lighting.md) |
+| Licht & sfeer | 🔵 gebouwd, wacht op lokale GD-test — [tasks/006](tasks/006_lighting.md) |
 | Monster-AI | ⬜ [tasks/007](tasks/007_monster_ai.md) |
 | Hoofdstuk 1 | ⬜ [tasks/008](tasks/008_chapter1.md) |
 

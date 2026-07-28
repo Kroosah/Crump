@@ -11,6 +11,41 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.17 — 2026-07-28
+**Taak 006: licht & sfeer — bijna zwart is de standaardtoestand** *(gebouwd; wacht op lokale GD-test)*
+- **Nacht-environment** dev room: near-black achtergrond, lage koele
+  ambient-vloer (contour-garantie: > 0), exponentiële diepte-fog,
+  filmische tonemap, debanding. De oude heldere verlichting is een
+  verborgen werklicht-rig (editor-/debugoptie, default uit, suite bewaakt).
+- **`game/systems/flashlight/`** (verwijdereenheid): camera-volgend
+  zaklampsysteem met realistische warme bundel en betrouwbare bediening —
+  flikkert nooit willekeurig (D-025). Gesloten bezit-gate op het
+  zaklamp-item via eventgedreven `has_item`-hercontrole; geslaagde toggle
+  = exact één emissie per kanaal (`flashlight_toggled` nieuw op de bus +
+  klik-cue + noise) op de spelerpositie, terwijl het licht de camera
+  volgt. `debug_bezit_bypass` (default uit, alleen debugbuilds).
+- **`game/props/light_tl/`** (verwijdereenheid): TL-armatuur met drie
+  expliciete staten (STABIEL/DEFECT/FLIKKEREND); flikkerpatroon
+  seed-deterministisch mét rustperiodes via `flicker_light.gdshader`
+  (instance-uniform; licht en gloed uit één waarde). Dev room-nachtstaat:
+  2 stabiele ankers (schaduw), 1 flikkerbuis, 5 defect — als data
+  geplaatst met bestaanscheck (D-015).
+- **`game/systems/light_budget/`** (verwijdereenheid): schaduwbudget-
+  bewaking — max 3 level-schaduwlichten + gereserveerd zaklampslot
+  (D-026); boven budget deterministische degradatie op boomvolgorde met
+  één warning per lamp; de lamp zelf blijft aan.
+- **Brightness werkt** (lost TD-003 af): default 1.0, clamp 0.8–1.2
+  (D-027), toegepast als `adjustment_brightness` op de level-Environment
+  via de herbruikbare `environment_tuner`; UI, lampen en budget blijven
+  onaangeraakt. Zaklamp-pickup in de dev room via de echte flow;
+  placeholder-klik + SoundResource (12 geluiden totaal).
+- **F3**: `zaklamp: bezit … · aan/uit` en `licht: n/4 schaduw ·
+  helderheid … · tl: telling` (duck-typed).
+- **Suite 166 → 208**; visibility-checks herijkt op de nachtstaat
+  (KI-001/KI-002-dekking onverkort). D-015-richtingen aangetoond: zonder
+  zaklamp 188, zonder complete lighting 176, zonder inventory 169, alles
+  208 — telkens 0 fouten. `config/version` → 0.0.17.
+
 ## v0.0.16 — 2026-07-28
 **Taak 005: audio-fundament — het spel is hoorbaar**
 - `game/systems/audio/` (verwijdereenheid, keuze A): façade met centrale

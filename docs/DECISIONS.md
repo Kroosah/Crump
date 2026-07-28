@@ -246,3 +246,45 @@ minimale API zonder triggers; kader §8: geen geluid bestaat uitsluitend
 als opvulling. **Let op**: de `audio_cue`-signatuur is vanaf nu een
 geconsumeerd contract (zelfde regime als D-022). Reverb/ruimte-akoestiek
 komt later als eigen systeem (dossier 005 §12), nooit in AudioDirector.
+
+## D-025 — De zaklamp is betrouwbaar en bezit is een gesloten-falende projectie
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review, 3 rondes) / LD · **Status**: actief
+De zaklamp hapert nooit willekeurig: HORROR §7 belooft betrouwbaar
+gereedschap en P7 legt de twijfel in de wéreld — het oude scope-punt
+"subtiele flikker" is verworpen; een ooit falende zaklamp wordt een
+ontworpen gebeurtenis met eigen ontwerpronde. Alleen de zaklampcomponent
+bezit de aan/uit-state. Een geslaagde toggle zendt drie gescheiden feiten
+ná de statewijziging, exact één per kanaal: `flashlight_toggled(is_on)`
+(toestand, geconsumeerd contract vanaf 007), `audio_cue` en `noise_made`
+op de semantische spelerpositie (licht volgt de camera; geluid de
+body-origin). Bezit faalt gesloten: geen inventory of geen zaklamp-item =
+geen state, geen licht, geen enkele emissie — een ontbrekend systeem
+levert nooit gratis bezit op. De projectie is eventgedreven
+(`item_added`/`item_removed` → `has_item`-hercontrole aan de bron, geen
+eigen telling, geen polling); verdwijnt het laatste exemplaar terwijl de
+lamp aan is, dan gaat hij direct uit met alléén `flashlight_toggled(false)`
+(geen klik — geen spelershandeling). `debug_bezit_bypass`: default uit,
+alleen debugbuilds, nooit in gecommitte scènes.
+
+## D-026 — Schaduwbudget: 4 totaal, waarvan 1 gereserveerd zaklampslot
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review) / LD · **Status**: actief
+Maximaal 4 realtime schaduw-werpende lichten tegelijk; levels ontwerpen op
+3 — het vierde slot is van de zaklamp en degradeert nooit. Handhaving in
+drie lagen: de suite laat een configfout niet op main (telling ≤ 3);
+`game/systems/light_budget/` (eigen verwijdereenheid, bewust géén
+framework) geeft runtime één warning per overtollige lamp en degradeert
+deterministisch op scene-boomvolgorde (eerste 3 behouden schaduw, de rest
+verliest alléén `shadow_enabled` — de lamp blijft aan); F3 toont de
+telling. Er bestaat geen dynamische licht-spawning in 006.
+
+## D-027 — Brightness: smalle compensatierange 0.8–1.2 op adjustment_brightness
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review) / LD · **Status**: actief
+Het spel wordt gekalibreerd op 1.0; de slider compenseert schermen, nooit
+lichtontwerp. De oude 0.5–2.0-clamp stamde van vóór het moment dat
+brightness ergens op aangreep (TD-003) en is vervangen: ×2.0 zou het
+near-black naar een dagbeeld tillen, ×0.5 breekt de contour-garantie.
+Waarden buiten de range (ook uit een oude settings.cfg) worden stil
+geclampt. Aangrijpingspunt is uitsluitend `adjustment_brightness` op de
+level-Environment (via `environment_tuner`, `brightness_changed`-signaal):
+CanvasLayer-UI, lampenergieën en het schaduwbudget blijven onaangeraakt.
+Afwijken van de range is een nieuw GD-besluit.

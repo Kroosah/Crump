@@ -90,3 +90,17 @@ van een render — GPU, preset en materialen hadden er niets mee te maken.
 verlichting, contrasterende materialen, en 17 extra smoke-controles die deze
 klasse fout voortaan headless afvangen (bewezen: met de camera weggehaald
 faalt de suite met exitcode 1).
+
+## KI-004 — Incidentele "ObjectDB instances leaked"-melding bij afsluiten van de suite
+**Datum**: 2026-07-28 · **Ernst**: Klein · **Status**: open
+**Waar**: afsluitpad headless-run (ambience-player, `amb_hum_koeling_01.wav`)
+**Omschrijving**: sommige suite-runs eindigen ná "CRUMP sluit af (code 0)"
+met `WARNING: 2 ObjectDB instances were leaked at exit` (een
+AudioStreamWAV + zijn playback) en `1 resources still in use`. Het is een
+teardown-volgorderace bij `quit()` terwijl de ambience-loop nog speelt;
+niet elke run toont hem, de uitslag van de suite is er niet door beïnvloed
+en tijdens het draaien lekt er niets. Geconstateerd tijdens taak 006 op
+runs van de ongewijzigde 005-code — geen regressie van 006.
+**Verwacht**: een afsluitpad zonder leak-warning (ambience expliciet
+stoppen vóór `quit()` in `Bootstrap.shutdown()` is de voor de hand
+liggende kandidaat; batchen bij de eerstvolgende audio- of bootstrap-taak).
