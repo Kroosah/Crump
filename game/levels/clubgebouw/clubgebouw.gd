@@ -319,11 +319,62 @@ const MEUBELS: Array[Dictionary] = [
 	{"pos": Vector3(-6.1, 1.0, 5.34), "size": Vector3(0.16, 0.45, 0.14), "mat": &"accent_rood", "nc": true},
 ]
 
-## Deuren (echte props, bestaanscheck) — gevuld in bouwblok 3.
-const DEUREN: Array[Dictionary] = []
+## Deuren: begintoestanden volgen tasks/008 §3, met één bewuste
+## fase-C-afwijking: de onderhoudsruimte is nu NIET op slot (het slot
+## hoort bij de sleutelflow van fase D) zodat de GD elke ruimte kan
+## beoordelen. Bestuurskamer, keuken en terras zijn wél op slot: dat
+## zijn wereldgrenzen, geen route.
+const DEUREN: Array[Dictionary] = [
+	{"name": "DeurHoofdentree", "pos": Vector3(-0.52, 0.0, 7.1),
+		"settings": {"prompt_open": "Open buitendeur", "prompt_close": "Sluit buitendeur"}},
+	{"name": "DeurHalKantine", "pos": Vector3(2.1, 0.0, 3.32), "rot": 90.0},
+	{"name": "DeurBestuurskamer", "pos": Vector3(2.1, 0.0, 6.24), "rot": 90.0,
+		"settings": {"locked": true, "prompt_locked": "Op slot — Bestuurskamer"}},
+	{"name": "DeurHalGang", "pos": Vector3(-2.1, 0.0, 4.82), "rot": 90.0},
+	{"name": "DeurKeuken", "pos": Vector3(8.8, 0.0, 3.6),
+		"settings": {"locked": true, "prompt_locked": "Op slot — Keuken"}},
+	{"name": "DeurTerras", "pos": Vector3(12.3, 0.0, -2.48), "rot": 90.0,
+		"settings": {"locked": true, "prompt_locked": "Op slot — Terras"}},
+	{"name": "DeurKleedkamer3", "pos": Vector3(-4.42, 0.0, 3.3)},
+	{"name": "DeurKleedkamer4", "pos": Vector3(-9.82, 0.0, 3.3)},
+	{"name": "DeurOnderhoudsruimte", "pos": Vector3(-13.42, 0.0, 3.3)},
+	{"name": "DeurToiletten", "pos": Vector3(-5.62, 0.0, 5.3)},
+	{"name": "Nooddeur", "pos": Vector3(-15.1, 0.0, 4.82), "rot": 90.0,
+		"settings": {"prompt_open": "Duw nooddeur open", "prompt_close": "Trek nooddeur dicht"}},
+]
 
-## TL-armaturen (echte props, bestaanscheck) — gevuld in bouwblok 3.
-const NIGHT_TLS: Array[Dictionary] = []
+## TL-armaturen: weinig werkend licht is het punt (kader 006). Stabiel:
+## hal, kantine-bar (schaduwslot 2), gang-oost (schaduwslot 3) en
+## gang-west als ankers plus kleedkamer 3; de flikkerbuis hangt
+## halverwege de gang (tasks/008 §4); de rest is defect. Schaduwbudget:
+## bar + gang-oost + lichtmast = 3, zaklampslot blijft vrij (D-026).
+const NIGHT_TLS: Array[Dictionary] = [
+	{"name": "TlHal", "pos": Vector3(0.0, 2.52, 4.6)},
+	{"name": "TlKantineBar", "pos": Vector3(10.6, 2.62, 2.4),
+		"settings": {"cast_shadow": true}},
+	{"name": "TlKantineMidden", "pos": Vector3(7.2, 2.62, -0.5),
+		"settings": {"state": 1}},
+	{"name": "TlKantineWest", "pos": Vector3(4.0, 2.62, -2.5),
+		"settings": {"state": 1}},
+	{"name": "TlGangOost", "pos": Vector3(-3.8, 2.32, 4.3),
+		"settings": {"cast_shadow": true}},
+	{"name": "TlGangFlikker", "pos": Vector3(-7.2, 2.32, 4.3),
+		"settings": {"state": 2, "flicker_seed": 11}},
+	{"name": "TlGangDefect", "pos": Vector3(-10.6, 2.32, 4.3),
+		"settings": {"state": 1}},
+	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3)},
+	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0)},
+	{"name": "TlDouche3", "pos": Vector3(-3.8, 2.22, -3.0),
+		"settings": {"state": 1}},
+	{"name": "TlKleedkamer4", "pos": Vector3(-9.3, 2.42, 1.0),
+		"settings": {"state": 1}},
+	{"name": "TlDouche4", "pos": Vector3(-9.0, 2.22, -3.0),
+		"settings": {"state": 1}},
+	{"name": "TlToiletten", "pos": Vector3(-5.1, 2.32, 6.2),
+		"settings": {"state": 1}},
+	{"name": "TlOnderhoud", "pos": Vector3(-13.2, 2.22, 1.2),
+		"settings": {"state": 1}},
+]
 
 var _materials := {}
 var _unit_mesh: BoxMesh
