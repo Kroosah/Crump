@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/systems/flashlight/flashlight.gd" id="1"]
+
+[node name="Flashlight" type="Node3D" groups=["flashlight"]]
+script = ExtResource("1")
+
+[node name="Spot" type="SpotLight3D" parent="."]
+unique_name_in_owner = true
+visible = false
+shadow_enabled = true

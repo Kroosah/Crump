@@ -53,3 +53,10 @@ signal item_removed(item: Resource)
 ## stilte, geen fout. sound_id is een StringName — de grensvaluta van
 ## keuze B2; de akoestische data leeft in SoundResources.
 signal audio_cue(sound_id: StringName, position: Vector3)
+
+## De zaklamp is werkelijk van toestand gewisseld (taak 006). Een FEIT, geen
+## commando: niets kan de zaklamp via dit signaal besturen — alleen de
+## zaklampcomponent bezit de aan/uit-state en zendt dit, uitsluitend ná een
+## geslaagde statewijziging. CRUMP's zicht (taak 007) abonneert zich; zonder
+## ontvanger betekenisloos (D-015).
+signal flashlight_toggled(is_on: bool)

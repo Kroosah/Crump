@@ -23,6 +23,11 @@ const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
 ## ambience een levelwissel overleeft en Esc óók akoestische stilte is.
 const AUDIO_SYSTEM_SCENE := "res://game/systems/audio/audio_system.tscn"
 
+## Het zaklampsysteem (taak 006), zelfde patroon als de interactor: per
+## level gespawnd, ná de inventory (SceneHost-kind uit _ready) zodat de
+## initiële bezitssynchronisatie gegarandeerd een inventory aantreft.
+const FLASHLIGHT_SCENE := "res://game/systems/flashlight/flashlight.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -94,6 +99,7 @@ func _load_level(scene_path: String) -> void:
 	Log.info("Bootstrap: level geladen: %s" % scene_path)
 	_spawn_player()
 	_spawn_interactor()
+	_spawn_flashlight()
 
 
 ## Zet de speler op het PlayerSpawn-punt van het geladen level (D-018).
@@ -156,6 +162,15 @@ func _spawn_interactor() -> void:
 	var interactor: Node = load(INTERACTOR_SCENE).instantiate()
 	_current_level.add_child(interactor)
 	Log.info("Bootstrap: interactor actief")
+
+
+func _spawn_flashlight() -> void:
+	if not ResourceLoader.exists(FLASHLIGHT_SCENE):
+		Log.info("Bootstrap: geen zaklampsysteem — spel draait zonder zaklamp")
+		return
+	var flashlight: Node = load(FLASHLIGHT_SCENE).instantiate()
+	_current_level.add_child(flashlight)
+	Log.info("Bootstrap: zaklampsysteem actief")
 
 
 func _verify_autoloads() -> void:

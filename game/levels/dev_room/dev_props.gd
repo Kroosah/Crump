@@ -35,6 +35,18 @@ const TEST_PROPS: Array[Dictionary] = [
 		},
 	},
 	{
+		# De zaklamp ligt als gewone pickup in de wereld (dossier 006 keuze
+		# D): de GD verkrijgt hem via de echte flow — nooit een debug-give,
+		# zodat de lokale test de uiteindelijke zoek-flow niet vervalst.
+		"path": "res://game/props/pickup_item/pickup_item.tscn",
+		"name": "TestPickupZaklamp",
+		"position": Vector3(-4.0, 1.09, 3.0),
+		"settings": {
+			"item": "res://game/systems/inventory/items/zaklamp.tres",
+			"prompt": "Pak zaklamp op",
+		},
+	},
+	{
 		"path": "res://game/props/note_readable/note_readable.tscn",
 		"name": "TestNote",
 		"position": Vector3(0.0, 1.7, -9.73),

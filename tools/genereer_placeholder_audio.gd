@@ -52,6 +52,11 @@ func _init() -> void:
 	# (100 Hz en 50 Hz over exact 2,0 s) → naadloze herstart.
 	_write_wav(AMB_DIR + "/amb_hum_koeling_01.wav", _hum(2.0))
 
+	# Zaklamp-klik (taak 006): één droge schakelaartik — informatie, geen
+	# jingle (kader 005 §8). Bewust als laatste gegenereerd: zo blijft de
+	# RNG-volgorde (en dus elke eerdere placeholder) byte-gelijk.
+	_write_wav(SFX_DIR + "/sfx_flashlight_click_01.wav", _click())
+
 	print("Placeholder-audio gegenereerd (deterministisch, seed 20260728).")
 	quit(0)
 
@@ -116,6 +121,20 @@ func _ticks() -> PackedFloat32Array:
 		var gap := PackedFloat32Array()
 		gap.resize(int(0.03 * MIX_RATE))
 		samples.append_array(gap)
+	return samples
+
+
+## Zaklamp-klik: ultrakorte heldere burst + lage plok — een mechanische
+## schakelaar, geen elektronische piep.
+func _click() -> PackedFloat32Array:
+	var samples := _noise_burst(0.03, 0.6, 3000.0)
+	var count := int(0.04 * MIX_RATE)
+	var thunk := PackedFloat32Array()
+	thunk.resize(count)
+	for i in count:
+		var envelope := exp(-12.0 * float(i) / float(count))
+		thunk[i] = sin(TAU * 220.0 * float(i) / MIX_RATE) * 0.35 * envelope
+	samples.append_array(thunk)
 	return samples
 
 
