@@ -39,6 +39,16 @@ start van 005 herzien conform dit kader).*
    - een geweigerde pickup veroorzaakt geen pickup-audio;
    - `noise_made` en hoorbare audio blijven aantoonbaar afzonderlijke
      concepten en signalen (aparte emissies, apart te testen).
+8. **Geen geluid bestaat uitsluitend als opvulling** *(aanvulling GD,
+   correctieronde 2026-07-28)*: iedere hoorbare gebeurtenis dient
+   minimaal één doel — **sfeer**, **informatie** of **spanning** — en dat
+   doel is benoembaar bij review. Decoratieve audio die alleen leegte
+   opvult is strijdig met de Design Pillars (P2: stilte is de
+   standaardtoestand; P4: wat vaak klinkt verliest lading; P7: elk
+   geluid dat niets betekent, traint de speler om geluid te negeren).
+   Praktisch: elke SoundResource en elke ambience-laag krijgt bij
+   toevoeging zijn doel in één woord in de beschrijvende commit/dossier;
+   "het was zo stil" is nooit een reden.
 
 ## Doel
 
@@ -171,6 +181,43 @@ verbiedt het kader, en het lijmt de twee concepten juist aan elkaar);
 per-prop-signalen als `door_creaked` (signaalexplosie, bus vervuilt);
 directe aanroepen op het audiosysteem vanuit props (koppeling, en
 commando's horen niet op props thuis).
+
+**Keuze B2 — expliciete evaluatie: StringName-id vs. AudioCueResource
+(correctieronde GD, 2026-07-28).** Besluit: **het blijft een
+`StringName`-id op de bus** — en dat is geen breuk met resource-first,
+maar de toepassing ervan op de juiste laag:
+
+- *Resource-first geldt voor de data, niet voor de grensovergang.* De
+  audiodata ís al een resource (`SoundResource`, §3: streams, bus,
+  volume, pitch, afstand). Een `AudioCueResource` zou daar niets aan
+  toevoegen behalve een tweede bestand dat een id omhult — pure
+  indirectie, het soort over-engineering dat P4 verbiedt. Alles wat een
+  cue-resource zou kunnen dragen, woont al in de SoundResource.
+- *De id is de enige vorm die D-015 volledig overleeft.* Zou een prop een
+  audio-resource als export dragen, dan verwijst zijn scène (of het
+  level dat hem plaatst) hard naar een bestand in
+  `game/systems/audio/` — en dan breekt het weggooien van het
+  audiosysteem elke scène die ooit een geluid noemde. Een StringName
+  verwijst naar níéts: zonder audiosysteem is hij een betekenisloos
+  woordje, precies zoals `noise_made` zonder monster betekenisloos is.
+  Dit is dezelfde discipline als D-021 (basistypen op de bus) en dezelfde
+  reden waarom items richting saves op id's draaien (dossier 004 §6):
+  **id's zijn onze grensvaluta; resources zijn onze binnenlandse
+  economie.**
+- *Het bekende risico van strings — typo's falen stil — wordt actief
+  afgedekt*: (1) een onbekend id logt luid (`push_warning`) bij de eerste
+  trigger; (2) de suite draait de gebouwde bronnen end-to-end af (deur,
+  pickup, voetstap) en faalt als hun id niet tot een SoundResource
+  resolvet; (3) de id-discipline uit §3 (uniek, niet leeg, mapscan) is
+  identiek aan het bewezen 004-patroon. Daarmee is het restrisico een
+  typo in een nog-nooit-getriggerde toekomstige prop — die bij de eerste
+  playtest luid opduikt.
+
+**Verworpen**: `AudioCueResource` (indirectie zonder eigen data; en met
+eigen data zou hij de SoundResource dupliceren); props die rechtstreeks
+een `SoundResource` exporteren (editor-gemak en typo-vrij, maar de
+D-015-breuk hierboven weegt zwaarder — en het editor-gemak bestaat
+alsnog: de id-lijst staat in één map).
 
 **Keuze C — plaats in de boom: SceneHost-kind via het bestaande
 bootstrap-spawnpatroon.** *(P6 systemen-boven-regie, KI-003)* Pauzeert mee
@@ -315,13 +362,35 @@ wel, en alleen achter F3 in debugbuilds.)*
 | Placeholder-geluiden sturen de tuning verkeerd (synthetisch ≠ echt) | laag | placeholders bewust neutraal/kort; tuning-pass hoort bij echte assets (contentwerk, buiten 005) |
 | Pool-stelen kapt zelden een belangrijk geluid af | laag | N=12 export; debug-log maakt het zichtbaar; prioriteiten pas bij bewezen behoefte |
 
-## 12. Exit-criteria taak 005
+## 12. Toekomstparagraaf — reverb en ruimte-akoestiek (niet in 005)
+
+Verschillende ruimtetypes (kantine, kleedkamer, gang, kelder, buiten)
+krijgen later verschillende akoestische eigenschappen — de galm van een
+betegelde kleedkamer vertelt iets anders dan de droge kantine of het open
+veld, en die leesbaarheid ondersteunt P3 (richting en plaats inschatten)
+en P5 (de wereld heeft een eigen lichaam). Vastgelegde kaders daarvoor,
+zonder nu iets te bouwen:
+
+- Dit wordt een **zelfstandig, verwijderbaar systeem** (denkrichting:
+  akoestiek-zones per ruimte die de effect-keten van een bus of de
+  pool-spelers beïnvloeden), met een eigen ontwerpronde wanneer er échte
+  ruimtes zijn (op z'n vroegst bij de sfeerpass van taak 006, eerder
+  logisch bij het levelwerk van fase 4/5).
+- **AudioDirector wordt hiervan geen eigenaar** — hij blijft de dunne
+  mixer; het akoestieksysteem wordt een buur van `game/systems/audio/`,
+  volgens dezelfde regels (D-015, geen God Object).
+- Tot die tijd geldt: SoundResources coderen geen ruimte-akoestiek in
+  hun samples (geen "ingebakken galm"), zodat ze later zone-neutraal
+  blijven.
+
+## 13. Exit-criteria taak 005
 
 1. Dit ontwerp door de GD gereviewd en akkoord; daarna bouw in blokken
    (datamodel+tools → afspeelsysteem → bronnen aansluiten →
    tests/F3/registers), commit per blok.
-2. De vier kader-tests (§10.1) plus §10.2–10.6 groen; volledige suite
-   groen; import schoon.
+2. De vier kader-tests (§10.1) plus §10.2–10.6 groen — inclusief de
+   bekende-id-check uit keuze B2 en het opvulverbod (kader §8: elk
+   geluid heeft een benoemd doel); volledige suite groen; import schoon.
 3. AudioDirector ongegroeid (alleen mixer); alle player-lifecycle in
    `game/systems/audio/`; D-015 drie richtingen aantoonbaar.
 4. Stilte-standaard aantoonbaar: vers systeem zonder geactiveerde lagen
