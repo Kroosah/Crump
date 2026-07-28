@@ -11,6 +11,32 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.16 — 2026-07-28
+**Taak 005: audio-fundament — het spel is hoorbaar**
+- `game/systems/audio/` (verwijdereenheid, keuze A): façade met centrale
+  cue-resolver (mapscan-registry, dubbele/lege id's loggen luid, onbekende
+  cue = warning zonder geclaimde player), one-shot-pool (12×3D + 4×vlak;
+  exacte event-positie, alle akoestiek uit SoundResource-data,
+  deterministisch stelen bij uitputting, volledige reset bij hergebruik),
+  ambience-lagen (standaard álles uit; levels activeren expliciet) en de
+  minimale muziek-cue-API zonder triggers. AudioDirector ongegroeid.
+- **`audio_cue(sound_id, position)`** op de bus: hoorbaar feit, strikt
+  gescheiden van `noise_made` (kader §1); StringName als grensvaluta (B2).
+  Speler (per-gait voetstappen), deur (kraak + slot-rammel), la en pickup
+  (alleen ná accepted) zenden nu beide feiten; het briefje blijft stil.
+- **Placeholder-audio**: deterministische generator
+  (`tools/genereer_placeholder_audio.gd`, vaste seed) → 15 WAV's + 11
+  SoundResources met doelentabel (kader §8) in het dossier. Dev room zet
+  zijn nulpunt-laag (koeling/tl-zoem) expliciet zelf aan.
+- **F3**: "actieve geluiden: n/16 · cue-ids | amb: lagen" (duck-typed).
+- **Suite 145 → 166**: alle vier kader-tests (one-shot overleeft de
+  verdwenen prop, max één cue per actie, geen cue bij rejected,
+  kanalen onafhankelijk) + datamodel/id-discipline, pool zonder lek incl.
+  finished-release (headless-driver speelt écht af), veilig falen,
+  tweede-systeem-doofheid, ambience-standaard-stil, muziek-API, F3.
+  D-015: zonder audio 145, zonder interactie 109, alles 166.
+- `config/version` → 0.0.16.
+
 ## v0.0.15 — 2026-07-28
 **Taak 004: inventory — itemmodel, kern en request/resolved-pickupflow**
 - `game/systems/inventory/`: `ItemResource` (id/display_name/description/

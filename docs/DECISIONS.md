@@ -230,3 +230,19 @@ configuratiefout die de suite afvangt. **Terugweg**: een `max_stack`-veld
 op ItemResource (default 1) + telling — additief, geen breuk in model of
 bus. `ItemResource` is runtime read-only configuratiedata: niemand muteert
 de velden, de inventory bewaart alleen referenties.
+
+## D-024 — Hoorbare audio: eigen bus-feit, eigen verwijderbaar systeem, id's als grensvaluta
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review, 2 rondes) / LD · **Status**: actief
+`audio_cue(sound_id: StringName, position: Vector3)` is het hoorbare feit
+op de bus, strikt gescheiden van `noise_made` (gameplay-gehoor): geen van
+beide veroorzaakt ooit automatisch de ander; bronnen zenden bewust beide
+voor dezelfde actie. Het afspelen leeft in `game/systems/audio/`
+(resolver + one-shot-pool + ambience + muziek-API) — **AudioDirector
+blijft de dunne mixer** en groeit niet (God-Object-besluit). Id's zijn de
+grensvaluta (keuze B2): props/speler dragen alleen StringNames, alle
+akoestiek leeft in SoundResources binnen het systeem. Ambience staat
+standaard uit (levels activeren expliciet); muziek heeft alleen de
+minimale API zonder triggers; kader §8: geen geluid bestaat uitsluitend
+als opvulling. **Let op**: de `audio_cue`-signatuur is vanaf nu een
+geconsumeerd contract (zelfde regime als D-022). Reverb/ruimte-akoestiek
+komt later als eigen systeem (dossier 005 §12), nooit in AudioDirector.

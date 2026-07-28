@@ -1,6 +1,25 @@
 # Taak 005 — Audio-fundament
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 technisch ontwerp ter review (GD), geen implementatie · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: ✅ gebouwd conform ontwerp (v0.0.16), **wacht op lokale GD-test** · **Vereist**: 001, 002
+
+> **Gebouwd 2026-07-28** in vier blokken. Suite 145 → 166 (alle
+> kader-tests §10.1 incl. finished-release — de headless-driver bleek
+> streams écht af te spelen, dus pool-vrijgave is tóch headless getest);
+> D-015: zonder audio 145, zonder interactie 109, alles 166. AudioDirector
+> ongegroeid. Canonnotitie: de zeldzame CRUMP-schreeuw wordt later een
+> gewone cue via dit fundament (007+), geen gedrag in 005.
+>
+> **Doelentabel placeholder-geluiden (kader §8)** — elk geluid dient een
+> benoemd doel:
+>
+> | Cue-id | Doel | Toelichting |
+> |---|---|---|
+> | `footstep_walk/sneak/run/crouch` | informatie | de speler hoort zijn eigen waarneembaarheids-prijs (P3) |
+> | `door_creak_open/close` | informatie | deurgebruik is een gebeurtenis, ook voor het eigen oor |
+> | `door_rattle` | informatie | "op slot" hoorbaar bevestigd zonder UI |
+> | `drawer_open/close` | informatie | idem la |
+> | `item_pickup` | informatie | opname bevestigd; bewust subtiel, geen beloningsjingle |
+> | `amb_hum_koeling` | sfeer | het stilte-nulpunt van HORROR §3; het wégvallen ervan wordt later een gebeurtenis |
 
 Geluid is in CRUMP geen aankleding maar het belangrijkste horror-instrument
 (GAME_BIBLE pijler 1, HORROR_GUIDELINES §3). Deze taak bouwt het fundament:

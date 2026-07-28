@@ -35,7 +35,7 @@ func _build_info() -> String:
 		"level: %s" % _current_level_name(),
 		"speler: %s" % _player_position_text(),
 		"inventory: %s" % _inventory_text(),
-		"actieve geluiden: —",  # haak: vult in taak 005
+		"actieve geluiden: %s" % _audio_text(),
 	]
 	return "\n".join(lines)
 
@@ -70,3 +70,25 @@ func _inventory_text() -> String:
 	for item in items:
 		ids.append(String(item.id))
 	return "%s · %s" % [text, ", ".join(ids)]
+
+
+func _audio_text() -> String:
+	# Haak taak 005: null-veilig via de groep, duck-typed — de overlay
+	# overleeft elke verwijdering (zelfde patroon als de inventory-regel).
+	var audio := get_tree().get_first_node_in_group("audio_system")
+	if audio == null or not audio.has_method("get_active_one_shots"):
+		return "—"
+	var text: String = audio.get_pool_status()
+	var ids: Array = audio.get_active_one_shots()
+	if not ids.is_empty():
+		var names := PackedStringArray()
+		for id in ids:
+			names.append(String(id))
+		text += " · " + ", ".join(names)
+	var layers: Array = audio.get_active_ambience()
+	if not layers.is_empty():
+		var layer_names := PackedStringArray()
+		for layer in layers:
+			layer_names.append(String(layer))
+		text += " | amb: " + ", ".join(layer_names)
+	return text

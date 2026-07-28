@@ -17,6 +17,10 @@ const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
 ## blijven pickups liggen (nette degradatie) en slaan de inventorytests over.
 const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
 
+## Het audiosysteem (taak 005); zelfde D-015-afspraak. Zonder deze map
+## draait het spel stil en slaan de audiotests over.
+const AUDIO_SYSTEM_SCENE := "res://game/systems/audio/audio_system.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -156,6 +160,14 @@ func run(bootstrap: Node) -> int:
 		failures = await _check_inventory(tree, failures)
 	else:
 		Log.info("TEST INFO · inventory-systeem ontbreekt — inventorytests overgeslagen (D-015)")
+
+	# 16. Audio (taak 005) — zelfde D-015-afspraak; ook hier zijn de
+	# warnings van de bewust geteste faalpaden (onbekende cue-id, tweede
+	# systeem) het bewijs, geen bug.
+	if ResourceLoader.exists(AUDIO_SYSTEM_SCENE):
+		failures = await _check_audio(tree, failures)
+	else:
+		Log.info("TEST INFO · audiosysteem ontbreekt — audiotests overgeslagen (D-015)")
 
 	return failures
 
@@ -932,6 +944,226 @@ func _check_inventory_flow(tree: SceneTree, player, props_root: Node,
 			"F3 toont bezetting en item-id's ('%s')" % expected, failures)
 		_send_action_event(&"debug_overlay")
 		await _wait_physics_frames(tree, 2)
+	return failures
+
+
+## Audiotests (taak 005, dossier §10). Duck-typed: deze suite noemt
+## SoundResource of audio-klassen nooit bij naam (D-021).
+func _check_audio(tree: SceneTree, failures: int) -> int:
+	# §10.2 — datamodel en id-discipline over de sounds-map.
+	const SOUNDS_DIR := "res://game/systems/audio/sounds"
+	var seen_ids := {}
+	var sounds_valid := true
+	var sound_files := DirAccess.get_files_at(SOUNDS_DIR)
+	for file in sound_files:
+		if not file.ends_with(".tres"):
+			continue
+		var sound: Resource = load(SOUNDS_DIR + "/" + file)
+		if sound == null or String(sound.get(&"id")).is_empty() \
+				or (sound.get(&"streams") as Array).is_empty() \
+				or not AudioDirector.BUSES.has(sound.get(&"bus")):
+			sounds_valid = false
+			Log.error("geluidsdefinitie ongeldig: %s" % file)
+			continue
+		var sound_id: StringName = sound.get(&"id")
+		if seen_ids.has(sound_id):
+			failures = _check(false, "cue-id '%s' is uniek (botsing: %s en %s)"
+				% [sound_id, seen_ids[sound_id], file], failures)
+		seen_ids[sound_id] = file
+	failures = _check(sounds_valid and seen_ids.size() >= 11,
+		"alle geluidsdefinities laden met geldige id/streams/bus (%d)"
+		% seen_ids.size(), failures)
+
+	# Eén autoritatief audiosysteem, door de bootstrap gespawnd.
+	var systems := tree.get_nodes_in_group("audio_system")
+	failures = _check(systems.size() == 1,
+		"exact één audiosysteem in de groep (gevonden: %d)" % systems.size(),
+		failures)
+	if systems.is_empty():
+		return failures
+	var audio = systems[0]
+	var one_shots = audio.find_child("OneShots", true, false)
+	failures = _check(one_shots != null, "one-shot-pool aanwezig", failures)
+
+	# §10.3 — onbekende cue-id: warning, geen crash, geen geclaimde player.
+	one_shots.stop_all()
+	EventBus.audio_cue.emit(&"bestaat_niet_xyz", Vector3.ZERO)
+	failures = _check(audio.get_active_one_shots().is_empty(),
+		"onbekende cue-id claimt geen player (veilig falen)", failures)
+
+	# Scheiding van concepten (kader §1): noise_made veroorzaakt nooit
+	# audio, audio_cue veroorzaakt nooit noise.
+	var noises: Array = []
+	var noise_recorder := func(position: Vector3, loudness: float) -> void:
+		noises.append([position, loudness])
+	EventBus.noise_made.connect(noise_recorder)
+	EventBus.noise_made.emit(Vector3.ZERO, 5.0)
+	failures = _check(audio.get_active_one_shots().is_empty(),
+		"noise_made veroorzaakt géén hoorbare audio", failures)
+	EventBus.audio_cue.emit(&"door_rattle", Vector3(1, 1, 1))
+	var actief: Array = audio.get_active_one_shots()
+	failures = _check(noises.size() == 1
+		and actief.size() == 1 and actief[0] == &"door_rattle",
+		"audio_cue veroorzaakt géén noise_made (kanalen onafhankelijk)",
+		failures)
+	EventBus.noise_made.disconnect(noise_recorder)
+
+	# §10.3 — pool: claim/release zonder lek, deterministisch stelen.
+	var player_count := audio.find_children("", "AudioStreamPlayer3D",
+		true, false).size()
+	for i in 20:
+		EventBus.audio_cue.emit(&"door_rattle", Vector3(i, 1, 0))
+	failures = _check(audio.get_active_one_shots().size() <= player_count
+		and audio.find_children("", "AudioStreamPlayer3D", true, false).size()
+			== player_count,
+		"pool-uitputting steelt deterministisch, spawnt nooit bij", failures)
+	one_shots.stop_all()
+	failures = _check(audio.get_active_one_shots().is_empty(),
+		"stop_all geeft de hele pool vrij (geen lek)", failures)
+
+	# §10.4 — ambience: de dev room heeft zijn nulpunt expliciet aangezet;
+	# een vers (niet-autoritatief) systeem is standaard volledig stil.
+	var lagen: Array = audio.get_active_ambience()
+	failures = _check(lagen.size() == 1 and lagen[0] == &"amb_hum_koeling",
+		"dev room activeerde zijn nulpunt-laag expliciet", failures)
+	var fresh: Node = load(AUDIO_SYSTEM_SCENE).instantiate()
+	tree.root.add_child(fresh)
+	await _wait_physics_frames(tree, 2)
+	failures = _check(fresh.get_active_ambience().is_empty()
+		and fresh.get_active_one_shots().is_empty(),
+		"een vers audiosysteem is standaard stil (P2)", failures)
+	# De tweede instantie is doof: één cue → alleen het autoritatieve
+	# systeem claimt een player.
+	EventBus.audio_cue.emit(&"door_rattle", Vector3.ZERO)
+	failures = _check(audio.get_active_one_shots().size() == 1
+		and fresh.get_active_one_shots().is_empty(),
+		"tweede audiosysteem blijft doof voor de bus", failures)
+	one_shots.stop_all()
+	fresh.queue_free()
+
+	# §10.5 — muziek-API: start/stop zonder externe triggers; veilig falen.
+	var music = audio.find_child("Music", true, false)
+	audio.play_music_cue(&"amb_hum_koeling", 0.0)
+	failures = _check(music.get_current_cue() == &"amb_hum_koeling",
+		"muziek-cue start via de API", failures)
+	audio.stop_music_cue(0.0)
+	failures = _check(music.get_current_cue() == &"",
+		"muziek-cue stopt via de API", failures)
+	audio.play_music_cue(&"bestaat_niet_xyz", 0.0)
+	failures = _check(music.get_current_cue() == &"",
+		"onbekende muziek-cue faalt veilig", failures)
+
+	# Functionele keten door de echte bronnen.
+	var player = tree.get_first_node_in_group("player")
+	var props_root: Node = tree.root.find_child("TestProps", true, false)
+	if player == null or props_root == null \
+			or not ResourceLoader.exists(INTERACTOR_SCENE):
+		Log.info("TEST INFO · geen speler/interactor — functionele audiotests overgeslagen")
+		return failures
+	failures = await _check_audio_flow(tree, player, props_root, audio,
+		one_shots, failures)
+	return failures
+
+
+## Functionele audioketen (dossier §10.1): deur-cue, pickup-cue exact één
+## keer en pas na accepted, geen cue bij rejected, one-shot overleeft de
+## verdwenen bronprop, en de F3-regel toont het geheel.
+func _check_audio_flow(tree: SceneTree, player, props_root: Node,
+		audio, one_shots, failures: int) -> int:
+	var cues: Array = []
+	var cue_recorder := func(sound_id: StringName, position: Vector3) -> void:
+		cues.append([sound_id, position])
+	EventBus.audio_cue.connect(cue_recorder)
+
+	# Deuractie → exact de bedoelde cue, hoorbaar op de deurpositie (§10.3).
+	# Kort na de interactie meten: de headless-driver speelt streams écht
+	# af, dus na de cue-duur is de player alweer netjes vrijgegeven.
+	var door: Node = props_root.get_node_or_null("TestDoor")
+	one_shots.stop_all()
+	await _aim(tree, player, Vector3(-3.5, 0.05, -2.3), 0.0, 0.0)
+	cues.clear()
+	_send_action_event(&"interact")
+	await _wait_physics_frames(tree, 4)
+	var door_active: Array = audio.get_active_one_shots()
+	var door_ok: bool = door != null and cues.size() == 1 \
+		and cues[0][0] == door.cue_open \
+		and door_active.size() == 1 and door_active[0] == door.cue_open
+	failures = _check(door_ok,
+		"deur opent met exact zijn eigen cue (%s)"
+		% (cues[0][0] if cues.size() == 1 else "geen/meer"), failures)
+	var positioned := false
+	for p3d in audio.find_children("", "AudioStreamPlayer3D", true, false):
+		if p3d.playing and p3d.global_position.distance_to(
+				door.global_position) < 1.5:
+			positioned = true
+	failures = _check(positioned,
+		"deur-cue speelt 3D op de exacte deurpositie", failures)
+	await _wait_physics_frames(tree, 35)
+	# Deur weer dicht (zijaanzicht, zoals in de 003-tests).
+	await _aim(tree, player, Vector3(-2.8, 0.05, -4.5), PI / 2, 0.0)
+	cues.clear()
+	_send_action_event(&"interact")
+	await _wait_physics_frames(tree, 4)
+	failures = _check(cues.size() == 1 and door != null
+		and cues[0][0] == door.cue_close,
+		"deur sluit met exact zijn eigen cue", failures)
+	await _wait_physics_frames(tree, 35)
+
+	# Rejected pickup → géén pickup-cue (kader §7.3).
+	var inventory = tree.get_first_node_in_group("inventory")
+	var key_item: Resource = load(
+		"res://game/systems/inventory/items/sleutel_kleedkamer.tres")
+	if inventory != null:
+		var pickup = _spawn_test_pickup(props_root, key_item)
+		var original_capacity: int = inventory.capacity
+		inventory.capacity = inventory.get_items().size()
+		one_shots.stop_all()
+		await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
+		cues.clear()
+		await _interact_and_listen(tree)
+		failures = _check(cues.is_empty()
+			and audio.get_active_one_shots().is_empty(),
+			"geweigerde pickup veroorzaakt geen pickup-cue", failures)
+
+		# Accepted → exact één cue, en de one-shot overleeft de verdwenen
+		# bronprop (kader §7.1/§7.2). Binnen de cue-duur meten: de prop is
+		# dan al gefreed terwijl de pool-player nog speelt.
+		inventory.capacity = original_capacity
+		cues.clear()
+		_send_action_event(&"interact")
+		await _wait_physics_frames(tree, 4)
+		var pickup_active: Array = audio.get_active_one_shots()
+		var pickup_cue_ok: bool = cues.size() == 1 \
+			and cues[0][0] == &"item_pickup" \
+			and not is_instance_valid(pickup) \
+			and pickup_active.size() == 1 and pickup_active[0] == &"item_pickup"
+		failures = _check(pickup_cue_ok,
+			"accepted pickup: exact één cue die de verdwenen prop overleeft",
+			failures)
+		# En na de cue-duur geeft `finished` de player vanzelf terug aan de
+		# pool — release zonder lek, zonder stop_all.
+		await _wait_physics_frames(tree, 30)
+		failures = _check(audio.get_active_one_shots().is_empty(),
+			"one-shot player komt na afloop vanzelf vrij (finished)", failures)
+		inventory.remove_item(StringName(key_item.get(&"id")))
+	else:
+		Log.info("TEST INFO · geen inventory — pickup-audiotests overgeslagen")
+
+	# F3-regel toont pool-status, spelende cue en ambience-laag.
+	var overlay := tree.root.find_child("DebugOverlay", true, false)
+	var info_label: Label = overlay.find_child("InfoLabel", true, false) \
+		if overlay != null else null
+	if info_label != null:
+		_send_action_event(&"debug_overlay")
+		await _wait_physics_frames(tree, 3)
+		failures = _check("actieve geluiden: " in info_label.text
+			and "amb: amb_hum_koeling" in info_label.text,
+			"F3 toont actieve geluiden en ambience-laag", failures)
+		_send_action_event(&"debug_overlay")
+		await _wait_physics_frames(tree, 2)
+
+	one_shots.stop_all()
+	EventBus.audio_cue.disconnect(cue_recorder)
 	return failures
 
 

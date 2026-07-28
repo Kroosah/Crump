@@ -5,17 +5,23 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (na implementatie taak 004, v0.0.15)
+**Laatst bijgewerkt**: 2026-07-28 (na implementatie taak 005, v0.0.16)
 
 ---
 
 ## 1. Laatste afgeronde taak
 
-**Taak 004 — Inventory** ✅ afgerond en **lokaal goedgekeurd door de GD
-(2026-07-28)**: positieve flow bevestigd (pickup, inventory-update, F3
-`inventory: 1/6 · sleutel_kleedkamer`); reject-flow en invarianten
-geaccepteerd op de geautomatiseerde dekking; geen hoorbare audio =
-bewust taak 005 (bindend kader in dat dossier, commit `409c718`).
+**Taak 005 — Audio-fundament** ✅ gebouwd conform het goedgekeurde
+ontwerp (v0.0.16) — **wacht op lokale GD-test** (hardware: mix,
+3D-positionering, oor). Opgeleverd: `audio_cue`-kanaal strikt gescheiden
+van `noise_made`; `game/systems/audio/` (resolver, one-shot-pool 12+4,
+ambience-lagen standaard uit, muziek-API zonder triggers); AudioDirector
+ongegroeid; 11 SoundResources + 15 gegenereerde placeholder-WAV's met
+doelentabel; speler/deur/la/pickup zenden beide feiten; dev room zet zijn
+nulpunt-laag zelf aan; F3 toont actieve geluiden. Suite 145 → 166.
+
+Eerder vandaag: taken 002 t/m 004 afgerond en goedgekeurd; fase 1
+compleet; Design Pillars (7 pijlers) vastgesteld.
 
 Opgeleverd: `ItemResource` (minimaal, runtime read-only) + drie
 voorbeelditems; inventory-node (capaciteit 6, geen stacking D-023,
@@ -56,16 +62,16 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | Taak 004 — Inventory | ✅ afgerond en lokaal goedgekeurd |
-| Taak 005 — Audio-fundament | ⬜ **volgende** (bindend kader ligt klaar) |
+| Taak 005 — Audio-fundament | ✅ gebouwd, **lokale GD-test open** |
 | Taken 006–008 | ⬜ open |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **145/145
-groen**. D-015 geverifieerd: zonder inventory 119/119 (pickups blijven
-liggen), zonder interactiesysteem 95/95 (inventory idle), alles aanwezig
-145/145; halve verwijdering faalt bewust luid (D-021).
-`config/version` = 0.0.15. Warnings in de suite-output zijn uitsluitend de
-bewust geteste luide faalpaden (add_item(null) e.d.) — normale opstart is
-schoon. Debug-prompt (TD-006) toont "[E] …" tot de echte HUD er is.
+**Technische staat**: import schoon (exit 0), smoke-suite **166/166
+groen**. D-015 geverifieerd: zonder audiosysteem 145/145 (spel draait
+stil), zonder interactiesysteem 109/109, alles aanwezig 166/166; eerdere
+richtingen (zonder speler/inventory) blijven gedekt door dezelfde
+conventies. `config/version` = 0.0.16. Warnings in de suite-output zijn
+uitsluitend de bewust geteste luide faalpaden — normale opstart is
+schoon (geverifieerd). Debug-prompt (TD-006) blijft tot de echte HUD.
 
 **Nog niet visueel beoordeeld**: de interactieronde uit het
 003-taakdossier (prompts, deur/la/sleutel/briefje, op-slot-deur,
@@ -77,13 +83,12 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende taak
 
-**Taak 005 — Audio-fundament** (fase 2), **op startsein van de GD**.
-Het bindende architectuurkader staat bovenin `tasks/005_audio.md`
-(scheiding noise_made ↔ hoorbare audio, audiosysteem bezit de
-player-lifecycle, vier verplichte tests); TD-005 (props bewegen instant)
-wordt in/na 005 afgelost. Verdere vervolghaken uit 004:
-sleutel-deur-logica, la-koppeling, save-integratie en de inventory-UI
-(elk een eigen taak; dossier 004 §1/§6).
+**Eerst**: GD test taak 005 op hardware (stappen in het dossier /
+vier-vragen-rapport: voetstappen per gait, deur/pickup positioneel,
+nulpunt-laag, stilte, Esc). **Daarna, op startsein**: taak 006 (licht &
+sfeer) of de door de GD gekozen stap. Openstaande vervolghaken: TD-005
+(deur/la-tween op het nieuwe audioritme), sleutel-deur, la-koppeling,
+save-integratie, inventory-UI/HUD (lost ook TD-006 af).
 
 ## 6. Open aandachtspunten
 
@@ -99,5 +104,15 @@ sleutel-deur-logica, la-koppeling, save-integratie en de inventory-UI
   bij naam noemen in de suite — duck-typen met `has_method()`.
 - **Pushen vanaf de VPS**: de kale vorm `git push -u origin main` (zonder
   pipes) werkt het betrouwbaarst.
-- **Openstaande ontwerpsessie**: wát CRUMP is — zie `STORY.md` §8. Nodig
-  vóór hoofdstuk 3/4, niet vóór taak 004.
+- **Canon-correctieronde nodig (geregistreerd 2026-07-28, opdracht GD bij
+  005)**: de GD heeft CRUMP nader bepaald — een **monster** dat door het
+  stadion en over het terrein zwerft, de speler achtervolgt en besluipt,
+  vaker gehoord dan gezien, met zeer zeldzaam een harde onmenselijke
+  schreeuw (geen timer-jumpscare; in 005 alleen als toekomstige cue
+  mogelijk gemaakt, geen AI-gedrag). Dit vervangt deels "vorm en aard
+  bewust onbeschreven" in GAME_BIBLE §6 en STORY §5/§8 — die documenten in
+  een aparte, gerichte canon-ronde bijwerken; géén brede lore-herbouw.
+  Nergens in de bestaande docs staat een "speler = CRUMP"-implicatie
+  (gecontroleerd).
+- **Openstaande ontwerpsessie**: de verklaring achter CRUMP en de
+  verdwijning — zie `STORY.md` §8. Nodig vóór hoofdstuk 3/4.
