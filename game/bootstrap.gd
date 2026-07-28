@@ -4,8 +4,14 @@ extends Node
 ## de nette afsluiting. Ontworpen zodat later een hoofdmenu tussen opstarten
 ## en spel geschoven kan worden zonder verbouwing (taakdossier 001, blok C).
 
-## Het level dat de bootstrap tijdens ontwikkeling laadt (de developer room).
+## De developer room: blijft de testruimte met de vaste meetpunten van
+## de smoke-suite (taken 001–007).
 const DEV_ROOM_SCENE := "res://game/levels/dev_room/dev_room.tscn"
+
+## De eerste echte locatie (VS-fase C): het clubgebouw van VV
+## Drechtstreek. Normale runs starten hier; de suite draait op de dev
+## room en laadt het clubgebouw daarna zelf voor zijn eigen controles.
+const CLUBGEBOUW_SCENE := "res://game/levels/clubgebouw/clubgebouw.tscn"
 
 ## De spelerscène. Bewust een pad + bestaanscheck, geen preload: verwijder je
 ## game/actors/player/, dan draait de rest gewoon door (D-015/D-018).
@@ -74,9 +80,20 @@ func _ready() -> void:
 	_spawn_document_reader()
 	_spawn_inventory()
 	_spawn_audio_system()
-	_load_level(DEV_ROOM_SCENE)
+	_load_level(_startup_level())
 	if "--smoke-test" in OS.get_cmdline_user_args():
 		_run_smoke_test.call_deferred()
+
+
+## Normale runs starten in het clubgebouw (VS-fase C); de smoke-suite
+## draait op de dev room. Bestaanscheck: zonder clubgebouw valt alles
+## terug op de dev room (D-015).
+func _startup_level() -> String:
+	if "--smoke-test" in OS.get_cmdline_user_args():
+		return DEV_ROOM_SCENE
+	if ResourceLoader.exists(CLUBGEBOUW_SCENE):
+		return CLUBGEBOUW_SCENE
+	return DEV_ROOM_SCENE
 
 
 ## Naam van het geladen level (gebruikt door de debug overlay).

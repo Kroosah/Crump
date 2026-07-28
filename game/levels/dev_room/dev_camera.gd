@@ -19,13 +19,16 @@ func _verify_view() -> void:
 	var viewport := get_viewport()
 	if viewport == null:
 		return
+	# Het script wordt door meerdere levels gebruikt (taak 008C); de
+	# eigenaar van de melding is het level, niet dit hulpmiddel.
+	var level_name := get_parent().name if get_parent() != null else name
 	var active := viewport.get_camera_3d()
 	if active == self:
-		Log.info("DevRoom: testcamera levert het beeld")
+		Log.info("%s: testcamera levert het beeld" % level_name)
 		return
 	if active == null:
 		# Precies het geval dat een egaal grijs scherm oplevert; bijspringen.
 		current = true
-		Log.warn("DevRoom: geen actieve camera gevonden — testcamera ingeschakeld")
+		Log.warn("%s: geen actieve camera gevonden — testcamera ingeschakeld" % level_name)
 		return
-	Log.info("DevRoom: testcamera laat het beeld aan camera '%s'" % active.name)
+	Log.info("%s: testcamera laat het beeld aan camera '%s'" % [level_name, active.name])
