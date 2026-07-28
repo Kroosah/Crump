@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_camera.gd" id="1"]
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_props.gd" id="2"]
+[ext_resource type="Script" path="res://game/levels/environment_tuner.gd" id="3"]
 
 [sub_resource type="BoxMesh" id="floor_mesh"]
 size = Vector3(20, 0.5, 20)
@@ -85,15 +86,20 @@ roughness = 0.75
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
-background_color = Color(0.05, 0.06, 0.09, 1)
+background_color = Color(0.012, 0.016, 0.024, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.55, 0.6, 0.72, 1)
-ambient_light_energy = 0.5
+ambient_light_color = Color(0.45, 0.52, 0.68, 1)
+ambient_light_energy = 0.12
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.035, 0.045, 0.065, 1)
+fog_density = 0.03
 
 [node name="DevRoom" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("env")
+script = ExtResource("3")
 
 [node name="TestCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 9)

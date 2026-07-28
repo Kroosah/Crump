@@ -8,7 +8,18 @@ extends Node
 ## ontwikkel-pc; de uiteindelijke game moet op HIGH/ULTRA draaien. Het
 ## release-default wordt in fase 6 bepaald (TECH_DEBT TD-002).
 
+## Helderheid is gewijzigd (taak 006). De environment-tuner van het geladen
+## level luistert hierop; verder niemand — brightness raakt alleen de
+## Environment-nabewerking, nooit lampen, UI of budget (dossier 006 §6).
+signal brightness_changed(value: float)
+
 const SETTINGS_PATH := "user://settings.cfg"
+
+## Compensatierange voor scherm- en omgevingslichtverschillen (dossier 006,
+## keuze F): bewust smal, zodat brightness nooit een nachtbeeld naar dag
+## tilt of de contour-garantie breekt. Het spel is gekalibreerd op 1.0.
+const BRIGHTNESS_MIN := 0.8
+const BRIGHTNESS_MAX := 1.2
 
 enum GraphicsPreset { DEVELOPMENT_LOW, LOW, MEDIUM, HIGH, ULTRA }
 
@@ -30,7 +41,9 @@ var mouse_sensitivity := 1.0
 ## Head-bob uitschakelbaar (motion sickness, HORROR_GUIDELINES §8).
 var head_bob_enabled := true
 
-## Helderheid (toegepast op de omgeving zodra taak 006 dat oplevert).
+## Helderheid (taak 006): toegepast als adjustment_brightness op de
+## level-Environment door de environment-tuner. Altijd binnen
+## BRIGHTNESS_MIN..BRIGHTNESS_MAX — wijzig via set_brightness().
 var brightness := 1.0
 
 var graphics_preset := GraphicsPreset.DEVELOPMENT_LOW
@@ -66,8 +79,12 @@ func load_settings() -> void:
 	mouse_sensitivity = clampf(
 		float(config.get_value("input", "mouse_sensitivity", 1.0)), 0.1, 5.0)
 	head_bob_enabled = bool(config.get_value("comfort", "head_bob", true))
+	# Oude configwaarden buiten de 006-range worden stil binnengetrokken:
+	# de brede 0.5-2.0-clamp stamt van vóór het moment dat brightness
+	# ergens op aangreep (TD-003), dus er is geen gedrag om te bewaren.
 	brightness = clampf(
-		float(config.get_value("video", "brightness", 1.0)), 0.5, 2.0)
+		float(config.get_value("video", "brightness", 1.0)),
+		BRIGHTNESS_MIN, BRIGHTNESS_MAX)
 	graphics_preset = clampi(
 		int(config.get_value("video", "graphics_preset",
 			GraphicsPreset.DEVELOPMENT_LOW)),
@@ -98,6 +115,12 @@ func apply_all() -> void:
 func set_bus_volume(bus: StringName, volume: float) -> void:
 	audio_volumes[bus] = clampf(volume, 0.0, 1.0)
 	AudioDirector.set_bus_volume_linear(bus, audio_volumes[bus])
+
+
+## Het enige wijzigkanaal voor helderheid: clampt en meldt het feit.
+func set_brightness(value: float) -> void:
+	brightness = clampf(value, BRIGHTNESS_MIN, BRIGHTNESS_MAX)
+	brightness_changed.emit(brightness)
 
 
 func set_graphics_preset(preset: GraphicsPreset) -> void:
