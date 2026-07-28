@@ -18,6 +18,10 @@ const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
+## Tijdelijke debug-prompt: toont de interactieprompt tot de echte HUD er is
+## (TD-006). Alleen debugbuilds; bestaanscheck zodat de map weg kan (D-015).
+const DEBUG_PROMPT_SCENE := "res://game/ui/debug_prompt/debug_prompt.tscn"
+
 ## Autoloads die aanwezig moeten zijn vóór het spel verder mag.
 const REQUIRED_AUTOLOADS: Array[String] = [
 	"EventBus", "GameState", "AudioDirector", "SettingsManager", "SaveManager",
@@ -61,6 +65,9 @@ func _add_debug_tools() -> void:
 		return
 	var overlay: Node = load(DEBUG_OVERLAY_SCENE).instantiate()
 	add_child(overlay)
+	if ResourceLoader.exists(DEBUG_PROMPT_SCENE):
+		var prompt: Node = load(DEBUG_PROMPT_SCENE).instantiate()
+		add_child(prompt)
 
 
 ## Laadt een level onder de SceneHost; ruimt het vorige level op.

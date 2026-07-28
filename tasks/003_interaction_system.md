@@ -87,6 +87,10 @@ plus de eerste handvol props die het bewijzen.
 
 ## Te beoordelen in de editor (VPS kan dit niet)
 
+**Sinds v0.0.14 is de prompt zichtbaar** via een tijdelijke debug-prompt
+onderin beeld ("[E] Open deur" — toets live uit de InputMap, alleen in
+debugbuilds, TD-006). De echte HUD volgt in fase 2/4.
+
 F5 en loop de props langs (deuren links-achter, kast+sleutel rechts-achter,
 briefje op de noordmuur):
 

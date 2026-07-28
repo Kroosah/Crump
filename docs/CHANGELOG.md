@@ -11,6 +11,17 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.14 — 2026-07-28
+**Debug-prompt: interactieprompt zichtbaar voor de visuele beoordeling**
+- N.a.v. de terechte GD-vraag "de prompt staat op de bus, maar wie tekent
+  hem?": taak 003 leverde bewust alleen het signaal (de echte HUD is
+  fase 2/4), dus visueel was er niets te zien terwijl alles werkte.
+- Nieuw `game/ui/debug_prompt/` (TD-006): label onderin beeld, alleen in
+  debugbuilds, luistert uitsluitend naar `interact_prompt_changed`, geen
+  eigen logica; de toets komt dynamisch uit de InputMap ("[E] Open deur" —
+  rebinds volgen gratis). Suite 117 → 120; map-weg = alles blijft groen.
+- `config/version` → 0.0.14.
+
 ## v0.0.13 — 2026-07-28
 **Taak 003: interactiesysteem — contract, interactor en de eerste vier props**
 - `game/systems/interaction/`: `Interactable`-contract (StaticBody3D-basis,

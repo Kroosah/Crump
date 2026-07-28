@@ -470,7 +470,40 @@ func _check_interaction(tree: SceneTree, failures: int) -> int:
 	failures = _check(prompt_log[0] == "",
 		"prompt is leeg bij wegkijken", failures)
 
+	# Debug-prompt (alleen debugbuilds, TD-006): toont letterlijk de
+	# bus-tekst met de actuele interact-toets uit de InputMap ervoor.
+	if ResourceLoader.exists("res://game/ui/debug_prompt/debug_prompt.tscn"):
+		failures = await _check_debug_prompt(tree, player, props_root, failures)
+
 	EventBus.interact_prompt_changed.disconnect(prompt_recorder)
+	return failures
+
+
+func _check_debug_prompt(tree: SceneTree, player, props_root: Node,
+		failures: int) -> int:
+	var prompt_node := tree.root.find_child("DebugPrompt", true, false)
+	failures = _check(prompt_node != null,
+		"debug-prompt is gespawnd (debugbuild)", failures)
+	var door: Node = props_root.get_node_or_null("TestDoor")
+	if prompt_node == null or door == null:
+		return failures
+	var label: Label = prompt_node.find_child("PromptLabel", true, false)
+
+	var key_name := ""
+	for event in InputMap.action_get_events("interact"):
+		if event is InputEventKey:
+			key_name = event.as_text_physical_keycode()
+			break
+
+	await _aim(tree, player, Vector3(-3.5, 0.05, -2.3), 0.0, 0.0)
+	failures = _check(label != null
+		and label.text == "[%s] %s" % [key_name, door.prompt_open],
+		"debug-prompt toont '[toets] prompt' uit de InputMap ('%s')"
+		% (label.text if label != null else "-"), failures)
+
+	await _aim(tree, player, Vector3(0.8, 0.05, -8.2), PI, 0.0)
+	failures = _check(label != null and label.text == "",
+		"debug-prompt leegt bij wegkijken", failures)
 	return failures
 
 

@@ -5,7 +5,7 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (na taak 003, v0.0.13)
+**Laatst bijgewerkt**: 2026-07-28 (na taak 003 + debug-prompt, v0.0.14)
 
 ---
 
@@ -57,10 +57,13 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 Na akkoord op 003 is **fase 1 (De wandeling) compleet** — exit-criterium is
 "bewegen en interacteren voelt goed", te beoordelen door de GD.
 
-**Technische staat**: import schoon (exit 0), smoke-suite **117/117 groen**.
-D-015 geverifieerd in drie richtingen: zonder interactiesysteem 82/82,
-zonder speler 61/61, alles aanwezig 117/117; halve verwijdering faalt
-bewust luid (D-021). `config/version` = 0.0.13.
+**Technische staat**: import schoon (exit 0), smoke-suite **120/120 groen**.
+D-015 geverifieerd in vier richtingen: zonder interactiesysteem 82/82,
+zonder speler 61/61, zonder debug-prompt 117/117, alles aanwezig 120/120;
+halve verwijdering faalt bewust luid (D-021). `config/version` = 0.0.14.
+**Debug-prompt (TD-006, verzoek GD)**: de interactieprompt is nu zichtbaar
+in debugbuilds — "[E] Open deur" onderin beeld, toets live uit de InputMap;
+weggooien zodra de echte HUD (fase 2/4) het signaal tekent.
 
 **Nog niet visueel beoordeeld**: de interactieronde uit het
 003-taakdossier (prompts, deur/la/sleutel/briefje, op-slot-deur,
