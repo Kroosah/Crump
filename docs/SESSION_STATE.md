@@ -11,9 +11,11 @@ regels en ontwerp blijven de andere docs.*
 
 ## 1. Laatste afgeronde taak
 
-**Taak 004 — Inventory** ✅ gebouwd conform het goedgekeurde ontwerp v2
-(v0.0.15) — **wacht op lokale GD-test** (stappen bovenin
-`tasks/004_inventory.md`).
+**Taak 004 — Inventory** ✅ afgerond en **lokaal goedgekeurd door de GD
+(2026-07-28)**: positieve flow bevestigd (pickup, inventory-update, F3
+`inventory: 1/6 · sleutel_kleedkamer`); reject-flow en invarianten
+geaccepteerd op de geautomatiseerde dekking; geen hoorbare audio =
+bewust taak 005 (bindend kader in dat dossier, commit `409c718`).
 
 Opgeleverd: `ItemResource` (minimaal, runtime read-only) + drie
 voorbeelditems; inventory-node (capaciteit 6, geen stacking D-023,
@@ -53,8 +55,9 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
 | Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
-| Taak 004 — Inventory | ✅ gebouwd (ontwerp v2), **lokale GD-test open** |
-| Taken 005–008 | ⬜ open |
+| Taak 004 — Inventory | ✅ afgerond en lokaal goedgekeurd |
+| Taak 005 — Audio-fundament | ⬜ **volgende** (bindend kader ligt klaar) |
+| Taken 006–008 | ⬜ open |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **145/145
 groen**. D-015 geverifieerd: zonder inventory 119/119 (pickups blijven
@@ -74,11 +77,13 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende taak
 
-**Eerst**: GD test taak 004 lokaal (accepted / rejected-bij-vol /
-F3-regel — stappen bovenin het taakdossier). **Daarna, op startsein**:
-taak 005 (audio-fundament) of de door de GD gekozen volgende stap;
-sleutel-deur-logica, la-koppeling en save-integratie van de inventory
-liggen als benoemde vervolghaken klaar (dossier 004 §1/§6).
+**Taak 005 — Audio-fundament** (fase 2), **op startsein van de GD**.
+Het bindende architectuurkader staat bovenin `tasks/005_audio.md`
+(scheiding noise_made ↔ hoorbare audio, audiosysteem bezit de
+player-lifecycle, vier verplichte tests); TD-005 (props bewegen instant)
+wordt in/na 005 afgelost. Verdere vervolghaken uit 004:
+sleutel-deur-logica, la-koppeling, save-integratie en de inventory-UI
+(elk een eigen taak; dossier 004 §1/§6).
 
 ## 6. Open aandachtspunten
 

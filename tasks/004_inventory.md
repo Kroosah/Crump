@@ -1,11 +1,16 @@
 # Taak 004 — Inventory
 
-**Fase**: 2 (Het gereedschap) · **Status**: ✅ gebouwd conform ontwerp v2 (v0.0.15), wacht op lokale GD-test · **Vereist**: 003
+**Fase**: 2 (Het gereedschap) · **Status**: ✅ afgerond, lokaal goedgekeurd door de GD (2026-07-28) · **Vereist**: 003
 
 > **Gebouwd 2026-07-28** in de vier geplande blokken (commits `aae500c`,
-> `6e54605`, `44e50f7` + registerblok). Suite 145/145; D-015 in drie
+> `6e54605`, `44e50f7`, `6c2d255`). Suite 145/145; D-015 in drie
 > richtingen (zonder inventory 119, zonder interactiesysteem 95, alles
-> 145). Exit-criteria §9.2 t/m §9.6 gehaald; §9.7 (lokale GD-test) open.
+> 145). **Lokale GD-acceptatie 2026-07-28**: positieve flow bevestigd
+> (pickup werkt, inventory correct bijgewerkt, F3 toont
+> `inventory: 1/6 · sleutel_kleedkamer`); reject-flow en overige
+> invarianten geaccepteerd op de geautomatiseerde dekking; het ontbreken
+> van hoorbare audio is verklaard (bewust scope van taak 005, bindend
+> kader vastgelegd in dat dossier). Alle exit-criteria §9.1-§9.7 gehaald.
 >
 > **Lokale acceptatietest** (F5, verse pull):
 > 1. **Accepted**: loop naar de rode kist rechtsachter → "[E] Pak sleutel

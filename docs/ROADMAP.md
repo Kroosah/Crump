@@ -18,26 +18,28 @@ bewust: eerst voelen (speler + geluid), dan vrezen (CRUMP), dan vertellen
 
 ---
 
-## Fase 1 — De wandeling (taken 001–003)
+## Fase 1 — De wandeling (taken 001–003) ✅
 
 **Doel**: het voelt al goed om alleen maar rond te lopen in een lege testruimte.
 In een horrorgame is beweging 50% van de ervaring; dit wordt niet afgeraffeld.
 
-- [ ] **001** Project-setup: project.godot, input-map, bussen, autoload-skelet,
+- [x] **001** Project-setup: project.godot, input-map, bussen, autoload-skelet,
       smoke-test, .gitignore.
-- [ ] **002** Player controller: lopen/sluipen/rennen, bukken, hoofdbeweging,
+- [x] **002** Player controller: lopen/sluipen/rennen, bukken, hoofdbeweging,
       camera-gevoel, voetstapgeluid-events.
-- [ ] **003** Interactiesysteem: raycast + `Interactable`-contract, eerste
+- [x] **003** Interactiesysteem: raycast + `Interactable`-contract, eerste
       props (deur, la, oppakbaar object, leesbaar briefje).
 
-**Exit-criteria**: testruimte waarin bewegen en interacteren *goed voelt*
-(beoordeeld door Randy in de editor), headless-tests groen, tuning via exports.
+**Exit-criteria**: gehaald op 28-07-2026 — bewegen en interacteren door de
+GD in de editor beoordeeld, headless-tests groen, tuning via exports.
 
 ## Fase 2 — Het gereedschap (taken 004–006)
 
 **Doel**: de systemen die sfeer dragen: spullen, geluid, licht.
 
-- [ ] **004** Inventory + items als resources, diegetische UI.
+- [x] **004** Inventory + items als resources *(afgerond 28-07-2026;
+      de diegetische UI is bij de ontwerp-review bewust uit 004 gehaald en
+      volgt in een eigen UI-taak — zie tasks/004 §1)*.
 - [ ] **005** Audio-fundament: mixbussen, ambience-lagen, geluid-als-event,
       AudioDirector.
 - [ ] **006** Licht & sfeer: zaklamp, lichtbudget, donker-maar-leesbaar-kaders,
