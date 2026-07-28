@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/systems/inventory/item_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"sleutel_kleedkamer"
+display_name = "Kleedkamersleutel"
+description = "Een kleine sleutel aan een versleten label. Het opschrift is nauwelijks nog leesbaar."

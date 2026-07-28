@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/systems/inventory/item_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"telefoon_achtergelaten"
+display_name = "Achtergelaten telefoon"
+description = "Een telefoon met een gebarsten scherm. Het toestel is nog warm."
