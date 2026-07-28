@@ -5,19 +5,32 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (VS-ontwerp **creatief goedgekeurd**;
-canon D-028 + hernummering doorgevoerd; productieplan A–J vastgesteld;
-**ontwerp taak 007 (documentlezer) ter review** — zie §5)
+**Laatst bijgewerkt**: 2026-07-28 (taak 007 **gebouwd**, suite 230
+groen — status: **wacht op lokale GD-test**; nog niet lokaal
+goedgekeurd markeren)
 
 ---
 
 ## 1. Laatste taak
 
-**Taak 006 — Licht & sfeer** ✅ afgerond en **lokaal goedgekeurd door de
-GD (2026-07-28)**: verlichting voelt goed, donkerte overtuigend, zaklamp
-correct, sfeer ontstaat — geen tuningronde nodig; de opgeleverde waarden
-zijn de referentie. Gebouwd conform ontwerp v2.1 (drie GD-reviewrondes,
-expliciete go). Opgeleverd:
+**Taak 007 — Minimale documentlezer (VS-fase B)** 🟡 gebouwd conform
+ontwerp v1.1 (twee reviewrondes, expliciete go), **wacht op lokale
+GD-test**. Opgeleverd: `document_opened` eenmalig gecorrigeerd naar 3
+argumenten (id/titel/tekst, D-029 — vanaf nu geconsumeerd contract);
+`DocumentResource` runtime read-only bij de prop met validatie aan de
+bron; `game/ui/document_reader/` als verwijdereenheid: deferred arming
+(één E-druk kan nooit openen én sluiten), sluit-input opgegeten in
+`_input` (één Esc raakt nooit tegelijk de pauze), exact
+pauze-/muisownership met idempotent herstel, atomaire vervanging bij
+een tweede feit, ScrollContainer met vaste paneelmaat, sluithint uit de
+InputMap. Suite **208 → 230**; D-015: zonder reader 209, zonder
+interactie-unit incl. documentprops 172 (reader stabiel), alles 230.
+`config/version` = 0.0.18. GD-teststappen: tasks/007 §Lokale
+GD-acceptatie.
+
+Eerder vandaag: **taak 006 afgerond en lokaal goedgekeurd** (donkerte
+overtuigend, zaklamp correct — waarden zijn de referentie). Gebouwd
+conform ontwerp v2.1. Opgeleverd:
 nacht-environment op de dev room (near-black, koele ambient-vloer > 0,
 diepte-fog, filmische tonemap, debanding) met verborgen werklicht-rig
 (export, default uit); `game/systems/flashlight/` (camera-volgend,
@@ -63,20 +76,21 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | 🟢 ontwerp creatief goedgekeurd (tasks/008, v1.1); productieplan A–J; fase A ✅ |
-| Taak 007 — Minimale documentlezer (VS-fase B) | 🔵 **technisch ontwerp ter review** (tasks/007_document_reader.md) |
+| **Fase 2½ — Vertical Slice 01** | 🟢 ontwerp goedgekeurd (tasks/008, v1.1); productieplan A–J; fase A ✅ |
+| Taak 007 — Minimale documentlezer (VS-fase B) | 🟡 **gebouwd; wacht op lokale GD-test** |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **208/208
-groen**. D-015 geverifieerd (0 fouten): zonder zaklampsysteem 188, zonder
-complete lighting (flashlight + light_budget + light_tl) 176, zonder
-inventory 169 (zaklamp faalt gesloten, alles parsebaar), alles aanwezig
-208. `config/version` = 0.0.17. Warnings in de suite-output zijn
-uitsluitend de bewust geteste luide faalpaden (incl. de geforceerde
-budgetoverschrijding) — normale opstart is schoon (geverifieerd).
-Incidentele exit-leak-warning van de ambience is pre-existent en
-geregistreerd als KI-004. Debug-prompt (TD-006) blijft tot de echte HUD.
+**Technische staat**: import schoon (exit 0), smoke-suite **230/230
+groen**. D-015 geverifieerd (0 fouten): zonder documentlezer 209,
+zonder interactie-unit incl. documentprops 172, zonder zaklampsysteem
+188, zonder complete lighting 176, zonder inventory 169, alles aanwezig
+230. `config/version` = 0.0.18. Warnings in de suite-output zijn
+uitsluitend de bewust geteste luide faalpaden — normale opstart is
+schoon (geverifieerd). Incidentele exit-leak-warning van de ambience is
+pre-existent en geregistreerd als KI-004. Debug-prompt (TD-006) blijft
+tot de echte HUD. Codecommentaar-taaknummers zijn bijgewerkt naar de
+D-028-nummering (aandachtspunt uit §6 afgehandeld).
 
 **Nog niet visueel beoordeeld**: de interactieronde uit het 003-dossier én
 de volledige 006-sfeerpass (het fase 2-exit-criterium "onaangenaam" is een
@@ -88,33 +102,24 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**Het technisch ontwerp van taak 007 (minimale documentlezer, VS-fase B)
-staat als v1.1 in `tasks/007_document_reader.md` (correctieronde
-2026-07-28 verwerkt) en wacht op de expliciete implementatie-go.**
-Kern: DocumentResource bij de prop; bus-contract eenmalig gecorrigeerd
-naar `document_opened(document_id, title, text)` (3 basistypen, nog
-geen productieconsumer); verwijderbare DocumentReader-UI
-(bootstrap-spawn, groep-guard) die de boom pauzeert met exact
-ownership-herstel (§4b), dezelfde-E-druk-bescherming via deferred
-arming (§4a), vervang-semantiek bij een tweede feit (§4c) en
-datavalidatie + scrollbare lange tekst (§4d). Tot de go: géén
-code/assets/scènes.
-
-Daarna volgens het productieplan (tasks/008 §15): fase C greybox (kan
-parallel aan B) → D objectieven-flow → E pacing-gate (GD) → F art-plan
-→ G artpass → H sfeerbeats → I glimp → J acceptatie. Overige haken:
-monster-AI (009), TD-005, TD-004, sleutel-deur/la-koppeling,
-save-integratie, inventory-UI/HUD (TD-006), canonvraag "derde helft als
-proloog" (STORY §8), KI-004.
+**De GD test taak 007 lokaal op hardware** volgens de stappen in
+`tasks/007_document_reader.md` §"Lokale GD-acceptatie": briefje lezen
+(paneel, stilstaande wereld, F3 werkt door), één-E-druk-gedrag (paneel
+flitst niet), Esc-sluiting zonder gelijktijdige pauze, leesbaarheid op
+de nachtstaat, lange-tekst-scroll. Na goedkeuring is VS-fase B klaar en
+volgt volgens het productieplan (tasks/008 §15) **fase C: greybox van
+de zeven slice-ruimtes** (eigen ontwerp-/bouwronde met GD-go per het
+vaste ritme). Overige haken: monster-AI (009), TD-005, TD-004,
+sleutel-deur/la-koppeling, save-integratie, inventory-UI/HUD (TD-006;
+de nieuwe modale UI's erven het arming/ownership-patroon van D-029),
+canonvraag "derde helft als proloog" (STORY §8), KI-004.
 
 ## 6. Open aandachtspunten
 
 - **Nummering opgelost (D-028-besluit)**: 007 = documentlezer, 008 =
-  Vertical Slice, 009 = monster-AI, 010 = hoofdstuk 1. **Nog open**:
-  codecommentaar in `.gd`-bestanden verwijst her en der nog naar "taak
-  007/008" (oude betekenis) — bewust niet aangeraakt in de docs-only
-  ronde; corrigeren in de eerstvolgende codetaak. Historische
-  CHANGELOG-regels blijven staan (logboek herschrijven we niet).
+  Vertical Slice, 009 = monster-AI, 010 = hoofdstuk 1. Codecommentaar
+  is in taak 007 mee-gecorrigeerd (✅). Historische CHANGELOG-regels
+  blijven staan (logboek herschrijven we niet).
 - **Premisse-delta opgelost**: de vergeten sporttas is canon (D-028);
   STORY/GAME_BIBLE/HORROR/LEVEL gericht gecorrigeerd. Open canonvraag:
   wordt "de derde helft" ooit een speelbare proloog (STORY §8)?

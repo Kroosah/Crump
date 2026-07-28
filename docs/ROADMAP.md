@@ -59,9 +59,9 @@ zonder dat er ook maar iets gebeurt. Dat is de lat.
 snede (canon: D-028) — eerst volledig als greybox gevalideerd, pas
 art en sfeerassets na GD-akkoord op pacing en looproute.
 
-- [ ] **007** Minimale documentlezer (ontwerp:
-      `tasks/007_document_reader.md`) — voorwaarde voor de vijf
-      documenten van de slice.
+- [ ] **007** Minimale documentlezer (`tasks/007_document_reader.md`)
+      — voorwaarde voor de vijf documenten van de slice *(gebouwd
+      28-07-2026, suite 230 groen; wacht op lokale GD-test)*.
 - [ ] **008** Vertical Slice 0.1 — greybox en gameplayflow, daarna
       gefaseerde uitbouw volgens het productieplan (fases A–J) in
       `tasks/008_vertical_slice_01.md`.

@@ -11,6 +11,29 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.18 — 2026-07-28
+**Taak 007: minimale documentlezer — papier wordt leesbaar** *(gebouwd; wacht op lokale GD-test)*
+- **`document_opened` → 3 argumenten** (id, titel, tekst; D-029):
+  eenmalig gecorrigeerd vóór de eerste productieconsumer; vanaf nu
+  geconsumeerd contract. `DocumentResource` (runtime read-only) als
+  data bij de prop; ReadableNote valideert aan de bron (lege id/tekst =
+  warning, geen feit, geen GameState-mutatie) en zendt alleen
+  basistypen. Dev-room-briefje gemigreerd naar
+  `documents/briefje_dev_room.tres`.
+- **`game/ui/document_reader/`** (verwijdereenheid): CanvasLayer-
+  luisteraar, bootstrap-spawn met groep-guard. Deferred arming
+  (OPEN_ONGEWAPEND → OPEN_GEWAPEND ná de openingsdispatch): één E-druk
+  kan nooit openen én sluiten; Esc/E sluiten daarna, opgegeten in
+  `_input` — één Esc raakt nooit tegelijk de pauze. Exact
+  pauze-/muisownership (statusopname, idempotent herstel, vooraf
+  gepauzeerde boom blijft gepauzeerd); atomaire vervanging bij een
+  tweede feit; lege titel verbergt de titelregel; ScrollContainer met
+  vaste paneelmaat (geen harde tekstlimiet); sluithint uit de InputMap.
+- **Suite 208 → 230**; D-015: zonder reader 209, zonder interactie-unit
+  incl. documentprops 172 (reader stabiel), alles 230 — telkens 0
+  fouten. Codecommentaar-taaknummers bijgewerkt naar de
+  D-028-nummering. `config/version` → 0.0.18.
+
 ## v0.0.17 — 2026-07-28
 **Taak 006: licht & sfeer — bijna zwart is de standaardtoestand** *(lokaal goedgekeurd door de GD, 2026-07-28)*
 - **Nacht-environment** dev room: near-black achtergrond, lage koele

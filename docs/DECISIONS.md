@@ -308,3 +308,24 @@ uitgewerkte eerste ±20 minuten staan in tasks/008_vertical_slice_01.md.
 In hetzelfde besluit is de taaknummering herzien: 007 = minimale
 documentlezer, 008 = Vertical Slice 0.1, 009 = monster-AI (was 007),
 010 = hoofdstuk 1 (was 008).
+
+## D-029 — document_opened draagt de titel; lezen pauzeert via deferred arming
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review 007, 2 rondes) / LD · **Status**: actief
+`document_opened(document_id: StringName, title: String, text: String)`
+— eenmalig gecorrigeerd van 2 naar 3 argumenten vóór de eerste
+productieconsumer bestond; vanaf nu geconsumeerd contract
+(D-022-regime). De titel reist mee als basistype: geen register, lookup
+of documentdatabase, en de reader kent geen prop- of resource-klassen
+(D-021). Data leeft als runtime read-only `DocumentResource` bíj de
+prop; validatie aan de bron (lege id/tekst = warning, geen feit, geen
+GameState-mutatie) en defensief herhaald in de reader. Modaal gedrag:
+lezen pauzeert de wereld via het bestaande pauzemechanisme (polling-
+input is niet met handled-events te stoppen), met expliciet ownership
+(statusopname vóór de eerste opening; herstel idempotent, exact één
+keer, alleen eigen wijzigingen — een vooraf gepauzeerde boom blijft
+gepauzeerd). Zelfde-inputevent-bescherming via **deferred arming**
+(OPEN_ONGEWAPEND → `call_deferred` → OPEN_GEWAPEND): deterministisch op
+engine-volgorde, geen timers; sluit-input wordt in `_input` opgegeten
+zodat één Esc nooit tegelijk document én pauzemenu bedient. Dit
+arming+ownership-patroon is de standaard voor elke latere modale UI
+(pauzemenu, inventory-UI).

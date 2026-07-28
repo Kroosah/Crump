@@ -1,8 +1,8 @@
 # Taak 007 — Minimale documentlezer
 
-**Fase**: 2½ (Vertical Slice, productiefase B) · **Status**: 🔵
-technisch ontwerp v1.1 (correctieronde verwerkt), wacht op expliciete
-implementatie-go · **Vereist**:
+**Fase**: 2½ (Vertical Slice, productiefase B) · **Status**: 🟡
+**gebouwd conform ontwerp v1.1 (2026-07-28, suite 230 groen) — wacht op
+lokale GD-test** · **Vereist**:
 003 (ReadableNote + `document_opened`) · **Maakt mogelijk**: de vijf
 documenten van de Vertical Slice (tasks/008 §6)
 
@@ -388,3 +388,48 @@ zenders) veilig falen:
    pauzesemantiek, SESSION_STATE, README, dit dossier).
 4. GD-acceptatie op hardware (§8) → daarmee is productiefase B van de
    Vertical Slice (tasks/008 §15) afgerond.
+
+---
+
+# Uitvoeringsverslag (2026-07-28, gebouwd conform ontwerp v1.1)
+
+Gebouwd in twee blokken, commit per blok: datamodel + prop-migratie +
+contractcorrectie → reader-UI + tests. Suite **208 → 230**, alles
+groen; import exit 0; normale F5-run warning-vrij. Registers: D-029
+(contract + arming/ownership-patroon), CHANGELOG v0.0.18.
+
+**Verduidelijkingen t.o.v. het ontwerp** (geen gedragsafwijkingen):
+
+1. **D-015-richting "zonder documentprops"** is aangetoond via de
+   003-verwijdereenheid (interactor + álle props samen, incl.
+   note_readable + documents): suite 172/172 groen met een gespawnde,
+   stabiele, doelloze reader. De prop alléén verwijderen is per D-021
+   een halve verwijdering die de suite bewust luid laat falen — dat is
+   bestaand 003-beleid, geen 007-keuze.
+2. De 003-notetest sluit de reader voortaan via de echte sluitroute
+   (E, ná arming) zodat de vervolgtests een draaiende wereld aantreffen
+   — en test daarmee gratis de volledige open/dicht-cyclus in de keten.
+3. Meegenomen (toegezegd in SESSION_STATE): verouderde taaknummers in
+   codecommentaar zijn bijgewerkt naar de D-028-nummering (007→009
+   waar monster-AI werd bedoeld).
+
+## Lokale GD-acceptatie — uit te voeren stappen
+
+1. F5 → loop naar het briefje op de noordwand ("Lees briefje", E):
+   paneel gecentreerd, titel "Testbriefje", tekst eronder, sluithint
+   onderin; wereld en audio staan stil; muis zichtbaar; F3 blijft
+   werken.
+2. Houd E niet vast maar druk één keer: het paneel moet blíjven staan
+   (niet flitsen). Druk daarna nog eens E → dicht, spel loopt, muis
+   gevangen. Herhaal met Esc als sluittoets; controleer dat die Esc
+   níét tegelijk pauzeert en dat een volgende Esc dat wél doet.
+3. Leesbaarheid op jouw scherm: fontgrootte/contrast van het paneel op
+   de nachtstaat (het paneel heeft een eigen donkere backdrop en hoort
+   identiek leesbaar te zijn met en zonder zaklamp/brightness 0.8–1.2).
+4. Lange tekst: zet tijdelijk in
+   `game/props/note_readable/documents/briefje_dev_room.tres` een lap
+   tekst van tientallen regels → het paneel blijft even groot en de
+   tekst scrolt (muiswiel). Daarna terugdraaien (niet committen).
+5. Herhaald feit (optioneel, editor): tweemaal snel achter elkaar
+   interacten kan niet (wereld staat stil) — het vervanggedrag is
+   headless getest; visueel niets te doen.
