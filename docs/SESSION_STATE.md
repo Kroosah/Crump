@@ -5,17 +5,20 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (taak 007 **gebouwd**, suite 230
-groen — status: **wacht op lokale GD-test**; nog niet lokaal
-goedgekeurd markeren)
+**Laatst bijgewerkt**: 2026-07-28 (taak 007 **afgerond en lokaal
+goedgekeurd door de GD**; VS-fase B klaar — volgende: fase C greybox,
+**wacht op expliciet startsein**)
 
 ---
 
 ## 1. Laatste taak
 
-**Taak 007 — Minimale documentlezer (VS-fase B)** 🟡 gebouwd conform
-ontwerp v1.1 (twee reviewrondes, expliciete go), **wacht op lokale
-GD-test**. Opgeleverd: `document_opened` eenmalig gecorrigeerd naar 3
+**Taak 007 — Minimale documentlezer (VS-fase B)** ✅ afgerond en
+**lokaal goedgekeurd door de GD (2026-07-28)**: alle acceptatiepunten
+bevestigd (één-E-druk-gedrag, Esc zonder gelijktijdige pauze,
+muisherstel, betrouwbare inputblokkering, leesbaarheid nachtstaat,
+F5 warning-vrij); geen presentatienotities. Gebouwd conform ontwerp
+v1.1 (twee reviewrondes, expliciete go). Opgeleverd: `document_opened` eenmalig gecorrigeerd naar 3
 argumenten (id/titel/tekst, D-029 — vanaf nu geconsumeerd contract);
 `DocumentResource` runtime read-only bij de prop met validatie aan de
 bron; `game/ui/document_reader/` als verwijdereenheid: deferred arming
@@ -77,7 +80,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
 | **Fase 2½ — Vertical Slice 01** | 🟢 ontwerp goedgekeurd (tasks/008, v1.1); productieplan A–J; fase A ✅ |
-| Taak 007 — Minimale documentlezer (VS-fase B) | 🟡 **gebouwd; wacht op lokale GD-test** |
+| Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd — **fase B klaar** |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
@@ -102,16 +105,19 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD test taak 007 lokaal op hardware** volgens de stappen in
-`tasks/007_document_reader.md` §"Lokale GD-acceptatie": briefje lezen
-(paneel, stilstaande wereld, F3 werkt door), één-E-druk-gedrag (paneel
-flitst niet), Esc-sluiting zonder gelijktijdige pauze, leesbaarheid op
-de nachtstaat, lange-tekst-scroll. Na goedkeuring is VS-fase B klaar en
-volgt volgens het productieplan (tasks/008 §15) **fase C: greybox van
-de zeven slice-ruimtes** (eigen ontwerp-/bouwronde met GD-go per het
-vaste ritme). Overige haken: monster-AI (009), TD-005, TD-004,
-sleutel-deur/la-koppeling, save-integratie, inventory-UI/HUD (TD-006;
-de nieuwe modale UI's erven het arming/ownership-patroon van D-029),
+**VS-fase C: greybox van de zeven slice-ruimtes** (tasks/008 §15,
+fase C) — **wacht op expliciet GD-startsein; niet zelfstandig
+beginnen.** Inhoud: hal, kantine, kleedkamergang, kleedkamers 3+4,
+onderhoudsruimte en het buitenstuk (voorplein + pad + hek) als
+blockout op menselijke maat (LEVEL §6/§7), met collision, sightlines,
+oriëntatie-ankers, alle deuren uit tasks/008 §3 met begintoestand, en
+de werklicht-/nachtstaat volgens het 006-fundament. Buiten scope: art,
+sfeerbeats, documenten-plaatsing, glimp. Werkwijze conform het vaste
+ritme: eerst technisch ontwerp ter review → go → bouw → GD loopt de
+route in werklicht én nacht (exitcriterium fase C). Daarna fase D
+(objectieven-flow) richting de pacing-gate (fase E). Overige haken:
+monster-AI (009), TD-005, TD-004, sleutel-deur/la-koppeling,
+save-integratie, inventory-UI/HUD (TD-006; erft het D-029-patroon),
 canonvraag "derde helft als proloog" (STORY §8), KI-004.
 
 ## 6. Open aandachtspunten

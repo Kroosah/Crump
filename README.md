@@ -26,7 +26,7 @@ De volledige visie staat in [docs/GAME_BIBLE.md](docs/GAME_BIBLE.md).
 | Inventory | ✅ [tasks/004](tasks/004_inventory.md) |
 | Audio-fundament | ✅ [tasks/005](tasks/005_audio.md) |
 | Licht & sfeer | ✅ [tasks/006](tasks/006_lighting.md) |
-| Minimale documentlezer | 🟡 gebouwd, wacht op lokale GD-test — [tasks/007](tasks/007_document_reader.md) |
+| Minimale documentlezer | ✅ [tasks/007](tasks/007_document_reader.md) |
 | Vertical Slice 01 "De vergeten tas" | 🔵 ontwerp goedgekeurd — [tasks/008](tasks/008_vertical_slice_01.md) |
 | Monster-AI | ⬜ [tasks/009](tasks/009_monster_ai.md) |
 | Hoofdstuk 1 | ⬜ [tasks/010](tasks/010_chapter1.md) |

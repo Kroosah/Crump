@@ -1,8 +1,7 @@
 # Taak 007 — Minimale documentlezer
 
-**Fase**: 2½ (Vertical Slice, productiefase B) · **Status**: 🟡
-**gebouwd conform ontwerp v1.1 (2026-07-28, suite 230 groen) — wacht op
-lokale GD-test** · **Vereist**:
+**Fase**: 2½ (Vertical Slice, productiefase B) · **Status**: ✅
+**afgerond en lokaal goedgekeurd door de GD (2026-07-28)** · **Vereist**:
 003 (ReadableNote + `document_opened`) · **Maakt mogelijk**: de vijf
 documenten van de Vertical Slice (tasks/008 §6)
 
@@ -388,6 +387,21 @@ zenders) veilig falen:
    pauzesemantiek, SESSION_STATE, README, dit dossier).
 4. GD-acceptatie op hardware (§8) → daarmee is productiefase B van de
    Vertical Slice (tasks/008 §15) afgerond.
+
+---
+
+# Lokale GD-acceptatie (2026-07-28) ✅
+
+De GD heeft de documentlezer op hardware getest en goedgekeurd. Alle
+acceptatiepunten bevestigd: één E-druk opent zonder direct te sluiten
+en een volgende E-druk sluit; Esc sluit uitsluitend het document (geen
+gelijktijdige pauze) en een volgende Esc pauzeert normaal; de muis komt
+bij openen vrij en wordt na sluiten correct teruggevangen; wereld en
+gameplayinput staan tijdens het lezen betrouwbaar stil; titel, tekst,
+contrast en paneelgrootte zijn goed leesbaar in de nachtstaat; de
+normale F5-run is warning-vrij. **Presentatienotities: geen.** Taak 007
+is hiermee formeel afgerond; productiefase B van de Vertical Slice
+(tasks/008 §15) is klaar.
 
 ---
 

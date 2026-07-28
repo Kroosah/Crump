@@ -12,7 +12,7 @@ iets veranderde en in welke commit.
 ---
 
 ## v0.0.18 — 2026-07-28
-**Taak 007: minimale documentlezer — papier wordt leesbaar** *(gebouwd; wacht op lokale GD-test)*
+**Taak 007: minimale documentlezer — papier wordt leesbaar** *(lokaal goedgekeurd door de GD, 2026-07-28; geen presentatienotities)*
 - **`document_opened` → 3 argumenten** (id, titel, tekst; D-029):
   eenmalig gecorrigeerd vóór de eerste productieconsumer; vanaf nu
   geconsumeerd contract. `DocumentResource` (runtime read-only) als
