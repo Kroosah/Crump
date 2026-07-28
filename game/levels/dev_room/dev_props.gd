@@ -29,7 +29,10 @@ const TEST_PROPS: Array[Dictionary] = [
 		"path": "res://game/props/pickup_item/pickup_item.tscn",
 		"name": "TestPickup",
 		"position": Vector3(3.0, 1.09, -2.0),
-		"settings": {"item_id": &"sleutel_test", "prompt": "Pak sleutel op"},
+		"settings": {
+			"item": "res://game/systems/inventory/items/sleutel_kleedkamer.tres",
+			"prompt": "Pak sleutel op",
+		},
 	},
 	{
 		"path": "res://game/props/note_readable/note_readable.tscn",
@@ -55,7 +58,13 @@ func _ready() -> void:
 		var node: Node3D = packed.instantiate()
 		node.name = prop["name"]
 		for key in prop.get("settings", {}):
-			node.set(key, prop["settings"][key])
+			var value: Variant = prop["settings"][key]
+			# Een String die op .tres eindigt is een resource-pad: laden als
+			# het bestand bestaat, anders blijft het veld leeg — zo hangt de
+			# dev room aan geen enkele feature vast (D-015).
+			if value is String and value.ends_with(".tres"):
+				value = load(value) if ResourceLoader.exists(value) else null
+			node.set(key, value)
 		add_child(node)
 		node.position = prop["position"]
 		placed += 1

@@ -13,6 +13,10 @@ const PLAYER_SCENE := "res://game/actors/player/player.tscn"
 ## is contract + interactor + props sámen (props overerven het contract).
 const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
 
+## Het inventory-systeem (taak 004); zelfde D-015-afspraak. Zonder deze map
+## blijven pickups liggen (nette degradatie) en slaan de inventorytests over.
+const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -605,7 +609,9 @@ func _check_pickup(tree: SceneTree, player, props_root: Node,
 	if pickup == null:
 		return failures
 	var expected_prompt: String = pickup.prompt
-	var expected_id: StringName = pickup.item_id
+	# Id vóór de interactie lezen: bij acceptatie is de node daarna weg.
+	var expected_id := StringName(pickup.item.get(&"id")) \
+		if pickup.item != null else &""
 
 	await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
 	failures = _check(prompt_log[0] == expected_prompt,
@@ -615,14 +621,29 @@ func _check_pickup(tree: SceneTree, player, props_root: Node,
 	var pick_recorder := func(item_id: StringName) -> void:
 		picked.append(item_id)
 	pickup.picked_up.connect(pick_recorder)
-	await _interact_and_listen(tree)
-	failures = _check(picked == [expected_id],
-		"oppakken meldt het item via picked_up", failures)
-	await _wait_physics_frames(tree, 5)
-	failures = _check(not is_instance_valid(pickup),
-		"opgepakt object is uit de wereld verdwenen", failures)
-	failures = _check(prompt_log[0] == "",
-		"prompt verdwijnt met het opgepakte object", failures)
+	var noises: Array = await _interact_and_listen(tree)
+
+	if ResourceLoader.exists(INVENTORY_SCENE):
+		# Flow 004: de inventory bevestigde — feedback en verdwijnen zijn
+		# van de prop zelf, en gebeuren exact één keer.
+		failures = _check(picked == [expected_id],
+			"oppakken meldt het item via picked_up", failures)
+		failures = _check(noises.size() == 1,
+			"oppak-geluid klinkt precies één keer (ná bevestiging)", failures)
+		await _wait_physics_frames(tree, 5)
+		failures = _check(not is_instance_valid(pickup),
+			"opgepakt object is uit de wereld verdwenen", failures)
+		failures = _check(prompt_log[0] == "",
+			"prompt verdwijnt met het opgepakte object", failures)
+	else:
+		# D-015-degradatie: geen inventory = geen bevestiging — het object
+		# blijft liggen en is direct opnieuw interacteerbaar (dossier §5a).
+		failures = _check(picked.is_empty() and noises.is_empty(),
+			"zonder inventory: geen oppak-feedback", failures)
+		failures = _check(is_instance_valid(pickup) and pickup.can_interact(),
+			"zonder inventory: object blijft liggen en blijft interacteerbaar",
+			failures)
+		pickup.picked_up.disconnect(pick_recorder)
 	return failures
 
 
