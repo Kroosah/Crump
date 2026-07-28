@@ -329,3 +329,15 @@ engine-volgorde, geen timers; sluit-input wordt in `_input` opgegeten
 zodat één Esc nooit tegelijk document én pauzemenu bedient. Dit
 arming+ownership-patroon is de standaard voor elke latere modale UI
 (pauzemenu, inventory-UI).
+
+## D-030 — Startlevel gesplitst: clubgebouw voor het spel, dev room voor de suite
+**Datum**: 2026-07-28 · **Wie**: LD (uitvoering VS-fase C) · **Status**: actief
+Normale runs starten in `game/levels/clubgebouw/` (de eerste echte
+locatie); de smoke-suite draait op de dev room — die blijft de
+testruimte met de vaste meetpunten van taken 001–007 — en wisselt aan
+het éínde zelf via de echte `_load_level`-route naar het clubgebouw
+voor de locatiecontroles (schaal, staten, budget, deuren). **Waarom**:
+de suite-meetpunten slopen en herbouwen op elke levelwijziging zou de
+tests aan het leveldesign klinken; zo test één run beide werelden én de
+levelwissel zelf. Bestaanscheck beide kanten op (D-015): zonder
+clubgebouw valt het spel terug op de dev room.

@@ -425,7 +425,7 @@ dwingend waar afhankelijkheden staan; B kan parallel aan C.*
   (documenten mogen onvolledig zijn). · **GD-test**: briefje openen,
   bewegen geblokkeerd, Esc herstelt alles.
 
-### Fase C — Greybox van alle ruimtes en de hoofdroute
+### Fase C — Greybox van alle ruimtes en de hoofdroute 🟡 gebouwd (2026-07-28) — wacht op lokale GD-test
 - **Doel**: de zeven ruimtes van §2 op menselijke maat, loopbaar als
   één route.
 - **Scope**: hal, kantine, gang, kleedkamers 3+4, onderhoudsruimte,

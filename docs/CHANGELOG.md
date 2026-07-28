@@ -11,6 +11,30 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.19 — 2026-07-28
+**VS-fase C: greybox clubgebouw — de eerste echte locatie** *(gebouwd; wacht op lokale GD-test)*
+- **`game/levels/clubgebouw/`**: het clubhuis onder de hoofdtribune van
+  VV Drechtstreek, 's nachts. Twaalf ruimtes/zones op menselijke maat
+  (plafonds 2,3–2,7 m): entree/hal, kantine met bar + doorgeefluik +
+  meterkast, bestuurskamer en keuken (op slot, wereldgrenzen),
+  kleedkamergang met flikkerbuis, kleedkamers 3+4 met banken/rails/
+  lockers en open douches met koppen en afvoerputten, toiletten,
+  schoonmaaknis, onderhoudsruimte, voorplein met luifel/fietsenrek/
+  gaashek + dichte poort met ketting, pad langs het veld met boarding,
+  veld dat in de fog oplost met één doel als silhouet, lichtmast 3.
+  Dak met tribune-treden als silhouet. 214 volumes + 11 echte deuren +
+  14 TL-armaturen (5 stabiel/1 flikkerend/8 defect; schaduw: bar +
+  gang + mast = 3/3, zaklampslot vrij). Greybox als datatabellen
+  (TD-007, bewust — aflossen in fase G); onderhoudsruimte in fase C
+  bewust niet op slot (slot hoort bij de fase-D-sleutelflow).
+- **Bootstrap**: normale runs starten in het clubgebouw; de suite
+  draait op de dev room en wisselt aan het einde zelf voor de
+  locatiecontroles (D-030). Testcamera-script gegeneraliseerd.
+- **Suite 230 → 250**: nachtstaat, TL-samenstelling, budget, 11
+  deurtoestanden, menselijke schaal via vloer-/plafondmetingen op 12
+  punten, ambience-nulpunt. D-015: zonder clubgebouw 230 (terugval dev
+  room). `config/version` → 0.0.19.
+
 ## v0.0.18 — 2026-07-28
 **Taak 007: minimale documentlezer — papier wordt leesbaar** *(lokaal goedgekeurd door de GD, 2026-07-28; geen presentatienotities)*
 - **`document_opened` → 3 argumenten** (id, titel, tekst; D-029):

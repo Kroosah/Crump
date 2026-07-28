@@ -5,15 +5,29 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (taak 007 **afgerond en lokaal
-goedgekeurd door de GD**; VS-fase B klaar — volgende: fase C greybox,
-**wacht op expliciet startsein**)
+**Laatst bijgewerkt**: 2026-07-28 (VS-fase C **greybox clubgebouw
+gebouwd**, suite 250 groen — status: **wacht op lokale GD-test**; nog
+niet goedgekeurd markeren)
 
 ---
 
 ## 1. Laatste taak
 
-**Taak 007 — Minimale documentlezer (VS-fase B)** ✅ afgerond en
+**VS-fase C — Greybox clubgebouw (taak 008)** 🟡 gebouwd, **wacht op
+lokale GD-test**. `game/levels/clubgebouw/`: het clubhuis onder de
+hoofdtribune van VV Drechtstreek, 's nachts — 12 ruimtes/zones op
+menselijke maat (plafonds 2,3–2,7 m), 214 volumes, 11 echte deuren
+(bestuurskamer/keuken/terras op slot; onderhoudsruimte in fase C bewust
+open — slot is fase-D-flow), 14 TL's (5 stabiel/1 flikkerend/8 defect;
+schaduw bar+gang+mast = 3/3, zaklampslot vrij), voorplein met dichte
+poort + ketting, pad langs het veld, veld met doel-silhouet in de fog,
+lichtmast 3, dak met tribune-treden. Greybox als datatabellen (TD-007,
+aflossen fase G). Bootstrap: normale runs starten in het clubgebouw,
+suite draait op de dev room en wisselt aan het einde zelf (D-030).
+Suite **230 → 250**; zonder clubgebouw 230 (terugval). v0.0.19.
+GD-teststappen: zie het vier-vragen-rapport van deze sessie / §5.
+
+Eerder vandaag: **taak 007 — minimale documentlezer (VS-fase B)** ✅ afgerond en
 **lokaal goedgekeurd door de GD (2026-07-28)**: alle acceptatiepunten
 bevestigd (één-E-druk-gedrag, Esc zonder gelijktijdige pauze,
 muisherstel, betrouwbare inputblokkering, leesbaarheid nachtstaat,
@@ -79,16 +93,16 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | 🟢 ontwerp goedgekeurd (tasks/008, v1.1); productieplan A–J; fase A ✅ |
-| Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd — **fase B klaar** |
+| **Fase 2½ — Vertical Slice 01** | fase A ✅ · fase B ✅ · **fase C 🟡 gebouwd, wacht op GD-test** · D–J ⬜ |
+| Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **230/230
-groen**. D-015 geverifieerd (0 fouten): zonder documentlezer 209,
-zonder interactie-unit incl. documentprops 172, zonder zaklampsysteem
-188, zonder complete lighting 176, zonder inventory 169, alles aanwezig
-230. `config/version` = 0.0.18. Warnings in de suite-output zijn
+**Technische staat**: import schoon (exit 0), smoke-suite **250/250
+groen**. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
+dev room), zonder documentlezer 209, zonder interactie-unit incl.
+documentprops 172, zonder zaklampsysteem 188, zonder complete lighting
+176, zonder inventory 169. `config/version` = 0.0.19. Warnings in de suite-output zijn
 uitsluitend de bewust geteste luide faalpaden — normale opstart is
 schoon (geverifieerd). Incidentele exit-leak-warning van de ambience is
 pre-existent en geregistreerd als KI-004. Debug-prompt (TD-006) blijft
@@ -105,20 +119,17 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**VS-fase C: greybox van de zeven slice-ruimtes** (tasks/008 §15,
-fase C) — **wacht op expliciet GD-startsein; niet zelfstandig
-beginnen.** Inhoud: hal, kantine, kleedkamergang, kleedkamers 3+4,
-onderhoudsruimte en het buitenstuk (voorplein + pad + hek) als
-blockout op menselijke maat (LEVEL §6/§7), met collision, sightlines,
-oriëntatie-ankers, alle deuren uit tasks/008 §3 met begintoestand, en
-de werklicht-/nachtstaat volgens het 006-fundament. Buiten scope: art,
-sfeerbeats, documenten-plaatsing, glimp. Werkwijze conform het vaste
-ritme: eerst technisch ontwerp ter review → go → bouw → GD loopt de
-route in werklicht én nacht (exitcriterium fase C). Daarna fase D
-(objectieven-flow) richting de pacing-gate (fase E). Overige haken:
-monster-AI (009), TD-005, TD-004, sleutel-deur/la-koppeling,
-save-integratie, inventory-UI/HUD (TD-006; erft het D-029-patroon),
-canonvraag "derde helft als proloog" (STORY §8), KI-004.
+**De GD loopt de greybox lokaal** (F5 start direct op het voorplein bij
+het hek): de volledige route, afstanden, zichtlijnen, ruimtegevoel en
+oriëntatie — in nacht én werklicht (editor-export `werklicht` op de
+Clubgebouw-root; terugzetten vóór commit, de suite bewaakt de default).
+Maatcorrecties zijn per definitie kleine tabel-wijzigingen (TD-007:
+greybox = data). Na GD-akkoord op de architectuur volgt **fase D
+(gameplay-objectieven en sleutel-/zaklampflow)** — wacht op expliciet
+startsein. Daarna fase E: de pacing-gate. Overige haken: monster-AI
+(009), TD-005, TD-004, save-integratie, inventory-UI/HUD (TD-006; erft
+het D-029-patroon), canonvraag "derde helft als proloog" (STORY §8),
+KI-004.
 
 ## 6. Open aandachtspunten
 

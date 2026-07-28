@@ -101,6 +101,17 @@ const uit de bootstrap halen (D-015-geverifieerd: zonder de map blijft
 alles groen). Twee gelijktijdige consumenten van de prompt is de
 waarschuwing dat dit moment is aangebroken.
 
+## TD-007 — Clubgebouw-greybox leeft als datatabellen, niet als ruimte-scènes
+**Datum**: 2026-07-28 · **Status**: Middel · **Aflosmoment**: VS-fase G (environment-artpass)
+**Waar**: game/levels/clubgebouw/clubgebouw.gd (SCHIL/VLOEREN/PLAFONDS/BUITEN/INTERIEUR/MEUBELS)
+**Schuld**: LEVEL §7 wil "ruimte = eigen scène"; de greybox bouwt de
+volumes runtime uit const-tabellen (patroon dev_props). Bewust: in de
+maatvoeringsfase is elke GD-correctie één getal, en de fase-E-gate kan
+de hele plattegrond nog omgooien — scènes bouwen vóór die gate is werk
+dat sneuvelt. De echte props (deuren, TL's) zijn al scène-instanties.
+**Aflossing**: in fase G worden de goedgekeurde ruimtes omgezet naar
+eigen scènes met echte meshes; de tabellen verdwijnen dan volledig.
+
 ## Afgeloste schuld
 
 *Nog geen.*
