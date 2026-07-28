@@ -68,3 +68,13 @@ Het contract moet zó generiek zijn dat een lichtschakelaar, een achtergelaten
 telefoon, of de tv in de kantine er later moeiteloos op passen — maar we
 bouwen nu alleen de vier props die fase 1 nodig heeft. Weersta de neiging het
 contract "vast alvast" uit te breiden voor onbestaande props.
+
+**Harde eis (GD, 2026-07-28) — puur polymorf, geen typechecks.** De
+interactor mag nooit weten wát hij aankijkt: geen `if object is Door`,
+`is Drawer`, `match`-op-type of naam-/groep-sniffing per propsoort. De
+speler weet uitsluitend "dit object is Interactable" en roept blind
+`can_interact()` / `interact()` / `prompt_text()` aan; élk object bepaalt
+zelf wat dat betekent. Elke prop-specifieke kennis in de interactor is een
+verboden afhankelijkheid (D-015) en hoort in de prop zelf. Dit geldt ook
+voor toekomstige afnemers: wie op interacties wil reageren, luistert naar
+signalen — niet naar types.
