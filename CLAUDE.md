@@ -54,10 +54,12 @@ moet je zélf openen:
    open aandachtspunten. Altijd als eerste.
 2. **`docs/DECISIONS.md`** — de genomen beslissingen en waarom (D-001 t/m …).
 3. **`docs/GAME_BIBLE.md`** — wat CRUMP is: visie, pijlers, wat het níét is.
-4. **`docs/ARCHITECTURE.md`** — hoe de codebase in elkaar zit, inclusief de
+4. **`docs/CRUMP_DESIGN_PILLARS.md`** — de zeven pijlers als toetssteen:
+   elk ontwerp- en implementatievoorstel benoemt welke pijlers het dient.
+5. **`docs/ARCHITECTURE.md`** — hoe de codebase in elkaar zit, inclusief de
    modulariteitseis (§4a).
-5. **Het actieve taakdossier** in `tasks/` — vóór je ook maar iets bouwt.
-6. **`docs/ROADMAP.md`** bij twijfel over de fase, en `git log --oneline -10`
+6. **Het actieve taakdossier** in `tasks/` — vóór je ook maar iets bouwt.
+7. **`docs/ROADMAP.md`** bij twijfel over de fase, en `git log --oneline -10`
    voor wat er recent gebeurde.
 
 Werk daarna aan **één taak tegelijk**; meng geen taken in één commit.

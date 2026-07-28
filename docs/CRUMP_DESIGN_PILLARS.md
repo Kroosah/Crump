@@ -119,6 +119,32 @@ op kijkt, is regie in vermomming (§5b.5) — en regie slijt.
 **Toets:** *kan de speler dit moment navertellen als iets dat hém
 overkwam door zijn eigen keuzes — of als iets dat wij hem aandeden?*
 
+## 7. Onzekerheid
+
+CRUMP geeft de speler zelden volledige zekerheid. Twijfel is geen
+bijproduct van de horror maar een van haar dragende materialen: de speler
+mag regelmatig niet zeker weten wat hij zag, hoorde of dacht te begrijpen.
+Wat de speler zelf invult is enger dan wat wij bevestigen — dus bevestigen
+we zo laat en zo min mogelijk. De grens ligt vast in het spelercontract:
+de twijfel zit in de **wereld**, nooit in de **bediening** (besturing,
+saves en UI zijn altijd betrouwbaar; HORROR_GUIDELINES §7).
+
+**Wat dit eist van systemen:** systemen bevestigen niet wat ze deden.
+Geen detectie-meters, geen "je bent gehoord"-indicator, geen markering op
+wat er veranderd is, geen log die de gebeurtenis achteraf dichttimmert —
+een afwijking wordt geplaatst, nooit aangewezen. Gebeurtenissen mogen
+eenmalig en onherhaalbaar zijn (het geluid dat je niet nóg een keer kunt
+oproepen om het zeker te weten); informatiebronnen mogen onvolledig zijn
+en elkaar tegenspreken. Maar onzekerheid speelt nooit vals: de
+gameplay-régels blijven leerbaar en consequenties reconstrueerbaar
+(pijler 3, HORROR_GUIDELINES §6) — de speler twijfelt aan wat de wereld
+is, niet aan wat het spel doet.
+
+**Toets:** *maakt deze feature de speler zekerder, of juist onzekerder?*
+Zekerheid moet verdiend schaars zijn; een feature die gratis zekerheid
+uitdeelt (bevestiging, meting, markering) neemt de speler zijn twijfel af
+— en daarmee zijn angst.
+
 ---
 
 ## Gebruik
@@ -128,7 +154,7 @@ overkwam door zijn eigen keuzes — of als iets dat wij hem aandeden?*
 - **Bij elke review**: de vier-vragen-rapportage toetst "waarom zo
   gebouwd" mede aan deze pijlers.
 - **Bij twijfel tussen twee aanpakken**: kies de kant van kwetsbaar, stil,
-  schaars en systemisch — of leg de keuze voor aan de GD.
+  schaars, systemisch en onbevestigd — of leg de keuze voor aan de GD.
 
 *Dit document vervangt niets: GAME_BIBLE blijft de scheidsrechter over wat
 CRUMP is, HORROR_GUIDELINES over hoe het eng is. Dit is de lens waardoor
