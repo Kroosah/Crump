@@ -5,9 +5,9 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (taak 006 **afgerond en lokaal
-goedgekeurd door de GD**; nieuwe opdracht: GD-ontwerp Vertical Slice —
-zie §5)
+**Laatst bijgewerkt**: 2026-07-28 (VS-ontwerp **creatief goedgekeurd**;
+canon D-028 + hernummering doorgevoerd; productieplan A–J vastgesteld;
+**ontwerp taak 007 (documentlezer) ter review** — zie §5)
 
 ---
 
@@ -63,8 +63,10 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| Vertical Slice 01 | 🔵 **GD-ontwerp in tasks/007_vertical_slice_01.md, wacht op review + go** |
-| Monster-AI / hoofdstuk 1 | ⬜ open (dossiernummering herzien na de VS — zie §6) |
+| **Fase 2½ — Vertical Slice 01** | 🟢 ontwerp creatief goedgekeurd (tasks/008, v1.1); productieplan A–J; fase A ✅ |
+| Taak 007 — Minimale documentlezer (VS-fase B) | 🔵 **technisch ontwerp ter review** (tasks/007_document_reader.md) |
+| Taak 009 — Monster-AI (was 007) | ⬜ open |
+| Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **208/208
 groen**. D-015 geverifieerd (0 fouten): zonder zaklampsysteem 188, zonder
@@ -86,33 +88,35 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**Het GD-ontwerp van de eerste Vertical Slice staat in
-`tasks/007_vertical_slice_01.md` en wacht op GD-review** (opdracht GD
-2026-07-28: de eerste ±20 minuten van CRUMP als Game Director-document —
-géén techniek, géén implementatie). Canon van de slice: voetballer keert
-na een avondwedstrijd terug voor zijn vergeten sporttas; stadion lijkt
-verlaten; regen; alleen sfeer/verkennen/spanning, geen achtervolging;
-CRUMP vaker gehoord dan gezien, hooguit 1–2 zeer korte glimpsen; kleine
-speelruimte (ingang, kantine, gang, twee kleedkamers, onderhoudsruimte,
-stukje buiten). Na review + eventuele correctierondes volgt een
-**expliciete implementatie-go** — tot die tijd géén code/assets/scènes.
+**Het technisch ontwerp van taak 007 (minimale documentlezer, VS-fase B)
+staat in `tasks/007_document_reader.md` en wacht op GD-review +
+expliciete implementatie-go.** Kern: DocumentResource bij de prop,
+bus-contract `document_opened` ongewijzigd, verwijderbare
+DocumentReader-UI (bootstrap-spawn, groep-guard) die de boom pauzeert
+tijdens het lezen en Esc/E via `_input` + set_input_as_handled opeet
+zodat één Esc alleen het document sluit. Tot de go: géén
+code/assets/scènes.
 
-Openstaande vervolghaken daarna: monster-AI (abonneert op
-`flashlight_toggled` en `noise_made`), TD-005 (deur/la-tween), TD-004
-(bukken-collider), sleutel-deur/la-koppeling, save-integratie,
-inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6),
-KI-004 (exit-leak, batchen bij audio-/bootstrap-werk).
+Daarna volgens het productieplan (tasks/008 §15): fase C greybox (kan
+parallel aan B) → D objectieven-flow → E pacing-gate (GD) → F art-plan
+→ G artpass → H sfeerbeats → I glimp → J acceptatie. Overige haken:
+monster-AI (009), TD-005, TD-004, sleutel-deur/la-koppeling,
+save-integratie, inventory-UI/HUD (TD-006), canonvraag "derde helft als
+proloog" (STORY §8), KI-004.
 
 ## 6. Open aandachtspunten
 
-- **Dossiernummering**: `tasks/007_vertical_slice_01.md` (opdracht GD)
-  botst met het bestaande skelet `tasks/007_monster_ai.md`; dat oude
-  dossier is ongewijzigd gelaten. Hernummeren (monster-AI → 008+,
-  chapter1 herzien t.o.v. de VS) is een GD-besluit bij de VS-review.
-- **Premisse-delta VS ↔ STORY §3**: de VS-canon (terugkeer voor de
-  vergeten sporttas) wijkt af van de opening in STORY §3 (afsluitverzoek
-  + verdwijning tijdens het douchen). Vastgelegd in de canon-notitie van
-  het VS-dossier; beslechten in de canon-correctieronde.
+- **Nummering opgelost (D-028-besluit)**: 007 = documentlezer, 008 =
+  Vertical Slice, 009 = monster-AI, 010 = hoofdstuk 1. **Nog open**:
+  codecommentaar in `.gd`-bestanden verwijst her en der nog naar "taak
+  007/008" (oude betekenis) — bewust niet aangeraakt in de docs-only
+  ronde; corrigeren in de eerstvolgende codetaak. Historische
+  CHANGELOG-regels blijven staan (logboek herschrijven we niet).
+- **Premisse-delta opgelost**: de vergeten sporttas is canon (D-028);
+  STORY/GAME_BIBLE/HORROR/LEVEL gericht gecorrigeerd. Open canonvraag:
+  wordt "de derde helft" ooit een speelbare proloog (STORY §8)?
+  De canon-ronde over CRUMP-de-entiteit zelf (GAME_BIBLE §6/STORY §5)
+  staat ook nog open — zie de monster-notitie verderop.
 - **KI-004** (Klein, nieuw): incidentele "ObjectDB leaked"-warning bij
   afsluiten (ambience-teardown-race); pre-existent, geen 006-regressie.
 - **TD-005** (Laag): deur/la bewegen instant — tween zodra gewenst (audio
