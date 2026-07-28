@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundResource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game/systems/audio/sound_resource.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/amb_hum_koeling_01.wav" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"amb_hum_koeling"
+streams = Array[AudioStream]([ExtResource("2")])
+bus = &"Ambience"
+volume_db = -18.0
+pitch_spread = 0.0
+max_distance = 20.0
+positional = false

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundResource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://game/systems/audio/sound_resource.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_footstep_sneak_01.wav" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_footstep_sneak_02.wav" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"footstep_sneak"
+streams = Array[AudioStream]([ExtResource("2"), ExtResource("3")])
+bus = &"SFX"
+volume_db = -14.0
+pitch_spread = 0.06
+max_distance = 4.0
+positional = true
