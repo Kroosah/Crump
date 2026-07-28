@@ -1,6 +1,6 @@
 # Taak 006 — Licht & sfeer
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 technisch ontwerp ter review (GD), geen implementatie · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2 (correctieronde verwerkt), wacht op expliciete implementatie-go · **Vereist**: 001, 002
 
 Licht is in CRUMP zowel gameplay (zaklamp: zien kost gezien worden) als de
 duurste technische post (ARCHITECTURE §7). Deze taak legt het lichtfundament en
@@ -73,7 +73,7 @@ wat Randy moet beoordelen.
 
 ---
 
-# Technisch ontwerp (v1, 2026-07-28 — ter review GD)
+# Technisch ontwerp (v2, 2026-07-28 — correctieronde na GD-review)
 
 *Elke belangrijke keuze benoemt de gediende Design Pillars (P1–P7), de
 horrorrationale en de verworpen alternatieven. De creatieve
@@ -82,6 +82,15 @@ standaardtoestand, Silent Hill-achtige sfeer, weinig werkende TL-buizen,
 realistische zaklampbundel, oriëntatie-zonder-details zonder zaklamp,
 licht suggereert veiligheid maar garandeert niets, en licht is schaars en
 bewust ontworpen.*
+
+*v2 verwerkt de GD-correctieronde van 2026-07-28: exacte
+toggle-gevolgen en definitieve bus-signaturen (§3), de
+bezitkoppeling zonder klasse-referentie (§3), scheiding licht- en
+geluidspositie (§3a), concreet brightnessbeleid met versmalde range
+(§6), TL-flikker-invarianten (§4), gedrag bij budgetoverschrijding
+(§5), de drie dev-room-teststanden + F3-inhoud (§8) en het
+aangevulde testplan (§9). De inhoudelijke richting van v1 is
+ongewijzigd.*
 
 ## 1. De lichtfilosofie van CRUMP
 
@@ -115,6 +124,9 @@ Nederlands sportpark bij nacht) en géén volumetrische fog in 006
 ```
 game/systems/flashlight/      ← verwijdereenheid: de zaklamp (§3)
  └─ flashlight.tscn/gd           (bootstrap-spawn, volgt de actieve camera)
+
+game/systems/light_budget/    ← verwijdereenheid: schaduwbudget-bewaking (§5)
+ └─ light_budget.tscn/gd         (bootstrap-spawn per level, één taak)
 
 game/props/light_tl/          ← verwijdereenheid: TL-armatuur (§4)
  └─ light_tl.tscn/gd + assets/shaders/flicker_light.gdshader
@@ -150,75 +162,229 @@ te vertrouwen in plaats van de wereld niet). Als een hoofdstuk ooit een
 falende zaklamp wil, is dat een ontworpen gebeurtenis met oorzaak en een
 eigen ontwerpronde (batterijen — nu geen afnemer, P4, verworpen).
 
-**Keuze C — aan/uit is een keuze met prijs, uitgedrukt in feiten.**
-*(P3, P7; kader 005 §1, D-021/D-024)* Toggle via de bestaande input-actie
-`flashlight`. Elke toggle zendt drie gescheiden dingen:
-1. `EventBus.flashlight_toggled(is_on: bool)` — het feit voor de latere
-   AI (007: CRUMP *ziet* licht); zonder ontvanger betekenisloos (D-015);
-2. `audio_cue(&"flashlight_click", positie)` — de hoorbare klik (doel:
-   informatie, kader 005 §8);
-3. `noise_made(positie, ~2 m)` — de klik is óók een gameplay-geluidje.
-De prijs is dus tweeledig en leerbaar: licht maakt je zichtbaar (straks),
-de klik maakt je nú al hoorbaar. **Geen enkele meter of indicator** toont
-"hoe zichtbaar" je bent (P7): de speler leest het uit de wereld — sta ik
-in het licht?
+**Keuze C — aan/uit is een keuze met prijs, uitgedrukt in gescheiden
+feiten.** *(P3, P7; kader 005 §1, D-021/D-024)* Toggle via de bestaande
+input-actie `flashlight`. **Alleen de zaklampcomponent bezit de
+aan/uit-state**; niets anders in het spel houdt of spiegelt die
+toestand. Eén inputactie veroorzaakt **maximaal één statewijziging** en
+per relevant kanaal **maximaal één emissie**. Een *geslaagde* toggle —
+dat wil zeggen: de zaklampstate is werkelijk gewijzigd — zendt daarná
+drie onafhankelijke feiten, elk voor een eigen soort afnemer:
 
-**Keuze D — bezit via de inventory, null-veilig.** *(P5; dossier 004)*
-Als er een inventory is, werkt de zaklamp alleen wanneer
-`has_item(&"zaklamp")` (duck-typed via de groep; het ItemResource bestaat
-al sinds 004 — nu krijgt het betekenis). De dev room krijgt een
-zaklamp-pickup naast de sleutel. Geen inventory-systeem = zaklamp werkt
-gewoon (nette degradatie, zelfde regel als alles). Toggle zonder bezit:
-stil niets (geen prompt-gebedel; de speler die 'm niet heeft, weet dat).
+1. `flashlight_toggled(is_on: bool)` — **toestandfeit** voor toekomstige
+   afnemers (007: CRUMP *ziet* licht). Dit is een feit, géén commando:
+   het bestuurt de zaklamp niet en niets kan de zaklamp via dit signaal
+   aan- of uitzetten. Zonder ontvanger betekenisloos (D-015).
+2. `audio_cue(&"flashlight_click", positie)` — de **hoorbare klik**
+   (doel: informatie, kader 005 §8).
+3. `noise_made(positie, ~2 m)` — de klik als **gameplaygeluid** voor de
+   latere AI (007).
+
+De kanalen veroorzaken elkaar nooit (kader 005) en ontstaan uitsluitend
+**nadat** de state werkelijk is gewijzigd. Geen zaklampbezit (§ hieronder)
+betekent: geen statewijziging, geen licht, geen audio_cue en geen
+noise_made — nul emissies op álle kanalen. De prijs is dus tweeledig en
+leerbaar: licht maakt je zichtbaar (straks), de klik maakt je nú al
+hoorbaar. **Geen enkele meter of indicator** toont "hoe zichtbaar" je
+bent (P7): de speler leest het uit de wereld — sta ik in het licht?
+
+**Definitieve EventBus-signaturen** (uitsluitend basistypen, D-021;
+`audio_cue` en `noise_made` bestaan al en wijzigen niet):
+
+```gdscript
+## De zaklamp is werkelijk van toestand gewisseld (feit, geen commando;
+## taak 006). Alleen de zaklampcomponent zendt dit, uitsluitend ná een
+## geslaagde statewijziging. CRUMP's zicht (taak 007) abonneert zich.
+signal flashlight_toggled(is_on: bool)
+
+# bestaand, ongewijzigd (taak 005 / taak 001):
+signal audio_cue(sound_id: StringName, position: Vector3)
+signal noise_made(position: Vector3, loudness: float)
+```
+
+**Keuze D — bezit via een gecachte vlag: eenmalig gelezen, daarna
+eventgedreven.** *(P5; dossier 004, D-015/D-021)* Het zaklampsysteem
+noemt nergens een Inventory-klasse en scant nooit per frame. De
+koppeling werkt zo:
+
+- **Initialisatie (eenmalig, bij spawn)**: duck-typed via de groep
+  `inventory` — `get_first_node_in_group("inventory")`, en alleen als
+  die node `has_method("has_item")` heeft: `has_item(&"zaklamp")` →
+  gecachte vlag `_has_flashlight`.
+- **Daarna eventgedreven**: abonneren op de bestaande bus-feiten
+  `item_added(item: Resource)` / `item_removed(item: Resource)`; de id
+  wordt duck-typed gelezen (`item.get("id")` — geen
+  ItemResource-klassenaam, D-021). Id `&"zaklamp"` → vlag bijwerken.
+  Geen polling, geen frame-werk.
+- **Verwijderbaarheid, beide richtingen**: zonder inventory-systeem is
+  er geen groepsnode → de bezit-gate vervalt en de zaklamp werkt gewoon
+  (nette D-015-degradatie, zelfde regel als alles). Zonder
+  zaklampsysteem verandert er niets aan de inventory: die kent de
+  zaklamp niet — `zaklamp.tres` is dan een item als elk ander. Beide
+  mappen zijn onafhankelijk verwijderbaar; alles blijft parsebaar.
+- **Bewust géén** equipment-, hotbar- of selected-item-systeem: bezit
+  is een booleaans feit, geen slot (P4 — geen afnemer voor meer).
+- **Dev room**: dev_props plaatst een `pickup_item` met het bestaande
+  `zaklamp.tres` naast de sleutel-pickup. De GD verkrijgt de zaklamp
+  dus via **de echte pickup-flow** (D-022) — geen debug-give of
+  autobezit, zodat de lokale test de uiteindelijke zoek-flow (zaklamp
+  moet gevonden worden) niet vervalst.
+
+Toggle zonder bezit: stil niets — geen prompt-gebedel (de speler die 'm
+niet heeft, weet dat) en géén emissie op welk kanaal dan ook (keuze C).
 **Verworpen**: altijd-beschikbaar (mist de schaarste én het
-vindmoment); een harde inventory-dependency (D-015-breuk).
+vindmoment); een harde inventory-dependency of klasse-referentie
+(D-015/D-021-breuk); per-frame `has_item`-polling (verspilling, en het
+maskeert de vraag wie de waarheid bezit).
+
+## 3a. Lichtpositie ≠ geluidspositie
+
+*(P1; kader 005, D-020)* Twee posities, strikt gescheiden:
+
+- **Licht**: de `SpotLight3D` volgt de **actieve viewport-camera**
+  (patroon D-020, met de na-ijling uit keuze A). Wat je ziet schijnt
+  waar je kijkt — camerahoogte en headbob horen bíj het licht.
+- **Geluid**: `audio_cue` en `noise_made` gebruiken de **semantische
+  spelerpositie**: `global_position` van de node in de groep `player`
+  (de body-origin op vloerniveau — exact dezelfde bron als de
+  voetstappen uit 005). Camerahoogte, headbob of near-plane-details
+  lekken dus **nooit** in wat de latere AI (007) waarneemt of wat het
+  audiosysteem plaatst.
+- **Degradatie**: is er geen spelernode (D-015-richting zonder speler),
+  dan is er geen subject dat klikt — audio_cue en noise_made blijven
+  dan achterwege; `flashlight_toggled` wordt wél gezonden (het licht is
+  echt gewisseld) en het licht volgt gewoon de actieve camera.
 
 ## 4. TL-armaturen — weinig, en dat is het punt
 
-**Keuze E — één herbruikbare prop `light_tl` met drie standen.**
-*(P4, P5; LEVEL §5, HORROR §4)* Armatuur = emissive buis-mesh +
-neerwaartse `OmniLight3D`/spot; export-stand `WERKEND` / `DEFECT` (uit,
-donkere hoek) / `FLIKKEREND`. Flikkeren is een **ontworpen gebeurtenis
-met wereld-oorzaak** (een kapotte buis ís zijn eigen verklaring —
-hoofdstuk-1-regel HORROR §4) en is **deterministisch** (seed-export,
-patroon via `assets/shaders/flicker_light.gdshader` op de emissive +
-gekoppelde lichtenergie): reproduceerbaar, testbaar, en geen
-random-spook. Weinig werkende buizen is het uitgangspunt: de nachtstaat
-van de dev room krijgt er **2 werkend, 1 flikkerend, rest defect** —
-werkende TL's zijn oriëntatie-ankers (LEVEL §2.3). **Verworpen**:
-per-buis zoem/tik-audio (positionele loops zijn nieuwe
+**Keuze E — één herbruikbare prop `light_tl` met drie expliciete
+staten.** *(P4, P5; LEVEL §5, HORROR §4)* Armatuur = emissive buis-mesh
++ neerwaartse `OmniLight3D`/spot; export-enum `STABIEL` (licht aan,
+constant) / `DEFECT` (uit, donkere hoek) / `FLIKKEREND`. Flikkeren is
+een **ontworpen gebeurtenis met wereld-oorzaak** (een kapotte buis ís
+zijn eigen verklaring — hoofdstuk-1-regel HORROR §4), deterministisch
+via seed-export en `assets/shaders/flicker_light.gdshader` op de
+emissive + gekoppelde lichtenergie. Weinig werkende buizen is het
+uitgangspunt: de nachtstaat van de dev room krijgt er **2 stabiel,
+1 flikkerend, rest defect** — stabiele TL's zijn oriëntatie-ankers
+(LEVEL §2.3).
+
+**Invarianten (bindend):**
+
+- De drie staten zijn **expliciet en per lamp** in de editor gekozen;
+  er bestaat geen automatische overgang tussen staten in taak 006.
+- **DEFECT flikkert nooit**: kapot betekent hier uit. Flikkeren is een
+  bewuste per-lamp-keuze (`FLIKKEREND`), nooit een bijverschijnsel van
+  defect.
+- **STABIEL flikkert nooit spontaan** — onder geen enkele voorwaarde.
+- Flikkerpatronen zijn **deterministisch** (vaste seed → identiek
+  verloop) en **bevatten rust**: het patroon is grotendeels áán met
+  korte onderbrekingen, geen continue strobe — reproduceerbaar,
+  testbaar, en de speler krijgt adem tussen de haperingen.
+- **Geen horror-eventsequencer en geen globale flikkercontroller** in
+  taak 006: iedere lamp is autonoom. Verhaalde uitval, gescripte
+  black-outs en CRUMP-gekoppelde lichtreacties zijn aparte
+  content-/gameplaytaken met een eigen ontwerpronde (P4 — nu bouwen is
+  speculatie).
+
+**Verworpen**: per-buis zoem/tik-audio (positionele loops zijn nieuwe
 audio-functionaliteit; de nulpunt-laag dekt de zoem — uitbreiding
 "positionele ambience-emitters" genoteerd voor een latere taak);
-willekeurige flikker zonder patroon (ontestbaar en ongeregisseerd).
+willekeurige flikker zonder patroon (ontestbaar en ongeregisseerd);
+automatische flikker op iedere defecte lamp (dan is flikkeren geen
+ontwerpkeuze meer maar ruis).
 
 ## 5. Lichtbudget en performance
 
 *(ARCHITECTURE §7, LEVEL §5)* **Regel: maximaal 4 realtime
-schaduw-werpende lichten tegelijk zichtbaar; de zaklamp telt daar altijd
-als 1 van** — ruimtes worden dus op 3 ontworpen. Handhaving op twee
-niveaus: de **smoke-suite telt** schaduw-werpende lichten in het geladen
-level (+ zaklamp) en faalt boven budget; de **F3-overlay** toont "licht:
-n/4 schaduw". Overige performance: geen volumetrics (§1), fog =
-goedkope exponentiële diepte-fog, debanding aan (vrijwel gratis),
-schaduw-atlas blijft preset-gestuurd (TD-002 wordt hier bewust níét
-volledig afgelost — presets uitbreiden met fog/SSAO-kwaliteit is fase
-6-kalibratiewerk; genoteerd). Meten vóór tunen: fps staat al in F3.
+schaduw-werpende lichten tegelijk zichtbaar; de zaklamp heeft daarvan
+altijd een gereserveerd slot** — levels worden dus op **3** ontworpen.
+In taak 006 zijn alle level-lampen statische scene-data: er bestaat
+**geen dynamische licht-spawning**, dus een overschrijding is per
+definitie een configuratiefout, geen runtime-verrassing.
+
+**Handhaving in drie lagen:**
+
+1. **Tests vangen de configuratiefout**: de smoke-suite telt de
+   schaduw-werpende `Light3D`-nodes in het geladen level; meer dan 3
+   (= 4 incl. het zaklamp-slot) is een **testfalen** — de fout haalt
+   `main` niet.
+2. **Runtime-diagnose**: een kleine verwijdereenheid
+   `game/systems/light_budget/` (bootstrap-gespawnd per level, zelfde
+   bestaanscheck-patroon als de interactor) telt bij levelload de
+   schaduw-werpende lichten. Boven budget: één `push_warning` per
+   gedegradeerde lamp met nodepad en de telling ("licht-budget: 5/3
+   level-schaduwlichten — schaduw uitgeschakeld op <pad>"). Dit script
+   heeft precies één taak; het is bewust **géén** generiek
+   lightmanagement-framework — geen registratie-API, geen dynamische
+   herverdeling, geen kwaliteitsbeheer (P4).
+3. **Deterministische degradatie**: de zaklamp verliest **nooit** zijn
+   schaduw (gereserveerd slot; hij is bovendien geen level-kind, dus de
+   level-telling raakt hem niet). Van de level-lampen behouden de
+   **eerste 3 in scene-boomvolgorde** hun schaduw; iedere volgende
+   krijgt `shadow_enabled = false` — de lamp blijft áán, alleen de
+   schaduw vervalt. Boomvolgorde is vast in de scene-data, dus de
+   uitkomst is elke run identiek en headless testbaar.
+
+Zonder `game/systems/light_budget/` (D-015-verwijdering) vervalt alleen
+de runtime-diagnose en -degradatie; de suite-telling blijft de
+configuratiefout vangen en zaklamp/TL's draaien onverstoord door. De
+**F3-overlay** toont de telling duck-typed via de groep (§8). Overige
+performance: geen volumetrics (§1), fog = goedkope exponentiële
+diepte-fog, debanding aan (vrijwel gratis), schaduw-atlas blijft
+preset-gestuurd (TD-002 wordt hier bewust níét volledig afgelost —
+presets uitbreiden met fog/SSAO-kwaliteit is fase 6-kalibratiewerk;
+genoteerd). Meten vóór tunen: fps staat al in F3.
 
 ## 6. Brightness/gamma-beleid (lost TD-003 af)
 
 **Keuze F — brightness = `Environment.adjustment_brightness`, toegepast
 door een klein herbruikbaar `environment_tuner.gd` op de
-WorldEnvironment van elk level.** *(QA §5/§9)* SettingsManager krijgt
-een `brightness_changed`-signaal (autoload = infrastructuur; minimale
-uitbreiding); de tuner leest bij `_ready` en luistert daarna. **Beleid**:
-het spel wordt gekalibreerd op brightness 1.0 — donker-maar-leesbaar
-moet dáár kloppen; de slider (0.5–2.0, bestaande clamp) compenseert
-schermen en omgevingslicht, en redt nooit slecht lichtontwerp. De
-contour-garantie (nooit informatie-loos zwart) geldt op 1.0 en wordt
-door de GD op zijn scherm gekalibreerd. **Verworpen**: gamma via een
-fullscreen-shader (duurder, en adjustment zit gratis in de pipeline);
-brightness per preset (het is een gebruikersinstelling, geen
-kwaliteitsknop).
+WorldEnvironment van elk level.** *(QA §5/§9)*
+
+**Concrete waarden en aangrijpingspunt:**
+
+- **Standaardwaarde 1.0** — het neutrale punt; het spel wordt hierop
+  gekalibreerd en donker-maar-leesbaar moet dáár kloppen.
+- **Range 0.8–1.2, geclampt** in SettingsManager: zowel bij het laden
+  uit `settings.cfg` als in een setter `set_brightness()` gaat elke
+  waarde door `clampf(value, 0.8, 1.2)`. Waarden uit een oude
+  settings.cfg buiten de range worden dus stil binnen de range
+  getrokken.
+- **Motivatie van de rangewijziging** (bestaand model: clamp 0.5–2.0):
+  die brede clamp stamt uit taak 001, toen brightness nog nergens op
+  aangreep (TD-003) — er is dus geen bestaand spelersgedrag om te
+  bewaren. Nu de waarde echt effect krijgt, past de brede range niet
+  bij het lichtontwerp: ×2.0 tilt het near-black naar een grijs
+  schemerbeeld (het "nachtbeeld wordt dagbeeld"-verbod) en ×0.5 drukt
+  de gekalibreerde contour-garantie onder de leesbaarheidsgrens. De
+  versmalde range **0.8–1.2** compenseert reële scherm- en
+  omgevingslichtverschillen, maar kan het lichtontwerp niet herschrijven
+  en redt nooit slecht lichtontwerp. Afwijken van deze range vraagt een
+  nieuw GD-besluit.
+- **Aangrijpingspunt, exact**: `environment_tuner.gd` zet
+  `adjustment_enabled = true` en schrijft `adjustment_brightness` op de
+  **Environment-resource van de WorldEnvironment-node van het geladen
+  level** — niets anders. SettingsManager krijgt een
+  `brightness_changed(value: float)`-signaal (autoload =
+  infrastructuur; minimale uitbreiding); de tuner leest bij `_ready` en
+  luistert daarna.
+- **Wat brightness níét raakt**: de UI-lagen (debug-overlay,
+  debug-prompt, latere HUD) zijn `CanvasLayer`s en vallen buiten de
+  3D-adjustment-pipeline — F3 en prompts blijven dus altijd gelijk
+  leesbaar. Geen enkele `Light3D`-energie, TL-staat of budgettelling
+  (§5) verandert mee: brightness is een nabewerking op het eindbeeld,
+  geen lichtbron.
+- **Nachtgarantie**: op het maximum (1.2) blijft nacht nacht — de
+  multiplicatieve aanpassing op een near-black beeld verschuift de
+  leesbaarheidsgrens licht, maar kan structureel geen dagbeeld maken;
+  de contour-garantie (nooit informatie-loos zwart) geldt op 1.0 en
+  wordt door de GD op zijn scherm gekalibreerd.
+
+**Verworpen**: gamma via een fullscreen-shader (duurder, en adjustment
+zit gratis in de pipeline); brightness per preset (het is een
+gebruikersinstelling, geen kwaliteitsknop); de oude range 0.5–2.0
+handhaven (zie motivatie hierboven).
 
 ## 7. Relatie licht ↔ zichtbaarheid ↔ latere AI (interface-paragraaf)
 
@@ -244,31 +410,88 @@ geen gameplay. De **smoke-visibility-tests worden herijkt** op de
 nachtstaat: de KI-001-dekking (camera, zicht, materialen) blijft
 onverkort; de licht-drempels toetsen voortaan de donkere waarheid
 (ambient > 0 blijft de nooit-pikzwart-garantie; ≥2 actieve lichtbronnen
-blijven — de werkende TL's; schaduwbudget ≤ 4 komt erbij).
+blijven — de stabiele TL's; schaduwbudget ≤ 4 komt erbij).
+
+**De drie acceptatie-toestanden voor de lokale GD-ronde**, en hoe je
+ertussen wisselt:
+
+| Toestand | Doel | Hoe |
+|---|---|---|
+| **Werklicht aan** | inspectie van props, geometrie en systemen | in de editor op de dev-room-node de export `werklicht` op `true` zetten en F5 draaien; daarna terug op `false` (de suite bewaakt dat `false` de gecommitte standaard blijft) |
+| **Nacht zonder zaklamp** | oriëntatie op silhouetten en de schaarse TL-ankers; details verdwijnen | gewoon starten (nachtstaat ís de standaard) en de zaklamp-pickup **niet** oprapen |
+| **Nacht met zaklamp** | details lokaal leesbaar in de bundel; verte en periferie blijven donker | de zaklamp-pickup oprapen via de echte flow (§3, keuze D) en toggelen met de `flashlight`-toets |
+
+**F3-overlay** krijgt er twee regels bij (beide duck-typed via groepen,
+zelfde patroon als de inventory- en audioregel — de overlay overleeft
+elke verwijdering):
+
+```
+zaklamp: bezit ja · aan          ← bezit + aan/uit (— zonder systeem)
+licht: 3/4 schaduw · helderheid 1.0 · tl: 2 stabiel / 1 flikkert / 5 defect
+```
+
+— dus: zaklampbezit, zaklamp aan/uit, brightnesswaarde, actieve
+schaduwlichten t.o.v. het budget en een compacte telling van de
+TL-staten in het geladen level.
 
 ## 9. Teststrategie
 
 1. **Zaklamp**: systeem gespawnd (bestaanscheck-patroon); toggle via echt
    input-event → licht aan/uit + de drie feiten uit keuze C **gescheiden
    geteld** (kanalen onafhankelijk, kader 005); volgt de actieve camera
-   (positie/richting ≈ camera na n frames); bezit-gate: zonder
-   zaklamp-item weigert stil, mét item werkt, zonder inventory-systeem
-   werkt (D-015-degradatie); tijdens pauze geen toggle (PAUSABLE).
-2. **Budget**: telling schaduw-werpende lichten in het geladen level
-   (incl. zaklamp aan) ≤ 4.
+   (positie/richting ≈ camera na n frames); tijdens pauze geen toggle
+   (PAUSABLE).
+   - **Zonder bezit: nul gevolgen** — geen statewijziging, en op géén
+     van de drie kanalen (`flashlight_toggled`, `audio_cue`,
+     `noise_made`) ook maar één emissie.
+   - **Geslaagde toggle: exact één emissie per kanaal** — ieder feit
+     precies één keer per inputactie, en pas ná de statewijziging.
+   - **Positiescheiding (§3a)**: het licht volgt de camera, maar de
+     positie in `audio_cue`/`noise_made` is de spelerpositie
+     (groep `player`, body-origin) — aantoonbaar ongelijk aan de
+     camerapositie zodra de camera op ooghoogte staat.
+   - **Bezit eventgedreven**: vlag wordt correct bijgewerkt door
+     `item_added`/`item_removed` (oppakken → toggle werkt; verwijderen
+     → toggle weigert weer stil), zonder frame-polling.
+2. **Budget**: telling schaduw-werpende lichten in het geladen level ≤ 3
+   (+ het zaklamp-slot = 4 totaal).
+   - **Overschrijding is deterministisch**: testscène met te veel
+     schaduwlampen → de eerste 3 in boomvolgorde behouden schaduw, de
+     rest verliest hem (`shadow_enabled == false`), de zaklamp behoudt
+     zijn schaduw altijd, en er verschijnt een debug-warning met nodepad
+     en telling.
 3. **Environment/brightness**: ambient > 0, fog actief, tonemap
    niet-lineair, debanding aan; `SettingsManager.brightness` zetten →
    `adjustment_brightness` volgt (TD-003-test), terugzetten idem.
-4. **TL-prop**: instantieert los; drie standen gedragen zich (werkend =
-   licht aan, defect = uit, flikkerend = energie varieert deterministisch
+   - **Clamp en default**: default is 1.0; waarden buiten 0.8–1.2
+     (zowel via de setter als uit een settings.cfg) worden op de
+     randen geclampt.
+4. **TL-prop**: instantieert los; drie staten gedragen zich (STABIEL =
+   licht aan, DEFECT = uit, FLIKKEREND = energie varieert deterministisch
    over frames met vaste seed).
+   - **Determinisme**: twee runs met dezelfde seed geven hetzelfde
+     patroonverloop; het patroon bevat rustperioden.
+   - **Flikker stopt correct**: staat omzetten naar STABIEL/DEFECT
+     beëindigt het flikkeren onmiddellijk en definitief.
+   - **STABIEL flikkert nooit spontaan**: energie blijft constant over
+     een gemeten frame-reeks.
 5. **D-015-richtingen**: zonder `game/systems/flashlight/` draait alles
-   (geen zaklamp, geen fouten); zonder audio klikt de zaklamp stil maar
-   werkt; zonder inventory werkt hij zonder bezit-gate; alles aanwezig =
-   alles groen. Testcode noemt geen klassen (D-021).
+   (geen zaklamp, geen fouten); zonder `game/systems/light_budget/`
+   draait alles (alleen de runtime-diagnose vervalt); zonder audio klikt
+   de zaklamp stil maar werkt; zonder inventory werkt hij zonder
+   bezit-gate; **zonder de complete lighting-oplevering** (flashlight +
+   light_budget + light_tl-prop) blijven player, inventory, audio en
+   levels parsebaar en draait de suite van de overgebleven systemen
+   groen; alles aanwezig = alles groen. Testcode noemt geen klassen
+   (D-021).
 6. **EventBus-contract**: `flashlight_toggled` met 1 argument in de
    signaturentest.
-7. **Beperking**: sfeer, leesbaarheid en het "onaangename" zijn
+7. **Dev-room-nachtstaat**: de herijkte visibility-checks (§8) tonen dat
+   de ruimte zonder zaklamp structureel navigeerbaar blijft — ambient
+   > 0, ≥2 actieve lichtbronnen (de stabiele TL's), camera ziet
+   geometrie — voor zover headless toetsbaar; `werklicht == false` is de
+   gecommitte standaard.
+8. **Beperking**: sfeer, leesbaarheid en het "onaangename" zijn
    hardware-oordelen (GD, met brightness-kalibratie op zijn scherm);
    headless toetsen we waarden en gedrag, niet gevoel.
 
