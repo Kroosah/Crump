@@ -393,8 +393,11 @@ func _check_pause(tree: SceneTree, player, failures: int) -> int:
 	return failures
 
 
-## Interactietests (taak 003, blok 1: aanwezigheid). De functionele tests
-## (prompt/interact per prop) volgen in het props-blok.
+## Interactietests (taak 003): het volledige contract door de échte keten —
+## speler kijkt, prompt verschijnt op de EventBus (letterlijk prompt_text()),
+## interact-toets voert de eigen interactie van het object uit, wegkijken
+## wist de prompt, en niet-interactables zwijgen. Nergens een proptype: de
+## tests vergelijken uitsluitend met de export-data van de props zelf.
 func _check_interaction(tree: SceneTree, failures: int) -> int:
 	# Interactor-scène laadt en instantieert los.
 	var packed: PackedScene = load(INTERACTOR_SCENE)
@@ -408,7 +411,239 @@ func _check_interaction(tree: SceneTree, failures: int) -> int:
 	var interactor := tree.root.find_child("Interactor", true, false)
 	failures = _check(interactor != null,
 		"interactor is door de bootstrap gespawnd", failures)
+	if interactor == null:
+		return failures
+
+	# Elke prop-scène instantieert los en voldoet aan het contract. Bewust
+	# GEEN overslaan bij een ontbrekende prop: de verwijdereenheid is het
+	# hele systeem (contract + interactor + props). Bestaat de interactor
+	# wél maar een prop niet, dan is dat een halve verwijdering — een
+	# kapotte toestand die hier luid hoort te falen.
+	for prop_path in [
+			"res://game/props/door_wooden/door_wooden.tscn",
+			"res://game/props/drawer_cabinet/drawer_cabinet.tscn",
+			"res://game/props/pickup_item/pickup_item.tscn",
+			"res://game/props/note_readable/note_readable.tscn"]:
+		var prop_scene: PackedScene = null
+		if ResourceLoader.exists(prop_path):
+			prop_scene = load(prop_path)
+		var prop := prop_scene.instantiate() if prop_scene != null else null
+		# Bewust duck-typed en níét `prop is Interactable`: een global class
+		# benoemen is een parse-time-afhankelijkheid — dan parst deze suite
+		# zelf niet meer zodra het interactiesysteem verwijderd is (D-015).
+		var honours_contract: bool = prop != null \
+			and prop.has_method("can_interact") \
+			and prop.has_method("interact") \
+			and prop.has_method("prompt_text")
+		failures = _check(honours_contract,
+			"prop voldoet los aan het Interactable-contract (%s)"
+			% prop_path.get_file(), failures)
+		if prop != null:
+			prop.free()
+
+	# Voor de functionele keten is de speler nodig (die richt de camera).
+	var player = tree.get_first_node_in_group("player")
+	var props_root: Node = tree.root.find_child("TestProps", true, false)
+	if player == null or props_root == null:
+		Log.info("TEST INFO · geen speler of testprops — functionele interactietests overgeslagen")
+		return failures
+
+	# Prompt-recorder: onthoudt de laatst uitgezonden prompttekst.
+	var prompt_log: Array = [""]
+	var prompt_recorder := func(text: String) -> void:
+		prompt_log[0] = text
+	EventBus.interact_prompt_changed.connect(prompt_recorder)
+
+	failures = await _check_door(tree, player, props_root, prompt_log, failures)
+	failures = await _check_locked_door(tree, player, props_root, prompt_log, failures)
+	failures = await _check_drawer(tree, player, props_root, prompt_log, failures)
+	failures = await _check_pickup(tree, player, props_root, prompt_log, failures)
+	failures = await _check_note(tree, player, props_root, prompt_log, failures)
+
+	# Niet-interactable: een kale wereldkist geeft geen prompt.
+	await _aim(tree, player, Vector3(-4.0, 0.05, 4.8), 0.0, -0.61)
+	failures = _check(prompt_log[0] == "",
+		"niet-interactable object geeft geen prompt", failures)
+
+	# Wegkijken de lege ruimte in: prompt blijft/wordt leeg.
+	await _aim(tree, player, Vector3(0.8, 0.05, -8.2), PI, 0.0)
+	failures = _check(prompt_log[0] == "",
+		"prompt is leeg bij wegkijken", failures)
+
+	EventBus.interact_prompt_changed.disconnect(prompt_recorder)
 	return failures
+
+
+func _check_door(tree: SceneTree, player, props_root: Node,
+		prompt_log: Array, failures: int) -> int:
+	var door: Node = props_root.get_node_or_null("TestDoor")
+	failures = _check(door != null, "testdeur staat in de dev room", failures)
+	if door == null:
+		return failures
+
+	# Aankijken: prompt is letterlijk de eigen tekst van de deur.
+	await _aim(tree, player, Vector3(-3.5, 0.05, -2.3), 0.0, 0.0)
+	failures = _check(prompt_log[0] == door.prompt_open,
+		"deur toont zijn eigen open-prompt ('%s')" % prompt_log[0], failures)
+
+	# Interact: de deur voert zijn eigen interactie uit — hoorbaar.
+	var noises: Array = await _interact_and_listen(tree)
+	failures = _check(noises.size() == 1
+		and absf(noises[0][1] - door.loudness_toggle) < 0.01,
+		"deur opent hoorbaar met eigen luidheid", failures)
+
+	# De open deur staat nu haaks; vanaf de zijkant toont hij de sluit-prompt.
+	await _aim(tree, player, Vector3(-2.8, 0.05, -4.5), PI / 2, 0.0)
+	failures = _check(prompt_log[0] == door.prompt_close,
+		"open deur toont zijn sluit-prompt ('%s')" % prompt_log[0], failures)
+
+	# Sluiten; het paneel draait uit deze kijklijn weg → prompt leeg.
+	var close_noises: Array = await _interact_and_listen(tree)
+	failures = _check(close_noises.size() == 1,
+		"deur sluit hoorbaar", failures)
+	failures = _check(prompt_log[0] == "",
+		"prompt verdwijnt zodra het deurpaneel wegdraait", failures)
+
+	# Terug aan de voorkant: de cyclus is rond, de deur is weer te openen.
+	await _aim(tree, player, Vector3(-3.5, 0.05, -2.3), 0.0, 0.0)
+	failures = _check(prompt_log[0] == door.prompt_open,
+		"gesloten deur toont weer zijn open-prompt", failures)
+	return failures
+
+
+func _check_locked_door(tree: SceneTree, player, props_root: Node,
+		prompt_log: Array, failures: int) -> int:
+	var door: Node = props_root.get_node_or_null("TestDoorLocked")
+	failures = _check(door != null, "op-slot-deur staat in de dev room", failures)
+	if door == null:
+		return failures
+
+	await _aim(tree, player, Vector3(-6.0, 0.05, -2.3), 0.0, 0.0)
+	failures = _check(prompt_log[0] == door.prompt_locked,
+		"op-slot-deur meldt dat via zijn prompt ('%s')" % prompt_log[0], failures)
+
+	# Interact weigert netjes: rammelt hoorbaar, blijft dicht, prompt blijft.
+	var noises: Array = await _interact_and_listen(tree)
+	failures = _check(noises.size() == 1
+		and absf(noises[0][1] - door.loudness_locked) < 0.01,
+		"op-slot-deur rammelt hoorbaar maar geeft niet mee", failures)
+	failures = _check(prompt_log[0] == door.prompt_locked,
+		"op-slot-deur blijft zijn slot-prompt tonen", failures)
+	return failures
+
+
+func _check_drawer(tree: SceneTree, player, props_root: Node,
+		prompt_log: Array, failures: int) -> int:
+	var drawer: Node = props_root.get_node_or_null("TestDrawer")
+	failures = _check(drawer != null, "testla staat in de dev room", failures)
+	if drawer == null:
+		return failures
+
+	await _aim(tree, player, Vector3(2.0, 0.05, -2.3), 0.0, -0.75)
+	failures = _check(prompt_log[0] == drawer.prompt_open,
+		"la toont zijn eigen open-prompt ('%s')" % prompt_log[0], failures)
+
+	# Openen: hoorbaar, en de inhoud wordt eenmalig als signaal gemeld.
+	var found: Array = []
+	var found_recorder := func(item_id: StringName) -> void:
+		found.append(item_id)
+	drawer.item_found.connect(found_recorder)
+	var noises: Array = await _interact_and_listen(tree)
+	drawer.item_found.disconnect(found_recorder)
+	failures = _check(noises.size() == 1
+		and absf(noises[0][1] - drawer.loudness_toggle) < 0.01,
+		"la schuift hoorbaar open", failures)
+	failures = _check(found == [drawer.item_id],
+		"la meldt zijn inhoud via item_found", failures)
+	failures = _check(prompt_log[0] == drawer.prompt_close,
+		"open la toont zijn sluit-prompt", failures)
+
+	# Sluiten voor een schone eindstand.
+	await _interact_and_listen(tree)
+	failures = _check(prompt_log[0] == drawer.prompt_open,
+		"gesloten la toont weer zijn open-prompt", failures)
+	return failures
+
+
+func _check_pickup(tree: SceneTree, player, props_root: Node,
+		prompt_log: Array, failures: int) -> int:
+	var pickup: Node = props_root.get_node_or_null("TestPickup")
+	failures = _check(pickup != null, "oppakbaar object staat in de dev room", failures)
+	if pickup == null:
+		return failures
+	var expected_prompt: String = pickup.prompt
+	var expected_id: StringName = pickup.item_id
+
+	await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
+	failures = _check(prompt_log[0] == expected_prompt,
+		"oppakbaar object toont zijn eigen prompt ('%s')" % prompt_log[0], failures)
+
+	var picked: Array = []
+	var pick_recorder := func(item_id: StringName) -> void:
+		picked.append(item_id)
+	pickup.picked_up.connect(pick_recorder)
+	await _interact_and_listen(tree)
+	failures = _check(picked == [expected_id],
+		"oppakken meldt het item via picked_up", failures)
+	await _wait_physics_frames(tree, 5)
+	failures = _check(not is_instance_valid(pickup),
+		"opgepakt object is uit de wereld verdwenen", failures)
+	failures = _check(prompt_log[0] == "",
+		"prompt verdwijnt met het opgepakte object", failures)
+	return failures
+
+
+func _check_note(tree: SceneTree, player, props_root: Node,
+		prompt_log: Array, failures: int) -> int:
+	var note: Node = props_root.get_node_or_null("TestNote")
+	failures = _check(note != null, "briefje hangt in de dev room", failures)
+	if note == null:
+		return failures
+
+	await _aim(tree, player, Vector3(0.0, 0.05, -8.2), 0.0, 0.0)
+	failures = _check(prompt_log[0] == note.prompt,
+		"briefje toont zijn eigen prompt ('%s')" % prompt_log[0], failures)
+
+	var opened: Array = []
+	var doc_recorder := func(document_id: StringName, text: String) -> void:
+		opened.append([document_id, text])
+	EventBus.document_opened.connect(doc_recorder)
+	var noises: Array = await _interact_and_listen(tree)
+	EventBus.document_opened.disconnect(doc_recorder)
+	failures = _check(opened.size() == 1
+		and opened[0][0] == note.document_id
+		and opened[0][1] == note.document_text,
+		"lezen zendt document_opened met id en tekst", failures)
+	failures = _check(noises.is_empty(),
+		"lezen is stil (geen noise_made)", failures)
+	failures = _check(note.document_id in GameState.documents_read,
+		"gelezen document staat in GameState", failures)
+	GameState.reset()
+	return failures
+
+
+## Zet de speler stil op een plek met blikrichting (yaw op het lichaam,
+## pitch op het hoofd) en geeft de interactor tijd om te kijken.
+func _aim(tree: SceneTree, player, position: Vector3, yaw: float,
+		pitch: float) -> void:
+	player.velocity = Vector3.ZERO
+	player.global_position = position
+	player.rotation = Vector3(0.0, yaw, 0.0)
+	player.get_node("Head").rotation.x = pitch
+	await _wait_physics_frames(tree, 5)
+
+
+## Injecteert de interact-toets en vangt de noise_made-events die de
+## interactie oplevert; wacht daarna kort zodat de prompt kon verversen.
+func _interact_and_listen(tree: SceneTree) -> Array:
+	var noises: Array = []
+	var recorder := func(position: Vector3, loudness: float) -> void:
+		noises.append([position, loudness])
+	EventBus.noise_made.connect(recorder)
+	_send_action_event(&"interact")
+	await _wait_physics_frames(tree, 5)
+	EventBus.noise_made.disconnect(recorder)
+	return noises
 
 
 ## Injecteert een echt input-event voor een actie. Input.action_press zet
