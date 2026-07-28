@@ -9,6 +9,10 @@ extends RefCounted
 ## de spelertests overgeslagen en moet de rest gewoon groen blijven.
 const PLAYER_SCENE := "res://game/actors/player/player.tscn"
 
+## Het interactiesysteem (taak 003); zelfde D-015-afspraak. De verwijdereenheid
+## is contract + interactor + props sámen (props overerven het contract).
+const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -23,7 +27,7 @@ func run(bootstrap: Node) -> int:
 	# 2. EventBus-contract: signalen bestaan met het juiste aantal argumenten
 	var expected_signals := {
 		"noise_made": 2, "chapter_started": 1, "player_spotted": 1,
-		"item_used": 1, "interact_prompt_changed": 1,
+		"item_used": 1, "interact_prompt_changed": 1, "document_opened": 2,
 	}
 	for signal_name in expected_signals:
 		var ok := EventBus.has_signal(signal_name)
@@ -132,6 +136,14 @@ func run(bootstrap: Node) -> int:
 		failures = await _check_player(tree, failures)
 	else:
 		Log.info("TEST INFO · spelerscène ontbreekt — spelertests overgeslagen (D-015)")
+
+	# 14. Interactiesysteem (taak 003) — zelfde D-015-afspraak als de speler:
+	# ontbreekt het systeem (contract + interactor + props), dan blijft de
+	# rest van de suite groen.
+	if ResourceLoader.exists(INTERACTOR_SCENE):
+		failures = await _check_interaction(tree, failures)
+	else:
+		Log.info("TEST INFO · interactiesysteem ontbreekt — interactietests overgeslagen (D-015)")
 
 	return failures
 
@@ -346,7 +358,7 @@ func _check_player(tree: SceneTree, failures: int) -> int:
 func _check_pause(tree: SceneTree, player, failures: int) -> int:
 	var has_display: bool = DisplayServer.get_name() != "headless"
 
-	_send_pause_event()
+	_send_action_event(&"pause")
 	await _wait_physics_frames(tree, 5)
 	failures = _check(tree.paused, "Esc pauzeert de scene-tree", failures)
 	if has_display:
@@ -363,7 +375,7 @@ func _check_pause(tree: SceneTree, player, failures: int) -> int:
 	failures = _check(player.global_position.distance_to(start_pos) < 0.05,
 		"speler staat stil tijdens de pauze", failures)
 
-	_send_pause_event()
+	_send_action_event(&"pause")
 	await _wait_physics_frames(tree, 5)
 	failures = _check(not tree.paused, "Esc hervat het spel", failures)
 	if has_display:
@@ -381,12 +393,30 @@ func _check_pause(tree: SceneTree, player, failures: int) -> int:
 	return failures
 
 
-## Injecteert een echt pauze-event. Input.action_press zet alleen de
-## actiestatus en genereert géén InputEvent; de pauze-handler is
-## event-gedreven (_unhandled_input), dus die zou er niets van merken.
-func _send_pause_event() -> void:
+## Interactietests (taak 003, blok 1: aanwezigheid). De functionele tests
+## (prompt/interact per prop) volgen in het props-blok.
+func _check_interaction(tree: SceneTree, failures: int) -> int:
+	# Interactor-scène laadt en instantieert los.
+	var packed: PackedScene = load(INTERACTOR_SCENE)
+	var standalone := packed.instantiate() if packed != null else null
+	failures = _check(standalone != null,
+		"interactor-scène instantieert los", failures)
+	if standalone != null:
+		standalone.free()
+
+	# De bootstrap heeft de interactor in het level gezet.
+	var interactor := tree.root.find_child("Interactor", true, false)
+	failures = _check(interactor != null,
+		"interactor is door de bootstrap gespawnd", failures)
+	return failures
+
+
+## Injecteert een echt input-event voor een actie. Input.action_press zet
+## alleen de actiestatus en genereert géén InputEvent; event-gedreven
+## handlers (_unhandled_input) zouden er niets van merken.
+func _send_action_event(action: StringName) -> void:
 	var event := InputEventAction.new()
-	event.action = "pause"
+	event.action = action
 	event.pressed = true
 	Input.parse_input_event(event)
 

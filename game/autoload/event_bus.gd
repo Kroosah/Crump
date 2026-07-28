@@ -20,4 +20,11 @@ signal player_spotted(player_position: Vector3)
 signal item_used(item_id: StringName)
 
 ## De interactieprompt moet wijzigen; lege string = geen prompt (taak 003).
+## De tekst is letterlijk wat het aangekeken object via prompt_text()
+## teruggaf — de UI-laag plakt er zelf de gebonden toets uit de InputMap bij.
 signal interact_prompt_changed(text: String)
+
+## Een leesbaar document is geopend (taak 003). De lees-UI (fase 2/4) toont
+## `text`; het briefje zelf heeft GameState al bijgewerkt. Lezen is stil —
+## dit signaal gaat bewust niet vergezeld van noise_made (pijler 1).
+signal document_opened(document_id: StringName, text: String)

@@ -11,6 +11,10 @@ const DEV_ROOM_SCENE := "res://game/levels/dev_room/dev_room.tscn"
 ## game/actors/player/, dan draait de rest gewoon door (D-015/D-018).
 const PLAYER_SCENE := "res://game/actors/player/player.tscn"
 
+## Het interactiesysteem, zelfde patroon: bestaat de scène niet, dan speelt
+## het spel zonder interactie verder (D-015).
+const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -72,6 +76,7 @@ func _load_level(scene_path: String) -> void:
 	_scene_host.add_child(_current_level)
 	Log.info("Bootstrap: level geladen: %s" % scene_path)
 	_spawn_player()
+	_spawn_interactor()
 
 
 ## Zet de speler op het PlayerSpawn-punt van het geladen level (D-018).
@@ -91,6 +96,19 @@ func _spawn_player() -> void:
 	player.global_transform = marker.global_transform
 	Log.info("Bootstrap: speler geplaatst op %s"
 		% str(marker.global_position.round()))
+
+
+## Voegt het interactiesysteem toe aan het geladen level (taak 003). Kind
+## van het level: pauzeert mee (KI-003) en wordt bij een levelwissel mee
+## opgeruimd. De interactor gebruikt de actieve camera — hij werkt dus ook
+## zonder speler en heeft geen enkele kennis van het level.
+func _spawn_interactor() -> void:
+	if not ResourceLoader.exists(INTERACTOR_SCENE):
+		Log.info("Bootstrap: geen interactiesysteem — level draait zonder interactie")
+		return
+	var interactor: Node = load(INTERACTOR_SCENE).instantiate()
+	_current_level.add_child(interactor)
+	Log.info("Bootstrap: interactor actief")
 
 
 func _verify_autoloads() -> void:
