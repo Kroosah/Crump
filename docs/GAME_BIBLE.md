@@ -8,8 +8,8 @@ geen implementatiedetail.*
 
 ## 1. Eén zin
 
-Na een gewone wedstrijdavond stap je de kleedkamer uit — en iedereen is
-verdwenen.
+Je keert na de avondwedstrijd terug voor je vergeten sporttas — en
+iedereen is verdwenen.
 
 ## 2. De kern-ervaring (speler-fantasie)
 
@@ -79,7 +79,7 @@ oneerlijk was. Jumpscares zijn schaars gereedschap met strikte regels
 
 ## 6. CRUMP: de dreiging (visie op hoog niveau)
 
-*Implementatie volgt pas in taak 007; dit is het ontwerpkader. CRUMP is de
+*Implementatie volgt pas in taak 009; dit is het ontwerpkader. CRUMP is de
 naam van het mysterie/de dreiging — géén locatie, géén club (STORY §5).
 Vorm en betekenis blijven bewust onbeschreven tot de ontwerpsessie daarover.*
 
@@ -102,8 +102,8 @@ Vorm en betekenis blijven bewust onbeschreven tot de ontwerpsessie daarover.*
 ## 7. Structuur van het spel
 
 - **Omvang**: 4 hoofdstukken, samen 3–5 uur speeltijd. Kwaliteit boven lengte.
-- **Opbouw**: hoofdstuk 1 opent met de normale clubavond en de verdwijning
-  (STORY §3) en blijft daarna pure suggestie; hoofdstuk 2 vergroot de wereld
+- **Opbouw**: hoofdstuk 1 opent met de terugkeer voor de vergeten
+  sporttas (STORY §3, D-028) en blijft daarna pure suggestie; hoofdstuk 2 vergroot de wereld
   en introduceert aanwezigheid; hoofdstuk 3 maakt CRUMP een systeem om mee te
   leven en escaleert; hoofdstuk 4 is de confrontatie met wat CRUMP is.
   Details: `STORY.md`.

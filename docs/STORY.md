@@ -8,20 +8,21 @@ via de omgeving, vondsten en spaarzame tekst — nooit via uitleg-cutscenes.*
 
 ## 1. Premisse
 
-De speler — **naamloos, hij is zichzelf** — heeft net een gewone
-zaterdagwedstrijd gespeeld bij **VV Drechtstreek**, op **Sportpark
-Oostpolder**. Na de wedstrijd zit hij met het team in de kantine: muziek,
+De speler — **naamloos, hij is zichzelf** — heeft net een belangrijke
+avondwedstrijd gespeeld bij **VV Drechtstreek**, op **Sportpark
+Oostpolder**. Na de wedstrijd de derde helft in de kantine: muziek,
 teamgenoten, de tv aan, geroezemoes. Een volstrekt normale Nederlandse
-clubavond.
+clubavond — die uitdooft zoals altijd: iedereen vertrekt, hij ook.
 
-De barman vraagt: *"Wil jij straks de kleedkamer nog even afsluiten?"*
+Pas bij zijn auto beseft hij het: **zijn sporttas hangt nog aan het
+haakje in de kleedkamer** — met zijn telefoon en zijn autosleutels erin.
+Hij loopt door de regen terug het terrein op. Het hek staat open, de
+hoofdentree is niet afgesloten, in de kantine staat de tv nog aan — maar
+iedereen is weg. Het stadion lijkt verlaten.
 
-De speler doucht, kleedt zich om — en als hij de kleedkamer uitloopt, is
-iedereen verdwenen. De glazen staan nog op tafel. De tv staat nog aan.
-De parkeerplaats is leeg.
-
-Dat is het begin van de game. Wat **CRUMP** is — het woord, het mysterie,
-de dreiging — ontdekt de speler pas veel later, laag voor laag.
+Dat is het begin van de game (**D-028**). Wat **CRUMP** is — het woord,
+het mysterie, de dreiging — ontdekt de speler pas veel later, laag voor
+laag.
 
 ## 2. De hoofdpersoon
 
@@ -33,32 +34,33 @@ de dreiging — ontdekt de speler pas veel later, laag voor laag.
 - Praat niet (geen voice-over, geen quips) — de wereld praat, hij ervaart.
   Dit versterkt de speler-fantasie uit GAME_BIBLE §2.
 
-## 3. De opening (canoniek, beat voor beat)
+## 3. De opening (canoniek — D-028: de vergeten sporttas)
 
-De eerste minuten zijn volledig vastgelegd omdat álles erna op dit "normaal"
-steunt (HORROR_GUIDELINES: het aangeleerde normaal is het wapen):
+*Besluit GD 2026-07-28 (D-028): de terugkeer voor de vergeten sporttas
+vervangt het eerdere afsluitverzoek van de barman als canonieke opening.*
 
-1. **Kantine, direct na de wedstrijd.** Muziek uit een speaker, teamgenoten
-   aan tafels, de tv staat aan (sportzender/teletekst-sfeer), gepraat en
-   gelach. De speler kan rondlopen, luisteren, kleine interacties doen —
-   niets is verplicht behalve de sfeer opsnuiven.
-2. **De trainer vertrekt** — jas aan, groet, deur dicht. Het eerste
-   vertrek dat de kantine iets leger maakt.
-3. **De barman** vraagt de speler de kleedkamer af te sluiten. Dit is het
-   enige "taakje" en voelt volstrekt normaal.
-4. **Naar de kleedkamer.** Gang door, geluid van de kantine zachter op de
-   achtergrond.
-5. **Douchen en omkleden.** Tijd verstrijkt voelbaar (water, damp, geluid
-   gedempt). Dit is de sluis tussen de twee werelden.
-6. **Terug de gang in, kantine binnen:** iedereen is weg. Glazen vol of
-   halfvol op tafel, stoelen verschoven zoals mensen ze achterlieten, de tv
-   staat nog aan, de muziek… (ontwerpkeuze: doorspelen of gestopt — zie §8).
-   Buiten: de parkeerplaats is **volledig leeg**.
+1. **De derde helft** (achtergrond; of dit ooit speelbaar wordt is open,
+   zie §8): een belangrijke avondwedstrijd, daarna de kantine — muziek,
+   teamgenoten, de tv aan. Een volstrekt normale clubavond die uitdooft;
+   iedereen vertrekt, de speler ook.
+2. **De ontdekking**: bij zijn auto beseft de speler dat zijn sporttas
+   nog in de kleedkamer hangt — **met zijn telefoon en autosleutels
+   erin**. Hij kan letterlijk nergens heen zonder die tas, en niemand
+   bellen bovendien.
+3. **De terugkeer**: door de regen terug het terrein op. Het hek staat
+   open, de hoofdentree is niet afgesloten, in de kantine staat de tv
+   nog aan — maar iedereen is weg. Vijftien minuten geleden leefde dit
+   gebouw nog.
 
-Vanaf hier begint het spel echt. **De eerste 15 minuten daarna bevatten geen
-monster, geen achtervolging en geen jumpscares** — alleen subtiele
-veranderingen in de omgeving (HORROR_GUIDELINES §5a). De speler moet eerst
-alleen maar denken: *"er klopt iets niet."*
+Vanaf hier begint het spel echt; de eerste ±20 minuten zijn beat voor
+beat vastgelegd in `tasks/008_vertical_slice_01.md`. **De eerste 15
+minuten bevatten geen monster, geen achtervolging en geen jumpscares** —
+alleen subtiele veranderingen in de omgeving (HORROR_GUIDELINES §5a); de
+eerste korte glimp van CRUMP valt pas ná die grens, als climax van de
+openingssnede. De speler moet eerst alleen maar denken: *"er klopt iets
+niet."* Het "normaal" wordt in deze opening gevestigd door herkenning
+(iedereen kent een clubgebouw) en door de sporen van een avond die net
+nog leefde — niet langer door een verplichte gespeelde proloogscène.
 
 ## 4. Setting: Sportpark Oostpolder
 
@@ -104,9 +106,9 @@ Vastgelegde regels:
 | Personage | Rol | In beeld? |
 |---|---|---|
 | **De speler** | Hoofdpersoon, naamloos (§2) | First person |
-| **De teamgenoten** | Het leven "ervoor": sfeer, stemmen, gezichten in de kantine. Na de verdwijning alleen nog sporen (tassen, telefoons, halve gesprekken op schermen). | Alleen in de opening |
-| **De trainer** | Vertrekt als eerste; zijn vertrek is het eerste beat van de leegloop. | Alleen in de opening |
-| **De barman** | Geeft de sleutel-taak die de speler in de kleedkamer brengt — en daarmee buiten de verdwijning houdt. | Alleen in de opening |
+| **De teamgenoten** | Het leven "ervoor": sfeer, stemmen, gezichten in de derde helft. Na de terugkeer alleen nog sporen (tassen, halfvolle glazen, halve gesprekken op schermen). | Alleen in de derde helft (achtergrond, D-028) |
+| **De trainer** | Achtergrondfiguur van de derde helft; bestaat na de terugkeer alleen nog in sporen. | Alleen in de derde helft (achtergrond) |
+| **De barman** | Het leven achter de bar in de derde helft; daarna alleen nog sporen (het sleutelbriefje bij het kastje, de tv die nog aanstaat). | Alleen in de derde helft (achtergrond) |
 | **CRUMP** | Het mysterie/de dreiging. Zie §5. | Pas veel later |
 
 Bijrollen dragen bewust **geen uitgeschreven namen** in dit document;
@@ -146,8 +148,10 @@ een ontwerpsessie uitgewerkt vóór de bouw ervan begint (ROADMAP fase 5).*
   vastgelegd.
 - **Waar iedereen is** — zelfde sessie als hierboven; de verklaring moet één
   geheel vormen met wat CRUMP is.
-- **De muziek na de kleedkamer** — doorspelen (extra unheimlich: de wereld
-  merkt niets) of gestopt (stilte als klap). Prototypen in fase 4.
+- **De derde helft als speelbare proloog** — wordt de levende clubavond
+  ooit gespeeld (zoals de oude opening beoogde) of blijft hij
+  achtergrond bij de terugkeer-opening (D-028)? Beslissen vóór de bouw
+  van hoofdstuk 1 (tasks/010).
 - **Eindes** — meerdere eindes staan vast (GAME_BIBLE), de invulling volgt
   uit de CRUMP-ontwerpsessie.
 - **Namen in de wereld** (shirts, lockers, teamfoto's) — per geval; geen
@@ -156,8 +160,8 @@ een ontwerpsessie uitgewerkt vóór de bouw ervan begint (ROADMAP fase 5).*
 ## 9. Vertelmiddelen
 
 - **Het gebouw en het park zelf**: verplaatste objecten, sporen, dingen die
-  net anders staan dan de speler ze in de opening zag. De opening is daarmee
-  letterlijk de referentie-staat van het hele spel.
+  net anders staan dan de speler ze eerder zag. Het clubgebouw zoals de
+  speler het leert kennen is de referentie-staat van het hele spel.
 - **Achtergelaten spullen**: telefoons, tassen, een half getapt biertje —
   de verdwijning verteld in stillevens.
 - **Clubmateriaal**: prikbord, wedstrijdschema's, notulen, de

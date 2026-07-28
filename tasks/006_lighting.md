@@ -34,7 +34,7 @@ waarmaakt.
 - Eventuele lichtshaders (flikker) als `.gdshader` in `assets/shaders/`.
 
 **Niet:**
-- Geen volledige art-pass of finale ruimte (dat is levelwerk, taak 008).
+- Geen volledige art-pass of finale ruimte (dat is levelwerk, taak 010).
 - Geen monster-gekoppelde lichtevents (komt later; hier alleen de fundamenten).
 
 ## Aanpak
@@ -182,13 +182,13 @@ dat wil zeggen: de zaklampstate is werkelijk gewijzigd — zendt daarná
 drie onafhankelijke feiten, elk voor een eigen soort afnemer:
 
 1. `flashlight_toggled(is_on: bool)` — **toestandfeit** voor toekomstige
-   afnemers (007: CRUMP *ziet* licht). Dit is een feit, géén commando:
+   afnemers (009: CRUMP *ziet* licht). Dit is een feit, géén commando:
    het bestuurt de zaklamp niet en niets kan de zaklamp via dit signaal
    aan- of uitzetten. Zonder ontvanger betekenisloos (D-015).
 2. `audio_cue(&"flashlight_click", positie)` — de **hoorbare klik**
    (doel: informatie, kader 005 §8).
 3. `noise_made(positie, ~2 m)` — de klik als **gameplaygeluid** voor de
-   latere AI (007).
+   latere AI (009).
 
 De kanalen veroorzaken elkaar nooit (kader 005) en ontstaan uitsluitend
 **nadat** de state werkelijk is gewijzigd. Geen zaklampbezit (§ hieronder)
@@ -204,7 +204,7 @@ bent (P7): de speler leest het uit de wereld — sta ik in het licht?
 ```gdscript
 ## De zaklamp is werkelijk van toestand gewisseld (feit, geen commando;
 ## taak 006). Alleen de zaklampcomponent zendt dit, uitsluitend ná een
-## geslaagde statewijziging. CRUMP's zicht (taak 007) abonneert zich.
+## geslaagde statewijziging. CRUMP's zicht (taak 009) abonneert zich.
 signal flashlight_toggled(is_on: bool)
 
 # bestaand, ongewijzigd (taak 005 / taak 001):
@@ -258,7 +258,7 @@ lokale projectie (gecachte vlag `_has_flashlight`) van één waarheid:
 - **Laatste exemplaar verdwijnt terwijl de lamp aan is**: de zaklamp
   schakelt direct en betrouwbaar uit. Dit is een échte statewijziging,
   dus `flashlight_toggled(false)` wordt gezonden — het toestandfeit
-  volgt de werkelijkheid, en de latere AI (007) mag nooit een brandend
+  volgt de werkelijkheid, en de latere AI (009) mag nooit een brandend
   licht blijven "zien" dat er niet meer is. Maar er klinkt **geen**
   `audio_cue` en **geen** `noise_made`: die twee kanalen zijn gebonden
   aan de bewuste spelershandeling (de klik), niet aan de toestand.
@@ -307,7 +307,7 @@ exemplaar-telling naast de inventory (drift-gevoelige tweede waarheid).
   spelerpositie**: `global_position` van de node in de groep `player`
   (de body-origin op vloerniveau — exact dezelfde bron als de
   voetstappen uit 005). Camerahoogte, headbob of near-plane-details
-  lekken dus **nooit** in wat de latere AI (007) waarneemt of wat het
+  lekken dus **nooit** in wat de latere AI (009) waarneemt of wat het
   audiosysteem plaatst.
 - **Degradatie**: is er geen spelernode (D-015-richting zonder speler),
   dan is er geen subject dat klikt — audio_cue en noise_made blijven
@@ -448,8 +448,8 @@ handhaven (zie motivatie hierboven).
 ## 7. Relatie licht ↔ zichtbaarheid ↔ latere AI (interface-paragraaf)
 
 006 bouwt géén AI, maar legt de bouwstenen en de grenzen vast:
-- Het feit `flashlight_toggled` staat op de bus; 007 abonneert zich.
-- CRUMP's zicht (007) gebruikt uitsluitend gedefinieerde zintuigen
+- Het feit `flashlight_toggled` staat op de bus; 009 abonneert zich.
+- CRUMP's zicht (009) gebruikt uitsluitend gedefinieerde zintuigen
   (cone + LOS, HORROR §6) en gaat licht daarin meewegen; hóé (een
   `player_illumination`-meetpunt of iets anders) is een
   007-ontwerpbeslissing — nu bouwen = speculatie (P4, verworpen).

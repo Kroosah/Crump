@@ -1,4 +1,4 @@
-# Taak 007 — Vertical Slice 01: "De vergeten tas"
+# Taak 008 — Vertical Slice 01: "De vergeten tas"
 
 **Type**: Game Director-ontwerpdocument (géén technisch dossier) ·
 **Status**: 🔵 ontwerp ter review (GD), geen implementatie ·

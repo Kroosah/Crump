@@ -53,11 +53,28 @@ GD in de editor beoordeeld, headless-tests groen, tuning via exports.
 **Exit-criteria**: de testruimte is 's nachts *onaangenaam* om in te zijn,
 zonder dat er ook maar iets gebeurt. Dat is de lat.
 
-## Fase 3 — De dreiging (taak 007)
+## Fase 2½ — Vertical Slice 01: "De vergeten tas" (taken 007–008)
+
+**Doel**: de eerste ±20 minuten van CRUMP als speelbare, reviewbare
+snede (canon: D-028) — eerst volledig als greybox gevalideerd, pas
+art en sfeerassets na GD-akkoord op pacing en looproute.
+
+- [ ] **007** Minimale documentlezer (ontwerp:
+      `tasks/007_document_reader.md`) — voorwaarde voor de vijf
+      documenten van de slice.
+- [ ] **008** Vertical Slice 0.1 — greybox en gameplayflow, daarna
+      gefaseerde uitbouw volgens het productieplan (fases A–J) in
+      `tasks/008_vertical_slice_01.md`.
+
+**Exit-criteria**: de GD accepteert de volledige slice op hardware
+(fase J): pacing, sfeer en de drie beats (bal, schreeuw, glimp) werken
+als geheel.
+
+## Fase 3 — De dreiging (taak 009)
 
 **Doel**: CRUMP als leesbare, systemische dreiging.
 
-- [ ] **007** AI: state machine, navigatie, gehoor via event-bus, zicht,
+- [ ] **009** AI: state machine, navigatie, gehoor via event-bus, zicht,
       spanningsregels (afstand-audio, muziekcues via AudioDirector).
 - [ ] Kat-en-muis-prototype in de testruimte: verstoppen, ontwijken, gepakt
       worden, checkpoint-herstart.
@@ -65,12 +82,14 @@ zonder dat er ook maar iets gebeurt. Dat is de lat.
 **Exit-criteria**: 15 minuten kat-en-muis in de testruimte is spannend zonder
 één gescript moment. Playtest met ≥3 personen buiten het team.
 
-## Fase 4 — Hoofdstuk 1: "De derde helft" (taak 008)
+## Fase 4 — Hoofdstuk 1: "De derde helft" (taak 010)
 
-**Doel**: het eerste speelbare verhaaldeel, verticale slice-kwaliteit.
+**Doel**: het eerste speelbare verhaaldeel, voortbouwend op de Vertical
+Slice. *(Dossier wordt herontworpen ná de slice — de oude opening is
+vervangen door D-028, zie tasks/010.)*
 
-- [ ] Blockout van het clubhuis (kantine, kleedkamergang, entree) volgens LEVEL_GUIDELINES.
-- [ ] De opening (levende kantine → kleedkamer → verdwijning, STORY §3) + de eerste-15-minutenfase (HORROR_GUIDELINES §5a) + omgevingsvertelling hfst 1.
+- [ ] Blockout van het clubhuis (kantine, kleedkamergang, entree) volgens LEVEL_GUIDELINES, voortbouwend op de greybox van fase 2½.
+- [ ] De opening (terugkeer voor de vergeten sporttas, STORY §3/D-028) + de eerste-15-minutenfase (HORROR_GUIDELINES §5a) + omgevingsvertelling hfst 1.
 - [ ] Save/checkpoints in de praktijk; opties-menu (audio, gevoeligheid,
       helderheid, toegankelijkheid-basis).
 - [ ] Eerste externe playtest-ronde + verwerking.

@@ -32,8 +32,9 @@ Als een lege ruimte niets vertelt, is hij nog niet af.
 
 ## 3. De vertrouwde route als ruggengraat
 
-De opening (STORY §3) legt de basisroute vast: kantine → gang → kleedkamer
-→ terug. Die aangeleerde route is de leidraad voor de plattegrond:
+De openingssnede (STORY §3, tasks/008) legt de basisroute vast: hal →
+kantine → gang → kleedkamers → terug. Die aangeleerde route is de
+leidraad voor de plattegrond:
 
 - De speler keert **herhaaldelijk langs dezelfde plekken** terug — dat maakt
   afwijkingen leesbaar (HORROR_GUIDELINES §7). De kantine is de referentie-
@@ -98,7 +99,7 @@ rij (afstomping), nooit alleen maar "Adem" (verveling).
 - **Collision klopt met de visuals**: geen onzichtbare muren, geen geometrie
   waar de speler doorheen valt. Wordt in QA expliciet gelopen.
 - **Navigatie-mesh** per ruimte gebakken en aansluitend op de buren, zodat
-  CRUMP naadloos kan navigeren (taak 007).
+  CRUMP naadloos kan navigeren (taak 009).
 - **Props uit `game/props/`** worden geïnstantieerd, niet gedupliceerd;
   ruimte-specifieke staat (welke deur op slot) leeft in `GameState`.
 - **Occlusion/performance**: grote panden worden in secties opgedeeld zodat

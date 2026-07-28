@@ -7,7 +7,7 @@
 > streams écht af te spelen, dus pool-vrijgave is tóch headless getest);
 > D-015: zonder audio 145, zonder interactie 109, alles 166. AudioDirector
 > ongegroeid. Canonnotitie: de zeldzame CRUMP-schreeuw wordt later een
-> gewone cue via dit fundament (007+), geen gedrag in 005.
+> gewone cue via dit fundament (009+), geen gedrag in 005.
 >
 > **Lokale GD-acceptatie (2026-07-28, hardware)**: stilte-nulpunt, per-gait
 > voetstappen, positionele deur/pickup-audio, verdwijnende-bronprop-gedrag,
@@ -43,7 +43,7 @@ dat sfx rechtstreeks uit `noise_made` zouden volgen — dat wordt bij de
 start van 005 herzien conform dit kader).*
 
 1. **`noise_made(position, loudness)` is gameplay-informatie** voor
-   AI/gehoor (taak 007) — het is **niet** hetzelfde als hoorbare audio en
+   AI/gehoor (taak 009) — het is **niet** hetzelfde als hoorbare audio en
    wordt dat ook nooit. De twee blijven **afzonderlijke concepten met
    afzonderlijke signalen**.
 2. **Hoorbare one-shot audio wordt afgespeeld door het audiosysteem**, in
@@ -82,7 +82,7 @@ start van 005 herzien conform dit kader).*
 
 Een `AudioDirector`-autoload die de mix, ambience en cues beheert, plus de
 koppeling die van speler-acties hoorbare gebeurtenissen maakt — en die
-gebeurtenissen leesbaar houdt voor CRUMP (taak 007).
+gebeurtenissen leesbaar houdt voor CRUMP (taak 009).
 
 ## Scope
 
@@ -105,7 +105,7 @@ gebeurtenissen leesbaar houdt voor CRUMP (taak 007).
 
 **Niet:**
 - Geen finale sounddesign/asset-productie (dat is doorlopend contentwerk).
-- Geen monster-audio-gedrag (dat komt in 007, dit levert de haken).
+- Geen monster-audio-gedrag (dat komt in 009, dit levert de haken).
 
 ## Aanpak
 
@@ -156,7 +156,7 @@ sound-definities als resources, per-gait voetstapaudio, placeholder-audio
 via een tool-script, de F3-regel "actieve geluiden", en tests conform het
 kader.
 
-**Expliciet niet:** finale sounddesign/assets; monster-audio (007);
+**Expliciet niet:** finale sounddesign/assets; monster-audio (009);
 ondergrond-detectie voor voetstappen (structuur wél data-klaar, één
 ondergrond "beton" nu); UI-/menugeluiden; koppeling van busvolumes aan een
 optiescherm (API bestaat al, het scherm niet); reverb/omgevingseffecten;
@@ -317,7 +317,7 @@ niets roept hem aan.** *(P2, P4; GD-eis "geen gameplaymuziek behalve waar
 afgesproken"; HORROR §3: muziek verklapt de AI nooit)* In 005 bestaat
 alleen het mechaniek + test; er is géén muziekcontent en géén systeem dat
 cues start. Het rust/spanning-toestandsmodel uit de oude aanpak-tekst
-wordt **uitgesteld** tot er een afnemer is (op z'n vroegst 007, en dan als
+wordt **uitgesteld** tot er een afnemer is (op z'n vroegst 009, en dan als
 eigen ontwerpbeslissing — de regel "één keer per hoofdstuk gevaar zonder
 muziek" maakt dit per definitie regie-gevoelig). **Verworpen**: nu al een
 spanningsmodel bouwen (speculatieve abstractie, P4/P6-schending).

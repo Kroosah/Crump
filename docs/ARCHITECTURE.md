@@ -145,13 +145,13 @@ ertussen.
   speler→CRUMP. Hierdoor is "hoorbaarheid" één systeem voor deuren,
   voetstappen, vallende objecten.
 
-### 5.4 Monster-AI (`tasks/007`)
+### 5.4 Monster-AI (`tasks/009`)
 - Eindige-toestandsmachine (patrouille / onderzoeken / achtervolgen /
   verliezen), navigatie via NavigationServer, waarneming = gehoor (event-bus)
   + zicht (cone + line-of-sight).
 - Volledig data-gedreven af te stemmen (radii, tijden, snelheden in exports).
 
-### 5.5 Levels (`tasks/008`, richtlijnen in `LEVEL_GUIDELINES.md`)
+### 5.5 Levels (`tasks/010`, richtlijnen in `LEVEL_GUIDELINES.md`)
 - Elke ruimte een eigen scène; hoofdstuk-scène stitcht ruimtes en bezit de
   triggers. Toestand van een ruimte (welke deur open) leeft in `GameState`,
   niet in de scène — nodig voor saves én voor "het gebouw is 's nachts

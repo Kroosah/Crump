@@ -76,7 +76,7 @@ Deze draaien op de VPS en later in CI:
 - [ ] Elke lichtbron heeft een zichtbare wereld-oorzaak (LEVEL_GUIDELINES §5).
 - [ ] Lichtbudget per ruimte gerespecteerd; geen framedrops bij lichtwissels.
 
-## 6. CRUMP & AI (editor/hardware, vanaf taak 007)
+## 6. CRUMP & AI (editor/hardware, vanaf taak 009)
 
 - [ ] AI reageert uitsluitend op gedefinieerde zintuigen (gehoor via
       event-bus, zicht via cone+LOS) — geen wallhacks (HORROR_GUIDELINES §6).

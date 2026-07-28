@@ -23,7 +23,7 @@ kwetsbaarheid uit GAME_BIBLE §5 uitstraalt, volledig af te stemmen via exports.
 - Zwaartekracht, correcte collision, traphoogte/slopes redelijk.
 - **Voetstap-events**: elke stap publiceert `noise_made(position, loudness)`
   op de EventBus — luidheid schaalt met sluipen/lopen/rennen (koppeling voor
-  taak 007). Nog geen audio afspelen (dat is taak 005), wél de events.
+  taak 009). Nog geen audio afspelen (dat is taak 005), wél de events.
 - Speler als eigen scène `game/actors/player/player.tscn` + `player.gd`,
   losstaand instantieerbaar.
 

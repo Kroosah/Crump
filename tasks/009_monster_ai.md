@@ -1,4 +1,4 @@
-# Taak 007 — Monster-AI
+# Taak 009 — Monster-AI
 
 **Fase**: 3 (De dreiging) · **Status**: ⬜ open · **Vereist**: 002, 003, 005, 006
 
@@ -41,7 +41,7 @@ dreigingssituatie een leesbare overlevingsoptie.
 **Niet:**
 - Geen finale monster-art/animatie (blockout-representatie volstaat om gedrag
   te bewijzen; uiterlijk komt laatst, GAME_BIBLE §6).
-- Geen meerdere monsters, geen level-specifieke scripting (dat is taak 008+).
+- Geen meerdere monsters, geen level-specifieke scripting (dat is taak 010+).
 
 ## Aanpak
 
@@ -56,7 +56,7 @@ dreigingssituatie een leesbare overlevingsoptie.
 7. Tests (headless waar mogelijk): geluid-event → investigate-transition;
    LOS geblokkeerd → geen detectie; geheugen vervalt; navigatie bereikt doel.
    Gedrag-in-de-praktijk is editor/playtest-werk.
-8. Commits met `[007]`-prefix, per subsysteem.
+8. Commits met `[009]`-prefix, per subsysteem.
 
 ## Acceptatiecriteria
 

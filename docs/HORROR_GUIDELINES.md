@@ -97,7 +97,7 @@ Jumpscares zijn kruiden, geen hoofdgerecht. Regels:
 
 ## 6. CRUMP inzetten
 
-*Gedragssysteem in taak 007; dit zijn de regels voor hoe de dreiging gebruikt
+*Gedragssysteem in taak 009; dit zijn de regels voor hoe de dreiging gebruikt
 wordt zodra hij — veel later in het spel — actief wordt.*
 
 - **Zeldzaamheid = waarde.** Elke seconde vol zicht op CRUMP verlaagt
@@ -115,11 +115,13 @@ wordt zodra hij — veel later in het spel — actief wordt.*
 
 ## 7. Psychologische horror: de CRUMP-specialiteit
 
-- **Het vertrouwde is het paard van Troje.** De opening (STORY §3) laat de
-  speler de kantine en kleedkamer in hun normale, levende staat zien; daarna
-  keert hij er telkens terug. Afwijking-van-bekend is ons krachtigste wapen —
-  daarom is de openingsscène zo gewoon: ze bouwt het "normaal" op dat we de
-  rest van het spel kunnen schenden.
+- **Het vertrouwde is het paard van Troje.** Een clubgebouw is voor de
+  doelgroep zó vertrouwd dat het "normaal" grotendeels via herkenning
+  binnenkomt; de opening (STORY §3, D-028) toont de sporen van een avond
+  die een kwartier eerder nog leefde, en daarna keert de speler telkens
+  langs dezelfde plekken terug. Afwijking-van-bekend is ons krachtigste
+  wapen — daarom is de wereld zo gewoon: ze bouwt het "normaal" op dat
+  we de rest van het spel kunnen schenden.
 - **Kleine afwijkingen winnen**: een stoel die 30 cm verschoven is, is enger
   dan een omgegooide kast. De speler moet twijfelen of hij het zich verbeeldt.
 - **Onzekerheid boven uitleg**: we bevestigen of ontkennen zo laat en zo min

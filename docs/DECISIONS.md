@@ -169,13 +169,13 @@ als instantie in de level-scène (koppelt level aan speler — afgewezen) of
 speler alleen in de smoke-test (niet rondlopen in de editor — afgewezen).
 
 ## D-019 — De consequentie van rennen is geluid, geen uithoudingsvermogen
-**Datum**: 2026-07-28 · **Wie**: GD (keuze uit voorgelegde opties) / LD · **Status**: heroverwegen bij taak 007
+**Datum**: 2026-07-28 · **Wie**: GD (keuze uit voorgelegde opties) / LD · **Status**: heroverwegen bij taak 009
 GAME_BIBLE §5 noemt rennen "kort, hoorbaar, met consequentie". In taak 002 is
 die consequentie uitsluitend akoestisch: rennen draagt 14 m op de EventBus
 (lopen 6, sluipen 2) met een sneller stapritme — wie rent, roept CRUMP.
 **Waarom**: sluit direct aan op pijler 1 ("stilte is het instrument") en
 houdt taak 002 vrij van een stamina-systeem dat pas betekenis krijgt als er
-iets is dat je hoort (007). **Heroverwegen**: als playtests uitwijzen dat
+iets is dat je hoort (009). **Heroverwegen**: als playtests uitwijzen dat
 onbeperkt rennen de spanning breekt, is een uithoud-systeem een eigen taak.
 
 ## D-020 — De interactor gebruikt de actieve viewport-camera, niet "de speler"
@@ -255,7 +255,7 @@ gereedschap en P7 legt de twijfel in de wéreld — het oude scope-punt
 ontworpen gebeurtenis met eigen ontwerpronde. Alleen de zaklampcomponent
 bezit de aan/uit-state. Een geslaagde toggle zendt drie gescheiden feiten
 ná de statewijziging, exact één per kanaal: `flashlight_toggled(is_on)`
-(toestand, geconsumeerd contract vanaf 007), `audio_cue` en `noise_made`
+(toestand, geconsumeerd contract vanaf 009), `audio_cue` en `noise_made`
 op de semantische spelerpositie (licht volgt de camera; geluid de
 body-origin). Bezit faalt gesloten: geen inventory of geen zaklamp-item =
 geen state, geen licht, geen enkele emissie — een ontbrekend systeem
@@ -288,3 +288,23 @@ geclampt. Aangrijpingspunt is uitsluitend `adjustment_brightness` op de
 level-Environment (via `environment_tuner`, `brightness_changed`-signaal):
 CanvasLayer-UI, lampenergieën en het schaduwbudget blijven onaangeraakt.
 Afwijken van de range is een nieuw GD-besluit.
+
+## D-028 — Canonieke openingspremisse: de vergeten sporttas
+**Datum**: 2026-07-28 · **Wie**: GD (creatieve review VS-ontwerp) · **Status**: actief
+De speler keert na een belangrijke avondwedstrijd terug naar het
+verlaten, regenachtige stadion omdat zijn sporttas nog in de kleedkamer
+hangt — **met zijn telefoon en autosleutels erin**. Dit vervangt het
+eerdere afsluitverzoek van de barman (en de gespeelde
+verdwijning-tijdens-het-douchen) als canonieke opening. **Waarom**: de
+tas maakt elke stap het gebouw in een redelijke menselijke beslissing
+(P6), de ingesloten telefoon verklaart diegetisch waarom de speler
+niemand kan bereiken (P1), en de terugkeer-structuur laat het "normaal"
+via herkenning werken zonder verplichte proloogscène. Of "de derde
+helft" ooit als speelbare proloog wordt gebouwd, blijft open (STORY §8).
+Uitsluitend de direct rakende passages zijn gecorrigeerd (STORY
+§1/§3/§6/§8/§9, GAME_BIBLE §1/§7, HORROR §7, LEVEL §3, ROADMAP fase 4,
+canon-notitie in tasks/010) — géén brede lore-herschrijving; de
+uitgewerkte eerste ±20 minuten staan in tasks/008_vertical_slice_01.md.
+In hetzelfde besluit is de taaknummering herzien: 007 = minimale
+documentlezer, 008 = Vertical Slice 0.1, 009 = monster-AI (was 007),
+010 = hoofdstuk 1 (was 008).

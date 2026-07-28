@@ -1,8 +1,18 @@
-# Taak 008 — Hoofdstuk 1: "De derde helft"
+# Taak 010 — Hoofdstuk 1: "De derde helft"
 
-**Fase**: 4 · **Status**: ⬜ open · **Vereist**: 002, 003, 004, 005, 006 (007 niet nodig — hoofdstuk 1 bevat geen actieve dreiging)
+> **Canon-notitie (2026-07-28, D-028)**: dit skelet dateert van vóór de
+> Vertical Slice en de nieuwe canonieke openingspremisse (terugkeer voor
+> de vergeten sporttas — D-028). De beats hieronder met het
+> afsluitverzoek van de barman, het douchen en de gespeelde verdwijning
+> zijn **achterhaald**; ook is hoofdstuk 1 niet langer "de eerste
+> verticale slice" (dat is taak 008). Dit dossier wordt herontworpen in
+> een eigen GD-sessie ná de Vertical Slice, samen met de open vraag of
+> "de derde helft" een speelbare proloog wordt (STORY §8). Tot die tijd:
+> niets uit dit dossier bouwen.
 
-Het eerste speelbare verhaaldeel en de eerste **verticale slice**: alle
+**Fase**: 4 · **Status**: ⬜ open · **Vereist**: 002, 003, 004, 005, 006 (009 niet nodig — hoofdstuk 1 bevat geen actieve dreiging)
+
+Het eerste speelbare verhaaldeel: alle
 systemen komen samen in echte spelinhoud. Hoofdstuk 1 bevat **geen monster,
 geen achtervolging en geen jumpscares** (HORROR_GUIDELINES §5a) — het bouwt
 het "normaal" op dat de rest van de game kan schenden, en laat het dan
@@ -71,7 +81,7 @@ clubhuis — onbehagen puur uit suggestie en subtiele afwijking.
 7. Sfeer- en audiopass op de gespeelde route (HORROR_GUIDELINES §1-ritme;
    het contrast levend↔leeg is de kern van dit hoofdstuk).
 8. Interne doorloop → QA_CHECKLIST secties 1–9 → externe playtest → verwerken.
-9. Commits met `[008]`-prefix; grote deelstukken op een branch.
+9. Commits met `[010]`-prefix; grote deelstukken op een branch.
 
 ## Acceptatiecriteria
 
