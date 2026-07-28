@@ -1,11 +1,16 @@
 extends RefCounted
 ## Smoke-test-suite van CRUMP (D-013: eigen minimale runner, geen plugin).
 ## Draait binnen het echte spel: `godot --headless --path . -- --smoke-test`
-## De bootstrap roept run() aan en sluit af met exitcode 0 (groen) of 1.
+## De bootstrap roept run() aan (met await: de spelertests laten physics
+## draaien) en sluit af met exitcode 0 (groen) of 1.
 ## Elke test logt zijn resultaat; falen is nooit stil.
 
+## De spelerscène; bestaat hij niet (verwijderbaarheidstest D-015), dan worden
+## de spelertests overgeslagen en moet de rest gewoon groen blijven.
+const PLAYER_SCENE := "res://game/actors/player/player.tscn"
 
-static func run(bootstrap: Node) -> int:
+
+func run(bootstrap: Node) -> int:
 	var failures := 0
 	var tree := bootstrap.get_tree()
 
@@ -108,23 +113,35 @@ static func run(bootstrap: Node) -> int:
 			"projectinstelling %s staat op %s (gevonden: %s)"
 			% [key, str(expected_settings[key]), str(actual)], failures)
 
+	# 12. Speler (taak 002) — alleen als de spelerscène bestaat: na het
+	# weggooien van game/actors/player/ (verwijderbaarheidstest D-015) moet
+	# de rest van de suite gewoon groen blijven.
+	if ResourceLoader.exists(PLAYER_SCENE):
+		failures = await _check_player(tree, failures)
+	else:
+		Log.info("TEST INFO · spelerscène ontbreekt — spelertests overgeslagen (D-015)")
+
 	return failures
 
 
 ## Controleert dat de developer room daadwerkelijk iets op het scherm zet.
 ## Headless kunnen we niet kíjken, dus toetsen we de voorwaarden die samen
 ## bepalen of er beeld is: een actieve camera, vrij zicht, licht en materialen.
-static func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
+func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 	var level: Node = tree.root.find_child("DevRoom", true, false)
 	failures = _check(level != null, "dev room in de scèneboom gevonden", failures)
 	if level == null:
 		return failures
 
-	# Camera: precies één, en die is ook echt de actieve camera van de viewport.
+	# Camera's: de testcamera van de dev room, plus de spelerscamera als de
+	# speler bestaat (taak 002). De actieve camera hoort in beide gevallen bij
+	# het level (de speler wordt als kind van het level gespawnd).
+	var player: Node = tree.get_first_node_in_group("player")
+	var expected_cameras := 2 if player != null else 1
 	var all_cameras := tree.root.find_children("", "Camera3D", true, false)
-	failures = _check(all_cameras.size() == 1,
-		"exact één Camera3D in de hele scèneboom (gevonden: %d)"
-		% all_cameras.size(), failures)
+	failures = _check(all_cameras.size() == expected_cameras,
+		"exact %d Camera3D('s) in de hele scèneboom (gevonden: %d)"
+		% [expected_cameras, all_cameras.size()], failures)
 	var active := tree.root.get_camera_3d()
 	failures = _check(active != null, "viewport heeft een actieve Camera3D",
 		failures)
@@ -132,6 +149,11 @@ static func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 		return failures
 	failures = _check(active.is_inside_tree() and level.is_ancestor_of(active),
 		"de actieve camera hoort bij de dev room", failures)
+	if player != null:
+		# Met een speler moet díéns camera het beeld hebben — de testcamera
+		# is een ontwikkelhulpmiddel en wint nooit van gameplay (D-016).
+		failures = _check(player.is_ancestor_of(active),
+			"de spelerscamera levert het beeld (D-016)", failures)
 
 	# Clipping: near klein genoeg om vlak vóór de camera nog te tonen, far ruim
 	# genoeg voor de achterwand op ~19 m.
@@ -178,7 +200,8 @@ static func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 
 	# Kijkrichting: de camera moet het midden van de ruimte in beeld hebben.
 	# Drempel 0.99 (~8 graden): de oude 0.9 liet de 9-graden-transponeerfout
-	# van KI-002/v0.0.8 nog door.
+	# van KI-002/v0.0.8 nog door. Geldt ook voor de spelerscamera: het
+	# spawnpunt kijkt de kamer in, dus een scheve start valt hier om.
 	var to_center := (Vector3(0.0, 1.0, 0.0) - cam_pos).normalized()
 	failures = _check((-active.global_basis.z).dot(to_center) > 0.99,
 		"camera is op het midden van de ruimte gericht", failures)
@@ -227,7 +250,110 @@ static func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 	return failures
 
 
-static func _check(condition: bool, description: String, failures: int) -> int:
+## Spelertests (taak 002): losstaand laden, op de vloer landen, en echte
+## input-simulatie per gangmodus — de voetstap moet als noise_made-feit met
+## de juiste luidheid op de EventBus verschijnen.
+func _check_player(tree: SceneTree, failures: int) -> int:
+	# Losstaand instantieerbaar (CODING_STANDARDS §4.1): de scène laadt en
+	# bouwt zonder level eromheen.
+	var packed: PackedScene = load(PLAYER_SCENE)
+	var standalone := packed.instantiate() if packed != null else null
+	failures = _check(standalone is CharacterBody3D,
+		"spelerscène instantieert los als CharacterBody3D", failures)
+	if standalone != null:
+		standalone.free()
+
+	# De gespawnde speler (bootstrap → PlayerSpawn) staat in de groep 'player'.
+	# Bewust ongetypt: het type 'Player' hier benoemen zou een harde
+	# klasse-verwijzing zijn die de verwijderbaarheidstest (D-015) breekt.
+	var player = tree.get_first_node_in_group("player")
+	failures = _check(player != null,
+		"gespawnde speler gevonden in groep 'player'", failures)
+	if player == null:
+		return failures
+
+	# Physics settelen: na een halve seconde staat hij op de vloer, niet
+	# erdoorheen gezakt en nog binnen de kamer.
+	await _wait_physics_frames(tree, 30)
+	failures = _check(player.is_on_floor(),
+		"speler staat op de vloer", failures)
+	failures = _check(
+		player.global_position.y > -0.5 and player.global_position.y < 1.0
+		and absf(player.global_position.x) < 10.0
+		and absf(player.global_position.z) < 10.0,
+		"speler is niet door vloer of muur gevallen (%s)"
+		% str(player.global_position.round()), failures)
+
+	# Per gangmodus: beweegt hij, en klinkt de stap met de juiste luidheid?
+	# Luidheid schaalt met de modus — dat contract is de koppeling naar
+	# CRUMP's gehoor (taak 007) en mag dus nooit stil kapotgaan.
+	var gaits := [
+		["lopen", ["move_forward"], player.loudness_walk],
+		["sluipen", ["move_forward", "sneak"], player.loudness_sneak],
+		["rennen", ["move_forward", "run"], player.loudness_run],
+		["bukken", ["move_forward", "crouch"], player.loudness_crouch],
+	]
+	for gait in gaits:
+		var start_pos: Vector3 = player.global_position
+		var events: Array = await _move_and_listen(tree, gait[1], 120)
+		var moved: bool = player.global_position.distance_to(start_pos) > 0.3
+		failures = _check(moved,
+			"speler verplaatst zich bij %s" % gait[0], failures)
+		failures = _check(events.size() >= 1,
+			"%s geeft een voetstap-event op de EventBus" % gait[0], failures)
+		if events.size() >= 1:
+			failures = _check(absf(events[0][1] - gait[2]) < 0.01,
+				"%s klinkt met luidheid %.1f (gemeten: %.1f)"
+				% [gait[0], gait[2], events[0][1]], failures)
+			failures = _check(
+				events[0][0].distance_to(player.global_position) < 2.0,
+				"voetstap-positie ligt bij de speler", failures)
+
+	# Bukken verlaagt de camera (alleen de ooghoogte; collider blijft, TD-004).
+	var head: Node3D = player.get_node("Head")
+	Input.action_press("crouch")
+	await _wait_physics_frames(tree, 30)
+	var crouched_ok: bool = head.position.y < player.stand_eye_height - 0.2
+	Input.action_release("crouch")
+	failures = _check(crouched_ok,
+		"bukken verlaagt de ooghoogte (%.2f m)" % head.position.y, failures)
+	await _wait_physics_frames(tree, 30)
+	failures = _check(
+		absf(head.position.y - player.stand_eye_height) < 0.05,
+		"ooghoogte herstelt na het bukken (%.2f m)" % head.position.y, failures)
+
+	return failures
+
+
+## Houdt input-acties ingedrukt tot de eerste voetstap (of de frame-limiet)
+## en geeft de opgevangen noise_made-events terug als [positie, luidheid].
+func _move_and_listen(tree: SceneTree, actions: Array, max_frames: int) -> Array:
+	var events := []
+	var recorder := func(position: Vector3, loudness: float) -> void:
+		events.append([position, loudness])
+	EventBus.noise_made.connect(recorder)
+	for action in actions:
+		Input.action_press(action)
+	for i in max_frames:
+		await tree.physics_frame
+		if events.size() >= 1:
+			break
+	for action in actions:
+		Input.action_release(action)
+	EventBus.noise_made.disconnect(recorder)
+	# Uitrollen tot stilstand, zodat de volgende meting schoon begint. Ruim
+	# nemen: vanaf rensnelheid duurt afremmen ~20 physics-frames, en een nog
+	# lopende voetstap-timer moet ook de kans krijgen zichzelf te stoppen.
+	await _wait_physics_frames(tree, 35)
+	return events
+
+
+func _wait_physics_frames(tree: SceneTree, count: int) -> void:
+	for i in count:
+		await tree.physics_frame
+
+
+func _check(condition: bool, description: String, failures: int) -> int:
 	if condition:
 		Log.info("TEST OK   · %s" % description)
 		return failures

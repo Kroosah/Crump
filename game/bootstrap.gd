@@ -7,6 +7,10 @@ extends Node
 ## Het level dat de bootstrap tijdens ontwikkeling laadt (de developer room).
 const DEV_ROOM_SCENE := "res://game/levels/dev_room/dev_room.tscn"
 
+## De spelerscène. Bewust een pad + bestaanscheck, geen preload: verwijder je
+## game/actors/player/, dan draait de rest gewoon door (D-015/D-018).
+const PLAYER_SCENE := "res://game/actors/player/player.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -62,6 +66,26 @@ func _load_level(scene_path: String) -> void:
 	_current_level = packed.instantiate()
 	_scene_host.add_child(_current_level)
 	Log.info("Bootstrap: level geladen: %s" % scene_path)
+	_spawn_player()
+
+
+## Zet de speler op het PlayerSpawn-punt van het geladen level (D-018).
+## Ontbreekt de spelerscène of het spawnpunt, dan draait het level zonder
+## speler verder — de testcamera van de dev room springt dan bij (D-016).
+func _spawn_player() -> void:
+	if not ResourceLoader.exists(PLAYER_SCENE):
+		Log.info("Bootstrap: geen spelerscène — level draait zonder speler")
+		return
+	var marker: Node3D = _current_level.find_child("PlayerSpawn", true, false)
+	if marker == null:
+		Log.info("Bootstrap: level heeft geen PlayerSpawn — geen speler geplaatst")
+		return
+	var player: Node3D = load(PLAYER_SCENE).instantiate()
+	# Kind van het level: bij een level-wissel ruimt queue_free hem mee op.
+	_current_level.add_child(player)
+	player.global_transform = marker.global_transform
+	Log.info("Bootstrap: speler geplaatst op %s"
+		% str(marker.global_position.round()))
 
 
 func _verify_autoloads() -> void:
@@ -88,8 +112,10 @@ func _notification(what: int) -> void:
 
 ## Draait de smoke-suite en sluit af met de uitslag als exitcode (CI-bruikbaar).
 func _run_smoke_test() -> void:
-	var suite := load("res://tests/smoke_test.gd")
-	var failures: int = suite.run(self)
+	# Instantie i.p.v. statische aanroep: de suite awaits physics-frames
+	# voor de bewegings- en voetstaptests van de speler (taak 002).
+	var suite: RefCounted = load("res://tests/smoke_test.gd").new()
+	var failures: int = await suite.run(self)
 	if failures == 0:
 		Log.info("Smoke-test: alle controles groen")
 	else:
