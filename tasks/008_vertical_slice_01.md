@@ -1,8 +1,11 @@
 # Taak 008 — Vertical Slice 01: "De vergeten tas"
 
 **Type**: Game Director-ontwerpdocument (géén technisch dossier) ·
-**Status**: 🔵 ontwerp ter review (GD), geen implementatie ·
-**Omvang**: de eerste ±20 minuten van CRUMP · **Datum**: 2026-07-28
+**Status**: 🟢 **creatief goedgekeurd door de GD (2026-07-28, v1.1)** —
+besluiten verwerkt, productieplan A–J vastgesteld (§15); implementatie
+per fase, elke fase pas na expliciete go ·
+**Omvang**: de eerste ±20 minuten van CRUMP · **Vereist**: 007
+(documentlezer — de vijf documenten zijn pas speelbaar daarna)
 
 *Dit document ontwerpt de eerste speelbare snede van CRUMP zoals de
 speler hem beleeft: minuut voor minuut, deur voor deur, geluid voor
@@ -28,16 +31,14 @@ De canon van deze slice is door de GD vastgesteld (2026-07-28):
 - De speelruimte blijft bewust klein: **ingang, kantine, gang, twee
   kleedkamers, onderhoudsruimte, klein stukje buiten**.
 
-**Delta met STORY §3**: de bestaande opening (afsluitverzoek van de
-barman; iedereen verdwijnt terwijl de speler doucht) is een ándere
-premisse dan deze terugkeer-voor-de-tas. Dit document volgt de
-VS-canon van de GD. Hoe de twee zich verhouden (VS als proloog-variant,
-als vervanging van de opening, of als losstaande snede die later wordt
-ingepast) wordt beslecht in de geplande canon-correctieronde — hier
-bewust niet vooruitgelopen. Alles hieronder is zo geschreven dat het in
-beide gevallen overeind blijft: het "normaal" wordt in deze slice
-gevestigd door herkenning (iedereen kent een clubgebouw), niet door een
-gespeelde openingsscène.
+**Canon-status (bijgewerkt na de creatieve review)**: de vergeten
+sporttas is per GD-besluit **de canonieke openingspremisse** geworden
+(**D-028**); STORY §1/§3 zijn hierop gecorrigeerd en het oude
+afsluitverzoek van de barman is vervallen. De eerdere delta-notitie is
+daarmee opgelost. Het "normaal" wordt gevestigd door herkenning
+(iedereen kent een clubgebouw) en door de sporen van een avond die een
+kwartier eerder nog leefde; of "de derde helft" ooit een speelbare
+proloog wordt, is een open vraag voor de hoofdstuk 1-sessie (STORY §8).
 
 De harde regel HORROR §5a (eerste 15 minuten: geen monster, geen
 achtervolging, geen jumpscares) blijft onverkort van kracht: alles wat
@@ -135,13 +136,13 @@ HORROR §5b.5). Kolom "boog" = HORROR §1; "ladder" = HORROR §2.*
 
 | Tijd | Beat | Boog / ladder | Pijlers |
 |---|---|---|---|
-| **00:00–02:00** | **Aankomst in de regen.** Fiets/auto bij het hek, het hek staat open. Regen op capuchon-oren, de verre provincialeweg, één zoemende lichtmast (mast 3) over een leeg, glimmend veld. De kantinepui geeft warm licht af. Doel is meteen helder en klein: *tas halen, wegwezen.* | rust → onbehagen / — | P5, P2 |
+| **00:00–02:00** | **Aankomst in de regen.** Zijn auto is de laatste op de parkeerplaats (D-028: de sleutels zitten in de tas); het hek staat open. Regen op capuchon-oren, de verre provincialeweg, één zoemende lichtmast (mast 3) over een leeg, glimmend veld. De kantinepui geeft warm licht af. Doel is meteen helder en klein: *tas halen, wegwezen.* | rust → onbehagen / — | P5, P2 |
 | **02:00–04:30** | **Hal en kantine.** De hoofdentree blijkt niet op slot (afwijking nr. 1 — registreert pas achteraf). Binnen valt de regen weg tot een gedempte deken: de eerste bewuste stilte-beat (§7). Uit de kantine: tv-gemompel. Wie naar binnen kijkt ziet: tafels half opgeruimd, stoelen scheef zoals mensen ze achterlieten, één tafel nog vol glazen, de tv op een late sportherhaling, koeling zoemt. Niemand. De speler mag hier dralen; niets duwt hem. | onbehagen / trede 2 | P5, P2, P7 |
 | **04:30–07:00** | **Gang en kleedkamer 3.** De gangdeur door: TL-schemer — twee buizen doen het, één flikkert halverwege (verklaring zichtbaar: de buis is oud, dit is een clubgebouw). Kleedkamer 3: banken, één vergeten scheenbeschermer, de douche drupt. **Zijn haakje is leeg.** De tas is weg. Op het gangbordje bij de deur, clubgewoon: *"Spullen laten liggen? Gevonden voorwerpen → onderhoudsruimte."* Doel kantelt: niet naar huis — dieper het gebouw in. | onbehagen / trede 2 | P1, P5, P6 |
 | **07:00–09:00** | **Onderhoudsruimte op slot; terug naar de kantine.** De deur aan het eind van de gang geeft niet mee. Terug door de gang (tweede doorloop — alles staat nog exact zoals net: wij spelen hier bewust níét vals, het normaal moet eerst verdiend zijn). In de kantine, achter de bar: het **sleutelkastje**. Briefje ernaast: *"Sleutels na sluit terug in het kastje!"* Maar het haakje "onderhoud" is **leeg**. In de la eronder, naast de meterkast: de **zaklamp** (§9). En nu de speler tóch achter de bar staat: **de tv blijkt op stil te staan**. Het beeld speelt door; het gemompel van daarnet is weg. Wanneer is dat gebeurd? (afwijking nr. 2 — betwistbaar, precies goed) | onbehagen / trede 2 | P7, P4, P3 |
 | **09:00–12:00** | **Kleedkamer 4.** Terug de gang in — en halverwege: **geluid uit kleedkamer 4**. Iets kantelt, klettert; een **voetbal rolt traag door de deuropening de gang in** en komt tegen de plint tot stilstand (§10). Binnen: een afgebroken schoonmaak — kar, emmer, de vloer half gemopt en opgedroogd, een klembord met een **takenlijst die midden in een regel stopt** (§6, document 3). Op de bank: de **sleutelbos**. De verklaring van het geluid ligt er ook: de bezem is omgevallen, het ballennet hangt scheef. Kán het de bezem zijn geweest die de bal losduwde? Ja. Wíl de speler dat geloven? Ook ja. (P7: we bevestigen niets.) | onbehagen, randje dreiging / trede 1–2 | P7, P2, P5 |
 | **12:00–13:00** | **De schreeuw.** Terwijl de speler kleedkamer 4 uitloopt, sleutelbos in de hand: **ver buiten, gedempd door de regen, één schreeuw** (§11). Te lang voor een vogel, te vervormd voor een mens, te ver om zeker te zijn. Eén keer. Nooit herhaald, nooit oproepbaar. Daarna: de langste stilte van de slice (§7) — zelfs de flikkerbuis houdt een paar tellen vol. | **onbehagen → dreiging** / trede 1 (op zijn zwaarst) | P2, P7, P4 |
-| **13:00–14:00** | **De gang, derde doorloop.** Alles is stil. *Optioneel, GD-keuze (§12): langs het matglas van de nooddeur schuift traag een donkere vorm — regenjas? tak? niets?* Twee seconden, zonder geluid, van links naar rechts, wég. Dit is géén glimp van CRUMP (het is niet vast te stellen wát het is) — het is trede 3 op zijn smalst. De speler met de zaklamp áán heeft hem hier waarschijnlijk uit — en beseft dat het glas twee kanten op werkt (P3, zonder één systeem: puur suggestie). | dreiging / trede 3 | P3, P7 |
+| **13:00–14:00** | **De gang, derde doorloop.** Alles is stil — en dat is de hele beat: de speler draagt de naklank van de schreeuw zélf de gang door. De flikkerbuis hervat zijn tik. Wie de zaklamp aanknipt bij het matglas van de nooddeur, beseft dat het glas twee kanten op werkt (P3 — puur ruimtelijk, zonder dat er iets gebeurt). *De eerder overwogen schaduw achter het matglas is per GD-besluit **geschrapt** (§12.1): drie escalaties zijn genoeg — minder is enger.* | dreiging (naklank) / trede 1–2 | P2, P3, P7 |
 | **14:00–17:00** | **De onderhoudsruimte.** De sleutel past. Binnen: geen ramen, één peertje dat het niet doet — **zaklamp-territorium**, de donkerste drie minuten van de slice. Rekken, reserve-doelnetten, de cv-ketel die zacht bromt. Het gevonden-voorwerpen-rek: kratten met verweesde spullen — bidons, één schoen, regenjassen. En dáár, netjes op de plank: **zijn sporttas**. Wie hem openmaakt: telefoon en autosleutels erin, onaangeraakt. Bij het pakken van de tas **slaat de cv-ketel af** — de brom die de speler drie minuten niet bewust hoorde, valt weg, en de stilte duwt hem de ruimte uit (§7). Op de deurpost, aan de binnenkant, laag: **krassen** — te regelmatig voor slijtage, te grillig voor letters (§6, vondst 4; het woord "CRUMP" valt hier bewust nérgens, STORY §5). | dreiging / trede 2–3 | P1, P2, P7, P4 |
 | **17:00–19:00** | **Naar buiten — en de glimp.** Doel gehaald; nu alleen nog naar huis. Door de hal, de regen weer in (de deken valt over de oren — wat hoor je nú niet? P3). Het pad langs het veld richting hek. Halverwege flikkert **lichtmast 3** — de mast waarover het logboekje in de onderhoudsruimte klaagde (§6, vondst 5: setup → payoff) — twee keer, en in de tweede lichtvlaag, aan de overkant van het veld, op de middenlijn: **een gestalte**. Stil. Verkeerde verhoudingen, op deze afstand niet te benoemen. Anderhalve seconde. De mast dooft; als hij weer aanflitst is de middenlijn leeg. **Dit is de glimp** (§11): geen sting, geen muziek, de regen ruist gewoon door — de wereld doet alsof er niets gebeurd is, en dát is het engste eraan (P5). Of hij de speler zag, wordt niet beantwoord (P3/P7). | **confrontatie op afstand** / trede 5, minimaal gedoseerd | P3, P7, P4, P2 |
 | **19:00–20:00** | **Het hek.** De speler haast zich het pad af — en het hek waar hij doorheen kwam zit dicht, **met de ketting erom**. Die ketting hing er twintig minuten geleden los bij. Iemand — iets — heeft hem omgelegd terwijl de speler binnen was. Geen paniekmuziek, geen gerammel-cutscene: alleen de regen, het natte staal, en het besef dat de enige andere route naar buiten **terug door het gebouw** loopt. **Einde slice.** | scharnier / trede 2–3 (afwijking als mokerslag) | P1, P7, P5 |
@@ -287,10 +288,11 @@ plint tot stilstand.
 ## 11. CRUMP in deze slice: twee oren, anderhalve seconde
 
 De totale aanwezigheid van CRUMP in twintig minuten: **één verre
-schreeuw, (optioneel) één onbenoembare schaduw, één glimp van
-anderhalve seconde.** Meer niet — en elk moment houdt zich aan de
-canon-correctie (CRUMP zwerft door het stadion en over het terrein,
-wordt vaker gehoord dan gezien, schreeuwt zeer zelden).
+schreeuw en één glimp van anderhalve seconde.** Meer niet (de eerder
+overwogen schaduw achter het matglas is geschrapt, §12.1) — en elk
+moment houdt zich aan de canon-correctie (CRUMP zwerft door het stadion
+en over het terrein, wordt vaker gehoord dan gezien, schreeuwt zeer
+zelden).
 
 - **De schreeuw (±12:20)**: van buiten, ver (gevoelsmatig de overkant
   van het terrein), gedempt door regen en muren. Lang aangehouden,
@@ -301,10 +303,6 @@ wordt vaker gehoord dan gezien, schreeuwt zeer zelden).
   en het is ver weg.* Timing direct na het vinden van de sleutelbos:
   de speler heeft net zijn reden om verder te gaan, wij geven hem
   tegelijk de reden om dat niet te willen (P1).
-- **De schaduw langs het matglas (±13:30, optioneel — §12)**: bewust
-  onbenoembaar; telt niet als glimp. Schrappen is legitiem als de GD
-  de slice op één waarneming wil houden — het ontwerp draagt ook
-  zonder.
 - **De glimp (±18:00)**: op afstand (de overkant van het veld), in
   flikkerend lichtmastlicht, anderhalve seconde, roerloos of hooguit
   half afgewend. Regels, hard: CRUMP beweegt niet naar de speler toe;
@@ -321,21 +319,21 @@ wordt vaker gehoord dan gezien, schreeuwt zeer zelden).
 openen, geluid maken binnen het gebouw, reageren op de zaklamp of op
 gemaakt geluid. Deze slice bouwt de rekening op; innen komt later.
 
-## 12. Openstaande GD-keuzes in dit ontwerp
+## 12. GD-besluiten (creatieve review 2026-07-28 — bindend)
 
-1. **De schaduw langs het matglas (±13:30)**: houden of schrappen? Mijn
-   advies: houden — het is de enige trede-3-beat en hij verbindt de
-   schreeuw (ver) met de glimp (zichtbaar); maar "hooguit één of twee
-   keer heel kort gezien" blijft ook zonder ruimschoots gehaald.
-2. **De rollende bal**: binnen (advies, §10) of buiten, of schrappen.
-3. **Het slot op het hek (±19:30)**: de ketting is de hardste
-   aanwezigheids-claim van de slice (iemand deed dit terwijl jij binnen
-   was). Als dat voor minuut 20 te vroeg voelt, is het alternatief:
-   de fietsband is plat / de auto start niet — zwakker als claim, even
-   dwingend als reden om terug te gaan. Mijn advies: de ketting; hij is
-   koud, stil en onweerlegbaar — en hij maakt niemand iets wijs.
-4. **Premisse-inpassing** (§0): hoe deze slice zich verhoudt tot de
-   opening van STORY §3 — te beslechten in de canon-correctieronde.
+1. **De schaduw achter het matglas is geschrapt.** De slice bevat al
+   drie duidelijke escalaties (rollende bal, verre schreeuw, glimp);
+   een extra vroege silhouetbeat maakt de opbouw te druk en vermindert
+   de impact van de glimp rond minuut 18. Minder is enger (P4).
+2. **De rollende bal blijft binnen**, in/nabij de kleedkamergang, met
+   de omgevallen bezem als betwistbare natuurlijke verklaring. Nergens
+   wordt bevestigd wat de bal werkelijk liet rollen (P7).
+3. **De ketting om het buitenhek is de definitieve slotbeat.** De
+   speler heeft tas, telefoon en autosleutels terug maar kan het
+   terrein niet af; de enige voortgang loopt terug door het gebouw —
+   de overgang naar het volgende deel van de game.
+4. **De vergeten sporttas is de canonieke openingspremisse** (D-028);
+   STORY en aanpalende canon zijn gecorrigeerd (§0).
 
 ## 13. Pillars-verantwoording (samenvatting)
 
@@ -359,8 +357,8 @@ gemaakt geluid. Deze slice bouwt de rekening op; innen komt later.
   want er bestaat nog geen systeem-CRUMP. Alles wat hier gescript
   wordt, is later door systemen te vervangen zonder het ontwerp te
   breken.
-- **P7 Onzekerheid**: elke afwijking is betwistbaar (de tv, de bal, de
-  schaduw), niets wordt bevestigd, niets is herhaalbaar, en de enige
+- **P7 Onzekerheid**: elke afwijking is betwistbaar (de tv, de bal),
+  niets wordt bevestigd, niets is herhaalbaar, en de enige
   onweerlegbare feiten (de tas op de plank, de ketting om het hek)
   verklaren níéts.
 
@@ -373,15 +371,156 @@ enkele beat vereist camerarichting; (5) haal CRUMP en alle geluid weg
 en er blijft een gebouw over dat óók dan onaangenaam is — dat is
 precies de fase-2-lat die de GD zojuist heeft goedgekeurd.
 
-## 14. Wat dit ontwerp bewust níét regelt
+## 14. Wat dit ontwerp bewust níét regelt — en de harde randvoorwaarden
 
-Geen systeemontwerp, geen AI, geen taakverdeling in blokken, geen
-techniek: hoe de glimp, de schreeuw, de deurstaten of de vondsten
-gebouwd worden is aan het technische ontwerp ná de implementatie-go.
-Ook buiten scope: save/checkpoints van de slice, UI/HUD, de opening
-van STORY §3, en alles voorbij minuut 20 (de terugkeer het gebouw in
-is de cliffhanger, niet het onderwerp).
+Geen systeemontwerp, geen AI, geen techniek: hoe de beats, deurstaten
+en vondsten gebouwd worden is aan de technische ontwerpen per
+productiefase (§15). Ook buiten scope: save/checkpoints van de slice,
+UI/HUD voorbij de documentlezer, de eventuele proloog "de derde helft"
+(STORY §8), en alles voorbij minuut 20 (de terugkeer het gebouw in is
+de cliffhanger, niet het onderwerp).
 
-**Volgende stap**: GD-review van dit document (correctierondes alleen
-op docs) → expliciete implementatie-go → dan pas een technisch
-ontwerp + bouwplan, conform het vaste ritme.
+**Randvoorwaarden uit de creatieve review (bindend):**
+
+- **De vijf documenten (§6) zijn pas speelbaar na taak 007** (minimale
+  documentlezer). Tot die tijd bestaan ze hooguit als props zonder
+  lees-UI.
+- **De slice wordt eerst volledig als greybox gevalideerd** (fases C–E):
+  route, maten, deurflow en pacing krijgen GD-akkoord vóórdat er één
+  finaal materiaal, model of sfeerasset in gaat (fases F–G). Blockout
+  eerst is al huisregel (LEVEL §7); hier is het bovendien een gate.
+- **De glimp van CRUMP vereist géén monster-AI** en loopt nergens
+  vooruit op taak 009: het is een eenmalig geplaatste, getriggerde
+  verschijning van een representatie (tijdelijk of definitief — besluit
+  in fase F), zonder waarneming, navigatie of gedrag. Fase I start pas
+  als die representatie er is.
+
+## 15. Productieplan (besluit GD: kleine, afzonderlijk reviewbare fasen)
+
+*De slice wordt níét als één implementatietaak gebouwd. Iedere fase
+volgt het vaste ritme (ontwerp waar nodig → go → bouw → rapport →
+GD-test) en is klein genoeg om afzonderlijk te reviewen. Volgorde is
+dwingend waar afhankelijkheden staan; B kan parallel aan C.*
+
+### Fase A — Canon- en taaknummercorrectie ✅ (afgerond 2026-07-28)
+- **Doel**: één kloppende papierwereld vóór er iets gebouwd wordt.
+- **Scope**: D-028 doorgevoerd (STORY, GAME_BIBLE, HORROR, LEVEL,
+  ROADMAP); nummering 007–010 herzien; dit dossier bijgewerkt.
+- **Buiten scope**: brede lore-herschrijving; codecommentaar (volgt in
+  de eerstvolgende codetaak).
+- **Afhankelijkheden**: geen. · **Exit**: gepusht, geen dubbele of
+  verouderde taaknummers in docs. · **Pijlers**: P5 (consistente
+  wereld). · **GD-test**: docs-review.
+
+### Fase B — Minimale documentlezer (taak 007)
+- **Doel**: documenten kunnen gelezen worden — de vijf vondsten van de
+  slice worden speelbaar.
+- **Scope**: conform `tasks/007_document_reader.md` (datamodel,
+  verwijderbare lees-UI, inputblokkering, Esc-sluiten).
+- **Buiten scope**: codex, verzamellijsten, documentinventaris,
+  voice-over, animaties, save/load.
+- **Afhankelijkheden**: A. Kan parallel aan C. · **Exit**: suite groen,
+  D-015 beide richtingen, GD leest het dev-room-briefje en sluit met
+  Esc. · **Pijlers**: P2 (lezen is stil), P5 (de omgeving vertelt), P7
+  (documenten mogen onvolledig zijn). · **GD-test**: briefje openen,
+  bewegen geblokkeerd, Esc herstelt alles.
+
+### Fase C — Greybox van alle ruimtes en de hoofdroute
+- **Doel**: de zeven ruimtes van §2 op menselijke maat, loopbaar als
+  één route.
+- **Scope**: hal, kantine, gang, kleedkamers 3+4, onderhoudsruimte,
+  buitenstuk (voorplein + pad + hek); collision; sightlines en
+  oriëntatie-ankers; alle deuren van §3 geplaatst met begintoestand;
+  werklicht-/nachtstaat zoals de dev room (006-fundament).
+- **Buiten scope**: art, beats, documenten-inhoud, tuning van sfeer;
+  de dev room blijft bestaan als testruimte.
+- **Afhankelijkheden**: A. · **Exit**: import + suite groen (incl.
+  budgetregels per ruimte), route start-tot-hek loopbaar. · **Pijlers**:
+  P5, P1 (maat en krapte). · **GD-test**: route lopen in werklicht én
+  nacht; maten en zichtlijnen beoordelen.
+
+### Fase D — Gameplay-objectieven en sleutel-/zaklampflow
+- **Doel**: de doelketen van §5 speelbaar van aankomst tot ketting.
+- **Scope**: tas-prop + gevonden-voorwerpen-plek; leeg haakje; bordje
+  en briefjes op hun plek (leesbaar via B); sleutelkastje met leeg
+  haakje; sleutelbos in kleedkamer 4; slot op de onderhoudsruimte;
+  zaklamp-vindplaats naar de bar-la; de ketting als eindtoestand.
+- **Buiten scope**: alle sfeerbeats (H), art (G), de glimp (I).
+- **Afhankelijkheden**: B + C. · **Exit**: slice start-tot-slot
+  speelbaar als kale flow; tests dekken deurstaten, sleutel- en
+  bezitflow. · **Pijlers**: P6 (doelen zonder markers), P4 (één
+  sleutel). · **GD-test**: de keten blind kunnen volgen zonder UI-hulp.
+
+### Fase E — Pacing- en looprouteacceptatie (GD-gate) 🔑
+- **Doel**: het go/no-go-moment vóór alle aankleding.
+- **Scope**: GD speelt de greybox-slice volledig; looptijden per beat
+  naast §4 gelegd; correcties op maat/route/volgorde.
+- **Buiten scope**: oordeel over sfeer of art (bestaat nog niet).
+- **Afhankelijkheden**: C + D. · **Exit**: **expliciete GD-go op
+  greybox en pacing** — de poort naar F–I. · **Pijlers**: P6. ·
+  **GD-test**: volledige doorloop, klok ernaast.
+
+### Fase F — Art-direction- en assetplan
+- **Doel**: vastleggen hoe de slice eruit gaat zien vóór er assets
+  ontstaan.
+- **Scope**: visuele richting per ruimte (referenties, paletten,
+  Nederlands-nuchter); assetlijst (modellen, materialen, props,
+  geluiden) met per asset placeholder/zelf maken/inkopen; **besluit
+  over de CRUMP-representatie voor de glimp** (tijdelijk silhouet of
+  definitief ontwerp — randvoorwaarde voor I).
+- **Buiten scope**: assets bouwen; addons zonder GD-akkoord (CLAUDE.md).
+- **Afhankelijkheden**: E. · **Exit**: GD keurt plan + assetlijst. ·
+  **Pijlers**: P4 (geen content-vulling), P5. · **GD-test**:
+  plan-review (docs).
+
+### Fase G — Eerste environment-artpass
+- **Doel**: van greybox naar de sfeer van §2/§9 — het "onaangenaam
+  zonder dat er iets gebeurt"-niveau van 006, nu per slice-ruimte.
+- **Scope**: materialen/modellen/props conform F; lichtontwerp per
+  ruimte binnen het schaduwbudget (D-026); TL-staten per ruimte;
+  fog-/ambientkalibratie per ruimte.
+- **Buiten scope**: beats (H), glimp (I), finale audio-assets.
+- **Afhankelijkheden**: E + F; kan parallel aan H. · **Exit**: suite
+  groen (budget per ruimte), GD-hardware-oordeel per ruimte. ·
+  **Pijlers**: P5, P2 (visuele stilte), P4. · **GD-test**: elke ruimte
+  in nachtstaat lopen, met en zonder zaklamp.
+
+### Fase H — Gescripte sfeerbeats
+- **Doel**: de eenmalige, geplaatste gebeurtenissen van §4/§7/§8: de
+  rollende bal (binnen, §12.2), de verre schreeuw, de stiltewisselingen
+  (tv-mute, cv-ketel) en de stroommomenten (flikkerbuis-ritme, mast 3).
+- **Scope**: elk beat eenmalig, met wereld-oorzaak waar ontworpen,
+  volgens de eerlijkheidsregels (werkt ook als de speler wegkijkt);
+  placeholder-audio waar finale assets ontbreken.
+- **Buiten scope**: de glimp (I); alles herhaalbaars of systemisch —
+  dit is de regie-uitzondering (P6-kanttekening §13) en blijft dat.
+- **Afhankelijkheden**: D (flow) + E; audio-assets uit F waar gereed. ·
+  **Exit**: beats headless triggerbaar en getest waar mogelijk;
+  GD-doorloop met beats voelt als §4. · **Pijlers**: P2, P7, P4. ·
+  **GD-test**: volledige doorloop; elke beat exact één keer.
+
+### Fase I — De eerste CRUMP-glimp
+- **Doel**: de climax van de slice (±18:00) — anderhalve seconde onder
+  mast 3.
+- **Scope**: getriggerde, eenmalig geplaatste verschijning van de in F
+  gekozen representatie; mast-flikkering als lichtgebeurtenis;
+  ruimtelijk kloppend (ergens vandaan, ergens heen); werkt ook zonder
+  dat de speler kijkt.
+- **Buiten scope**: élke vorm van AI, waarneming, navigatie of gedrag —
+  niets hiervan loopt vooruit op taak 009; geen sting, geen muziek.
+- **Afhankelijkheden**: F (representatie beschikbaar) + G/H. ·
+  **Exit**: glimp voldoet op hardware aan alle regels van §11. ·
+  **Pijlers**: P3, P7, P4. · **GD-test**: meerdere doorlopen (kijkend,
+  wegkijkend, rennend) — het moment mag nooit breken.
+
+### Fase J — Eindtuning en Vertical Slice-acceptatie
+- **Doel**: het geheel — de eerste twintig minuten als één ervaring.
+- **Scope**: pacingtuning over de hele boog, audiomix, lichtkalibratie,
+  kleine leesbaarheidscorrecties; registers en dossiers bij.
+- **Buiten scope**: nieuwe features, nieuwe beats, scope-groei — wat er
+  in J niet in zit, zit er niet in (P4).
+- **Afhankelijkheden**: alle voorgaande. · **Exit**: **volledige
+  GD-acceptatie van de slice op hardware** = exit fase 2½ (ROADMAP);
+  daarna pas besluiten over het vervolg (taak 009 of hoofdstuk 1-
+  ontwerpsessie). · **Pijlers**: alle zeven. · **GD-test**: de slice
+  van aankomst tot ketting, in één sessie, koptelefoon op.
