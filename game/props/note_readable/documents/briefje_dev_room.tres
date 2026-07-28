@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DocumentResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/props/note_readable/document_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"briefje_dev_room"
+title = "Testbriefje"
+text = "Testbriefje uit de developer room.\nAls je dit leest, werkt het interactiesysteem."

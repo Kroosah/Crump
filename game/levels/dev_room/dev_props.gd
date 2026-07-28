@@ -51,9 +51,8 @@ const TEST_PROPS: Array[Dictionary] = [
 		"name": "TestNote",
 		"position": Vector3(0.0, 1.7, -9.73),
 		"settings": {
-			"document_id": &"briefje_dev_room",
+			"document": "res://game/props/note_readable/documents/briefje_dev_room.tres",
 			"prompt": "Lees briefje",
-			"document_text": "Testbriefje uit de developer room.\nAls je dit leest, werkt het interactiesysteem.",
 		},
 	},
 ]

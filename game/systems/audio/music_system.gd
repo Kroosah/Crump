@@ -2,7 +2,7 @@ extends Node
 ## Muziek-cues (taak 005, keuze G): de minimale API en niets meer. Geen
 ## spanningsmodel, geen automatische triggers, geen gameplaymuzieklogica —
 ## muziek is schaars en verdiend (GAME_BIBLE §4, HORROR §3), en het
-## rust/spanning-model is bewust uitgesteld tot er een afnemer is (007+,
+## rust/spanning-model is bewust uitgesteld tot er een afnemer is (009+,
 ## eigen ontwerpbeslissing). In 005 roept uitsluitend de smoke-suite dit
 ## aan; er bestaat géén muziekcontent.
 

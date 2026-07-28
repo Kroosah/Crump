@@ -43,7 +43,7 @@ func run(bootstrap: Node) -> int:
 	# 2. EventBus-contract: signalen bestaan met het juiste aantal argumenten
 	var expected_signals := {
 		"noise_made": 2, "chapter_started": 1, "player_spotted": 1,
-		"item_used": 1, "interact_prompt_changed": 1, "document_opened": 2,
+		"item_used": 1, "interact_prompt_changed": 1, "document_opened": 3,
 		"flashlight_toggled": 1,
 	}
 	for signal_name in expected_signals:
@@ -408,7 +408,7 @@ func _check_player(tree: SceneTree, failures: int) -> int:
 
 	# Per gangmodus: beweegt hij, en klinkt de stap met de juiste luidheid?
 	# Luidheid schaalt met de modus — dat contract is de koppeling naar
-	# CRUMP's gehoor (taak 007) en mag dus nooit stil kapotgaan.
+	# CRUMP's gehoor (taak 009) en mag dus nooit stil kapotgaan.
 	var gaits := [
 		["lopen", ["move_forward"], player.loudness_walk],
 		["sluipen", ["move_forward", "sneak"], player.loudness_sneak],
@@ -753,20 +753,32 @@ func _check_note(tree: SceneTree, player, props_root: Node,
 		"briefje toont zijn eigen prompt ('%s')" % prompt_log[0], failures)
 
 	var opened: Array = []
-	var doc_recorder := func(document_id: StringName, text: String) -> void:
-		opened.append([document_id, text])
+	var doc_recorder := func(document_id: StringName, title: String,
+			text: String) -> void:
+		opened.append([document_id, title, text])
 	EventBus.document_opened.connect(doc_recorder)
 	var noises: Array = await _interact_and_listen(tree)
 	EventBus.document_opened.disconnect(doc_recorder)
-	failures = _check(opened.size() == 1
-		and opened[0][0] == note.document_id
-		and opened[0][1] == note.document_text,
-		"lezen zendt document_opened met id en tekst", failures)
+	# Duck-typed via get(): de resource-klasse wordt niet genoemd (D-021).
+	var doc: Resource = note.get("document")
+	failures = _check(opened.size() == 1 and doc != null
+		and opened[0][0] == doc.get("id")
+		and opened[0][1] == doc.get("title")
+		and opened[0][2] == doc.get("text"),
+		"lezen zendt document_opened met id, titel en tekst uit de resource",
+		failures)
 	failures = _check(noises.is_empty(),
 		"lezen is stil (geen noise_made)", failures)
-	failures = _check(note.document_id in GameState.documents_read,
+	failures = _check(doc != null and doc.get("id") in GameState.documents_read,
 		"gelezen document staat in GameState", failures)
 	GameState.reset()
+	# Taak 007: die interactie opende zojuist de documentlezer (indien
+	# aanwezig) en pauzeerde de wereld — netjes sluiten via de echte
+	# sluitroute (E, gewapend na de deferred arming) vóór de vervolgtests.
+	if tree.get_first_node_in_group("document_reader") != null:
+		await _wait_physics_frames(tree, 2)
+		_send_action_event(&"interact")
+		await _wait_physics_frames(tree, 3)
 	return failures
 
 

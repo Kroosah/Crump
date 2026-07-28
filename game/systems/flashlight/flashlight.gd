@@ -5,7 +5,7 @@ extends Node3D
 ##
 ## Alleen dít component bezit de aan/uit-state. Een geslaagde toggle zendt
 ## drie gescheiden feiten (dossier 006 keuze C): flashlight_toggled
-## (toestand, voor CRUMP's zicht in 007), audio_cue (de hoorbare klik) en
+## (toestand, voor CRUMP's zicht in 009), audio_cue (de hoorbare klik) en
 ## noise_made (de klik als gameplaygeluid). Zonder aantoonbaar bezit faalt
 ## alles gesloten: geen state, geen licht, geen enkele emissie (keuze D).
 ##
