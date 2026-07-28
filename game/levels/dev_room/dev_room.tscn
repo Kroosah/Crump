@@ -1,10 +1,9 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_camera.gd" id="1"]
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_props.gd" id="2"]
 [ext_resource type="Script" path="res://game/levels/environment_tuner.gd" id="3"]
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_room.gd" id="4"]
-[ext_resource type="PackedScene" path="res://game/props/light_tl/light_tl.tscn" id="5"]
 
 [sub_resource type="BoxMesh" id="floor_mesh"]
 size = Vector3(20, 0.5, 20)
@@ -143,39 +142,6 @@ omni_range = 14.0
 
 [node name="NightLights" type="Node3D" parent="Lighting"]
 unique_name_in_owner = true
-
-[node name="TlStabielWest" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.85, -5)
-cast_shadow = true
-
-[node name="TlStabielOost" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.85, 3)
-cast_shadow = true
-
-[node name="TlFlikkerNoordoost" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.85, -7)
-state = 2
-flicker_seed = 7
-
-[node name="TlDefectA" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.85, 4)
-state = 1
-
-[node name="TlDefectB" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.85, 0)
-state = 1
-
-[node name="TlDefectC" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.85, -7)
-state = 1
-
-[node name="TlDefectD" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.85, -2)
-state = 1
-
-[node name="TlDefectE" parent="Lighting/NightLights" instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.85, 7)
-state = 1
 
 [node name="Structure" type="Node3D" parent="."]
 

@@ -21,6 +21,14 @@ const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
 ## draait het spel stil en slaan de audiotests over.
 const AUDIO_SYSTEM_SCENE := "res://game/systems/audio/audio_system.tscn"
 
+## Licht & sfeer (taak 006): drie losse verwijdereenheden met elk hun
+## eigen D-015-afspraak. Zonder zaklamp geen licht; zonder budget-bewaking
+## vangt alleen deze suite configfouten; zonder TL-prop is de nachtstaat
+## armatuurloos maar blijft het level parsebaar.
+const FLASHLIGHT_SCENE := "res://game/systems/flashlight/flashlight.tscn"
+const LIGHT_BUDGET_SCENE := "res://game/systems/light_budget/light_budget.tscn"
+const LIGHT_TL_SCENE := "res://game/props/light_tl/light_tl.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -36,6 +44,7 @@ func run(bootstrap: Node) -> int:
 	var expected_signals := {
 		"noise_made": 2, "chapter_started": 1, "player_spotted": 1,
 		"item_used": 1, "interact_prompt_changed": 1, "document_opened": 2,
+		"flashlight_toggled": 1,
 	}
 	for signal_name in expected_signals:
 		var ok := EventBus.has_signal(signal_name)
@@ -169,6 +178,30 @@ func run(bootstrap: Node) -> int:
 	else:
 		Log.info("TEST INFO · audiosysteem ontbreekt — audiotests overgeslagen (D-015)")
 
+	# 17. Licht & sfeer (taak 006). Environment en brightness zijn
+	# level-/settings-infrastructuur en draaien altijd; de drie
+	# verwijdereenheden (zaklamp, TL-prop, budget-bewaking) hebben elk hun
+	# eigen D-015-afspraak. LET OP: de budgettests forceren bewust een
+	# overschrijding — de LightBudget-warnings in de output zijn het
+	# bewijs, geen bug.
+	failures = await _check_environment_brightness(tree, failures)
+	if ResourceLoader.exists(FLASHLIGHT_SCENE):
+		failures = await _check_flashlight(tree, failures)
+	else:
+		Log.info("TEST INFO · zaklampsysteem ontbreekt — zaklamptests overgeslagen (D-015)")
+	if ResourceLoader.exists(LIGHT_TL_SCENE):
+		failures = await _check_light_tl(tree, failures)
+	else:
+		Log.info("TEST INFO · TL-prop ontbreekt — TL-tests overgeslagen (D-015)")
+	if ResourceLoader.exists(LIGHT_BUDGET_SCENE):
+		failures = await _check_light_budget(tree, failures)
+	else:
+		Log.info("TEST INFO · budget-bewaking ontbreekt — budgettests overgeslagen (D-015)")
+	if ResourceLoader.exists(FLASHLIGHT_SCENE) \
+			and ResourceLoader.exists(LIGHT_BUDGET_SCENE) \
+			and ResourceLoader.exists(LIGHT_TL_SCENE):
+		failures = await _check_lighting_f3(tree, failures)
+
 	return failures
 
 
@@ -254,8 +287,10 @@ func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 	failures = _check((-active.global_basis.z).dot(to_center) > 0.99,
 		"camera is op het midden van de ruimte gericht", failures)
 
-	# Licht: minstens twee bronnen die daadwerkelijk energie geven, en géén
-	# DirectionalLight die omhoog schijnt (KI-002: getransponeerde basis).
+	# Licht (herijkt 006): de nachtstaat is de actieve, gecommitte staat.
+	# De KI-001-dekking blijft onverkort; de drempels toetsen voortaan de
+	# donkere waarheid: ≥2 actieve bronnen zijn de stabiele TL-ankers
+	# (LEVEL §2.3), en géén DirectionalLight schijnt omhoog (KI-002).
 	var lit := 0
 	for node in level.find_children("", "Light3D", true, false):
 		var light := node as Light3D
@@ -266,8 +301,47 @@ func _check_dev_room_visible(tree: SceneTree, failures: int) -> int:
 			failures = _check(light_dir.y < -0.2,
 				"DirectionalLight '%s' schijnt omlaag (y-richting %.2f)"
 				% [light.name, light_dir.y], failures)
-	failures = _check(lit >= 2,
-		"tijdelijke verlichting is aan (%d actieve lichten)" % lit, failures)
+	if ResourceLoader.exists(LIGHT_TL_SCENE):
+		failures = _check(lit >= 2,
+			"nachtverlichting is aan (%d actieve lichten)" % lit, failures)
+	else:
+		Log.info("TEST INFO · TL-prop ontbreekt — lichttelling overgeslagen (D-015)")
+
+	# Werklicht is debug, geen gameplay: de gecommitte standaard is nacht.
+	var werklicht_rig: Node3D = level.find_child("Werklicht", true, false)
+	failures = _check(
+		werklicht_rig != null and not werklicht_rig.visible
+		and level.get("werklicht") == false,
+		"nachtstaat is de actieve staat (werklicht uit)", failures)
+
+	# Schaduwbudget (LEVEL §5, dossier 006 §5): het level ontwerpt op max 3
+	# schaduw-werpende lampen; het vierde slot is voor de zaklamp
+	# gereserveerd (haar spot staat uit en telt hier dus niet mee).
+	var shadow_lights := 0
+	for node in level.find_children("", "Light3D", true, false):
+		var light := node as Light3D
+		if light.shadow_enabled and light.is_visible_in_tree():
+			shadow_lights += 1
+	failures = _check(shadow_lights <= 3,
+		"level blijft binnen het schaduwbudget (%d/3 + zaklampslot)"
+		% shadow_lights, failures)
+
+	# Nachtstaat-samenstelling (keuze E): 2 stabiele ankers, 1 bewuste
+	# flikkerbuis, rest defect — duck-typed via de groep (D-021).
+	if ResourceLoader.exists(LIGHT_TL_SCENE):
+		var stable := 0
+		var flickering := 0
+		var broken := 0
+		for tl in tree.get_nodes_in_group("light_tl"):
+			if not tl.has_method("get_tl_state"):
+				continue
+			match tl.get_tl_state():
+				0: stable += 1
+				1: broken += 1
+				2: flickering += 1
+		failures = _check(stable == 2 and flickering == 1 and broken >= 1,
+			"nachtstaat: 2 stabiel / 1 flikkerend / rest defect (%d/%d/%d)"
+			% [stable, flickering, broken], failures)
 
 	# Environment: geen egaal grijs, en ambient als vangnet als licht wegvalt.
 	var world_env: WorldEnvironment = level.find_child("WorldEnvironment",
@@ -1164,6 +1238,369 @@ func _check_audio_flow(tree: SceneTree, player, props_root: Node,
 
 	one_shots.stop_all()
 	EventBus.audio_cue.disconnect(cue_recorder)
+	return failures
+
+
+## Environment- en brightnesstests (taak 006 §6, lost TD-003 af): filmische
+## tonemap, diepte-fog, debanding, en brightness die écht aangrijpt op
+## adjustment_brightness — geclampt op 0.8..1.2, ook vanaf schijf.
+func _check_environment_brightness(tree: SceneTree, failures: int) -> int:
+	var level: Node = tree.root.find_child("DevRoom", true, false)
+	var world_env: WorldEnvironment = level.find_child("WorldEnvironment",
+		true, false) if level != null else null
+	if world_env == null or world_env.environment == null:
+		return _check(false, "environment aanwezig voor licht-/brightnesstests",
+			failures)
+	var env := world_env.environment
+	failures = _check(env.tonemap_mode != Environment.TONE_MAPPER_LINEAR,
+		"tonemap is niet-lineair (filmisch)", failures)
+	failures = _check(env.fog_enabled and env.fog_density > 0.0,
+		"diepte-fog is actief (dichtheid %.3f)" % env.fog_density, failures)
+	failures = _check(bool(ProjectSettings.get_setting(
+			"rendering/anti_aliasing/quality/use_debanding", false)),
+		"debanding staat aan (near-black zonder kleurtrappen)", failures)
+
+	# TD-003: de instelling grijpt echt aan, met de smalle 006-range.
+	failures = _check(absf(SettingsManager.brightness - 1.0) < 0.001,
+		"brightness-standaard is 1.0", failures)
+	failures = _check(
+		env.adjustment_enabled
+		and absf(env.adjustment_brightness - SettingsManager.brightness) < 0.001,
+		"environment volgt de brightness-instelling (TD-003 afgelost)", failures)
+	SettingsManager.set_brightness(2.0)
+	failures = _check(
+		absf(SettingsManager.brightness - 1.2) < 0.001
+		and absf(env.adjustment_brightness - 1.2) < 0.001,
+		"brightness clampt op maximum 1.2 en de environment volgt", failures)
+	SettingsManager.set_brightness(0.5)
+	failures = _check(
+		absf(SettingsManager.brightness - 0.8) < 0.001
+		and absf(env.adjustment_brightness - 0.8) < 0.001,
+		"brightness clampt op minimum 0.8", failures)
+	SettingsManager.set_brightness(1.0)
+
+	# Een oude configwaarde buiten de range wordt bij het laden veilig
+	# binnengetrokken (de 0.5-2.0-clamp van vóór 006 bestaat niet meer).
+	var config := ConfigFile.new()
+	config.load(SettingsManager.SETTINGS_PATH)
+	config.set_value("video", "brightness", 2.0)
+	config.save(SettingsManager.SETTINGS_PATH)
+	SettingsManager.load_settings()
+	failures = _check(absf(SettingsManager.brightness - 1.2) < 0.001,
+		"configwaarde buiten de range wordt bij laden geclampt", failures)
+	SettingsManager.set_brightness(1.0)
+	SettingsManager.save_settings()
+	return failures
+
+
+## Zaklamptests (taak 006 §3/§3a, keuzes C+D): gesloten bezit-gate, exact
+## één emissie per kanaal ná de statewijziging, positiescheiding
+## (licht = camera, geluid = speler), duplicaatsemantiek via hercontrole,
+## herspawn zonder dubbele verwerking, pauze en debug-bypass.
+func _check_flashlight(tree: SceneTree, failures: int) -> int:
+	var packed: PackedScene = load(FLASHLIGHT_SCENE)
+	var standalone := packed.instantiate() if packed != null else null
+	failures = _check(standalone != null,
+		"zaklamp-scène instantieert los", failures)
+	if standalone != null:
+		failures = _check(standalone.get("debug_bezit_bypass") == false,
+			"debug_bezit_bypass staat default uit", failures)
+		standalone.free()
+
+	var flashlights := tree.get_nodes_in_group("flashlight")
+	failures = _check(flashlights.size() == 1,
+		"exact één zaklampsysteem gespawnd (gevonden: %d)"
+		% flashlights.size(), failures)
+	if flashlights.is_empty():
+		return failures
+	var flashlight = flashlights[0]
+	failures = _check(flashlight.get("debug_bezit_bypass") == false,
+		"gecommitte dev room gebruikt de bypass niet (echte pickup-flow)",
+		failures)
+
+	# Recorders op alle drie de gevolgkanalen — gescheiden geteld. De
+	# cue-id eenmalig lokaal vangen: de herspawn-test verderop vriest de
+	# oorspronkelijke instantie, en een lambda mag daar niet meer aan.
+	var toggles: Array = []
+	var cues: Array = []
+	var noises: Array = []
+	var click_cue: StringName = flashlight.get("click_cue")
+	var toggle_recorder := func(is_on: bool) -> void:
+		toggles.append(is_on)
+	var cue_recorder := func(sound_id: StringName, position: Vector3) -> void:
+		if sound_id == click_cue:
+			cues.append(position)
+	var noise_recorder := func(position: Vector3, loudness: float) -> void:
+		noises.append([position, loudness])
+	EventBus.flashlight_toggled.connect(toggle_recorder)
+	EventBus.audio_cue.connect(cue_recorder)
+	EventBus.noise_made.connect(noise_recorder)
+
+	# Zonder bezit (of zonder inventory): gesloten falen — geen state,
+	# geen licht, en op géén enkel kanaal ook maar één emissie.
+	failures = _check(flashlight.has_flashlight() == false,
+		"zaklampbezit start op nee (niets opgeraapt)", failures)
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	var inventory = tree.get_first_node_in_group("inventory")
+	var closed_label := "zonder inventory: gesloten falen" if inventory == null \
+		else "zonder bezit: geen toggle en geen enkel gevolgkanaal"
+	failures = _check(
+		not flashlight.is_light_on() and toggles.is_empty()
+		and cues.is_empty() and noises.is_empty(), closed_label, failures)
+
+	# Debug-bypass: expliciet aanzetten werkt (deze suite ís een
+	# debugbuild), het eerlijke bezit blijft nee, en daarna weer uit.
+	flashlight.set("debug_bezit_bypass", true)
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	failures = _check(
+		flashlight.is_light_on() and toggles == [true]
+		and flashlight.has_flashlight() == false,
+		"bypass (debug, expliciet aan) toggle't zonder bezit", failures)
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	flashlight.set("debug_bezit_bypass", false)
+	failures = _check(not flashlight.is_light_on() and toggles == [true, false],
+		"bypass weer uit; licht netjes uitgezet", failures)
+
+	if inventory == null:
+		Log.info("TEST INFO · geen inventory — bezitstests overgeslagen (gesloten falen gedekt)")
+		EventBus.flashlight_toggled.disconnect(toggle_recorder)
+		EventBus.audio_cue.disconnect(cue_recorder)
+		EventBus.noise_made.disconnect(noise_recorder)
+		return failures
+
+	# Bezit via de echte inventory; daarna een geslaagde toggle: exact
+	# één emissie per kanaal, pas ná de statewijziging.
+	var zaklamp_item: Resource = load(
+		"res://game/systems/inventory/items/zaklamp.tres")
+	inventory.add_item(zaklamp_item)
+	await _wait_physics_frames(tree, 2)
+	failures = _check(flashlight.has_flashlight(),
+		"item_added geeft bezit (eventgedreven hercontrole)", failures)
+	toggles.clear()
+	cues.clear()
+	noises.clear()
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	failures = _check(
+		flashlight.is_light_on() and toggles == [true]
+		and cues.size() == 1 and noises.size() == 1,
+		"geslaagde toggle: exact één emissie per kanaal", failures)
+
+	# Positiescheiding (§3a): geluid op de speler-body, licht op de camera.
+	var player = tree.get_first_node_in_group("player")
+	var camera := tree.root.get_camera_3d()
+	if player is Node3D and camera != null and noises.size() == 1:
+		failures = _check(
+			noises[0][0].distance_to(player.global_position) < 0.01
+			and cues[0].distance_to(player.global_position) < 0.01
+			and absf(noises[0][1] - flashlight.get("click_loudness")) < 0.01,
+			"klik klinkt op de spelerpositie met de klik-luidheid", failures)
+		await _wait_physics_frames(tree, 10)
+		failures = _check(
+			flashlight.global_position.distance_to(camera.global_position) < 0.3
+			and flashlight.global_position.distance_to(player.global_position) > 1.0,
+			"licht volgt de camera, niet de spelervoeten", failures)
+
+	# Pauze: geen toggle (PAUSABLE) — de wereld staat ook akoestisch stil.
+	toggles.clear()
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 3)
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	failures = _check(tree.paused and toggles.is_empty()
+		and flashlight.is_light_on(),
+		"tijdens pauze geen toggle", failures)
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 3)
+
+	# Duplicaten: twee exemplaren = één bevoegdheid; één verwijderen trekt
+	# niets in (hercontrole aan de bron, nooit blind false).
+	inventory.add_item(zaklamp_item)
+	inventory.remove_item(&"zaklamp")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(flashlight.has_flashlight() and flashlight.is_light_on(),
+		"één van twee exemplaren weg: bezit en licht blijven", failures)
+
+	# Laatste exemplaar weg terwijl de lamp aan is: direct uit, exact één
+	# flashlight_toggled(false), en de klik-kanalen zwijgen (geen actie).
+	toggles.clear()
+	cues.clear()
+	noises.clear()
+	inventory.remove_item(&"zaklamp")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(
+		not flashlight.is_light_on() and flashlight.has_flashlight() == false
+		and toggles == [false] and cues.is_empty() and noises.is_empty(),
+		"laatste exemplaar weg terwijl aan: direct uit, stil, één feit",
+		failures)
+
+	# Herspawn (levelwissel-simulatie): voorgevulde inventory wordt bij de
+	# initiële synchronisatie gelezen, en er ontstaat geen dubbele
+	# verwerking — één toggle blijft één emissie per kanaal.
+	inventory.add_item(zaklamp_item)
+	var level: Node = tree.root.find_child("DevRoom", true, false)
+	flashlight.free()
+	var fresh: Node = packed.instantiate()
+	level.add_child(fresh)
+	await _wait_physics_frames(tree, 2)
+	failures = _check(fresh.has_flashlight(),
+		"voorgevulde inventory: bezit direct bij spawn (initiële sync)",
+		failures)
+	toggles.clear()
+	cues.clear()
+	noises.clear()
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	failures = _check(
+		fresh.is_light_on() and toggles == [true]
+		and cues.size() == 1 and noises.size() == 1,
+		"na herspawn: exact één verwerking per kanaal (geen dubbele connectie)",
+		failures)
+	_send_action_event(&"flashlight")
+	await _wait_physics_frames(tree, 3)
+	inventory.remove_item(&"zaklamp")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(fresh.has_flashlight() == false,
+		"herspawnde zaklamp volgt item_removed correct", failures)
+
+	EventBus.flashlight_toggled.disconnect(toggle_recorder)
+	EventBus.audio_cue.disconnect(cue_recorder)
+	EventBus.noise_made.disconnect(noise_recorder)
+	return failures
+
+
+## TL-tests (taak 006 §4, keuze E): drie expliciete staten, seed-
+## deterministisch flikkerpatroon mét rust, en flikkeren dat correct stopt.
+func _check_light_tl(tree: SceneTree, failures: int) -> int:
+	var packed: PackedScene = load(LIGHT_TL_SCENE)
+	var tl_a: Node3D = packed.instantiate()
+	var tl_b: Node3D = packed.instantiate()
+	failures = _check(tl_a != null and tl_b != null,
+		"TL-prop instantieert los", failures)
+	for tl in [tl_a, tl_b]:
+		tl.set("state", 2)
+		tl.set("flicker_seed", 12345)
+		tree.root.add_child(tl)
+	var light_a: OmniLight3D = tl_a.find_child("Light", true, false)
+	var light_b: OmniLight3D = tl_b.find_child("Light", true, false)
+	var energy_on: float = tl_a.get("light_energy_on")
+
+	# Determinisme: zelfde seed → identiek verloop, frame voor frame.
+	# 4 s dekt gegarandeerd minstens één burst (rust is max 3,5 s).
+	var seq_a := PackedFloat32Array()
+	var seq_b := PackedFloat32Array()
+	for i in 240:
+		await tree.physics_frame
+		seq_a.append(light_a.light_energy)
+		seq_b.append(light_b.light_energy)
+	failures = _check(seq_a == seq_b,
+		"flikkerpatroon is seed-deterministisch (%d frames identiek)"
+		% seq_a.size(), failures)
+	var on_frames := 0
+	var dim_frames := 0
+	for value in seq_a:
+		if value >= energy_on - 0.001:
+			on_frames += 1
+		else:
+			dim_frames += 1
+	failures = _check(dim_frames > 0 and on_frames > dim_frames,
+		"patroon flikkert én bevat rust (aan overheerst: %d/%d frames)"
+		% [on_frames, dim_frames], failures)
+
+	# Flikkeren stopt onmiddellijk en definitief bij een staatwissel.
+	tl_a.set("state", 0)
+	tl_b.set("state", 1)
+	var stable_ok := true
+	var defect_ok := true
+	for i in 90:
+		await tree.physics_frame
+		if absf(light_a.light_energy - energy_on) > 0.001:
+			stable_ok = false
+		if light_b.visible or light_b.light_energy > 0.0:
+			defect_ok = false
+	failures = _check(stable_ok,
+		"STABIEL flikkert nooit (energie 90 frames constant)", failures)
+	failures = _check(defect_ok,
+		"DEFECT blijft uit en flikkert nooit", failures)
+	tl_a.free()
+	tl_b.free()
+	return failures
+
+
+## Budgettests (taak 006 §5): configfouten degraderen deterministisch op
+## boomvolgorde, de zaklamp houdt haar gereserveerde slot, en de lamp
+## zelf blijft aan. De LightBudget-warnings hieronder zijn het bewijs.
+func _check_light_budget(tree: SceneTree, failures: int) -> int:
+	var budgets := tree.get_nodes_in_group("light_budget")
+	failures = _check(budgets.size() == 1,
+		"exact één budget-bewaking gespawnd (gevonden: %d)" % budgets.size(),
+		failures)
+	if budgets.is_empty():
+		return failures
+	var budget = budgets[0]
+	failures = _check(
+		budget.get_active_shadow_count() <= budget.get_shadow_budget(),
+		"actieve schaduwlichten binnen budget (%d/%d)"
+		% [budget.get_active_shadow_count(), budget.get_shadow_budget()],
+		failures)
+
+	# Overschrijding forceren: drie extra schaduwlampen achteraan het
+	# level. In boomvolgorde winnen de bestaande TL-ankers en de eerste
+	# extra; de rest verliest alleen zijn schaduw.
+	var level: Node = tree.root.find_child("DevRoom", true, false)
+	var extras: Array = []
+	for i in 3:
+		var extra := OmniLight3D.new()
+		extra.shadow_enabled = true
+		level.add_child(extra)
+		extras.append(extra)
+	var enforcer: Node = load(LIGHT_BUDGET_SCENE).instantiate()
+	level.add_child(enforcer)
+	await _wait_physics_frames(tree, 3)
+	failures = _check(
+		extras[0].shadow_enabled and not extras[1].shadow_enabled
+		and not extras[2].shadow_enabled,
+		"boven budget: degradatie is deterministisch op boomvolgorde",
+		failures)
+	failures = _check(extras[1].visible and extras[1].light_energy > 0.0,
+		"gedegradeerde lamp blijft aan (alleen de schaduw vervalt)", failures)
+	var anchor: Node = level.find_child("TlStabielWest", true, false)
+	var anchor_light: OmniLight3D = anchor.find_child("Light", true, false) \
+		if anchor != null else null
+	failures = _check(anchor_light != null and anchor_light.shadow_enabled,
+		"eerste lampen in boomvolgorde behouden hun schaduw", failures)
+	var flashlight = tree.get_first_node_in_group("flashlight")
+	if flashlight != null:
+		var spot: Light3D = flashlight.find_child("Spot", true, false)
+		failures = _check(spot != null and spot.shadow_enabled,
+			"zaklamp behoudt haar gereserveerde schaduwslot", failures)
+	for extra in extras:
+		extra.free()
+	enforcer.free()
+	return failures
+
+
+## F3-regels van taak 006: zaklampbezit + aan/uit, schaduwtelling/budget,
+## brightnesswaarde en de compacte TL-telling.
+func _check_lighting_f3(tree: SceneTree, failures: int) -> int:
+	var overlay := tree.root.find_child("DebugOverlay", true, false)
+	var info_label: Label = overlay.find_child("InfoLabel", true, false) \
+		if overlay != null else null
+	if info_label == null:
+		return failures
+	_send_action_event(&"debug_overlay")
+	await _wait_physics_frames(tree, 3)
+	failures = _check(
+		"zaklamp: bezit nee · uit" in info_label.text
+		and "schaduw" in info_label.text
+		and "helderheid 1.0" in info_label.text
+		and "tl: 2 stabiel / 1 flikkert / 5 defect" in info_label.text,
+		"F3 toont zaklamp-, budget-, helderheid- en TL-regel", failures)
+	_send_action_event(&"debug_overlay")
+	await _wait_physics_frames(tree, 2)
 	return failures
 
 

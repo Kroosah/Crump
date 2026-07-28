@@ -36,6 +36,8 @@ func _build_info() -> String:
 		"speler: %s" % _player_position_text(),
 		"inventory: %s" % _inventory_text(),
 		"actieve geluiden: %s" % _audio_text(),
+		"zaklamp: %s" % _flashlight_text(),
+		"licht: %s" % _light_text(),
 	]
 	return "\n".join(lines)
 
@@ -70,6 +72,45 @@ func _inventory_text() -> String:
 	for item in items:
 		ids.append(String(item.id))
 	return "%s · %s" % [text, ", ".join(ids)]
+
+
+func _flashlight_text() -> String:
+	# Haak taak 006: null-veilig via de groep, duck-typed — zelfde patroon
+	# als de inventory- en audioregel; de overlay overleeft elke verwijdering.
+	var flashlight := get_tree().get_first_node_in_group("flashlight")
+	if flashlight == null or not flashlight.has_method("has_flashlight") \
+			or not flashlight.has_method("is_light_on"):
+		return "—"
+	return "bezit %s · %s" % [
+		"ja" if flashlight.has_flashlight() else "nee",
+		"aan" if flashlight.is_light_on() else "uit"]
+
+
+func _light_text() -> String:
+	# Schaduwtelling via de budget-bewaking (groep), brightness rechtstreeks
+	# uit het autoload (infrastructuur, mag altijd), TL-telling via de groep.
+	var parts := PackedStringArray()
+	var budget := get_tree().get_first_node_in_group("light_budget")
+	if budget != null and budget.has_method("get_active_shadow_count"):
+		parts.append("%d/%d schaduw" % [
+			budget.get_active_shadow_count(), budget.get_shadow_budget()])
+	parts.append("helderheid %.1f" % SettingsManager.brightness)
+	var stable := 0
+	var flickering := 0
+	var broken := 0
+	var tl_found := false
+	for tl in get_tree().get_nodes_in_group("light_tl"):
+		if not tl.has_method("get_tl_state"):
+			continue
+		tl_found = true
+		match tl.get_tl_state():
+			0: stable += 1
+			1: broken += 1
+			2: flickering += 1
+	if tl_found:
+		parts.append("tl: %d stabiel / %d flikkert / %d defect"
+			% [stable, flickering, broken])
+	return " · ".join(parts)
 
 
 func _audio_text() -> String:
