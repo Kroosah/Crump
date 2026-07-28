@@ -203,3 +203,30 @@ verwijderbare systemen nooit bij naam — `is Interactable` in de suite was
 een parse-time-afhankelijkheid waardoor de suite zélf niet meer laadde
 zonder het systeem; contracten in tests toets je duck-typed
 (`has_method(...)`).
+
+## D-022 — Oppakken is een verzoek-antwoord op de bus; één autoritatieve inventory
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review) / LD · **Status**: actief
+Vier bus-signalen met uitsluitend basistypen (D-021):
+`item_pickup_requested(source: Node, item: Resource)`,
+`item_pickup_resolved(source: Node, accepted: bool)`,
+`item_added(item: Resource)`, `item_removed(item: Resource)`. `source` is
+een opaak token dat de inventory alleen terug-echoot; een prop verdwijnt
+uitsluitend na een geldige accepted-response binnen zijn eigen synchrone
+verzoekvenster en bezit zijn eigen feedback. **Waarom**: dit is de enige
+vorm die "verdwijnt pas na bevestiging" én D-015 tegelijk waarmaakt —
+zonder inventory blijft een verzoek onbeantwoord en het object liggen.
+Maximaal één autoritatieve inventory: alleen de eerste node in groep
+`inventory` verbindt zich met de bus (bootstrap-guard + zelfcheck + test).
+**Let op**: deze signaturen zijn een geconsumeerd contract — wijzigen is
+vanaf nu een breaking change met eigen D-entry.
+
+## D-023 — Geen stacking; capaciteit is een klein getal (6)
+**Datum**: 2026-07-28 · **Wie**: GD (ontwerp-review) / LD · **Status**: actief · **heroverwegen bij**: het eerste item waarvan aantallen betekenis hebben
+Elk item is een betekenisvol individueel object (GAME_BIBLE §8); er is geen
+consumable-economie, dus stacken zou alleen save-, UI- en testcomplexiteit
+toevoegen. Dezelfde item-id mag wél meerdere slots innemen (twee
+batterijen); twee verschillende .tres-definities met dezelfde id zijn een
+configuratiefout die de suite afvangt. **Terugweg**: een `max_stack`-veld
+op ItemResource (default 1) + telling — additief, geen breuk in model of
+bus. `ItemResource` is runtime read-only configuratiedata: niemand muteert
+de velden, de inventory bewaart alleen referenties.

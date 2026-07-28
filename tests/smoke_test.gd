@@ -149,6 +149,14 @@ func run(bootstrap: Node) -> int:
 	else:
 		Log.info("TEST INFO · interactiesysteem ontbreekt — interactietests overgeslagen (D-015)")
 
+	# 15. Inventory (taak 004) — zelfde D-015-afspraak. LET OP: enkele tests
+	# hieronder toetsen bewust de luide faalpaden (add_item(null), tweede
+	# inventory) — de push_warnings in de output zijn dan het bewijs, geen bug.
+	if ResourceLoader.exists(INVENTORY_SCENE):
+		failures = await _check_inventory(tree, failures)
+	else:
+		Log.info("TEST INFO · inventory-systeem ontbreekt — inventorytests overgeslagen (D-015)")
+
 	return failures
 
 
@@ -698,6 +706,245 @@ func _interact_and_listen(tree: SceneTree) -> Array:
 	await _wait_physics_frames(tree, 5)
 	EventBus.noise_made.disconnect(recorder)
 	return noises
+
+
+## Inventorytests (taak 004, dossier §7). Duck-typed: deze suite noemt
+## ItemResource of de inventory-klasse nooit bij naam (les D-021).
+func _check_inventory(tree: SceneTree, failures: int) -> int:
+	# §7.1+7.2 — itemmodel en id-discipline over de canonieke items-map.
+	const ITEMS_DIR := "res://game/systems/inventory/items"
+	var seen_ids := {}
+	var item_files := DirAccess.get_files_at(ITEMS_DIR)
+	var items_valid := item_files.size() > 0
+	for file in item_files:
+		if not file.ends_with(".tres"):
+			continue
+		var res: Resource = load(ITEMS_DIR + "/" + file)
+		if res == null or String(res.get(&"id")).is_empty() \
+				or String(res.get(&"display_name")).is_empty():
+			items_valid = false
+			Log.error("itemdefinitie ongeldig: %s" % file)
+			continue
+		var res_id: StringName = res.get(&"id")
+		if seen_ids.has(res_id):
+			failures = _check(false,
+				"item-id '%s' is uniek (botsing: %s en %s)"
+				% [res_id, seen_ids[res_id], file], failures)
+		seen_ids[res_id] = file
+	failures = _check(items_valid,
+		"alle itemdefinities laden met geldige id en naam (%d stuks)"
+		% seen_ids.size(), failures)
+	failures = _check(seen_ids.size() == item_files.size(),
+		"alle item-id's in de items-map zijn uniek", failures)
+
+	# §7.9 — precies één autoritatieve inventory.
+	var inventories := tree.get_nodes_in_group("inventory")
+	failures = _check(inventories.size() == 1,
+		"exact één inventory in de groep (gevonden: %d)"
+		% inventories.size(), failures)
+	if inventories.is_empty():
+		return failures
+	var inventory = inventories[0]
+
+	# §7.3 — unit-semantiek van add/remove/has, relatief aan de baseline
+	# (de 003-e2e-test heeft al een sleutel opgenomen).
+	var added: Array = []
+	var removed: Array = []
+	var added_recorder := func(item: Resource) -> void: added.append(item)
+	var removed_recorder := func(item: Resource) -> void: removed.append(item)
+	EventBus.item_added.connect(added_recorder)
+	EventBus.item_removed.connect(removed_recorder)
+
+	var baseline: int = inventory.get_items().size()
+	var flashlight: Resource = load(ITEMS_DIR + "/zaklamp.tres")
+	failures = _check(inventory.add_item(flashlight) == true
+		and inventory.get_items().size() == baseline + 1 and added.size() == 1,
+		"add_item neemt een geldig item op (met item_added)", failures)
+	failures = _check(inventory.add_item(flashlight) == true
+		and inventory.get_items().size() == baseline + 2,
+		"dezelfde item-id mag een tweede slot innemen (geen stacking)", failures)
+	failures = _check(inventory.has_item(&"zaklamp"),
+		"has_item vindt het opgenomen item", failures)
+
+	failures = _check(inventory.add_item(null) == false
+		and inventory.get_items().size() == baseline + 2 and added.size() == 2,
+		"add_item(null) weigert zonder mutatie of signaal", failures)
+	failures = _check(inventory.add_item(Resource.new()) == false
+		and inventory.get_items().size() == baseline + 2,
+		"verkeerd Resource-type wordt veilig geweigerd", failures)
+	var empty_id_item: Resource = (load(
+		"res://game/systems/inventory/item_resource.gd") as Script).new()
+	failures = _check(inventory.add_item(empty_id_item) == false
+		and inventory.get_items().size() == baseline + 2,
+		"item met lege id wordt veilig geweigerd", failures)
+
+	# §7 — volle inventory weigert zonder mutatie (return false, geen signaal).
+	var original_capacity: int = inventory.capacity
+	inventory.capacity = inventory.get_items().size()
+	failures = _check(inventory.is_full(), "is_full herkent een volle inventory",
+		failures)
+	failures = _check(inventory.add_item(flashlight) == false
+		and inventory.get_items().size() == baseline + 2 and added.size() == 2,
+		"volle inventory weigert zonder mutatie of signaal", failures)
+	inventory.capacity = original_capacity
+
+	# remove_item: succes muteert + signaleert; mislukking doet niets.
+	failures = _check(inventory.remove_item(&"zaklamp") != null
+		and removed.size() == 1
+		and inventory.get_items().size() == baseline + 1,
+		"remove_item verwijdert één vermelding (met item_removed)", failures)
+	failures = _check(inventory.remove_item(&"zaklamp") != null
+		and inventory.remove_item(&"zaklamp") == null
+		and removed.size() == 2
+		and inventory.get_items().size() == baseline,
+		"remove_item zonder match muteert en signaleert niet", failures)
+
+	EventBus.item_added.disconnect(added_recorder)
+	EventBus.item_removed.disconnect(removed_recorder)
+
+	# Functionele keten: alleen met speler, interactor en testprops.
+	var player = tree.get_first_node_in_group("player")
+	var props_root: Node = tree.root.find_child("TestProps", true, false)
+	if player == null or props_root == null \
+			or not ResourceLoader.exists(INTERACTOR_SCENE):
+		Log.info("TEST INFO · geen speler/interactor — functionele inventorytests overgeslagen")
+		return failures
+	failures = await _check_inventory_flow(
+		tree, player, props_root, inventory, failures)
+	return failures
+
+
+## Functionele flow-tests (dossier §7.4-7.8): reject + opnieuw interacteren,
+## response-invarianten, ongeldige itemdata, tweede inventory, F3-regel.
+func _check_inventory_flow(tree: SceneTree, player, props_root: Node,
+		inventory, failures: int) -> int:
+	var key_item: Resource = load(
+		"res://game/systems/inventory/items/sleutel_kleedkamer.tres")
+	var resolved: Array = []
+	var resolved_recorder := func(source: Node, accepted: bool) -> void:
+		resolved.append([source, accepted])
+	EventBus.item_pickup_resolved.connect(resolved_recorder)
+
+	# §7.5 — volle inventory: prop blijft en is direct opnieuw
+	# interacteerbaar; na capaciteitsherstel slaagt dezelfde prop alsnog.
+	var pickup = _spawn_test_pickup(props_root, key_item)
+	var picked: Array = []
+	var pick_recorder := func(item_id: StringName) -> void:
+		picked.append(item_id)
+	pickup.picked_up.connect(pick_recorder)
+	var size_before: int = inventory.get_items().size()
+	var original_capacity: int = inventory.capacity
+	inventory.capacity = size_before
+
+	await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
+	var noises: Array = await _interact_and_listen(tree)
+	failures = _check(resolved.size() == 1 and resolved[0][1] == false,
+		"volle inventory beantwoordt het verzoek met rejected", failures)
+	failures = _check(is_instance_valid(pickup) and pickup.can_interact()
+		and noises.is_empty() and picked.is_empty()
+		and inventory.get_items().size() == size_before,
+		"rejected: prop blijft, geen geluid, inventory ongewijzigd", failures)
+
+	inventory.capacity = original_capacity
+	resolved.clear()
+	noises = await _interact_and_listen(tree)
+	failures = _check(resolved.size() == 1 and resolved[0][1] == true
+		and picked.size() == 1 and noises.size() == 1,
+		"dezelfde prop is na herstel direct opnieuw interacteerbaar", failures)
+	await _wait_physics_frames(tree, 5)
+	failures = _check(not is_instance_valid(pickup)
+		and inventory.get_items().size() == size_before + 1,
+		"accepted na eerdere rejection: prop exact één keer verdwenen", failures)
+
+	# §7.7 — response-invarianten via handmatig geïnjecteerde responses.
+	var stray = _spawn_test_pickup(props_root, key_item)
+	var stray_picked: Array = []
+	var stray_recorder := func(item_id: StringName) -> void:
+		stray_picked.append(item_id)
+	stray.picked_up.connect(stray_recorder)
+	EventBus.item_pickup_resolved.emit(stray, true)
+	await _wait_physics_frames(tree, 3)
+	failures = _check(is_instance_valid(stray) and stray_picked.is_empty(),
+		"response zonder actief verzoek wordt genegeerd", failures)
+	var decoy := Node.new()
+	tree.root.add_child(decoy)
+	EventBus.item_pickup_resolved.emit(decoy, true)
+	await _wait_physics_frames(tree, 3)
+	failures = _check(is_instance_valid(stray) and stray_picked.is_empty(),
+		"response met andere source wordt genegeerd", failures)
+	decoy.queue_free()
+
+	# Dubbele response binnen één verzoek: een extra 'vervalste' beantwoorder
+	# op de bus — de prop mag maar één keer afhandelen.
+	var forger := func(source: Node, _item: Resource) -> void:
+		EventBus.item_pickup_resolved.emit(source, true)
+	EventBus.item_pickup_requested.connect(forger)
+	var size_before_double: int = inventory.get_items().size()
+	await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
+	var double_noises: Array = await _interact_and_listen(tree)
+	EventBus.item_pickup_requested.disconnect(forger)
+	await _wait_physics_frames(tree, 5)
+	failures = _check(stray_picked.size() == 1 and double_noises.size() == 1
+		and not is_instance_valid(stray)
+		and inventory.get_items().size() == size_before_double + 1,
+		"dubbele response: exact één afhandeling en één verwijdering", failures)
+
+	# §7.8 — ongeldige itemdata end-to-end: afgewezen, prop blijft, geen crash.
+	var invalid = _spawn_test_pickup(props_root, null)
+	resolved.clear()
+	await _aim(tree, player, Vector3(3.0, 0.05, -0.9), 0.0, -0.54)
+	noises = await _interact_and_listen(tree)
+	failures = _check(resolved.size() == 1 and resolved[0][1] == false
+		and is_instance_valid(invalid) and invalid.can_interact()
+		and noises.is_empty(),
+		"pickup zonder geldige itemdata wordt veilig geweigerd", failures)
+	invalid.queue_free()
+
+	# §7.9 — een tweede inventory abonneert zich niet: één verzoek levert
+	# exact één response op (getest met null-item: niemand muteert).
+	var second: Node = load(INVENTORY_SCENE).instantiate()
+	tree.root.add_child(second)
+	await _wait_physics_frames(tree, 2)
+	resolved.clear()
+	var dummy := Node.new()
+	tree.root.add_child(dummy)
+	EventBus.item_pickup_requested.emit(dummy, null)
+	failures = _check(resolved.size() == 1,
+		"tweede inventory blijft doof: één verzoek, één response", failures)
+	second.queue_free()
+	dummy.queue_free()
+
+	EventBus.item_pickup_resolved.disconnect(resolved_recorder)
+
+	# §7.11 — F3-regel toont de bezetting via de groep.
+	var overlay := tree.root.find_child("DebugOverlay", true, false)
+	var info_label: Label = overlay.find_child("InfoLabel", true, false) \
+		if overlay != null else null
+	failures = _check(overlay != null and info_label != null,
+		"debug overlay aanwezig voor de inventory-regel", failures)
+	if overlay != null and info_label != null:
+		_send_action_event(&"debug_overlay")
+		await _wait_physics_frames(tree, 3)
+		var expected := "inventory: %d/%d" % [
+			inventory.get_items().size(), inventory.capacity]
+		failures = _check(expected in info_label.text
+			and "sleutel_kleedkamer" in info_label.text,
+			"F3 toont bezetting en item-id's ('%s')" % expected, failures)
+		_send_action_event(&"debug_overlay")
+		await _wait_physics_frames(tree, 2)
+	return failures
+
+
+## Zet een verse pickup op de vaste testplek in de dev room; instellingen
+## via set() — deze suite kent geen proptypes.
+func _spawn_test_pickup(props_root: Node, item: Resource) -> Node:
+	var packed: PackedScene = load("res://game/props/pickup_item/pickup_item.tscn")
+	var pickup: Node3D = packed.instantiate()
+	pickup.set("item", item)
+	pickup.set("prompt", "Pak sleutel op")
+	props_root.add_child(pickup)
+	pickup.position = Vector3(3.0, 1.09, -2.0)
+	return pickup
 
 
 ## Injecteert een echt input-event voor een actie. Input.action_press zet

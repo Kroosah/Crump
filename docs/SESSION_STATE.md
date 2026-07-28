@@ -5,26 +5,26 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (na taak 003 + debug-prompt, v0.0.14)
+**Laatst bijgewerkt**: 2026-07-28 (na implementatie taak 004, v0.0.15)
 
 ---
 
 ## 1. Laatste afgeronde taak
 
-**Taak 003 — Interactiesysteem** ✅ gebouwd (v0.0.13) — **wacht op visuele
-beoordeling door de Game Director** (beoordelingslijstje in
-`tasks/003_interaction_system.md`).
+**Taak 004 — Inventory** ✅ gebouwd conform het goedgekeurde ontwerp v2
+(v0.0.15) — **wacht op lokale GD-test** (stappen bovenin
+`tasks/004_inventory.md`).
 
-Opgeleverd: `Interactable`-contract + interactor (raycast vanaf de actieve
-viewport-camera, D-020) met de prompt letterlijk uit `prompt_text()` op de
-EventBus; vier props zonder class_name (deur met slot, ladekast met
-item-haak, oppakbaar object, leesbaar briefje met `document_opened`);
-TestProps-spawner in de dev room; suite 81 → 117. Beide harde GD-eisen
-geborgd: geen typechecks op props, prompt volledig data-gedreven.
-Verwijdereenheid = hele systeem (D-021).
+Opgeleverd: `ItemResource` (minimaal, runtime read-only) + drie
+voorbeelditems; inventory-node (capaciteit 6, geen stacking D-023,
+`add_item -> bool` als enig besliskanaal, weigeren = nul mutatie); één
+autoritatieve inventory (groep-guard in bootstrap + zelfcheck + test);
+pickupflow via `item_pickup_requested`/`item_pickup_resolved` (D-022) —
+prop verdwijnt uitsluitend na geldige accepted-response in zijn eigen
+synchrone venster en bezit zijn eigen feedback; F3-regel
+`inventory: n/cap · id's`. Suite 120 → 145.
 
-Eerder vandaag: taak 002 afgerond en goedgekeurd (incl. KI-003-fix:
-Esc-pauze werkt).
+Eerder vandaag: taken 002 en 003 afgerond en goedgekeurd; fase 1 compleet.
 
 ## 2. Laatste commit
 
@@ -53,16 +53,16 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
 | Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
-| Taak 004 — Inventory | 🔵 **ontwerp ter review bij de GD** (geen code) |
+| Taak 004 — Inventory | ✅ gebouwd (ontwerp v2), **lokale GD-test open** |
 | Taken 005–008 | ⬜ open |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **120/120 groen**.
-D-015 geverifieerd in vier richtingen: zonder interactiesysteem 82/82,
-zonder speler 61/61, zonder debug-prompt 117/117, alles aanwezig 120/120;
-halve verwijdering faalt bewust luid (D-021). `config/version` = 0.0.14.
-**Debug-prompt (TD-006, verzoek GD)**: de interactieprompt is nu zichtbaar
-in debugbuilds — "[E] Open deur" onderin beeld, toets live uit de InputMap;
-weggooien zodra de echte HUD (fase 2/4) het signaal tekent.
+**Technische staat**: import schoon (exit 0), smoke-suite **145/145
+groen**. D-015 geverifieerd: zonder inventory 119/119 (pickups blijven
+liggen), zonder interactiesysteem 95/95 (inventory idle), alles aanwezig
+145/145; halve verwijdering faalt bewust luid (D-021).
+`config/version` = 0.0.15. Warnings in de suite-output zijn uitsluitend de
+bewust geteste luide faalpaden (add_item(null) e.d.) — normale opstart is
+schoon. Debug-prompt (TD-006) toont "[E] …" tot de echte HUD er is.
 
 **Nog niet visueel beoordeeld**: de interactieronde uit het
 003-taakdossier (prompts, deur/la/sleutel/briefje, op-slot-deur,
@@ -74,11 +74,11 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende taak
 
-**Taak 004 — Inventory, ontwerpfase**: het volledige technische ontwerp
-staat in `tasks/004_inventory.md` (scope, architectuur, itemmodel,
-inventory-model, exacte pickup-flow, savegame-impact, tests, risico's,
-exit-criteria) en **wacht op GD-review**. Implementatie start pas na
-akkoord — daarna in blokken met commit per blok.
+**Eerst**: GD test taak 004 lokaal (accepted / rejected-bij-vol /
+F3-regel — stappen bovenin het taakdossier). **Daarna, op startsein**:
+taak 005 (audio-fundament) of de door de GD gekozen volgende stap;
+sleutel-deur-logica, la-koppeling en save-integratie van de inventory
+liggen als benoemde vervolghaken klaar (dossier 004 §1/§6).
 
 ## 6. Open aandachtspunten
 

@@ -11,6 +11,32 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.15 — 2026-07-28
+**Taak 004: inventory — itemmodel, kern en request/resolved-pickupflow**
+- `game/systems/inventory/`: `ItemResource` (id/display_name/description/
+  icon; runtime read-only configuratiedata) + drie voorbeelditems
+  (kleedkamersleutel, achtergelaten telefoon, zaklamp) + de inventory-node:
+  capaciteit 6, geen stacking (D-023), `add_item(Resource) -> bool` als
+  enig besliskanaal — weigeringen (vol/null/verkeerd type/lege id) muteren
+  niets en zenden geen signaal; `remove_item` idem bij mislukking.
+- **Eén autoritatieve inventory** (dossier §2): bootstrap spawnt éénmalig
+  als SceneHost-kind met groep-guard; alleen de eerste node in de groep
+  verbindt zich met de bus, een tweede meldt luid en blijft doof;
+  connecties symmetrisch in `_ready`/`_exit_tree`.
+- **Pickupflow herzien** (D-022): verzoek → `item_pickup_requested` →
+  inventory beslist → `item_pickup_resolved` → de prop verdwijnt
+  uitsluitend na een geldige accepted-response binnen zijn eigen synchrone
+  verzoekvenster, met eigen geluid/`picked_up`/`queue_free` — exact één
+  keer. Rejected/geen listener/vreemde response = prop blijft, direct
+  opnieuw interacteerbaar. Vier nieuwe bus-signalen met basistypen.
+- F3-overlay toont `inventory: n/cap · id's` (null-veilig via de groep).
+- **Smoke-suite 120 → 145**: itemmodel + id-uniciteit, add/remove-
+  semantiek, reject-zonder-mutatie, response-invarianten (verdwaald/
+  vreemde source/dubbel), ongeldige itemdata, tweede-inventory-doofheid,
+  F3-regel. D-015 in drie richtingen: zonder inventory 119, zonder
+  interactiesysteem 95, alles 145.
+- `config/version` → 0.0.15.
+
 ## v0.0.14 — 2026-07-28
 **Debug-prompt: interactieprompt zichtbaar voor de visuele beoordeling**
 - N.a.v. de terechte GD-vraag "de prompt staat op de bus, maar wie tekent

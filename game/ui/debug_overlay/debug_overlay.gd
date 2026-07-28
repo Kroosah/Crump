@@ -34,6 +34,7 @@ func _build_info() -> String:
 		"fps: %d · frametijd: %.2f ms" % [fps, frame_ms],
 		"level: %s" % _current_level_name(),
 		"speler: %s" % _player_position_text(),
+		"inventory: %s" % _inventory_text(),
 		"actieve geluiden: —",  # haak: vult in taak 005
 	]
 	return "\n".join(lines)
@@ -53,3 +54,19 @@ func _player_position_text() -> String:
 		var pos: Vector3 = player.global_position
 		return "(%.1f, %.1f, %.1f)" % [pos.x, pos.y, pos.z]
 	return "—"
+
+
+func _inventory_text() -> String:
+	# Haak taak 004: null-veilig via de groep (ARCHITECTURE §4a.4), zonder
+	# de inventory-klasse te noemen — de overlay overleeft elke verwijdering.
+	var inventory := get_tree().get_first_node_in_group("inventory")
+	if inventory == null or not inventory.has_method("get_items"):
+		return "—"
+	var items: Array = inventory.get_items()
+	var text := "%d/%d" % [items.size(), inventory.capacity]
+	if items.is_empty():
+		return text
+	var ids := PackedStringArray()
+	for item in items:
+		ids.append(String(item.id))
+	return "%s · %s" % [text, ", ".join(ids)]

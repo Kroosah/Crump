@@ -1,6 +1,22 @@
 # Taak 004 — Inventory
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2 na correctieronde GD, wacht op implementatie-startsein · **Vereist**: 003
+**Fase**: 2 (Het gereedschap) · **Status**: ✅ gebouwd conform ontwerp v2 (v0.0.15), wacht op lokale GD-test · **Vereist**: 003
+
+> **Gebouwd 2026-07-28** in de vier geplande blokken (commits `aae500c`,
+> `6e54605`, `44e50f7` + registerblok). Suite 145/145; D-015 in drie
+> richtingen (zonder inventory 119, zonder interactiesysteem 95, alles
+> 145). Exit-criteria §9.2 t/m §9.6 gehaald; §9.7 (lokale GD-test) open.
+>
+> **Lokale acceptatietest** (F5, verse pull):
+> 1. **Accepted**: loop naar de rode kist rechtsachter → "[E] Pak sleutel
+>    op" → E → sleutel verdwijnt, F3 toont
+>    `inventory: 1/6 · sleutel_kleedkamer`.
+> 2. **Rejected/vol**: zet vóór het spelen op de Inventory-node (of via
+>    de Remote-tab) `capacity` op `0` → E op de sleutel → hij blijft
+>    liggen, geen geluid, prompt blijft staan; zet capacity terug op 6 →
+>    dezelfde sleutel is direct opnieuw oppakbaar.
+> 3. **Zonder inventory** (optioneel): map `game/systems/inventory/`
+>    tijdelijk weg → sleutel blijft liggen, spel draait gewoon.
 
 Een kleine, diegetische inventory (GAME_BIBLE §8: geen 40-slots-grid).
 De speler draagt een handvol betekenisvolle spullen — de kleedkamersleutel
