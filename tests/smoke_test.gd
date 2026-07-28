@@ -29,6 +29,10 @@ const FLASHLIGHT_SCENE := "res://game/systems/flashlight/flashlight.tscn"
 const LIGHT_BUDGET_SCENE := "res://game/systems/light_budget/light_budget.tscn"
 const LIGHT_TL_SCENE := "res://game/props/light_tl/light_tl.tscn"
 
+## De documentlezer (taak 007); zelfde D-015-afspraak. Zonder deze map
+## blijven documenten registreren en zenden — er verschijnt geen paneel.
+const DOCUMENT_READER_SCENE := "res://game/ui/document_reader/document_reader.tscn"
+
 
 func run(bootstrap: Node) -> int:
 	var failures := 0
@@ -201,6 +205,15 @@ func run(bootstrap: Node) -> int:
 			and ResourceLoader.exists(LIGHT_BUDGET_SCENE) \
 			and ResourceLoader.exists(LIGHT_TL_SCENE):
 		failures = await _check_lighting_f3(tree, failures)
+
+	# 18. Documentlezer (taak 007) — zelfde D-015-afspraak. LET OP: enkele
+	# tests toetsen bewust de luide faalpaden (lege id/tekst, tweede
+	# reader) — de warnings in de output zijn het bewijs, geen bug.
+	failures = _check_documents_data(failures)
+	if ResourceLoader.exists(DOCUMENT_READER_SCENE):
+		failures = await _check_document_reader(tree, failures)
+	else:
+		Log.info("TEST INFO · documentlezer ontbreekt — readertests overgeslagen (D-015)")
 
 	return failures
 
@@ -1613,6 +1626,178 @@ func _check_lighting_f3(tree: SceneTree, failures: int) -> int:
 		"F3 toont zaklamp-, budget-, helderheid- en TL-regel", failures)
 	_send_action_event(&"debug_overlay")
 	await _wait_physics_frames(tree, 2)
+	return failures
+
+
+## Datamodel-discipline documenten (taak 007 §6.1): elke .tres in de
+## documents-map laadt met geldige, unieke id en niet-lege tekst.
+func _check_documents_data(failures: int) -> int:
+	const DOCUMENTS_DIR := "res://game/props/note_readable/documents"
+	if not DirAccess.dir_exists_absolute(DOCUMENTS_DIR):
+		Log.info("TEST INFO · documents-map ontbreekt — datacheck overgeslagen (D-015)")
+		return failures
+	var seen_ids := {}
+	var documents_valid := true
+	var files := DirAccess.get_files_at(DOCUMENTS_DIR)
+	for file in files:
+		if not file.ends_with(".tres"):
+			continue
+		var doc: Resource = load(DOCUMENTS_DIR + "/" + file)
+		if doc == null or String(doc.get(&"id")).is_empty() \
+				or String(doc.get(&"text")).is_empty():
+			documents_valid = false
+			Log.error("documentdefinitie ongeldig: %s" % file)
+			continue
+		var doc_id: StringName = doc.get(&"id")
+		if seen_ids.has(doc_id):
+			failures = _check(false,
+				"document-id '%s' is uniek (botsing: %s en %s)"
+				% [doc_id, seen_ids[doc_id], file], failures)
+		seen_ids[doc_id] = file
+	failures = _check(documents_valid and seen_ids.size() >= 1,
+		"alle documentdefinities laden met geldige id en tekst (%d stuks)"
+		% seen_ids.size(), failures)
+	return failures
+
+
+## Documentlezer (taak 007, dossier §6): contract, arming, exact
+## pauze-/muisherstel, vervang-semantiek, validatie en lange tekst.
+func _check_document_reader(tree: SceneTree, failures: int) -> int:
+	var readers := tree.get_nodes_in_group("document_reader")
+	failures = _check(readers.size() == 1,
+		"exact één documentlezer gespawnd (gevonden: %d)" % readers.size(),
+		failures)
+	if readers.is_empty():
+		return failures
+	var reader = readers[0]
+	var root: Control = reader.find_child("Root", true, false)
+	var title_label: Label = reader.find_child("TitleLabel", true, false)
+	var text_label: Label = reader.find_child("TextLabel", true, false)
+	var scroll: ScrollContainer = reader.find_child("Scroll", true, false)
+	failures = _check(root != null and title_label != null
+		and text_label != null and scroll != null,
+		"reader-opbouw compleet (Root/Titel/Scroll/Tekst)", failures)
+	if root == null or title_label == null or text_label == null \
+			or scroll == null:
+		return failures
+	failures = _check(not reader.is_open() and not root.visible,
+		"reader start gesloten", failures)
+
+	# Validatie (§4d): lege id en lege tekst worden veilig geweigerd —
+	# de warnings zijn het bewijs. De reader blijft dicht.
+	EventBus.document_opened.emit(&"", "Titel", "tekst")
+	EventBus.document_opened.emit(&"test_leeg", "Titel", "")
+	failures = _check(not reader.is_open(),
+		"lege id en lege tekst openen de reader niet (veilig geweigerd)",
+		failures)
+
+	# Arming (§4a): synchrone opening start ONGEWAPEND (1); één frame
+	# later — ná de deferred _arm — is hij GEWAPEND (2).
+	EventBus.document_opened.emit(&"test_a", "Titel A", "tekst A")
+	failures = _check(reader.is_open() and reader.get("_state") == 1,
+		"reader opent in OPEN_ONGEWAPEND (sluit-input nog genegeerd)",
+		failures)
+	await _wait_physics_frames(tree, 1)
+	failures = _check(reader.get("_state") == 2,
+		"deferred arming: OPEN_GEWAPEND ná de openingsdispatch", failures)
+	failures = _check(tree.paused and reader.get("_owns_pause") == true,
+		"reader claimt de pauze (boom was actief)", failures)
+	failures = _check(title_label.text == "Titel A" and title_label.visible
+		and text_label.text == "tekst A",
+		"titel en tekst letterlijk van de bus in de labels", failures)
+
+	# Vervang-semantiek (§4c): tweede geldig feit vervangt atomair, geen
+	# extra claim, bewaarde status onaangetast; ongeldig feit doet niets.
+	scroll.scroll_vertical = 50
+	EventBus.document_opened.emit(&"test_b", "", "tekst B")
+	failures = _check(
+		reader.is_open() and text_label.text == "tekst B"
+		and not title_label.visible and scroll.scroll_vertical == 0
+		and reader.get("_owns_pause") == true and reader.get("_prev_paused") == false,
+		"tweede feit vervangt atomair; lege titel verbergt de titelregel; "
+		+ "geen extra claim", failures)
+	EventBus.document_opened.emit(&"test_fout", "x", "")
+	failures = _check(text_label.text == "tekst B",
+		"ongeldig tweede feit laat de inhoud ongemoeid", failures)
+
+	# Lange tekst (§4d): scrollbaar binnen de vaste paneelmaat.
+	var long_text := ""
+	for i in 200:
+		long_text += "Regel %d van een veel te lang testdocument.\n" % i
+	EventBus.document_opened.emit(&"test_lang", "Lang", long_text)
+	await _wait_physics_frames(tree, 2)
+	failures = _check(
+		text_label.size.y > scroll.size.y
+		and scroll.get_v_scroll_bar().max_value > scroll.size.y,
+		"lange tekst blijft scrollbaar binnen de vaste paneelmaat", failures)
+
+	# Esc sluit — en opent níét in hetzelfde event het pauzemenu: de
+	# reader bezat de pauze, dus ná het sluiten draait de wereld weer.
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(not reader.is_open() and not tree.paused,
+		"Esc sluit het document zonder het pauzemenu te openen", failures)
+	# De éérstvolgende Esc werkt weer gewoon als pauze (event lekte niet).
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(tree.paused, "volgende Esc pauzeert het spel gewoon",
+		failures)
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(not tree.paused, "en Esc hervat daarna weer", failures)
+
+	# Muismodus exact hersteld (headless beperkt meetbaar; de
+	# capture-kant is een GD-hardware-punt, zelfde voorbehoud als 002).
+	var prev_mouse := Input.mouse_mode
+	EventBus.document_opened.emit(&"test_a", "Titel A", "tekst A")
+	await _wait_physics_frames(tree, 1)
+	_send_action_event(&"interact")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(not reader.is_open() and Input.mouse_mode == prev_mouse,
+		"E sluit (gewapend) en de muismodus is exact hersteld", failures)
+
+	# Vooraf gepauzeerde boom (§4b): reader claimt niets en geeft dus
+	# ook niets vrij — de boom blijft gepauzeerd na het sluiten.
+	tree.paused = true
+	EventBus.document_opened.emit(&"test_a", "Titel A", "tekst A")
+	await _wait_physics_frames(tree, 1)
+	failures = _check(reader.is_open() and reader.get("_owns_pause") == false,
+		"opening op een gepauzeerde boom claimt de pauze niet", failures)
+	_send_action_event(&"pause")
+	await _wait_physics_frames(tree, 2)
+	failures = _check(not reader.is_open() and tree.paused,
+		"vooraf gepauzeerde boom blijft ná sluiten gepauzeerd", failures)
+	tree.paused = false
+
+	# Tweede reader-instantie: luide warning, blijft doof (één paneel).
+	var second: Node = load(DOCUMENT_READER_SCENE).instantiate()
+	tree.root.add_child(second)
+	await _wait_physics_frames(tree, 1)
+	var second_root: Control = second.find_child("Root", true, false)
+	EventBus.document_opened.emit(&"test_a", "Titel A", "tekst A")
+	failures = _check(reader.is_open() and not second.is_open()
+		and second_root != null and not second_root.visible,
+		"tweede reader blijft doof: één feit, één paneel", failures)
+	second.free()
+
+	# Reader verwijderd terwijl open (§4b): _exit_tree herstelt de eigen
+	# toestand — pauze vrijgegeven, geen bevroren spel. Daarna een verse
+	# instantie terugzetten zodat het spel in normale staat eindigt.
+	failures = _check(reader.is_open() and tree.paused,
+		"reader staat open vóór de verwijdertest", failures)
+	var bootstrap_node: Node = tree.root.get_node_or_null("Bootstrap")
+	reader.free()
+	await _wait_physics_frames(tree, 1)
+	failures = _check(not tree.paused,
+		"reader verwijderd terwijl open: pauzeclaim netjes vrijgegeven",
+		failures)
+	if bootstrap_node != null:
+		var fresh: Node = load(DOCUMENT_READER_SCENE).instantiate()
+		bootstrap_node.add_child(fresh)
+		await _wait_physics_frames(tree, 1)
+		failures = _check(tree.get_nodes_in_group("document_reader").size() == 1
+			and not fresh.is_open(),
+			"verse documentlezer teruggeplaatst en gesloten", failures)
 	return failures
 
 

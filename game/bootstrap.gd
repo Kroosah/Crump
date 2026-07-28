@@ -39,6 +39,11 @@ const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 ## (TD-006). Alleen debugbuilds; bestaanscheck zodat de map weg kan (D-015).
 const DEBUG_PROMPT_SCENE := "res://game/ui/debug_prompt/debug_prompt.tscn"
 
+## De documentlezer (taak 007): gameplay-UI (géén debug), éénmalig als
+## bootstrap-kind zodat hij ALWAYS erft — hij moet werken terwijl de
+## wereld stilstaat, want hij bezit tijdens het lezen de pauze.
+const DOCUMENT_READER_SCENE := "res://game/ui/document_reader/document_reader.tscn"
+
 ## Autoloads die aanwezig moeten zijn vóór het spel verder mag.
 const REQUIRED_AUTOLOADS: Array[String] = [
 	"EventBus", "GameState", "AudioDirector", "SettingsManager", "SaveManager",
@@ -66,6 +71,7 @@ func _ready() -> void:
 	])
 	_verify_autoloads()
 	_add_debug_tools()
+	_spawn_document_reader()
 	_spawn_inventory()
 	_spawn_audio_system()
 	_load_level(DEV_ROOM_SCENE)
@@ -133,6 +139,21 @@ func _spawn_player() -> void:
 ## Spawnt de inventory éénmalig (taak 004): in _ready, niet per level, en
 ## alleen als er nog geen bestaat — maximaal één autoritatieve inventory
 ## (dossier 004 §2). Kind van de SceneHost: levelwissels raken hem niet.
+## Spawnt de documentlezer éénmalig (taak 007): bestaanscheck (D-015:
+## zonder lezer blijven documenten registreren en zenden, er verschijnt
+## alleen geen paneel) en groep-guard tegen een tweede instantie.
+func _spawn_document_reader() -> void:
+	if not ResourceLoader.exists(DOCUMENT_READER_SCENE):
+		Log.info("Bootstrap: geen documentlezer — documenten tonen geen paneel")
+		return
+	if not get_tree().get_nodes_in_group("document_reader").is_empty():
+		push_warning("Bootstrap: er is al een documentlezer — tweede spawn overgeslagen")
+		return
+	var reader: Node = load(DOCUMENT_READER_SCENE).instantiate()
+	add_child(reader)
+	Log.info("Bootstrap: documentlezer actief")
+
+
 func _spawn_inventory() -> void:
 	if not ResourceLoader.exists(INVENTORY_SCENE):
 		Log.info("Bootstrap: geen inventory-systeem — spel draait zonder inventory")
