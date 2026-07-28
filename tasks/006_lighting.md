@@ -1,6 +1,6 @@
 # Taak 006 — Licht & sfeer
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2 (correctieronde verwerkt), wacht op expliciete implementatie-go · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2.1 (tweede, kleine correctieronde verwerkt), wacht op expliciete implementatie-go · **Vereist**: 001, 002
 
 Licht is in CRUMP zowel gameplay (zaklamp: zien kost gezien worden) als de
 duurste technische post (ARCHITECTURE §7). Deze taak legt het lichtfundament en
@@ -91,6 +91,15 @@ geluidspositie (§3a), concreet brightnessbeleid met versmalde range
 (§5), de drie dev-room-teststanden + F3-inhoud (§8) en het
 aangevulde testplan (§9). De inhoudelijke richting van v1 is
 ongewijzigd.*
+
+*v2.1 verwerkt de tweede, kleine GD-correctieronde van 2026-07-28,
+uitsluitend op de bezitkoppeling (keuze D) en het testplan: normale
+gameplay faalt gesloten zonder inventory of bezit (de v2-formulering
+"zonder inventory vervalt de gate" is verworpen), de initiële
+synchronisatie is aan de bestaande bootstrapvolgorde opgehangen,
+duplicaat-exemplaren worden via hercontrole met `has_item()` correct
+afgehandeld, en het verdwijnen van het laatste exemplaar tijdens
+gebruik heeft gedefinieerd gedrag. Alle overige keuzes ongewijzigd.*
 
 ## 1. De lichtfilosofie van CRUMP
 
@@ -202,40 +211,89 @@ signal audio_cue(sound_id: StringName, position: Vector3)
 signal noise_made(position: Vector3, loudness: float)
 ```
 
-**Keuze D — bezit via een gecachte vlag: eenmalig gelezen, daarna
-eventgedreven.** *(P5; dossier 004, D-015/D-021)* Het zaklampsysteem
-noemt nergens een Inventory-klasse en scant nooit per frame. De
-koppeling werkt zo:
+**Keuze D — bezit als gesloten-falende, eventgedreven projectie van de
+inventory.** *(P5; dossier 004, D-015/D-021)* Het zaklampsysteem noemt
+nergens een Inventory-klasse en scant nooit per frame. Bezit is een
+lokale projectie (gecachte vlag `_has_flashlight`) van één waarheid:
+`has_item(&"zaklamp")` bij de autoritatieve inventory.
 
-- **Initialisatie (eenmalig, bij spawn)**: duck-typed via de groep
-  `inventory` — `get_first_node_in_group("inventory")`, en alleen als
-  die node `has_method("has_item")` heeft: `has_item(&"zaklamp")` →
-  gecachte vlag `_has_flashlight`.
-- **Daarna eventgedreven**: abonneren op de bestaande bus-feiten
-  `item_added(item: Resource)` / `item_removed(item: Resource)`; de id
-  wordt duck-typed gelezen (`item.get("id")` — geen
-  ItemResource-klassenaam, D-021). Id `&"zaklamp"` → vlag bijwerken.
-  Geen polling, geen frame-werk.
-- **Verwijderbaarheid, beide richtingen**: zonder inventory-systeem is
-  er geen groepsnode → de bezit-gate vervalt en de zaklamp werkt gewoon
-  (nette D-015-degradatie, zelfde regel als alles). Zonder
-  zaklampsysteem verandert er niets aan de inventory: die kent de
-  zaklamp niet — `zaklamp.tres` is dan een item als elk ander. Beide
-  mappen zijn onafhankelijk verwijderbaar; alles blijft parsebaar.
-- **Bewust géén** equipment-, hotbar- of selected-item-systeem: bezit
-  is een booleaans feit, geen slot (P4 — geen afnemer voor meer).
-- **Dev room**: dev_props plaatst een `pickup_item` met het bestaande
-  `zaklamp.tres` naast de sleutel-pickup. De GD verkrijgt de zaklamp
-  dus via **de echte pickup-flow** (D-022) — geen debug-give of
-  autobezit, zodat de lokale test de uiteindelijke zoek-flow (zaklamp
-  moet gevonden worden) niet vervalst.
+- **Gesloten falen (bindend)**: geen inventory-systeem of geen
+  aantoonbaar bezit betekent in normale gameplay: geen toggle, geen
+  licht, geen `flashlight_toggled`, geen `audio_cue`, geen
+  `noise_made` — nul gevolgen op alle kanalen. **Het ontbreken van een
+  systeem levert nooit gratis zaklampbezit op.** D-015 betekent hier:
+  zonder inventory parseert en draait alles stabiel (geen fouten, geen
+  crash, het lichtsysteem blijft technisch gezond) — maar de zaklamp is
+  dan onbruikbaar, want bezit is onaantoonbaar.
+- **Initiële synchronisatie, gegarandeerd door de bestaande
+  bootstrapvolgorde** (geen service locator, geen nieuw mechanisme):
+  de bootstrap spawnt de inventory éénmalig als SceneHost-kind in
+  `_ready`, vóór `_load_level`; het zaklampsysteem wordt daarná per
+  level gespawnd als level-kind (zelfde moment en patroon als de
+  interactor). Op het moment van de **ene expliciete
+  synchronisatiestap** — in `_ready` van het zaklampsysteem, duck-typed
+  via de groep `inventory` (`has_method("has_item")` →
+  `has_item(&"zaklamp")`) — bestaat de inventory dus per constructie
+  al. Een inventory die al een zaklamp bevat (save, levelwissel) wordt
+  zo direct correct gelezen. Geen frame-polling, geen timer-retry,
+  geen permanente groepsscan.
+- **Daarna eventgedreven met hercontrole aan de bron**: abonneren op de
+  bestaande bus-feiten `item_added(item: Resource)` /
+  `item_removed(item: Resource)`; de id wordt duck-typed gelezen
+  (`item.get("id")` — geen ItemResource-klassenaam, D-021). Bij elk
+  event met id `&"zaklamp"` wordt de vlag **niet blind gezet maar
+  herleid**: opnieuw `has_item(&"zaklamp")` bij de groepsnode. Is die
+  node er niet (meer), dan is de uitkomst `false` — gesloten falen,
+  consistent met de eerste regel.
+- **Duplicaatsemantiek**: taak 004 staat meerdere slots met dezelfde
+  item-id toe (geen stacking, D-023). Twee zaklampitems leveren **één
+  functionele bevoegdheid**; één exemplaar verwijderen terwijl er nog
+  een tweede aanwezig is, trekt het bezit níét in. Dat volgt vanzelf
+  uit de hercontrole (`has_item` blijft `true`) — en is precies waarom
+  de projectie nooit blind `false` wordt op een `item_removed`-event.
+  Er wordt géén eigen exemplaar-telling bijgehouden (een tweede
+  waarheid die kan driften), en ItemResource-data wordt nooit
+  gemuteerd (read-only configuratiedata, dossier 004).
+- **Laatste exemplaar verdwijnt terwijl de lamp aan is**: de zaklamp
+  schakelt direct en betrouwbaar uit. Dit is een échte statewijziging,
+  dus `flashlight_toggled(false)` wordt gezonden — het toestandfeit
+  volgt de werkelijkheid, en de latere AI (007) mag nooit een brandend
+  licht blijven "zien" dat er niet meer is. Maar er klinkt **geen**
+  `audio_cue` en **geen** `noise_made`: die twee kanalen zijn gebonden
+  aan de bewuste spelershandeling (de klik), niet aan de toestand.
+  Kader 005 blijft zo intact: de kanalen zijn onafhankelijk en elk
+  feit houdt zijn eigen oorzaak — hier ís geen klik, dus klinkt er
+  niets.
+- **Debug-bypass: expliciet, en standaard uit**: één export
+  `debug_bezit_bypass` (default `false`) op het zaklampsysteem, die
+  bovendien alleen effect heeft in debugbuilds
+  (`OS.is_debug_build()`), voor geïsoleerde lichttests zonder
+  inventory. De **gecommitte dev room gebruikt de bypass niet**: daar
+  ligt het bestaande `zaklamp.tres` als gewone `pickup_item` naast de
+  sleutel — de GD verkrijgt de zaklamp via de echte pickup-flow
+  (D-022), zodat de lokale test de uiteindelijke zoek-flow niet
+  vervalst. De suite bewaakt dat de bypass in gecommitte scènes uit
+  staat.
+- **Dubbele verwerking uitgesloten**: bus-connecties worden in
+  `_ready` gelegd en in `_exit_tree` symmetrisch verbroken (het
+  bestaande patroon van de inventory zelf, dossier 004). Omdat het
+  systeem per level leeft, vernietigt een levelwissel/reload de oude
+  instantie inclusief connecties; de nieuwe instantie begint met een
+  verse initiële lezing. Er bestaan dus nooit twee gelijktijdige
+  connecties en geen dubbele `item_added`/`item_removed`-verwerking.
+- **Bewust géén** equipment-, hotbar-, selected-item-, permissions- of
+  ownership-framework: bezit is een booleaans feit, geen slot (P4 —
+  geen afnemer voor meer).
 
 Toggle zonder bezit: stil niets — geen prompt-gebedel (de speler die 'm
 niet heeft, weet dat) en géén emissie op welk kanaal dan ook (keuze C).
 **Verworpen**: altijd-beschikbaar (mist de schaarste én het
-vindmoment); een harde inventory-dependency of klasse-referentie
-(D-015/D-021-breuk); per-frame `has_item`-polling (verspilling, en het
-maskeert de vraag wie de waarheid bezit).
+vindmoment); *"zonder inventory vervalt de gate en werkt de zaklamp"*
+(de v2-formulering — door de GD verworpen: een ontbrekend systeem mag
+nooit gratis bezit opleveren, open falen ondermijnt de schaarste); een
+harde inventory-dependency of klasse-referentie (D-015/D-021-breuk);
+per-frame `has_item`-polling (verspilling); een lokale
+exemplaar-telling naast de inventory (drift-gevoelige tweede waarheid).
 
 ## 3a. Lichtpositie ≠ geluidspositie
 
@@ -453,6 +511,30 @@ TL-staten in het geladen level.
    - **Bezit eventgedreven**: vlag wordt correct bijgewerkt door
      `item_added`/`item_removed` (oppakken → toggle werkt; verwijderen
      → toggle weigert weer stil), zonder frame-polling.
+   - **Geen inventory aanwezig (gesloten falen)**: zaklamp blijft uit
+     en álle gevolgkanalen blijven stil — geen `flashlight_toggled`,
+     geen `audio_cue`, geen `noise_made`, geen fouten.
+   - **Debug-bypass**: `debug_bezit_bypass` staat default uit en staat
+     in geen enkele gecommitte scène aan; mét bypass (in de suite, die
+     als debugbuild draait) werkt de zaklamp zonder inventory — de
+     alleen-in-debugbuilds-beperking wordt als code-eigenschap
+     vastgelegd en in de GD-ronde bevestigd (headless draait altijd
+     debug).
+   - **Initiële synchronisatie**: inventory bevat al een zaklamp
+     vóórdat het lichtsysteem spawnt → bezit is direct `true`, zonder
+     dat er nog een event nodig is.
+   - **Bootstrapvolgorde**: de vastgelegde volgorde (inventory als
+     SceneHost-kind vóór het per-level gespawnde lichtsysteem) levert
+     dezelfde correcte bezitstate als de eventroute.
+   - **Duplicaten**: twee zaklampitems aanwezig, één verwijderd →
+     bezit blijft `true`; ook het tweede verwijderd → bezit `false`.
+   - **Laatste exemplaar verwijderd terwijl de lamp aan is**: het licht
+     gaat direct uit; exact één `flashlight_toggled(false)`; géén
+     `audio_cue` en géén `noise_made` (geen spelershandeling).
+   - **Reload/herspawn**: lichtsysteem verwijderen en opnieuw spawnen
+     (levelwissel-simulatie) → geen dubbele
+     `item_added`/`item_removed`-verwerking; elk event telt enkelvoudig
+     en er bestaat precies één actieve bus-connectie.
 2. **Budget**: telling schaduw-werpende lichten in het geladen level ≤ 3
    (+ het zaklamp-slot = 4 totaal).
    - **Overschrijding is deterministisch**: testscène met te veel
@@ -478,8 +560,9 @@ TL-staten in het geladen level.
 5. **D-015-richtingen**: zonder `game/systems/flashlight/` draait alles
    (geen zaklamp, geen fouten); zonder `game/systems/light_budget/`
    draait alles (alleen de runtime-diagnose vervalt); zonder audio klikt
-   de zaklamp stil maar werkt; zonder inventory werkt hij zonder
-   bezit-gate; **zonder de complete lighting-oplevering** (flashlight +
+   de zaklamp stil maar werkt; zonder inventory blijft alles parsebaar
+   en stabiel maar is de zaklamp onbruikbaar (gesloten falen, keuze D);
+   **zonder de complete lighting-oplevering** (flashlight +
    light_budget + light_tl-prop) blijven player, inventory, audio en
    levels parsebaar en draait de suite van de overgebleven systemen
    groen; alles aanwezig = alles groen. Testcode noemt geen klassen
