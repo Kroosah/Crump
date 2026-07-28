@@ -44,10 +44,10 @@ GD in de editor beoordeeld, headless-tests groen, tuning via exports.
       audio_cue-kanaal, one-shot-pool, muziek-API *(afgerond 28-07-2026;
       "geluid-als-event" is conform het bindende kader gesplitst in
       gameplay-gehoor en hoorbare audio — zie tasks/005)*.
-- [ ] **006** Licht & sfeer: zaklamp, lichtbudget, donker-maar-leesbaar-kaders,
-      eerste sfeerpass op de testruimte *(gebouwd 28-07-2026, suite 208
-      groen; wacht op lokale GD-test — de fase-exit-lat is een
-      hardware-oordeel)*.
+- [x] **006** Licht & sfeer: zaklamp, lichtbudget, donker-maar-leesbaar-kaders,
+      eerste sfeerpass op de testruimte *(afgerond en lokaal goedgekeurd
+      28-07-2026: donkerte overtuigend, zaklamp correct, sfeer ontstaat —
+      zie tasks/006)*.
 - [ ] Beslismoment: git-lfs nodig? (assets > ~500 MB)
 
 **Exit-criteria**: de testruimte is 's nachts *onaangenaam* om in te zijn,

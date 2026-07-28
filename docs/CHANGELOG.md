@@ -12,7 +12,7 @@ iets veranderde en in welke commit.
 ---
 
 ## v0.0.17 — 2026-07-28
-**Taak 006: licht & sfeer — bijna zwart is de standaardtoestand** *(gebouwd; wacht op lokale GD-test)*
+**Taak 006: licht & sfeer — bijna zwart is de standaardtoestand** *(lokaal goedgekeurd door de GD, 2026-07-28)*
 - **Nacht-environment** dev room: near-black achtergrond, lage koele
   ambient-vloer (contour-garantie: > 0), exponentiële diepte-fog,
   filmische tonemap, debanding. De oude heldere verlichting is een

@@ -1,6 +1,6 @@
 # Taak 006 — Licht & sfeer
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🟡 gebouwd conform ontwerp v2.1 (2026-07-28, suite 208 groen) — **wacht op lokale GD-test** · **Vereist**: 001, 002
+**Fase**: 2 (Het gereedschap) · **Status**: ✅ **afgerond en lokaal goedgekeurd door de GD (2026-07-28)** · **Vereist**: 001, 002
 
 Licht is in CRUMP zowel gameplay (zaklamp: zien kost gezien worden) als de
 duurste technische post (ARCHITECTURE §7). Deze taak legt het lichtfundament en
@@ -607,6 +607,16 @@ TL-staten in het geladen level.
    zaklampbundel voelt echt; de TL-hoek met flikkerbuis is onaangenaam;
    het geheel — nulpunt-zoem + near-black + schaarse TL's — maakt de
    testruimte 's nachts onaangenaam *zonder dat er iets gebeurt*.
+
+---
+
+# Lokale GD-acceptatie (2026-07-28) ✅
+
+De GD heeft de sfeerpass op hardware getest en goedgekeurd: de
+verlichting voelt goed, de donkerte is overtuigend, de zaklamp werkt
+correct (aan/uit + bundelgevoel) en de sfeer begint te ontstaan. Geen
+tuningronde gevraagd; de opgeleverde waarden zijn de nieuwe referentie.
+Taak 006 is hiermee formeel afgerond.
 
 ---
 
