@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/systems/light_budget/light_budget.gd" id="1"]
+
+[node name="LightBudget" type="Node" groups=["light_budget"]]
+script = ExtResource("1")

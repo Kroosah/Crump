@@ -1,8 +1,10 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_camera.gd" id="1"]
 [ext_resource type="Script" path="res://game/levels/dev_room/dev_props.gd" id="2"]
 [ext_resource type="Script" path="res://game/levels/environment_tuner.gd" id="3"]
+[ext_resource type="Script" path="res://game/levels/dev_room/dev_room.gd" id="4"]
+[ext_resource type="PackedScene" path="res://game/props/light_tl/light_tl.tscn" id="5"]
 
 [sub_resource type="BoxMesh" id="floor_mesh"]
 size = Vector3(20, 0.5, 20)
@@ -96,6 +98,7 @@ fog_light_color = Color(0.035, 0.045, 0.065, 1)
 fog_density = 0.03
 
 [node name="DevRoom" type="Node3D"]
+script = ExtResource("4")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("env")
@@ -117,22 +120,62 @@ script = ExtResource("2")
 
 [node name="Lighting" type="Node3D" parent="."]
 
-[node name="SunKey" type="DirectionalLight3D" parent="Lighting"]
+[node name="Werklicht" type="Node3D" parent="Lighting"]
+unique_name_in_owner = true
+visible = false
+
+[node name="SunKey" type="DirectionalLight3D" parent="Lighting/Werklicht"]
 transform = Transform3D(0.788011, 0.485148, -0.379039, 0, 0.615662, 0.788011, 0.615662, -0.620961, 0.485148, 0, 6, 4)
 light_energy = 1.1
 shadow_enabled = true
 
-[node name="CeilingLightCenter" type="OmniLight3D" parent="Lighting"]
+[node name="CeilingLightCenter" type="OmniLight3D" parent="Lighting/Werklicht"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 light_energy = 2.0
 shadow_enabled = true
 omni_range = 16.0
 
-[node name="CeilingLightNorth" type="OmniLight3D" parent="Lighting"]
+[node name="CeilingLightNorth" type="OmniLight3D" parent="Lighting/Werklicht"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, -6)
 light_energy = 1.5
 shadow_enabled = false
 omni_range = 14.0
+
+[node name="NightLights" type="Node3D" parent="Lighting"]
+unique_name_in_owner = true
+
+[node name="TlStabielWest" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.85, -5)
+cast_shadow = true
+
+[node name="TlStabielOost" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.85, 3)
+cast_shadow = true
+
+[node name="TlFlikkerNoordoost" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.85, -7)
+state = 2
+flicker_seed = 7
+
+[node name="TlDefectA" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.85, 4)
+state = 1
+
+[node name="TlDefectB" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.85, 0)
+state = 1
+
+[node name="TlDefectC" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.85, -7)
+state = 1
+
+[node name="TlDefectD" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.85, -2)
+state = 1
+
+[node name="TlDefectE" parent="Lighting/NightLights" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.85, 7)
+state = 1
 
 [node name="Structure" type="Node3D" parent="."]
 

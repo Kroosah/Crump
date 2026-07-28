@@ -28,6 +28,10 @@ const AUDIO_SYSTEM_SCENE := "res://game/systems/audio/audio_system.tscn"
 ## initiële bezitssynchronisatie gegarandeerd een inventory aantreft.
 const FLASHLIGHT_SCENE := "res://game/systems/flashlight/flashlight.tscn"
 
+## De schaduwbudget-bewaking (taak 006 §5), zelfde patroon: per level,
+## bestaanscheck — zonder deze map vangt alleen de suite nog configfouten.
+const LIGHT_BUDGET_SCENE := "res://game/systems/light_budget/light_budget.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -100,6 +104,7 @@ func _load_level(scene_path: String) -> void:
 	_spawn_player()
 	_spawn_interactor()
 	_spawn_flashlight()
+	_spawn_light_budget()
 
 
 ## Zet de speler op het PlayerSpawn-punt van het geladen level (D-018).
@@ -171,6 +176,15 @@ func _spawn_flashlight() -> void:
 	var flashlight: Node = load(FLASHLIGHT_SCENE).instantiate()
 	_current_level.add_child(flashlight)
 	Log.info("Bootstrap: zaklampsysteem actief")
+
+
+func _spawn_light_budget() -> void:
+	if not ResourceLoader.exists(LIGHT_BUDGET_SCENE):
+		Log.info("Bootstrap: geen lichtbudget-bewaking — alleen de suite bewaakt het budget")
+		return
+	var budget: Node = load(LIGHT_BUDGET_SCENE).instantiate()
+	_current_level.add_child(budget)
+	Log.info("Bootstrap: lichtbudget-bewaking actief")
 
 
 func _verify_autoloads() -> void:
