@@ -5,7 +5,8 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (na implementatie taak 005, v0.0.16)
+**Laatst bijgewerkt**: 2026-07-28 (taak 005 afgerond; **ontwerp 006 ter
+review** — sessie hier afgesloten, verse sessie pakt de GD-review op)
 
 ---
 
@@ -65,7 +66,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | Taak 004 — Inventory | ✅ afgerond en lokaal goedgekeurd |
 | Taak 005 — Audio-fundament | ✅ afgerond en lokaal goedgekeurd |
-| Taak 006 — Licht & sfeer | ⬜ **volgende** (sluit fase 2 af) |
+| Taak 006 — Licht & sfeer | 🔵 **technisch ontwerp ter review bij de GD** (commit `5c547d4`) |
 | Taken 007–008 | ⬜ open |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **166/166
@@ -84,14 +85,23 @@ interactie-afstand 2,5 m).
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
 `/home/kroosah/projects/crump`.
 
-## 5. Volgende taak
+## 5. Volgende stap (voor de verse sessie)
 
-**Taak 006 — Licht & sfeer** (`tasks/006_lighting.md`), **op startsein
-van de GD**: zaklamp (het zien-kost-zichtbaarheid-dilemma, P3),
-lichtbudget, donker-maar-leesbaar, eerste sfeerpass op de testruimte —
-sluit fase 2 af (exit-lat: de testruimte is 's nachts onaangenaam zonder
-dat er iets gebeurt). Lost onderweg TD-002/TD-003 (presets, brightness)
-deels af. Verdere openstaande vervolghaken: TD-005 (deur/la-tween op het
+**Het technisch ontwerp van taak 006 staat volledig uitgewerkt in
+`tasks/006_lighting.md` en wacht op GD-review** (commit `5c547d4`).
+Werkwijze conform het inmiddels vaste ritme: eerst GD-review van het
+ontwerp (evt. correctierondes, alleen docs) → **expliciete
+implementatie-go** → bouw in de vier geplande blokken met commit per
+blok (nacht-environment + brightness/TD-003 → zaklamp-systeem →
+TL-prop + sfeerpass → tests/registers) → vier-vragen-rapport → status
+"wacht op lokale GD-test" → GD test op hardware → formele afronding.
+
+Belangrijkste reviewpunten in het 006-ontwerp: de verworpen
+zaklamp-flikker (HORROR §7/P7-argument), de budgetregel (zaklamp = 1
+van 4), het veiligheids-suggestie-beleid (nooit een safe-zone-mechanic)
+en de nachtstaat + werklicht-toggle van de dev room.
+
+Openstaande vervolghaken daarna: TD-005 (deur/la-tween op het
 audioritme), sleutel-deur, la-koppeling, save-integratie,
 inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6).
 
