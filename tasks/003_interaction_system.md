@@ -69,6 +69,18 @@ telefoon, of de tv in de kantine er later moeiteloos op passen — maar we
 bouwen nu alleen de vier props die fase 1 nodig heeft. Weersta de neiging het
 contract "vast alvast" uit te breiden voor onbestaande props.
 
+**Harde eis (GD, 2026-07-28) — de prompt is volledig data-gedreven.**
+Nergens in speler, interactor of UI wordt een prompttekst samengesteld op
+basis van wat het object is ("Druk op E om deur te openen"). Elk object
+bepaalt zijn eigen tekst via `prompt_text()` — "Open deur", "Lees brief",
+"Pak sleutel op", "Schakel stroom in" — en de interactor geeft die tekst
+letterlijk en ongewijzigd door op het prompt-signaal. Daarbij hoort ook:
+de **toets** ("E") staat nooit in de proptekst; de prop levert alleen de
+handeling, en de UI-laag die de prompt straks tekent plakt daar zelf de
+actueel gebonden toets uit de InputMap bij. Zo overleven alle prompts een
+toets-rebind én de latere vertaling (`localization/`) zonder dat één prop
+wijzigt.
+
 **Harde eis (GD, 2026-07-28) — puur polymorf, geen typechecks.** De
 interactor mag nooit weten wát hij aankijkt: geen `if object is Door`,
 `is Drawer`, `match`-op-type of naam-/groep-sniffing per propsoort. De
