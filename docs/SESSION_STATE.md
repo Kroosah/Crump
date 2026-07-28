@@ -5,15 +5,19 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (taak 006 **gebouwd**, suite 208 groen —
-status: **wacht op lokale GD-test**; nog niet lokaal goedgekeurd markeren)
+**Laatst bijgewerkt**: 2026-07-28 (taak 006 **afgerond en lokaal
+goedgekeurd door de GD**; nieuwe opdracht: GD-ontwerp Vertical Slice —
+zie §5)
 
 ---
 
 ## 1. Laatste taak
 
-**Taak 006 — Licht & sfeer** 🟡 gebouwd conform ontwerp v2.1 (drie
-GD-reviewrondes, expliciete go), **wacht op lokale GD-test**. Opgeleverd:
+**Taak 006 — Licht & sfeer** ✅ afgerond en **lokaal goedgekeurd door de
+GD (2026-07-28)**: verlichting voelt goed, donkerte overtuigend, zaklamp
+correct, sfeer ontstaat — geen tuningronde nodig; de opgeleverde waarden
+zijn de referentie. Gebouwd conform ontwerp v2.1 (drie GD-reviewrondes,
+expliciete go). Opgeleverd:
 nacht-environment op de dev room (near-black, koele ambient-vloer > 0,
 diepte-fog, filmische tonemap, debanding) met verborgen werklicht-rig
 (export, default uit); `game/systems/flashlight/` (camera-volgend,
@@ -56,10 +60,11 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Onderdeel | Status |
 |---|---|
 | Fase 0 — Fundering | ✅ afgerond |
-| Taken 001–005 | ✅ afgerond en (lokaal) goedgekeurd |
+| Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
-| Taak 006 — Licht & sfeer | 🟡 **gebouwd; wacht op lokale GD-test** |
-| Taken 007–008 | ⬜ open |
+| **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
+| Vertical Slice 01 | 🔵 **GD-ontwerp in tasks/007_vertical_slice_01.md, wacht op review + go** |
+| Monster-AI / hoofdstuk 1 | ⬜ open (dossiernummering herzien na de VS — zie §6) |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **208/208
 groen**. D-015 geverifieerd (0 fouten): zonder zaklampsysteem 188, zonder
@@ -81,15 +86,18 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD test taak 006 lokaal op hardware** volgens het stappenplan in
-`tasks/006_lighting.md` §"Te beoordelen in de editor / op hardware":
-nacht zonder zaklamp (oriëntatie/silhouetten/flikkerhoek), nacht met
-zaklamp (pickup op de oranje kist, toggle **F**, bundel + na-ijling),
-werklicht-stand (editor-export), F3-regels + fps, brightness-kalibratie op
-1.0. Daarna: tuningronde(s) op GD-aanwijzing (alle knoppen zijn data) →
-formele afronding 006 → ROADMAP-vinkje + fase 2-exit-oordeel.
+**Het GD-ontwerp van de eerste Vertical Slice staat in
+`tasks/007_vertical_slice_01.md` en wacht op GD-review** (opdracht GD
+2026-07-28: de eerste ±20 minuten van CRUMP als Game Director-document —
+géén techniek, géén implementatie). Canon van de slice: voetballer keert
+na een avondwedstrijd terug voor zijn vergeten sporttas; stadion lijkt
+verlaten; regen; alleen sfeer/verkennen/spanning, geen achtervolging;
+CRUMP vaker gehoord dan gezien, hooguit 1–2 zeer korte glimpsen; kleine
+speelruimte (ingang, kantine, gang, twee kleedkamers, onderhoudsruimte,
+stukje buiten). Na review + eventuele correctierondes volgt een
+**expliciete implementatie-go** — tot die tijd géén code/assets/scènes.
 
-Openstaande vervolghaken daarna: taak 007 (monster-AI; abonneert op
+Openstaande vervolghaken daarna: monster-AI (abonneert op
 `flashlight_toggled` en `noise_made`), TD-005 (deur/la-tween), TD-004
 (bukken-collider), sleutel-deur/la-koppeling, save-integratie,
 inventory-UI/HUD (lost TD-006 af), canon-correctieronde (zie §6),
@@ -97,6 +105,14 @@ KI-004 (exit-leak, batchen bij audio-/bootstrap-werk).
 
 ## 6. Open aandachtspunten
 
+- **Dossiernummering**: `tasks/007_vertical_slice_01.md` (opdracht GD)
+  botst met het bestaande skelet `tasks/007_monster_ai.md`; dat oude
+  dossier is ongewijzigd gelaten. Hernummeren (monster-AI → 008+,
+  chapter1 herzien t.o.v. de VS) is een GD-besluit bij de VS-review.
+- **Premisse-delta VS ↔ STORY §3**: de VS-canon (terugkeer voor de
+  vergeten sporttas) wijkt af van de opening in STORY §3 (afsluitverzoek
+  + verdwijning tijdens het douchen). Vastgelegd in de canon-notitie van
+  het VS-dossier; beslechten in de canon-correctieronde.
 - **KI-004** (Klein, nieuw): incidentele "ObjectDB leaked"-warning bij
   afsluiten (ambience-teardown-race); pre-existent, geen 006-regressie.
 - **TD-005** (Laag): deur/la bewegen instant — tween zodra gewenst (audio
