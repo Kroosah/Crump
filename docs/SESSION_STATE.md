@@ -51,11 +51,10 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Fase 0 — Fundering | ✅ afgerond |
 | Taak 001 — Project-setup & bootstrap | ✅ afgerond en goedgekeurd |
 | Taak 002 — Player controller | ✅ afgerond en goedgekeurd |
-| Taak 003 — Interactiesysteem | ✅ gebouwd, **visuele beoordeling open** |
-| Taken 004–008 | ⬜ open |
-
-Na akkoord op 003 is **fase 1 (De wandeling) compleet** — exit-criterium is
-"bewegen en interacteren voelt goed", te beoordelen door de GD.
+| Taak 003 — Interactiesysteem | ✅ afgerond en goedgekeurd |
+| **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
+| Taak 004 — Inventory | 🔵 **ontwerp ter review bij de GD** (geen code) |
+| Taken 005–008 | ⬜ open |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **120/120 groen**.
 D-015 geverifieerd in vier richtingen: zonder interactiesysteem 82/82,
@@ -75,12 +74,11 @@ interactie-afstand 2,5 m).
 
 ## 5. Volgende taak
 
-**Eerst**: GD beoordeelt taak 003 in de editor (lijstje onderaan
-`tasks/003_interaction_system.md`). Daarmee sluit ook fase 1.
-
-**Daarna, op startsein**: **Taak 004 — Inventory** (fase 2). De haken
-liggen klaar: `item_found` (la), `picked_up` (pickup) en
-`EventBus.item_used`.
+**Taak 004 — Inventory, ontwerpfase**: het volledige technische ontwerp
+staat in `tasks/004_inventory.md` (scope, architectuur, itemmodel,
+inventory-model, exacte pickup-flow, savegame-impact, tests, risico's,
+exit-criteria) en **wacht op GD-review**. Implementatie start pas na
+akkoord — daarna in blokken met commit per blok.
 
 ## 6. Open aandachtspunten
 
