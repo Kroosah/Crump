@@ -72,3 +72,15 @@ func _ready() -> void:
 		Log.info("DevRoom: geen testprops geplaatst (interactiesysteem afwezig)")
 	else:
 		Log.info("DevRoom: %d testprops geplaatst" % placed)
+	_activate_test_ambience()
+
+
+## Zet het nulpunt van de dev room aan (taak 005, doel: sfeer — het
+## stilte-nulpunt van HORROR §3, hier als hardware-testlaag). Levels zetten
+## hun ambience expliciet zelf aan; nooit de bootstrap (dossier 005 §5).
+## Null-veilig en duck-typed: zonder audiosysteem gebeurt er niets (D-015).
+func _activate_test_ambience() -> void:
+	var audio := get_tree().get_first_node_in_group("audio_system")
+	if audio == null or not audio.has_method("set_ambience_layer"):
+		return
+	audio.set_ambience_layer(&"amb_hum_koeling", true, 1.5)

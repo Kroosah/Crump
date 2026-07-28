@@ -20,6 +20,8 @@ signal picked_up(item_id: StringName)
 ## Luidheid (draagafstand in m) van het oppakken — klinkt pas ná acceptatie
 ## (§5c: het geluid hoort bij het lukken, niet bij het proberen).
 @export var loudness_pickup := 2.0
+## Hoorbare cue-id (taak 005, grensvaluta B2); klinkt alleen bij accepted.
+@export var cue_pickup: StringName = &"item_pickup"
 
 @export_group("Prompts")
 @export var prompt := "Pak op"
@@ -70,8 +72,10 @@ func _on_pickup_resolved(source: Node, accepted: bool) -> void:
 	if not accepted:
 		return
 	_picked = true
-	# Eigen wereldfeedback, pas ná bevestiging (§5c): geluid, feit, weg.
+	# Eigen wereldfeedback, pas ná bevestiging (§5c): twee gescheiden
+	# feiten (kader 005 §1) — gameplay-gehoor én hoorbare tik — dan weg.
 	EventBus.noise_made.emit(global_position, loudness_pickup)
+	EventBus.audio_cue.emit(cue_pickup, global_position)
 	var item_id := StringName(item.get(&"id")) if item != null else &""
 	picked_up.emit(item_id)
 	Log.info("PickupItem: '%s' opgenomen in de inventory" % item_id)

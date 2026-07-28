@@ -16,6 +16,9 @@ signal item_found(item_id: StringName)
 @export var slide_distance := 0.35
 ## Luidheid (draagafstand in m) van het schuiven.
 @export var loudness_toggle := 4.0
+## Hoorbare cue-id's (taak 005, grensvaluta B2).
+@export var cue_open: StringName = &"drawer_open"
+@export var cue_close: StringName = &"drawer_close"
 ## Optionele inhoud als data; leeg = lege la.
 @export var item_id: StringName = &""
 
@@ -32,7 +35,10 @@ func interact(_by: Node) -> void:
 	# Langs de eigen as schuiven, zodat een gedraaide kast goed werkt.
 	translate_object_local(
 		Vector3(0, 0, slide_distance if _is_open else -slide_distance))
+	# Twee gescheiden feiten per actie (kader 005 §1).
 	EventBus.noise_made.emit(global_position, loudness_toggle)
+	EventBus.audio_cue.emit(cue_open if _is_open else cue_close,
+		global_position)
 	toggled.emit(_is_open)
 	if _is_open and not _item_revealed and item_id != &"":
 		_item_revealed = true

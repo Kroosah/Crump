@@ -61,6 +61,14 @@ const BOB_RETURN_SPEED := 0.25
 @export var step_interval_sneak := 0.75
 @export var step_interval_run := 0.35
 @export var step_interval_crouch := 0.8
+## Hoorbare cue-id per gangmodus (taak 005). StringName = grensvaluta
+## (keuze B2): de speler kent geen audiosysteem; de klank leeft in
+## SoundResources. Per-ondergrond-sets volgen zodra er een tweede
+## ondergrond bestaat.
+@export var footstep_cue_walk: StringName = &"footstep_walk"
+@export var footstep_cue_sneak: StringName = &"footstep_sneak"
+@export var footstep_cue_run: StringName = &"footstep_run"
+@export var footstep_cue_crouch: StringName = &"footstep_crouch"
 ## Luidheid = draagafstand in meters op EventBus.noise_made: sluipen draagt
 ## amper, rennen alarmeert de halve gang. Dít is de consequentie van rennen
 ## (GAME_BIBLE §5, HORROR_GUIDELINES §3).
@@ -185,9 +193,11 @@ func _on_footstep_timer_timeout() -> void:
 	var speed := Vector3(velocity.x, 0.0, velocity.z).length()
 	if not is_on_floor() or speed <= MIN_MOVING_SPEED:
 		return
-	# Een stap is een feit voor de wereld: CRUMP's gehoor (007) en de audio
-	# (005) abonneren zich op de bus; de speler kent ze niet.
+	# Twee gescheiden feiten per stap (kader 005 §1): het gameplay-feit voor
+	# CRUMP's gehoor én het hoorbare feit — de speler hoort zijn eigen
+	# prijs (P3). Geen van beide veroorzaakt ooit automatisch de ander.
 	EventBus.noise_made.emit(global_position, _loudness_for(_gait))
+	EventBus.audio_cue.emit(_footstep_cue_for(_gait), global_position)
 	# One-shot + herstart, zodat een gangwissel meteen het nieuwe ritme pakt.
 	_footstep_timer.start(_step_interval_for(_gait))
 
@@ -226,3 +236,15 @@ func _loudness_for(gait: Gait) -> float:
 			return loudness_crouch
 		_:
 			return loudness_walk
+
+
+func _footstep_cue_for(gait: Gait) -> StringName:
+	match gait:
+		Gait.SNEAK:
+			return footstep_cue_sneak
+		Gait.RUN:
+			return footstep_cue_run
+		Gait.CROUCH:
+			return footstep_cue_crouch
+		_:
+			return footstep_cue_walk
