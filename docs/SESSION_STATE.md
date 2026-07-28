@@ -5,32 +5,31 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-27
+**Laatst bijgewerkt**: 2026-07-28
 
 ---
 
 ## 1. Laatste afgeronde taak
 
-**Taak 001 — Project-setup & bootstrap** ✅ (goedgekeurd door de Game Director)
+**Taak 002 — Player controller** ✅ gebouwd (v0.0.11) — **wacht op visuele
+beoordeling door de Game Director** (het loopgevoel is headless niet te
+toetsen; zie het beoordelingslijstje in `tasks/002_player_controller.md`).
 
-Opgeleverd: `project.godot` (Forward+, input-map, physics-layers, audiobussen),
-vijf autoloads (EventBus, GameState, AudioDirector, SettingsManager,
-SaveManager), bootstrap + game-lifecycle, developer room (grijze blockout),
-Log-systeem, debug overlay (F3), settings met grafische presets, en een
-smoke-test-suite van 31 controles.
+Opgeleverd: `game/actors/player/` met vier gangmodi (lopen/sluipen/rennen/
+bukken, prioriteit bukken > sluipen > rennen), acceleratie/deceleratie,
+muis-look zonder versnelling, uitschakelbare head-bob, buk-ooghoogte en
+voetstap-events op de EventBus (luidheid per modus: 2/2.5/6/14 m). Spawn via
+`PlayerSpawn`-marker (D-018); ren-consequentie is geluid, geen stamina
+(D-019). Smoke-suite van 52 → 75 controles met echte input-simulatie;
+verwijderbaarheidstest in beide richtingen geverifieerd.
 
-Daarna nog vastgelegd: **modulariteit als harde eis** (D-015) — elke feature
-moet volledig verwijderbaar zijn zonder de rest te breken.
-
-Daarna volgde één gerichte bugfix: **KI-001 — de developer room toonde een
-egaal grijs beeld** omdat het project nergens een `Camera3D` had. Opgelost met
-een vaste testcamera, zwaardere tijdelijke verlichting, contrasterende
-materialen en 17 extra smoke-controles (D-016, CHANGELOG v0.0.7).
+Daarvóór (2026-07-27): taak 001 volledig afgerond en goedgekeurd (52/52),
+KI-001 en KI-002 gesloten.
 
 ## 2. Laatste commit
 
 ```
-[001] Los KI-002 op: SunKey schijnt omlaag; scherp lichtcontroles aan
+[002] Bouw player controller met gangmodi en voetstap-events
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -51,21 +50,19 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 |---|---|
 | Fase 0 — Fundering (structuur + documentatie) | ✅ afgerond |
 | Taak 001 — Project-setup & bootstrap | ✅ afgerond en goedgekeurd |
-| Taak 002 — Player controller | ⬜ **volgende** |
-| Taken 003–008 | ⬜ open |
+| Taak 002 — Player controller | ✅ gebouwd, **visuele beoordeling open** |
+| Taak 003 — Interactiesysteem | ⬜ volgende (na akkoord op 002) |
+| Taken 004–008 | ⬜ open |
 
-**Technische staat**: het project draait. `godot --headless --path . --import`
-is schoon (exit 0), de smoke-suite geeft 52/52 groen (exit 0), de bootstrap
-laadt de developer room, en de vier registers (DECISIONS/CHANGELOG/
-KNOWN_ISSUES/TECH_DEBT) zijn bijgewerkt.
+**Technische staat**: `godot --headless --path . --import` schoon (exit 0),
+smoke-suite **75/75 groen** (exit 0). Verwijderbaarheidstest D-015: zonder
+`game/actors/player/` blijft de suite 52/52 groen en springt de testcamera
+bij. `config/version` gelijkgetrokken naar 0.0.11 (liep achter op 0.0.4).
 
-**Visueel bevestigd (2026-07-27)**: de Game Director heeft de dev room op
-Windows in beeld gehad — vloer, muren en zes gekleurde objecten met schaduwen.
-KI-001 is daarmee ook visueel dicht, en Forward+ met schaduwwerpende lichten
-draait aantoonbaar op de Intel UHD Graphics. Daarna is de testcamera op
-ooghoogte gezet (v0.0.8); dat beeld moet nog opnieuw bekeken worden.
-
-**Nog niet visueel beoordeeld**: de debug overlay (F3) en de pauze (Esc).
+**Nog niet visueel beoordeeld**: het complete loopgevoel van taak 002
+(traagheid, head-bob, muisgevoeligheid, bukovergang — lijstje in het
+taakdossier), de debug overlay (F3) en de pauze (Esc, geeft nu ook de muis
+vrij).
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
@@ -73,39 +70,33 @@ ooghoogte gezet (v0.0.8); dat beeld moet nog opnieuw bekeken worden.
 
 ## 5. Volgende taak
 
-**Taak 002 — Player controller** (`tasks/002_player_controller.md`)
+**Eerst**: Game Director beoordeelt taak 002 in de editor (F5 in de dev
+room; het lijstje staat onderaan `tasks/002_player_controller.md`).
+Tuning-feedback gaat via de export-groepen op de Player-node — waarden
+aanpassen is geen code-wijziging.
 
-Lopen/sluipen/rennen/bukken, camera op ooghoogte, bewuste beweging, en
-voetstap-events die `EventBus.noise_made(position, loudness)` publiceren.
-Geen interactie (003), geen zaklamp (006), geen daadwerkelijke
-voetstapgeluiden (005) — alleen de events.
-
-Alles staat klaar: de dev room bestaat, de input-acties zijn gedefinieerd,
-`SettingsManager.mouse_sensitivity` en `head_bob_enabled` wachten op een
-afnemer, en de debug overlay heeft al een haak voor de spelerspositie
-(zoekt een node in de groep `player`).
-
-**Let op bij deze taak**: het *gevoel* van beweging is het hele punt en is
-niet headless te beoordelen — lever met bewuste export-defaults en een
-korte instructie wat de Game Director in de editor moet testen.
+**Daarna, op startsein**: **Taak 003 — Interactiesysteem**
+(`tasks/003_interaction_system.md`): raycast vanaf de spelerscamera, het
+`Interactable`-contract in `game/systems/`, en de interactieprompt via
+`EventBus.interact_prompt_changed`. De haak ervoor bestaat al (input-actie
+`interact`, het EventBus-signaal, en de spelerscamera als raycast-oorsprong).
 
 ## 6. Open aandachtspunten
 
-- **TD-002** (Middel): grafische presets zijn een eerste ruwe versie;
-  release-default staat nog op ontwikkelwaarde. Aflossen bij taak 006/fase 6.
-- **TD-003** (Laag): `brightness` wordt opgeslagen maar nog nergens toegepast
-  — koppelen in taak 006 (licht & sfeer).
-- **KNOWN_ISSUES**: geen open issues; KI-001 (grijs beeld) en KI-002
-  (zon schijnt omhoog) zijn opgelost. Les eruit: "de logs zijn schoon"
-  bewijst niet dat er beeld is, en `.tscn`-Transform3D's zijn rij-
-  georiënteerd — de smoke-suite toetst nu rendervoorwaarden én lichtrichting.
+- **TD-004** (Laag, nieuw): bukken verkleint de collider niet — kruipruimtes
+  bestaan nog niet; aflossen zodra een level er een krijgt.
+- **TD-002** (Middel): grafische presets eerste ruwe versie; release-default
+  op ontwikkelwaarde. Aflossen bij taak 006/fase 6.
+- **TD-003** (Laag): `brightness` opgeslagen maar nog niet toegepast —
+  koppelen in taak 006 (licht & sfeer).
+- **KNOWN_ISSUES**: geen open issues.
 - **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB) — pas
   nodig bij de eerste echte export.
-- **Verwijderbaarheidstest** (D-015) is vanaf nu onderdeel van elke taak:
-  map van het nieuwe systeem tijdelijk weghalen → import en smoke-suite
-  blijven groen.
+- **Verwijderbaarheidstest** (D-015) blijft onderdeel van elke taak; voor de
+  speler is hij tweezijdig geborgd (bootstrap-bestaanscheck + conditionele
+  spelertests in de suite).
 - **Pushen vanaf de VPS** kan door de auto-mode-classifier haperen; de kale
   vorm `git push -u origin main` (zonder pipes) werkte.
 - **Openstaande ontwerpsessie**: wát CRUMP is (aard, vorm, verklaring van de
   verdwijning) — zie `STORY.md` §8. Nodig vóór hoofdstuk 3/4, niet vóór
-  taak 002.
+  taak 003.

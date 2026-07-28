@@ -11,6 +11,30 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.11 — 2026-07-28
+**Taak 002: player controller — lopen, sluipen, rennen, bukken**
+- `game/actors/player/` (nieuw): `CharacterBody3D`-speler met vier gangmodi,
+  acceleratie/deceleratie, muis-look zonder versnelling (gevoeligheid via
+  `SettingsManager.mouse_sensitivity`), uitschakelbare head-bob
+  (`head_bob_enabled`), buk-ooghoogte en voetstap-events: elke stap emit
+  `EventBus.noise_made(positie, luidheid)` — luidheid per modus
+  (sluipen 2 m / bukken 2.5 m / lopen 6 m / rennen 14 m). Alle tuning in
+  export-groepen.
+- **Ren-consequentie is geluid, geen stamina** (D-019); prioriteit bij
+  tegelijk indrukken: bukken > sluipen > rennen.
+- **Bootstrap spawnt de speler op een `PlayerSpawn`-marker** in het geladen
+  level (D-018); de dev room heeft er een gekregen. Geen spelerscène of
+  marker aanwezig = level draait gewoon zonder speler (D-015 geverifieerd).
+- De spelerscamera neemt het beeld over; de testcamera van de dev room laat
+  los zoals ontworpen (D-016). Esc-pauze geeft de muis vrij.
+- **Smoke-suite 52 → 75 controles**, nu async: spelertests simuleren échte
+  input per gangmodus en toetsen verplaatsing, event-emissie, luidheid,
+  event-positie en buk-ooghoogte. Camera-controles aangepast op twee
+  camera's; zonder spelersmap blijven alle 52 basiscontroles groen.
+- `config/version` liep achter (0.0.4) en is gelijkgetrokken naar 0.0.11.
+- Voetstap-guard: een timer-tick net ná het stoppen emit geen stap meer
+  (geen voetstap in de stilte).
+
 ## v0.0.10 — 2026-07-27
 **KI-002 opgelost: SunKey schijnt weer omlaag — taak 001 definitief dicht**
 - `SunKey`-transform vervangen door de getransponeerde variant; lichtrichting

@@ -64,6 +64,18 @@ taak 006.
 **Aflossing**: in taak 006 `brightness` koppelen aan de tonemap/exposure van
 de omgeving en opnemen in de QA-check "helderheid-slider werkt".
 
+## TD-004 — Bukken verlaagt alleen de camera, niet de collider
+**Datum**: 2026-07-28 · **Status**: Laag · **Aflosmoment**: de eerste taak/level met een kruipruimte (verwacht: fase 3+, leveldesign hoofdstuk 2)
+**Waar**: game/actors/player/player.gd (`_update_eye_height`)
+**Schuld**: bukken beweegt de ooghoogte (1.70 → 1.15 m) en vertraagt de
+speler, maar de capsule-collider blijft 1.8 m hoog — je kunt dus nog nergens
+ónder door kruipen. Bewust: een kleinere collider vereist een
+sta-op-controle (headroom-check tegen vastzitten in geometrie) en er bestaat
+nog geen enkele plek waar kruipen iets betekent.
+**Aflossing**: collider meeschalen bij bukken + headroom-raycast vóór het
+opstaan, zodra een level een lage doorgang krijgt; dan ook een smoke-controle
+"gebukt onder een obstakel door, rechtop geblokkeerd" toevoegen.
+
 ## Afgeloste schuld
 
 *Nog geen.*

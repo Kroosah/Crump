@@ -155,3 +155,25 @@ meebeweegt. **Regel hieruit**: een projectinstelling die bewust op de
 engine-default staat, hoort in een test — niet in een comment.
 **Gerelateerd**: `.gitattributes` dwingt LF af op alle tekstbestanden, zodat
 `core.autocrlf` op Windows nooit een hele `.tscn` als gewijzigd kan tonen.
+
+## D-018 — Spelers komen een level binnen via een PlayerSpawn-marker
+**Datum**: 2026-07-28 · **Wie**: GD (keuze uit voorgelegde opties) / LD · **Status**: actief
+De speler zit niet ín een level-scène; de bootstrap instantieert
+`player.tscn` en zet hem op de `Marker3D` genaamd `PlayerSpawn` van het
+geladen level. Ontbreekt de spelerscène (map verwijderd, D-015) of de marker,
+dan draait het level zonder speler door en springt de testcamera bij (D-016).
+**Waarom**: het level kent de speler niet en de speler kent het level niet —
+de verwijderbaarheidstest blijft in beide richtingen groen, en elk toekomstig
+hoofdstuk hoeft alleen een marker neer te zetten. **Alternatieven**: speler
+als instantie in de level-scène (koppelt level aan speler — afgewezen) of
+speler alleen in de smoke-test (niet rondlopen in de editor — afgewezen).
+
+## D-019 — De consequentie van rennen is geluid, geen uithoudingsvermogen
+**Datum**: 2026-07-28 · **Wie**: GD (keuze uit voorgelegde opties) / LD · **Status**: heroverwegen bij taak 007
+GAME_BIBLE §5 noemt rennen "kort, hoorbaar, met consequentie". In taak 002 is
+die consequentie uitsluitend akoestisch: rennen draagt 14 m op de EventBus
+(lopen 6, sluipen 2) met een sneller stapritme — wie rent, roept CRUMP.
+**Waarom**: sluit direct aan op pijler 1 ("stilte is het instrument") en
+houdt taak 002 vrij van een stamina-systeem dat pas betekenis krijgt als er
+iets is dat je hoort (007). **Heroverwegen**: als playtests uitwijzen dat
+onbeperkt rennen de spanning breekt, is een uithoud-systeem een eigen taak.

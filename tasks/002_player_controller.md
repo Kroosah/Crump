@@ -1,6 +1,6 @@
 # Taak 002 — Player Controller
 
-**Fase**: 1 (De wandeling) · **Status**: ⬜ open · **Vereist**: 001
+**Fase**: 1 (De wandeling) · **Status**: ✅ gebouwd, wacht op visuele beoordeling · **Vereist**: 001
 
 De speler ís de camera in een first person horror. Deze taak maakt het bewegen
 zó goed dat rondlopen in een lege ruimte al bevredigend is (ROADMAP fase 1).
@@ -47,18 +47,55 @@ kwetsbaarheid uit GAME_BIBLE §5 uitstraalt, volledig af te stemmen via exports.
 
 ## Acceptatiecriteria
 
-- [ ] Speler-scène instantieert los zonder errors.
-- [ ] Lopen/sluipen/rennen/bukken werken en verschillen in snelheid + luidheid.
-- [ ] Camera voelt gegrond; head-bob uitschakelbaar; gevoeligheid instelbaar.
-- [ ] Geen door-de-vloer/muur-vallen in de testruimte.
-- [ ] Voetstappen emitten `noise_made` met correcte, per-modus schalende
+- [x] Speler-scène instantieert los zonder errors *(smoke-test 12)*.
+- [x] Lopen/sluipen/rennen/bukken werken en verschillen in snelheid + luidheid
+      *(headless getoetst via input-simulatie; gevóél nog te beoordelen)*.
+- [x] Camera voelt gegrond; head-bob uitschakelbaar; gevoeligheid instelbaar
+      *(mechanisch af: SettingsManager-koppeling werkt; "voelt" = editor)*.
+- [x] Geen door-de-vloer/muur-vallen in de testruimte.
+- [x] Voetstappen emitten `noise_made` met correcte, per-modus schalende
       luidheid.
-- [ ] Alle tuning via exports; geen magic numbers.
-- [ ] Headless-import schoon; smoke-test groen. Dossier + README bijgewerkt.
+- [x] Alle tuning via exports; geen magic numbers.
+- [x] Headless-import schoon; smoke-test groen (75/75). Dossier + README
+      bijgewerkt.
+
+## Wat er gebouwd is (2026-07-28)
+
+- `game/actors/player/player.tscn` + `player.gd` — `CharacterBody3D` met
+  `Head` (pitch + ooghoogte) → `Camera` (head-bob-offset) en een one-shot
+  `FootstepTimer`. Groep `player` (debug overlay pakt hem vanzelf op).
+- **Gangmodi** WALK/SNEAK/RUN/CROUCH; prioriteit bukken > sluipen > rennen
+  ("stil verslaat snel"). Per modus: snelheid, stapinterval, luidheid.
+- **Ren-consequentie = geluid** (besluit GD, D-019): rennen is onbeperkt maar
+  draagt 14 m; geen uithoudingssysteem in deze taak.
+- **Spawn via marker** (D-018): de bootstrap plaatst de speler op de
+  `PlayerSpawn`-Marker3D van het geladen level; geen scène of marker = level
+  draait zonder speler door (verwijderbaarheidstest D-015 geverifieerd:
+  map weg → import schoon + suite 52/52 groen, testcamera springt bij).
+- **Smoke-suite 52 → 75**: spelertests draaien échte input-simulatie
+  (`Input.action_press`) met physics-frames; per gangmodus wordt verplaatsing,
+  event-emissie, luidheid en event-positie getoetst, plus buk-ooghoogte
+  heen én terug. De suite is daarvoor async geworden (bootstrap await).
+
+## Export-defaults (bewust zo, tunen in de editor)
+
+| Wat | Waarde | Waarom |
+|---|---|---|
+| walk/sneak/run/crouch-snelheid | 2.6 / 1.2 / 4.6 / 1.0 m/s | clublid, geen soldaat (GAME_BIBLE §5) |
+| acceleratie / deceleratie | 10 / 14 m/s² | gewicht zonder gladheid; remmen sneller dan optrekken |
+| stapinterval | 0.55 / 0.75 / 0.35 / 0.8 s | ritme hoorbaar verschillend per modus |
+| luidheid (draagafstand) | 6 / 2 / 14 / 2.5 m | rennen alarmeert, sluipen draagt amper (§3 HORROR) |
+| look_sensitivity | 0.0022 rad/px | × SettingsManager.mouse_sensitivity; rauw, geen smoothing |
+| ooghoogte sta/buk | 1.70 / 1.15 m | buk-overgang 4 m/s |
+| head-bob | 0.03 m · 0.9 cycli/m | subtiel; uit via SettingsManager.head_bob_enabled |
 
 ## Te beoordelen in de editor (VPS kan dit niet)
 
-Het *gevoel* van beweging (traagheid, head-bob, camerahoogte) is de kern van
-deze taak en moet door Randy op de ontwikkelmachine worden ervaren. Lever
-daarom met duidelijke export-defaults en een korte notitie welke waarden
-bewust zo staan.
+1. **Loopgevoel**: F5 → je start op het spawnpunt. Traagheid oké? Niet "op
+   wieltjes"? Rensnelheid eng genoeg zonder arcade te worden?
+2. **Muis-look**: gevoeligheid, geen versnelling, pitch-grenzen (±85°).
+3. **Head-bob**: subtiel genoeg? (Uitzetten kan door in
+   `user://settings.cfg` onder `[comfort]` `head_bob=false` te zetten.)
+4. **Bukken**: camera-overgang (4 m/s) — te snel/langzaam?
+5. **Esc** pauzeert en geeft de muis vrij; nogmaals Esc pakt hem weer.
+6. F3-overlay toont nu de spelerspositie live.
