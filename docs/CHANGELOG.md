@@ -11,6 +11,19 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.12 — 2026-07-28
+**KI-003 opgelost: Escape pauzeert nu echt (spelwereld op PAUSABLE)**
+- De bootstrap zette zichzelf op `PROCESS_MODE_ALWAYS`; kinderen erfden dat,
+  waardoor `tree.paused` wél toggelde maar níéts pauzeerde — Esc leek dood
+  en de muis kwam nooit vrij (geen `NOTIFICATION_PAUSED` bij de speler).
+- Fix: `SceneHost` expliciet op `PROCESS_MODE_PAUSABLE`; de debug overlay
+  blijft bewust ALWAYS (bruikbaar tijdens pauze).
+- Smoke-suite 75 → 81: procesmodi structureel getoetst (ook zonder speler)
+  én een functionele Esc-round-trip — pauzeert, speler staat stil, hervat,
+  speler beweegt weer; muismodus-checks draaien alleen met echt scherm
+  (headless kent geen muismodus). Zonder de fix falen deze tests aantoonbaar.
+- `config/version` → 0.0.12.
+
 ## v0.0.11 — 2026-07-28
 **Taak 002: player controller — lopen, sluipen, rennen, bukken**
 - `game/actors/player/` (nieuw): `CharacterBody3D`-speler met vier gangmodi,

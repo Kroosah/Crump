@@ -113,7 +113,19 @@ func run(bootstrap: Node) -> int:
 			"projectinstelling %s staat op %s (gevonden: %s)"
 			% [key, str(expected_settings[key]), str(actual)], failures)
 
-	# 12. Speler (taak 002) — alleen als de spelerscène bestaat: na het
+	# 12. Pauze-architectuur (KI-003): de bootstrap moet tijdens de pauze
+	# blijven luisteren (ALWAYS), maar de spelwereld onder de SceneHost moet
+	# wél echt stilstaan. ALWAYS op de bootstrap erft door naar kinderen,
+	# dus PAUSABLE op de SceneHost is verplicht — anders doet Esc "niets".
+	failures = _check(bootstrap.process_mode == Node.PROCESS_MODE_ALWAYS,
+		"bootstrap draait door tijdens pauze (ALWAYS)", failures)
+	var scene_host: Node = bootstrap.get_node_or_null("SceneHost")
+	failures = _check(
+		scene_host != null
+		and scene_host.process_mode == Node.PROCESS_MODE_PAUSABLE,
+		"spelwereld (SceneHost) pauzeert mee (PAUSABLE)", failures)
+
+	# 13. Speler (taak 002) — alleen als de spelerscène bestaat: na het
 	# weggooien van game/actors/player/ (verwijderbaarheidstest D-015) moet
 	# de rest van de suite gewoon groen blijven.
 	if ResourceLoader.exists(PLAYER_SCENE):
@@ -322,7 +334,61 @@ func _check_player(tree: SceneTree, failures: int) -> int:
 		absf(head.position.y - player.stand_eye_height) < 0.05,
 		"ooghoogte herstelt na het bukken (%.2f m)" % head.position.y, failures)
 
+	# Pauze-round-trip (KI-003): Esc zet de wereld écht stil en hervat weer.
+	failures = await _check_pause(tree, player, failures)
+
 	return failures
+
+
+## Toetst de volledige Esc-cyclus: pauzeren stopt de speler (en geeft de
+## muis vrij), nogmaals Esc hervat (en vangt de muis weer). De muis-checks
+## kunnen alleen met een echt scherm — headless meldt altijd VISIBLE.
+func _check_pause(tree: SceneTree, player, failures: int) -> int:
+	var has_display: bool = DisplayServer.get_name() != "headless"
+
+	_send_pause_event()
+	await _wait_physics_frames(tree, 5)
+	failures = _check(tree.paused, "Esc pauzeert de scene-tree", failures)
+	if has_display:
+		failures = _check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE,
+			"muis komt vrij tijdens de pauze", failures)
+	else:
+		Log.info("TEST INFO · muis-checks overgeslagen (headless heeft geen muismodus)")
+
+	# De wereld staat stil: bewegen tijdens de pauze doet niets.
+	var start_pos: Vector3 = player.global_position
+	Input.action_press("move_forward")
+	await _wait_physics_frames(tree, 30)
+	Input.action_release("move_forward")
+	failures = _check(player.global_position.distance_to(start_pos) < 0.05,
+		"speler staat stil tijdens de pauze", failures)
+
+	_send_pause_event()
+	await _wait_physics_frames(tree, 5)
+	failures = _check(not tree.paused, "Esc hervat het spel", failures)
+	if has_display:
+		failures = _check(Input.mouse_mode == Input.MOUSE_MODE_CAPTURED,
+			"muis wordt weer gevangen bij hervatten", failures)
+
+	# En de wereld draait weer.
+	start_pos = player.global_position
+	Input.action_press("move_forward")
+	await _wait_physics_frames(tree, 30)
+	Input.action_release("move_forward")
+	failures = _check(player.global_position.distance_to(start_pos) > 0.1,
+		"speler beweegt weer na hervatten", failures)
+	await _wait_physics_frames(tree, 35)
+	return failures
+
+
+## Injecteert een echt pauze-event. Input.action_press zet alleen de
+## actiestatus en genereert géén InputEvent; de pauze-handler is
+## event-gedreven (_unhandled_input), dus die zou er niets van merken.
+func _send_pause_event() -> void:
+	var event := InputEventAction.new()
+	event.action = "pause"
+	event.pressed = true
+	Input.parse_input_event(event)
 
 
 ## Houdt input-acties ingedrukt tot de eerste voetstap (of de frame-limiet)

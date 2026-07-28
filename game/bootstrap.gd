@@ -27,6 +27,11 @@ var _current_level: Node = null
 func _ready() -> void:
 	# Bootstrap blijft actief tijdens pauze: hij bedient pauze/afsluiten zelf.
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# ALWAYS erft door naar kinderen — zonder expliciet PAUSABLE op de
+	# SceneHost zou de hele spelwereld tijdens de pauze gewoon doordraaien
+	# en leek Esc niets te doen (KI-003). De debug overlay blijft bewust
+	# wél ALWAYS: die moet ook tijdens een pauze bruikbaar zijn.
+	_scene_host.process_mode = Node.PROCESS_MODE_PAUSABLE
 	# Afsluiten loopt via shutdown() zodat er één nette uitgang bestaat.
 	get_tree().auto_accept_quit = false
 	Log.info("CRUMP %s gestart · Godot %s · debug=%s" % [

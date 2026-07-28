@@ -35,6 +35,23 @@ ook. Een bug die alleen in een gesprek of een hoofd bestaat, bestaat niet.
 
 ## Opgeloste issues
 
+## KI-003 — Escape leek niets te doen: de spelwereld pauzeerde nooit
+**Datum**: 2026-07-28 · **Ernst**: Ernstig · **Status**: opgelost (v0.0.12; gemeld door GD bij de lokale test van taak 002)
+**Waar**: `game/bootstrap.gd` (`_ready`, procesmodi)
+**Omschrijving**: Esc in het spel deed schijnbaar niets — geen pauze, muis
+bleef gevangen; alleen F8 stopte de debugrun. De input-keten was in orde
+(Esc → actie `pause` → bootstrap `_unhandled_input` → `tree.paused` toggelde
+wél, zichtbaar in de log). De echte oorzaak: de bootstrap zet zichzelf op
+`PROCESS_MODE_ALWAYS` om tijdens de pauze te blijven luisteren, maar
+kinderen staan op `INHERIT` — SceneHost, level én speler erfden dus ALWAYS
+en pauzeerden nooit. Ook `NOTIFICATION_PAUSED` bereikte de speler daardoor
+nooit, dus de muis kwam niet vrij. **Fix**: SceneHost expliciet op
+`PROCESS_MODE_PAUSABLE`; de debug overlay blijft bewust ALWAYS. **Les**:
+`ALWAYS` op een voorouder schakelt stilletjes de pauze van de hele subtree
+uit — de smoke-suite toetst nu zowel de procesmodi (structureel) als de
+volledige Esc-round-trip (functioneel: wereld stil, muis vrij, hervatten).
+Zonder de fix falen die tests aantoonbaar.
+
 ## KI-002 — DirectionalLight van de dev room schijnt omhoog
 **Datum**: 2026-07-27 · **Ernst**: Klein · **Status**: opgelost (CHANGELOG v0.0.10, op aanwijzing GD)
 **Waar**: `game/levels/dev_room/dev_room.tscn`, node `Lighting/SunKey`

@@ -5,7 +5,7 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28
+**Laatst bijgewerkt**: 2026-07-28 (na KI-003-fix, v0.0.12)
 
 ---
 
@@ -55,14 +55,15 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 004–008 | ⬜ open |
 
 **Technische staat**: `godot --headless --path . --import` schoon (exit 0),
-smoke-suite **75/75 groen** (exit 0). Verwijderbaarheidstest D-015: zonder
-`game/actors/player/` blijft de suite 52/52 groen en springt de testcamera
-bij. `config/version` gelijkgetrokken naar 0.0.11 (liep achter op 0.0.4).
+smoke-suite **81/81 groen** (exit 0). Verwijderbaarheidstest D-015: zonder
+`game/actors/player/` blijft de suite 54/54 groen en springt de testcamera
+bij. `config/version` = 0.0.12.
 
-**Nog niet visueel beoordeeld**: het complete loopgevoel van taak 002
-(traagheid, head-bob, muisgevoeligheid, bukovergang — lijstje in het
-taakdossier), de debug overlay (F3) en de pauze (Esc, geeft nu ook de muis
-vrij).
+**Visueel beoordeeld door de GD (2026-07-28)**: WASD, muislook, sprint,
+sluipen, bukken en F3-overlay werken. Zijn Esc-bevinding was **KI-003**
+(spelwereld erfde ALWAYS van de bootstrap en pauzeerde nooit) — opgelost in
+v0.0.12; **Esc moet lokaal opnieuw getest worden** (pauze + muis vrij +
+hervatten).
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
