@@ -15,6 +15,10 @@ const PLAYER_SCENE := "res://game/actors/player/player.tscn"
 ## het spel zonder interactie verder (D-015).
 const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
 
+## Het inventory-systeem (taak 004), zelfde patroon. Eénmalig gespawnd als
+## kind van de SceneHost: overleeft levelwissels en pauzeert mee (KI-003).
+const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -49,6 +53,7 @@ func _ready() -> void:
 	])
 	_verify_autoloads()
 	_add_debug_tools()
+	_spawn_inventory()
 	_load_level(DEV_ROOM_SCENE)
 	if "--smoke-test" in OS.get_cmdline_user_args():
 		_run_smoke_test.call_deferred()
@@ -109,6 +114,21 @@ func _spawn_player() -> void:
 ## van het level: pauzeert mee (KI-003) en wordt bij een levelwissel mee
 ## opgeruimd. De interactor gebruikt de actieve camera — hij werkt dus ook
 ## zonder speler en heeft geen enkele kennis van het level.
+## Spawnt de inventory éénmalig (taak 004): in _ready, niet per level, en
+## alleen als er nog geen bestaat — maximaal één autoritatieve inventory
+## (dossier 004 §2). Kind van de SceneHost: levelwissels raken hem niet.
+func _spawn_inventory() -> void:
+	if not ResourceLoader.exists(INVENTORY_SCENE):
+		Log.info("Bootstrap: geen inventory-systeem — spel draait zonder inventory")
+		return
+	if not get_tree().get_nodes_in_group("inventory").is_empty():
+		push_warning("Bootstrap: er is al een inventory — tweede spawn overgeslagen")
+		return
+	var inventory: Node = load(INVENTORY_SCENE).instantiate()
+	_scene_host.add_child(inventory)
+	Log.info("Bootstrap: inventory actief")
+
+
 func _spawn_interactor() -> void:
 	if not ResourceLoader.exists(INTERACTOR_SCENE):
 		Log.info("Bootstrap: geen interactiesysteem — level draait zonder interactie")

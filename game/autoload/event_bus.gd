@@ -28,3 +28,20 @@ signal interact_prompt_changed(text: String)
 ## `text`; het briefje zelf heeft GameState al bijgewerkt. Lezen is stil —
 ## dit signaal gaat bewust niet vergezeld van noise_made (pijler 1).
 signal document_opened(document_id: StringName, text: String)
+
+## Een object in de wereld wil opgenomen worden (taak 004). `source` is een
+## opaak token: de inventory echoot hem alleen terug in item_pickup_resolved
+## zodat de juiste zender zijn eigen antwoord herkent — er wordt nooit iets
+## op aangeroepen. Argumenten zijn bewust basistypen (Node/Resource), nooit
+## gameplay-klassen: de bus moet elke feature-verwijdering overleven (D-021).
+signal item_pickup_requested(source: Node, item: Resource)
+
+## Het oppakverzoek van `source` is beoordeeld (zender: de inventory).
+## De zender van het verzoek handelt bij `accepted` zijn eigen feedback af.
+signal item_pickup_resolved(source: Node, accepted: bool)
+
+## Dit item zit nu in de inventory (feit; toekomstige UI luistert hier).
+signal item_added(item: Resource)
+
+## Dit item is uit de inventory verwijderd.
+signal item_removed(item: Resource)
