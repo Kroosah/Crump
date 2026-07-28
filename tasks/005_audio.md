@@ -6,6 +6,40 @@ Geluid is in CRUMP geen aankleding maar het belangrijkste horror-instrument
 (GAME_BIBLE pijler 1, HORROR_GUIDELINES §3). Deze taak bouwt het fundament:
 mixstructuur, ambience-lagen, en geluid-als-gameplay.
 
+## Bindend architectuurkader (GD, 2026-07-28 — vastgelegd n.a.v. de
+## "geen pickupgeluid"-bevinding bij taak 004)
+
+*Dit kader is bindend voor de uitwerking van deze taak en wint bij
+strijdigheid van de oudere scope-/aanpaktekst hieronder (met name het punt
+dat sfx rechtstreeks uit `noise_made` zouden volgen — dat wordt bij de
+start van 005 herzien conform dit kader).*
+
+1. **`noise_made(position, loudness)` is gameplay-informatie** voor
+   AI/gehoor (taak 007) — het is **niet** hetzelfde als hoorbare audio en
+   wordt dat ook nooit. De twee blijven **afzonderlijke concepten met
+   afzonderlijke signalen**.
+2. **Hoorbare one-shot audio wordt afgespeeld door het audiosysteem**, in
+   zijn eigen boom — nooit door een AudioStreamPlayer-child van een prop
+   die tegelijk kan verdwijnen.
+3. **Props (pickup, deur, la, …) sturen uitsluitend een semantisch
+   audio-event of audioverzoek uit** ("er is een sleutel opgepakt op
+   positie X"); ze spelen zelf niets af en bezitten geen audio-lifecycle.
+4. **Het audiosysteem bezit de AudioStreamPlayer-lifecycle** en laat elk
+   gestart geluid zelfstandig uitspelen.
+5. **De inventory beslist uitsluitend accept/reject** en heeft geen enkele
+   audioverantwoordelijkheid (D-022/§5c van dossier 004).
+6. **Het verwijderen van een prop mag een reeds gestart one-shot geluid
+   nooit afkappen** — de motiverende bug-in-wording: een geaccepteerde
+   pickup krijgt `queue_free` binnen hetzelfde frame en zou als
+   audio-eigenaar zijn eigen geluid onthoofden.
+7. **Verplichte tests in taak 005**:
+   - een one-shot blijft afspelen nadat de bronprop uit de wereld is
+     verdwenen;
+   - één gameplayactie veroorzaakt maximaal één hoorbare one-shot;
+   - een geweigerde pickup veroorzaakt geen pickup-audio;
+   - `noise_made` en hoorbare audio blijven aantoonbaar afzonderlijke
+     concepten en signalen (aparte emissies, apart te testen).
+
 ## Doel
 
 Een `AudioDirector`-autoload die de mix, ambience en cues beheert, plus de
