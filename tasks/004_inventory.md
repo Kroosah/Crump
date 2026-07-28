@@ -1,6 +1,6 @@
 # Taak 004 — Inventory
 
-**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp ter review (GD), geen implementatie · **Vereist**: 003
+**Fase**: 2 (Het gereedschap) · **Status**: 🔵 ontwerp v2 na correctieronde GD, wacht op implementatie-startsein · **Vereist**: 003
 
 Een kleine, diegetische inventory (GAME_BIBLE §8: geen 40-slots-grid).
 De speler draagt een handvol betekenisvolle spullen — de kleedkamersleutel
@@ -82,6 +82,25 @@ terug zodat de juiste pickup zijn eigen antwoord herkent (`source == self`)
 — hij roept er nooit iets op aan en kent het type niet. Zo blijft gelden:
 inventory kent geen wereldobjecten, wereldobjecten kennen de inventory niet.
 
+**Eén autoritatieve inventory** (correctieronde GD, 2026-07-28). Tijdens
+normale gameplay is er maximaal één actieve inventory. Geborgd op drie
+lagen, zonder service locator of nieuw framework:
+
+1. **Bootstrap spawnt éénmalig**: de spawn gebeurt in `_ready()` (niet in
+   `_load_level()`, dus geen her-spawn per levelwissel), en alleen als
+   groep `inventory` op dat moment leeg is — anders `push_warning` en
+   overslaan.
+2. **De inventory bewaakt zichzelf**: in zijn eigen `_ready()` checkt hij
+   of hij de éérste in de groep is. Is er al een ander → `push_warning`
+   ("tweede inventory genegeerd") en hij verbindt zich **niet** met de bus.
+   Zo kan zelfs een per ongeluk in een scène gesleepte tweede instantie
+   nooit meebeslissen. Bus-connecties worden in `_ready()` gelegd en in
+   `_exit_tree()` verbroken — één node, één abonnement; dubbel verbinden
+   van dezelfde Callable weigert Godot bovendien zelf met een fout.
+3. **De suite bewaakt het** (§7.9): precies één node in groep `inventory`,
+   en een bewust toegevoegde tweede instantie abonneert zich niet — één
+   verzoek levert exact één `item_pickup_resolved` op.
+
 **Typediscipline op de grens**: het `item`-veld van de pickup wordt
 `@export var item: Resource` (basistype!). De ontwerper sleept er een
 `ItemResource`-.tres in, maar het prop-script noemt die klasse nooit —
@@ -111,16 +130,38 @@ zodat bestaande `.tres`-bestanden geldig blijven.
 
 - **Interne opbouw**: één `Array` van `ItemResource`-referenties, volgorde =
   opnamevolgorde. Geen slots-grid, geen dictionary — de latere UI toont
-  gewoon een lijstje. Duplicaat-id's zijn toegestaan (twee batterijen =
-  twee vermeldingen).
-- **Capaciteit**: `@export var capacity := 6` (tuning, geen magic number).
-  Vol = verzoek afwijzen; dát is de reject-tak van §5. Klein houden is de
-  ontwerpkeuze (GAME_BIBLE §8) — de lat voor "waarom zou dit item bestaan"
-  ligt bij STORY.md, niet bij de capaciteit.
+  gewoon een lijstje.
+- **Capaciteit voor taak 004: 6** (`@export var capacity := 6` — tuning,
+  geen magic number; 6 = "een handvol", GAME_BIBLE §8). Vol = verzoek
+  afwijzen; dát is de reject-tak van §5.
 - **API** (voor toekomstige afnemers via de groep, allemaal null-veilig te
   benaderen): `add_item(item) -> bool`, `remove_item(id) -> Resource`,
   `has_item(id) -> bool`, `get_items() -> Array`, `is_full() -> bool`.
-  `add_item` weigert: vol, `null`, of geen `ItemResource`.
+
+**Exacte semantiek van `add_item(item)`** (correctieronde GD, 2026-07-28):
+
+| Situatie | Returnwaarde | Effect |
+|---|---|---|
+| geldig item, plek vrij | `true` | item achteraan toegevoegd; `item_added` op de bus |
+| inventory vol (`size >= capacity`) | `false` | **geen enkele mutatie**, geen signaal |
+| `item == null` | `false` | geen mutatie; `push_warning` (contractfout van de aanroeper) |
+| geen `ItemResource` (ander Resource-type) | `false` | geen mutatie; `push_warning` |
+| lege `id` (`&""`) | `false` | geen mutatie; `push_warning` (item is onvindbaar voor saves — configuratiefout) |
+
+De returnwaarde is het enige besliskanaal: `true` = opgenomen, `false` =
+geweigerd; de bus-signalen zijn feiten achteraf, geen tweede waarheid.
+
+**Duplicaat-semantiek**: dezelfde item-**id** mag meermaals in de inventory
+voorkomen (twee batterijen = twee vermeldingen, elk hun eigen slot — er is
+immers geen stacking). Maar **twee verschillende `ItemResource`-definities
+(.tres-bestanden) met dezelfde `id` zijn een configuratiefout**: de id is
+de identiteit richting saves en latere sloten, en twee definities die
+erover twisten maken die betekenisloos. **Afdwinging**: (a) de smoke-suite
+scant `items/` en faalt op dubbele id's en lege id's/namen (§7.8);
+(b) conventie: álle ItemResources leven in die ene map, zodat de scan
+dekkend is; (c) `add_item` weigert lege id's runtime. Runtime kan een
+duplicaat-definitie niet zelf detecteren (hij weet niet welke canoniek is)
+— dit is bewust een test-/dataprobleem, geen runtime-logica.
 - **Stacken: nee.** Onderbouwing: elk item in CRUMP is een betekenisvol,
   individueel object (sleutel, telefoon, zaklamp) — er is geen
   consumable-economie waar aantallen toe doen, en GAME_BIBLE §8 verbiedt
@@ -155,16 +196,66 @@ inventory de opname bevestigd heeft. Dit verandert het bestaande
 `pickup_item.gd`-gedrag (dat nu direct verdwijnt) — dat is de enige
 aanpassing aan taak-003-code, binnen het eigen script van de prop.
 
-**Randgevallen:**
-- **Geen inventory aanwezig** (D-015): niemand beantwoordt het verzoek →
-  de pickup blijft liggen. Verwijderbaarheid gratis: de wereld degradeert
-  netjes in plaats van te crashen.
-- **Dubbel indrukken**: Godot-signalen zijn synchroon — het hele
-  verzoek-antwoord loopt binnen één `interact()`-aanroep af, en na
-  acceptatie is het object weg (`queue_free`). Er is geen wachttoestand
-  waarin een tweede verzoek kan glippen.
-- **Afwijzing zichtbaar maken** ("zakken vol"): bewust niet in 004 — dat is
-  UI/feedback-werk. De F3-regel toont wel de bezetting.
+### 5a. Synchrone flow — exact gedrag per situatie (correctieronde GD)
+
+Godot-signalen zijn **synchrone functie-aanroepen**: wanneer
+`item_pickup_requested.emit(...)` terugkeert, zijn álle listeners al
+geweest — inclusief een eventuele `item_pickup_resolved`-echo. Het
+"verzoekvenster" bestaat dus alleen bínnen die ene emit-regel. De pickup
+heeft twee lokale vlaggen en geen enkele timer of asynchrone state:
+`_awaiting` (alleen waar tijdens het emit-venster) en `_picked`
+(permanent waar na acceptatie).
+
+```
+interact():
+    if _picked: return              # al opgenomen; nooit dubbel verwerken
+    _awaiting = true
+    EventBus.item_pickup_requested.emit(self, item)
+    _awaiting = false               # emit is terug → venster dicht, hoe dan ook
+```
+
+| Situatie | Wat er gebeurt | Toestand ná de interactie |
+|---|---|---|
+| inventory aanwezig, **accepted** | resolved-handler draait bínnen de emit: `_picked = true`, eigen geluid, `picked_up`, `queue_free` | object verdwijnt (einde frame); `can_interact()` is al `false` |
+| inventory aanwezig, **rejected** | resolved-handler markeert het verzoek afgehandeld; verder niets | object ligt er, **direct weer normaal interacteerbaar** — volgende E is een vers verzoek |
+| **geen inventory/listener** | niemand reageert; de emit keert leeg terug en `_awaiting` gaat op `false` | object ligt er, direct weer normaal interacteerbaar; geen enkele blijvende wachtstatus |
+| **ongeldige/niet-passende response** (zie 5b) | handler negeert hem volledig | ongewijzigd |
+
+### 5b. Response-validatie aan de pickupzijde — invarianten
+
+De resolved-handler van een pickup doet alleen iets als **alle drie**
+tegelijk gelden:
+
+1. `source == self` — het antwoord gaat exact over déze pickup;
+2. `_awaiting == true` — de pickup verwerkt op dít moment zelf een verzoek
+   (buiten het emit-venster bestaat er per definitie geen open verzoek);
+3. het verzoek is nog niet afgehandeld — de handler zet bij de éérste
+   passende response `_awaiting` meteen op `false` (en bij accepted ook
+   `_picked = true`), waarna elke volgende response afketst op regel 2.
+
+Daarmee zijn verdwaalde, dubbele en vervalste `resolved`-signalen per
+constructie effectloos: buiten het synchrone emit-venster is `_awaiting`
+altijd `false`, en bínnen het venster verwerkt de handler er hoogstens één.
+
+**Re-entrancy en dubbel indrukken, zonder timers**: één E-druk = één
+`interact()`-aanroep waarin het hele verzoek-antwoord synchroon afloopt —
+er bestaat geen tussenmoment waarop een tweede druk kan interleaven. Een
+tweede E-event (zelfde frame of later) start hooguit een nieuw, compleet
+verzoek; ná acceptatie blokkeren `_picked` (in `interact()` én
+`can_interact()`) en de `queue_free` elke verdere verwerking.
+
+### 5c. Eigenaarschap van feedback (correctieronde GD)
+
+Ná *accepted* handelt de **pickup zijn eigen wereldfeedback** af: zijn
+eigen oppak-geluid (`noise_made` met zijn eigen export-luidheid), zijn
+eigen `picked_up`-signaal en zijn eigen verwijdering. De inventory beslist
+uitsluitend accept/reject en bestuurt **nooit** prop-specifiek geluid,
+zichtbaarheid of ander gedrag — hij weet niet eens dát het een prop is.
+Elke toekomstige "opgenomen"-feedback in de UI hangt aan `item_added`,
+niet aan de prop.
+
+**Afwijzing zichtbaar maken** ("zakken vol"): bewust niet in 004 — dat is
+UI/feedback-werk. De F3-regel toont wel de bezetting.
 
 ## 6. Savegame-impact (alleen beschrijving — niets bouwen)
 
@@ -183,25 +274,70 @@ aanpassing aan taak-003-code, binnen het eigen script van de prop.
   **`id` vanaf dag één verplicht, uniek en stabiel** — de smoke-suite gaat
   dat afdwingen (§7), zodat de save-taak nooit op id-botsingen stuit.
 
+**`GameState.reset()` — gecontroleerd, niet automatisch doorgeschoven**
+(correctieronde GD). Feitelijke stand: `reset()` wordt vandaag op **exact
+vier plekken** aangeroepen, allemaal in `tests/smoke_test.gd` als
+opruimgereedschap tussen tests; er bestaat geen menu, geen
+"nieuw spel"-knop en geen enkele gameplay-flow die het aanroept. Het is
+dus nog geen actief nieuw-spel-moment maar een contract-in-wording.
+**Besluit: inventory-legen hoort niet bij taak 004**, om twee inhoudelijke
+redenen (niet alleen "save is buiten scope"):
+1. Zonder echte nieuw-spel-flow zou de koppeling alléén de smoke-suite
+   raken — en die gebruikt `reset()` juist als neutraal opruimmiddel.
+   Tests die niets met de inventory doen (de briefje-test bijvoorbeeld)
+   zouden ineens stilletjes de inventory wissen: verrassende
+   volgorde-koppeling in testcode, precies wat we net (D-021) hebben
+   afgeleerd.
+2. De juiste vorm van de koppeling hangt af van een besluit dat pas in de
+   save-taak valt (§ hierboven): leeft de inventory-lijst *in* GameState
+   of spiegelt hij ernaartoe. Nu koppelen = nu dat besluit impliciet nemen.
+
+**Concreet toekomstig aansluitpunt**: in de save-taak krijgt `GameState`
+het `items`-veld; `reset()` leegt dat veld dan vanzelf mee (het is gewoon
+GameState-data), en de inventory-node herlaadt zijn lijst uit GameState —
+één bron van waarheid, geen apart leeg-mechanisme. Tot die tijd is de
+inventory runtime-only en is "legen" = de sessie herstarten.
+
 ## 7. Tests (uitbreiding smoke-suite, zelfde D-015-conventies)
 
-1. **Itemmodel**: elke `.tres` in `items/` laadt, is een `ItemResource`,
-   heeft een niet-lege `id` en `display_name`; alle id's zijn **uniek**
-   (QA §2, resource-integriteit).
-2. **Inventory-unit** (losse instantie): toevoegen → `item_added` + telt;
-   `has_item`/`get_items`/`remove_item` (+ `item_removed`); afwijzen bij
-   vol, bij `null` en bij een niet-ItemResource; capaciteit respecteren.
-3. **End-to-end accept**: speler kijkt naar de sleutel → E →
+1. **Itemmodel**: elke `.tres` in `items/` laadt, voldoet duck-typed aan
+   het model, heeft een niet-lege `id` en `display_name`.
+2. **Id-discipline**: alle id's in `items/` zijn **uniek** — twee
+   definities met dezelfde id = suite rood (QA §2,
+   resource-integriteit; §4 duplicaat-semantiek).
+3. **Inventory-unit** (losse instantie): toevoegen → `true` + `item_added`
+   + telt; `has_item`/`get_items`/`remove_item` (+ `item_removed`);
+   **volle inventory weigert zonder enige mutatie** (return `false`, geen
+   signaal, lijst byte-gelijk); `null`, niet-ItemResource en lege id →
+   veilig geweigerd (`false`, geen mutatie).
+4. **End-to-end accept**: speler kijkt naar de sleutel → E →
    `item_pickup_resolved(…, true)`, item zit in de inventory, het geluid
-   klonk **ná** de bevestiging, de prop is weg, prompt leeg.
-4. **End-to-end reject**: capaciteit tijdelijk vol → E → `resolved(false)`,
-   prop ligt er nog, geen geluid, inventory ongewijzigd; daarna capaciteit
-   terug.
-5. **D-015-richtingen**: zonder `game/systems/inventory/` → E laat de prop
-   liggen, geen crash, suite groen (test-INFO); zonder interactiesysteem →
-   inventory idle, groen; alles aanwezig → alles groen. Testcode noemt
-   `ItemResource` **nooit** bij naam (duck-typing, les D-021).
-6. **Debug-regel**: F3-overlay toont bezetting na een geslaagde opname.
+   klonk **ná** de bevestiging, en de prop verdwijnt **exact één keer**
+   (geen dubbele `picked_up`/`noise_made`, node daarna weg).
+5. **End-to-end reject**: capaciteit tijdelijk vol → E →
+   `resolved(false)`, prop bestaat nog en is **direct opnieuw
+   interacteerbaar** (tweede E na capaciteitsherstel slaagt), geen geluid,
+   inventory ongewijzigd.
+6. **Geen inventory** (D-015): map weg → E laat de prop liggen, geen
+   crash, prop blijft opnieuw interacteerbaar, suite groen (test-INFO).
+7. **Response-invarianten** (§5b), via handmatig geïnjecteerde
+   `item_pickup_resolved`-emissies op de bus:
+   - response met een **andere source** → genegeerd (prop ongewijzigd);
+   - response **zonder actief verzoek** (buiten het emit-venster) →
+     genegeerd;
+   - **dubbele response** binnen één verzoek → precies één afhandeling,
+     geen dubbele verwijdering of dubbel geluid.
+8. **Ongeldige itemdata end-to-end**: pickup met `null`/lege-id-item → E →
+   afgewezen, prop blijft, geen crash.
+9. **Eén autoritatieve inventory**: exact één node in groep `inventory`;
+   een bewust toegevoegde tweede instantie abonneert zich niet — één
+   verzoek levert exact één response op (geen dubbele bus-connecties).
+10. **D-015 parseerbaarheid**: zonder `game/systems/inventory/` blijven
+    interactiesysteem én pickups parsen en draaien (testcode noemt
+    `ItemResource` nooit bij naam — duck-typing, les D-021); zonder
+    interactiesysteem is de inventory idle en groen; alles aanwezig →
+    alles groen.
+11. **Debug-regel**: F3-overlay toont bezetting na een geslaagde opname.
 
 ## 8. Risico's — wat is later moeilijk te wijzigen?
 
