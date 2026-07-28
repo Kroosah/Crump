@@ -45,3 +45,11 @@ signal item_added(item: Resource)
 
 ## Dit item is uit de inventory verwijderd.
 signal item_removed(item: Resource)
+
+## Deze actie klinkt als `sound_id` op `position` (taak 005). HOORBAAR feit,
+## strikt gescheiden van noise_made (gameplay-gehoor): geen van beide
+## veroorzaakt ooit automatisch de ander; bronnen zenden bewust beide voor
+## dezelfde actie. Geen ontvanger (audiosysteem verwijderd, D-015) =
+## stilte, geen fout. sound_id is een StringName — de grensvaluta van
+## keuze B2; de akoestische data leeft in SoundResources.
+signal audio_cue(sound_id: StringName, position: Vector3)

@@ -19,6 +19,10 @@ const INTERACTOR_SCENE := "res://game/systems/interaction/interactor.tscn"
 ## kind van de SceneHost: overleeft levelwissels en pauzeert mee (KI-003).
 const INVENTORY_SCENE := "res://game/systems/inventory/inventory.tscn"
 
+## Het audiosysteem (taak 005), zelfde patroon: SceneHost-kind zodat
+## ambience een levelwissel overleeft en Esc óók akoestische stilte is.
+const AUDIO_SYSTEM_SCENE := "res://game/systems/audio/audio_system.tscn"
+
 ## Overlay bestaat alleen in debugbuilds (zie _add_debug_tools).
 const DEBUG_OVERLAY_SCENE := "res://game/ui/debug_overlay/debug_overlay.tscn"
 
@@ -54,6 +58,7 @@ func _ready() -> void:
 	_verify_autoloads()
 	_add_debug_tools()
 	_spawn_inventory()
+	_spawn_audio_system()
 	_load_level(DEV_ROOM_SCENE)
 	if "--smoke-test" in OS.get_cmdline_user_args():
 		_run_smoke_test.call_deferred()
@@ -127,6 +132,21 @@ func _spawn_inventory() -> void:
 	var inventory: Node = load(INVENTORY_SCENE).instantiate()
 	_scene_host.add_child(inventory)
 	Log.info("Bootstrap: inventory actief")
+
+
+## Spawnt het audiosysteem éénmalig (taak 005): zelfde regels als de
+## inventory — bestaanscheck (D-015: zonder = stil maar draaiend) en
+## groep-guard tegen een tweede instantie. Géén ambience wordt hier
+## gestart: levels zetten hun eigen lagen expliciet aan (dossier §5).
+func _spawn_audio_system() -> void:
+	if not ResourceLoader.exists(AUDIO_SYSTEM_SCENE):
+		Log.info("Bootstrap: geen audiosysteem — spel draait stil")
+		return
+	if not get_tree().get_nodes_in_group("audio_system").is_empty():
+		push_warning("Bootstrap: er is al een audiosysteem — tweede spawn overgeslagen")
+		return
+	var audio: Node = load(AUDIO_SYSTEM_SCENE).instantiate()
+	_scene_host.add_child(audio)
 
 
 func _spawn_interactor() -> void:
