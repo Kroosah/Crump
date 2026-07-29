@@ -1,7 +1,8 @@
 # Vertical Slice — Art Direction & Assetplan (fase F)
 
-**Type**: Game Director/Art Director-ontwerpdocument · **Status**: 🔵
-ter review (GD), geen implementatie · **Hoort bij**: tasks/008 §15,
+**Type**: Game Director/Art Director-ontwerpdocument · **Status**: 🟢
+**v1.1 — goedgekeurd door de GD (2026-07-29) met vier besluiten (§14)**;
+wacht op expliciete go voor fase G · **Hoort bij**: tasks/008 §15,
 fase F · **Datum**: 2026-07-29
 
 *Dit document legt vast hoe het clubgebouw van VV Drechtstreek van
@@ -68,8 +69,8 @@ genoeg.
 
 ## 3. Kleurgebruik
 
-**Clubkleuren VV Drechtstreek: blauw-wit** *(voorstel, GD beslist —
-zie §14)*. Motivatie: klassieke dorpsclub-kleuren, ze overleven het
+**Clubkleuren VV Drechtstreek: blauw-wit** *(vastgesteld door de GD,
+2026-07-29 — D-031)*. Motivatie: klassieke dorpsclub-kleuren, ze overleven het
 koele nachtlicht zonder te schreeuwen, en ze laten rood vrij als
 signaalkleur (regel §2.3). Het clubblauw (richting RAL 5010,
 gedempt) komt terug in: deuren-accenten, de bewegwijzering, de banken-
@@ -107,7 +108,8 @@ natte buitenvlakken, tegelwerk en de bar. Resoluties en bronnen: §11.*
 | **Douches** | kleine antisliptegel (5×5, cyaangrijs), donkerder rond de putten, kalkrand | volledig betegeld (wit/cyaan, 15×15), kalksluier op ooghoogte, donkere voeg | geschilderd beton met licht condensspoor |
 | **Toiletten** | zelfde tegel als douches, iets lichter | halfhoog wit betegeld, daarboven geschilderd | geschilderd beton |
 | **Onderhoudsruimte** | kaal beton met olievlek-schaduw bij de cv | ongeschilderd kalkzandsteen, stofsluier | ruw beton, zichtbare leidingen |
-| **Bestuurskamer/keuken** (alleen door glas/kier zichtbaar) | vergrijsd tapijt / grijze tegel | wit | wit |
+| **Bestuurskamer** (demo-focusgebied, §5.8) | vergrijsd naaldvilt-tapijt (blauwgrijs) | wit stucwerk; één wand houten lambrisering vol lijsten | wit systeemplafond |
+| **Keuken** (alleen door het luik zichtbaar) | grijze tegel | wit tegelwerk | wit |
 | **Buitenzijde** | nat asfalt (voorplein/pad), gras met kale doellijn-plekken (veld) | schoon metselwerk (bruinrood genuanceerd), betonplint; tribune-beton erboven | — (dakrand: donkere boeiboord) |
 
 **Nat is het buiten-materiaal.** Het regent: asfalt spiegelt het
@@ -191,6 +193,23 @@ als echt vakwerkmast-silhouet; dug-outs zijn er niet (bewust: budget
 en zichtlijn — heroverwegen in fase G als het veld te leeg voelt);
 containerhoek naast de onderhoudsruimte-gevel (kliko's, netjes op
 een rij — vrijwilligersnetheid).
+
+### 5.8 Bestuurskamer — "het geheugen van de club" *(toegevoegd in v1.1: door de GD in het demo-focusgebied geplaatst)*
+De kamer waar de club zichzelf bewaart. Vergaderopstelling: ovale tafel
+met zes verschillende stoelen (bij elkaar geraapt door de jaren), een
+dressoir met archiefdozen ("NOTULEN 2019–2023", handgeschreven
+etiketten), een wand vol **historie**: oude elftalfoto's, het
+oprichtingsdocument in een lijst, een verkleurde luchtfoto van
+Sportpark Oostpolder uit de jaren tachtig; de kampioensvaan aan een
+knop; een vaste telefoon (jaren negentig — hij hangt er nog); een
+whiteboard met een half uitgewiste agenda ("ALV — najaar"); een
+koffiezetapparaat op het dressoir met opgedroogde kan; de clubvlag
+opgevouwen over een stoelleuning; radiator met vensterbank. De
+dichtste, meest "bewoonde" ruimte van de demo — en 's nachts kijken
+al die foto's terug; we doen er niets mee, de ruimte zelf is genoeg
+(P7). **Consequentie**: de bestuurskamerdeur gaat in het
+demo-focusgebied **van het slot**; de VS-deurtabel (tasks/008 §3)
+wordt hierop bij fase D herijkt.
 
 ## 6. Ramen
 
@@ -332,39 +351,62 @@ zijn gratis. Totaal ±78 unieke assets, waarvan ±30 puur 2D/decal.*
 | Toiletten | 5 | 2 | sanitair-set |
 | Onderhoudsruimte | 7 | 3 | belijningskar, stellinginhoud |
 | Hal | 3 | 5 | prikbord-papier, deurmat, lambrisering |
+| Bestuurskamer *(v1.1)* | 9 | 7 | tafel+stoelen, dressoir/archief, historie-wand |
 | Buiten | 9 | 8 | gevel-set, clubnaambord, boarding, mast |
-| Materialen (§4, gebouwbreed) | 16 texture-sets | — | vloer/wand/tegel/asfalt/gras |
+| Materialen (§4, gebouwbreed) | 17 texture-sets | — | vloer/wand/tegel/tapijt/asfalt/gras |
 
-## 13. Prioriteitenlijst voor de eerste speelbare demo
+## 13. Prioriteitenlijst voor de eerste speelbare demo *(v1.1 — herzien op GD-besluit)*
 
-*Volgorde van bouwen in fase G; elke tier is apart opleverbaar en
-GD-testbaar. De demo-route (aankomst → kantine → gang → kleedkamers →
-onderhoud → buiten) bepaalt de volgorde: wat de speler het langst en
-van het dichtstbij ziet, eerst.*
+**GD-besluit (2026-07-29, vervangt de eerdere route-brede tiers): niet
+de volledige route op één kwaliteitsniveau, maar álle prioriteit eerst
+naar een extreem hoogwaardige eerste 10–15 minuten.**
 
-1. **Tier 1 — het fundament (demo-kritiek)**: alle materialen uit §4
-   over de bestaande volumes (gebouwbreed, incl. buiten-nat); deuren-
-   artpass (§7); TL-behuizingen (§8); bewegwijzering (§10). *Dit
-   alleen al haalt de "kubussen-gevoel"-klacht weg.*
-2. **Tier 2 — de hero-ruimtes**: de bar + kantine-props (§5.1);
-   kleedkamer 3 volledig (§5.2); gang-aankleding (§5.5). 
-3. **Tier 3 — de omlijsting**: buitenzijde (gevel, clubnaambord,
-   boarding, mast, hek-gaas); douches en toiletten (§5.3/§5.4).
-4. **Tier 4 — de diepte**: onderhoudsruimte (§5.6); kleedkamer 4-
-   verschilling; trofeeënkast-inhoud verfijning; teamfoto's.
-5. **Buiten de demo-kritieke lijn** (mag doorschuiven): dug-outs-
-   heroverweging, containerhoek, gordijnen, plant, darts-hoek.
+**Demo-focusgebied**: entree (incl. het buitengezicht van de entree:
+luifel, clubnaambord, gevel-stuk en het stukje voorplein dat je vanaf
+de deur ziet) → hal → **de gang als verbinder** (niet door de GD
+genoemd, maar de speler kán de kleedkamers niet bereiken zonder gang —
+hij hoort er dus bij, op vol niveau) → kleedkamers 3+4 → douches →
+bestuurskamer (§5.8, deur van het slot).
 
-## 14. Openstaande GD-keuzes in dit plan
+1. **Tier F1 — fundament van het focusgebied**: materialen (§4) op
+   álle focusruimtes; deuren-artpass (§7) en TL-behuizingen (§8)
+   binnen het focusgebied; bewegwijzering (§10) in hal en gang.
+2. **Tier F2 — de bewoonde laag**: kleedkamer 3 volledig (§5.2),
+   kleedkamer 4 als kalere spiegel, douches (§5.3).
+3. **Tier F3 — de zwaartepunten**: bestuurskamer volledig (§5.8);
+   hal-aankleding (prikbord, deurmat, lambrisering); entree-buitenkant
+   (clubnaambord, gevelmateriaal, luifel, natte entree-zone).
+4. **Tier F4 — de sfeerlak op het focusgebied**: decals en
+   micro-slijtage, kalk, condensranden, elftalfoto's in de gang —
+   het "volledig af"-gevoel. **Gate: de GD verklaart de demo-zone
+   visueel en qua sfeer áf.**
+5. **Daarná, tier-gewijs, de rest van het gebouw** (herbruik van de
+   oude tiers): kantine (bar + props — het grootste losse blok),
+   toiletten, onderhoudsruimte, buitenwereld-volledig (boarding, mast,
+   hek, veld), containerhoek/dug-outs-heroverweging.
 
-1. **Clubkleuren**: blauw-wit (advies, §3) — of anders?
-2. **Bronnen-akkoord**: Poly Haven + ambientCG (CC0) als toegestane
-   bibliotheken, licenties in de repo?
-3. **CRUMP-representatie**: akkoord met "silhouet-rig als tijdelijke
-   glimp-representatie, definitief ontwerp in eigen sessie" (§11)?
-4. **Demo-scope**: bevestiging dat de demo de hele route gebruikt
-   (tier-volgorde §13) en niet kleedkamer-only — de tiers zijn er op
-   gebouwd dat je na elke tier kunt stoppen en tóch iets heels hebt.
+**Kwaliteitsgrens bewaken**: zolang de rest greybox is, blijven de
+niet-focusdeuren dicht (kantinedeur en toiletttendeur gewoon
+sluitbaar zoals nu; wie ze opent ziet eerlijk greybox — geen nep).
+De overgang focusgebied ↔ greybox wordt nergens verstopt: dit is een
+gefaseerde bouw, geen illusie. In het focusgebied geldt de hoogste
+lat: geen enkel zichtbaar vlak zonder echt materiaal, geen enkele
+prop op placeholder-niveau.
+
+## 14. GD-besluiten (2026-07-29 — bindend, D-031)
+
+1. **Clubkleuren: blauw-wit.** Doorgevoerd in §3.
+2. **Bronnen: Poly Haven + ambientCG (CC0) akkoord**, inclusief
+   licenties in de repo.
+3. **CRUMP: tijdelijk silhouet-rig** voor de latere glimp; het
+   definitieve ontwerp volgt in een eigen sessie.
+4. **Demo-scope (afwijkend van het voorstel)**: niet de volledige
+   route op één niveau — alle prioriteit eerst naar een **extreem
+   hoogwaardige eerste 10–15 minuten** (entree, hal, kleedkamers,
+   douches, bestuurskamer). Pas wanneer die demo-zone visueel en qua
+   sfeer volledig áf voelt, wordt de rest van het clubgebouw
+   tier-gewijs uitgebreid. Verwerkt in §13 (focusgebied-tiers F1–F4 +
+   gate) en §5.8 (bestuurskamer uitgewerkt, deur van het slot).
 
 ## 15. Wat deze pass uitdrukkelijk níét doet
 

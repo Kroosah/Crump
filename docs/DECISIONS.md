@@ -341,3 +341,21 @@ de suite-meetpunten slopen en herbouwen op elke levelwijziging zou de
 tests aan het leveldesign klinken; zo test één run beide werelden én de
 levelwissel zelf. Bestaanscheck beide kanten op (D-015): zonder
 clubgebouw valt het spel terug op de dev room.
+
+## D-031 — Artpass-besluiten: clubkleuren, CC0-bronnen, silhouet-rig, demo-focusgebied
+**Datum**: 2026-07-29 · **Wie**: GD (review fase F-artplan) · **Status**: actief
+Vier bindende besluiten bij het goedgekeurde art-direction-plan
+(tasks/008_artdirection.md v1.1): **(1)** de clubkleuren van VV
+Drechtstreek zijn **blauw-wit** (canon; rood blijft gereserveerd als
+signaalkleur). **(2)** **Poly Haven en ambientCG (CC0)** zijn de
+toegestane assetbibliotheken; licenties komen per bron mee in de repo
+(CLAUDE.md-akkoord hiermee verleend; andere bronnen vergen nieuw
+akkoord). **(3)** CRUMP krijgt voorlopig een **tijdelijk silhouet-rig**
+als glimp-representatie; het definitieve ontwerp volgt in een eigen
+GD-sessie vóór VS-fase I. **(4)** De demo is **niet** de volledige
+route op één kwaliteitsniveau maar een **extreem hoogwaardig
+focusgebied** — entree, hal, gang (verbinder), kleedkamers 3+4,
+douches en bestuurskamer — dat eerst volledig áf moet voelen (gate)
+voordat de rest tier-gewijs volgt. Consequentie: de bestuurskamer
+wordt betreedbaar (deur van het slot) en ingericht; de VS-deurtabel
+(tasks/008 §3) wordt daarop bij fase D herijkt.

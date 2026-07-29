@@ -5,10 +5,11 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-29 (fase C **goedgekeurd door de GD**
-("de basis staat"); GD-besluit: **artpass F→G naar voren**, vóór
-gameplayflow D/E — richtdoel: speelbare demo ±10 min; **fase
-F-ontwerp (art direction) in tasks/008_artdirection.md ter review**)
+**Laatst bijgewerkt**: 2026-07-29 (fase F-artplan **goedgekeurd, v1.1**
+met vier GD-besluiten (D-031): clubkleuren blauw-wit, CC0-bronnen
+akkoord, CRUMP-silhouet-rig tijdelijk, en **demo = extreem hoogwaardig
+focusgebied** (entree/hal/gang/kleedkamers/douches/bestuurskamer) —
+**wacht op expliciete go voor fase G, tier F1**)
 
 ---
 
@@ -95,7 +96,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · **F 🔵 ontwerp ter review** (naar voren gehaald vóór D/E, GD-besluit 2026-07-29) · D/E/G–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · **F ✅ plan goedgekeurd (v1.1, D-031)** · **G 🔵 wacht op go (tier F1)** · D/E/H–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
@@ -121,17 +122,17 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD reviewt het fase F-ontwerp** in `tasks/008_artdirection.md`
-(art direction + assetplan voor de artpass), inclusief de vier
-§14-keuzes: clubkleuren (advies blauw-wit), bronnen-akkoord (Poly
-Haven + ambientCG, CC0, licenties in de repo), de tijdelijke
-CRUMP-silhouet-representatie voor de latere glimp, en de demo-scope
-(hele route, tier-gewijs). Na akkoord (+ evt. correctierondes, alleen
-docs) volgt **fase G: de artpass in tier-volgorde** (§13 van het plan;
-tier 1 = materialen + deuren + TL-behuizingen + bewegwijzering,
-gebouwbreed), commit per tier, GD-blik na elke tier, TD-007 lost
-gaandeweg af. **GD-besluit vastgelegd: D (flow) en E (pacing-gate)
-volgen ná de artpass; geen monster-AI of nieuwe gameplay nu.**
+**Fase G: de artpass van het demo-focusgebied — wacht op expliciet
+GD-startsein.** Volgorde per tasks/008_artdirection.md §13 (v1.1):
+tier F1 (materialen + deuren + TL-behuizingen + bewegwijzering binnen
+het focusgebied entree/hal/gang/kleedkamers/douches/bestuurskamer) →
+F2 (kleedkamers + douches bewoond) → F3 (bestuurskamer + hal +
+entree-buitenkant) → F4 (sfeerlak; gate: GD verklaart de demo-zone
+áf) → daarna pas de rest van het gebouw tier-gewijs. Bij de start van
+G: CC0-bronnen binnenhalen mét licenties (D-031), bestuurskamerdeur
+van het slot + inrichting, TD-007 per focusruimte aflossen (ruimte →
+eigen scène), suite bewaakt architectuur/budget/staten. **D (flow) en
+E (pacing) volgen ná de artpass; geen AI of nieuwe gameplay.**
 Overige haken: monster-AI (009), TD-005, TD-004, save-integratie,
 inventory-UI/HUD (TD-006), canonvraag "derde helft als proloog"
 (STORY §8), KI-004.
