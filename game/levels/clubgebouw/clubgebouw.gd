@@ -23,8 +23,31 @@ extends Node3D
 const LIGHT_TL_SCENE := "res://game/props/light_tl/light_tl.tscn"
 const DOOR_SCENE := "res://game/props/door_wooden/door_wooden.tscn"
 
-## Grijstinten met nét genoeg hint om functie te lezen — geen textures.
+## Materialen. Twee vormen (fase G, tier F1):
+## - Color: vlakke greybox-kleur (niet-focusruimtes blijven zo);
+## - Dictionary: PBR-materiaal uit assets/textures/ (CC0, D-031) met
+##   "tex" (setnaam), "tint" (albedo-vermenigvuldiging), "scale"
+##   (wereld-triplanair: herhaling per meter) en "rough" (factor).
+## Focus-materialen dragen het voorvoegsel f_ (artplan §4).
 const MATERIALS := {
+	# — Focusgebied (artplan §4, tier F1) —
+	&"f_zeil_hal": {"tex": "beton", "tint": Color(0.60, 0.61, 0.64), "scale": 0.3, "rough": 0.65},
+	&"f_zeil_gang": {"tex": "beton", "tint": Color(0.52, 0.58, 0.53), "scale": 0.3, "rough": 0.7},
+	&"f_stucwerk": {"tex": "stucwerk", "tint": Color(0.93, 0.92, 0.88), "scale": 0.5},
+	&"f_metselwerk_wit": {"tex": "metselwerk_wit", "tint": Color(0.78, 0.79, 0.77), "scale": 0.45},
+	&"f_systeemplafond": {"tex": "systeemplafond", "tint": Color(0.95, 0.95, 0.95), "scale": 0.55},
+	&"f_betonplafond": {"tex": "stucwerk", "tint": Color(0.60, 0.60, 0.63), "scale": 0.5, "rough": 0.95},
+	&"f_coating": {"tex": "beton", "tint": Color(0.55, 0.60, 0.68), "scale": 0.4, "rough": 0.8},
+	&"f_tegel_wand": {"tex": "tegel_wit", "tint": Color(0.92, 0.94, 0.96), "scale": 0.6, "rough": 0.55},
+	&"f_tegel_vloer": {"tex": "tegel_vloer_grijs", "tint": Color(0.72, 0.76, 0.80), "scale": 0.7, "rough": 0.5},
+	&"f_tapijt": {"tex": "tapijt", "tint": Color(0.55, 0.58, 0.66), "scale": 0.6},
+	&"f_gevel": {"tex": "gevel", "tint": Color(0.92, 0.90, 0.88), "scale": 0.4},
+	&"f_asfalt_nat": {"tex": "asfalt", "tint": Color(0.80, 0.83, 0.88), "scale": 0.28, "rough": 0.4},
+	&"f_lambrisering": {"tex": "planken", "tint": Color(0.80, 0.72, 0.62), "scale": 0.7},
+	&"f_metaal": {"tex": "metaal", "scale": 0.5, "rough": 0.6},
+	&"f_kozijn_blauw": {"tint": Color(0.05, 0.25, 0.48), "rough": 0.5},
+	&"f_kozijn_staal": {"tint": Color(0.42, 0.44, 0.47), "rough": 0.45},
+	# — Greybox (niet-focus, ongewijzigd) —
 	&"wand": Color(0.62, 0.62, 0.64),
 	&"plafond": Color(0.72, 0.72, 0.74),
 	&"beton": Color(0.42, 0.43, 0.45),
@@ -50,12 +73,12 @@ const MATERIALS := {
 ## Elke solid: pos (center), size, mat; "nc": true = geen collision.
 const SCHIL: Array[Dictionary] = [
 	# Zuidgevel (z 7,0..7,2): hoofdentree + hal-raam.
-	{"pos": Vector3(-7.855, 1.45, 7.1), "size": Vector3(14.69, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(0.0, 2.51, 7.1), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
-	{"pos": Vector3(0.755, 1.45, 7.1), "size": Vector3(0.49, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(1.45, 0.45, 7.1), "size": Vector3(0.9, 0.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(1.45, 2.55, 7.1), "size": Vector3(0.9, 0.7, 0.2), "mat": &"wand"},
-	{"pos": Vector3(7.15, 1.45, 7.1), "size": Vector3(10.5, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-7.855, 1.45, 7.1), "size": Vector3(14.69, 2.9, 0.2), "mat": &"f_gevel"},
+	{"pos": Vector3(0.0, 2.51, 7.1), "size": Vector3(1.02, 0.78, 0.2), "mat": &"f_gevel"},
+	{"pos": Vector3(0.755, 1.45, 7.1), "size": Vector3(0.49, 2.9, 0.2), "mat": &"f_gevel"},
+	{"pos": Vector3(1.45, 0.45, 7.1), "size": Vector3(0.9, 0.9, 0.2), "mat": &"f_gevel"},
+	{"pos": Vector3(1.45, 2.55, 7.1), "size": Vector3(0.9, 0.7, 0.2), "mat": &"f_gevel"},
+	{"pos": Vector3(7.15, 1.45, 7.1), "size": Vector3(10.5, 2.9, 0.2), "mat": &"f_gevel"},
 	{"pos": Vector3(1.45, 1.55, 7.1), "size": Vector3(0.9, 1.3, 0.05), "mat": &"glas"},
 	# Noordgevel (z -4,7..-4,5): drie kantineramen op het veld + twee
 	# kiepraampjes van de douches.
@@ -81,9 +104,9 @@ const SCHIL: Array[Dictionary] = [
 	{"pos": Vector3(10.4, 2.6, -4.6), "size": Vector3(2.0, 0.6, 0.2), "mat": &"wand"},
 	{"pos": Vector3(10.4, 1.6, -4.6), "size": Vector3(2.0, 1.4, 0.05), "mat": &"glas"},
 	# Westgevel (x -15,2..-15,0): nooddeur uit de gang.
-	{"pos": Vector3(-15.1, 1.45, -0.45), "size": Vector3(0.2, 2.9, 8.5), "mat": &"wand"},
-	{"pos": Vector3(-15.1, 2.51, 4.31), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
-	{"pos": Vector3(-15.1, 1.45, 6.01), "size": Vector3(0.2, 2.9, 2.38), "mat": &"wand"},
+	{"pos": Vector3(-15.1, 1.45, -0.45), "size": Vector3(0.2, 2.9, 8.5), "mat": &"f_gevel"},
+	{"pos": Vector3(-15.1, 2.51, 4.31), "size": Vector3(0.2, 0.78, 1.02), "mat": &"f_gevel"},
+	{"pos": Vector3(-15.1, 1.45, 6.01), "size": Vector3(0.2, 2.9, 2.38), "mat": &"f_gevel"},
 	# Oostgevel (x 12,2..12,4): terrasdeur (op slot).
 	{"pos": Vector3(12.3, 1.45, -4.1), "size": Vector3(0.2, 2.9, 1.2), "mat": &"wand"},
 	{"pos": Vector3(12.3, 2.51, -2.99), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
@@ -92,30 +115,30 @@ const SCHIL: Array[Dictionary] = [
 
 ## Vloeren (top op y = 0) en plafonds per ruimte.
 const VLOEREN: Array[Dictionary] = [
-	{"pos": Vector3(0.0, -0.1, 4.65), "size": Vector3(4.4, 0.2, 5.1), "mat": &"beton"},
+	{"pos": Vector3(0.0, -0.1, 4.65), "size": Vector3(4.4, 0.2, 5.1), "mat": &"f_zeil_hal"},
 	{"pos": Vector3(7.2, -0.1, -0.5), "size": Vector3(10.4, 0.2, 8.4), "mat": &"beton"},
-	{"pos": Vector3(4.1, -0.1, 5.35), "size": Vector3(4.2, 0.2, 3.7), "mat": &"beton"},
+	{"pos": Vector3(4.1, -0.1, 5.35), "size": Vector3(4.2, 0.2, 3.7), "mat": &"f_tapijt"},
 	{"pos": Vector3(10.4, -0.1, 5.35), "size": Vector3(4.0, 0.2, 3.7), "mat": &"beton"},
-	{"pos": Vector3(-8.6, -0.1, 4.3), "size": Vector3(13.2, 0.2, 2.2), "mat": &"beton"},
-	{"pos": Vector3(-4.7, -0.1, 0.95), "size": Vector3(5.0, 0.2, 4.9), "mat": &"vloer_kleed"},
-	{"pos": Vector3(-9.3, -0.1, 0.95), "size": Vector3(4.6, 0.2, 4.9), "mat": &"vloer_kleed"},
-	{"pos": Vector3(-3.8, -0.1, -3.0), "size": Vector3(3.2, 0.2, 3.4), "mat": &"tegel"},
-	{"pos": Vector3(-9.0, -0.1, -3.0), "size": Vector3(3.2, 0.2, 3.4), "mat": &"tegel"},
+	{"pos": Vector3(-8.6, -0.1, 4.3), "size": Vector3(13.2, 0.2, 2.2), "mat": &"f_zeil_gang"},
+	{"pos": Vector3(-4.7, -0.1, 0.95), "size": Vector3(5.0, 0.2, 4.9), "mat": &"f_coating"},
+	{"pos": Vector3(-9.3, -0.1, 0.95), "size": Vector3(4.6, 0.2, 4.9), "mat": &"f_coating"},
+	{"pos": Vector3(-3.8, -0.1, -3.0), "size": Vector3(3.2, 0.2, 3.4), "mat": &"f_tegel_vloer"},
+	{"pos": Vector3(-9.0, -0.1, -3.0), "size": Vector3(3.2, 0.2, 3.4), "mat": &"f_tegel_vloer"},
 	{"pos": Vector3(-5.1, -0.1, 6.2), "size": Vector3(3.4, 0.2, 2.0), "mat": &"tegel"},
 	{"pos": Vector3(-13.2, -0.1, 1.15), "size": Vector3(3.6, 0.2, 4.5), "mat": &"beton_donker"},
 	{"pos": Vector3(-8.0, -0.1, 5.8), "size": Vector3(1.6, 0.2, 1.0), "mat": &"beton"},
 ]
 
 const PLAFONDS: Array[Dictionary] = [
-	{"pos": Vector3(0.0, 2.675, 4.65), "size": Vector3(4.4, 0.15, 5.1), "mat": &"plafond"},
+	{"pos": Vector3(0.0, 2.675, 4.65), "size": Vector3(4.4, 0.15, 5.1), "mat": &"f_systeemplafond"},
 	{"pos": Vector3(7.2, 2.775, -0.5), "size": Vector3(10.4, 0.15, 8.4), "mat": &"plafond"},
-	{"pos": Vector3(4.1, 2.475, 5.35), "size": Vector3(4.2, 0.15, 3.7), "mat": &"plafond"},
+	{"pos": Vector3(4.1, 2.475, 5.35), "size": Vector3(4.2, 0.15, 3.7), "mat": &"f_systeemplafond"},
 	{"pos": Vector3(10.4, 2.475, 5.35), "size": Vector3(4.0, 0.15, 3.7), "mat": &"plafond"},
-	{"pos": Vector3(-8.6, 2.475, 4.3), "size": Vector3(13.2, 0.15, 2.2), "mat": &"plafond"},
-	{"pos": Vector3(-4.7, 2.575, 0.95), "size": Vector3(5.0, 0.15, 4.9), "mat": &"plafond"},
-	{"pos": Vector3(-9.3, 2.575, 0.95), "size": Vector3(4.6, 0.15, 4.9), "mat": &"plafond"},
-	{"pos": Vector3(-3.8, 2.375, -3.0), "size": Vector3(3.2, 0.15, 3.4), "mat": &"plafond"},
-	{"pos": Vector3(-9.0, 2.375, -3.0), "size": Vector3(3.2, 0.15, 3.4), "mat": &"plafond"},
+	{"pos": Vector3(-8.6, 2.475, 4.3), "size": Vector3(13.2, 0.15, 2.2), "mat": &"f_betonplafond"},
+	{"pos": Vector3(-4.7, 2.575, 0.95), "size": Vector3(5.0, 0.15, 4.9), "mat": &"f_betonplafond"},
+	{"pos": Vector3(-9.3, 2.575, 0.95), "size": Vector3(4.6, 0.15, 4.9), "mat": &"f_betonplafond"},
+	{"pos": Vector3(-3.8, 2.375, -3.0), "size": Vector3(3.2, 0.15, 3.4), "mat": &"f_betonplafond"},
+	{"pos": Vector3(-9.0, 2.375, -3.0), "size": Vector3(3.2, 0.15, 3.4), "mat": &"f_betonplafond"},
 	{"pos": Vector3(-5.1, 2.475, 6.2), "size": Vector3(3.4, 0.15, 2.0), "mat": &"plafond"},
 	{"pos": Vector3(-13.2, 2.375, 1.15), "size": Vector3(3.6, 0.15, 4.5), "mat": &"plafond"},
 	# Dak + tribune-silhouet erboven (het gebouw zit ónder de tribune).
@@ -128,7 +151,7 @@ const PLAFONDS: Array[Dictionary] = [
 ## Buitenwereld: voorplein, pad langs het veld, hekwerk, veld en mast.
 const BUITEN: Array[Dictionary] = [
 	# Verharding en gras (alles top y = 0, geen drempels).
-	{"pos": Vector3(-5.8, -0.1, 10.6), "size": Vector3(23.6, 0.2, 6.8), "mat": &"verharding"},
+	{"pos": Vector3(-5.8, -0.1, 10.6), "size": Vector3(23.6, 0.2, 6.8), "mat": &"f_asfalt_nat"},
 	{"pos": Vector3(-16.4, -0.1, 1.25), "size": Vector3(2.4, 0.2, 11.9), "mat": &"verharding"},
 	{"pos": Vector3(-2.55, -0.1, -5.8), "size": Vector3(30.1, 0.2, 2.2), "mat": &"verharding"},
 	{"pos": Vector3(-2.5, -0.1, -25.95), "size": Vector3(55.0, 0.2, 38.1), "mat": &"gras"},
@@ -172,16 +195,16 @@ const BUITEN: Array[Dictionary] = [
 ## Binnenwanden (0,2 m dik, tot y 2,9) met deuropeningen + lateien.
 const INTERIEUR: Array[Dictionary] = [
 	# Hal-oost (x 2,0..2,2): doorgang kantine + deur bestuurskamer.
-	{"pos": Vector3(2.1, 1.45, 4.27), "size": Vector3(0.2, 2.9, 1.9), "mat": &"wand"},
-	{"pos": Vector3(2.1, 1.45, 6.62), "size": Vector3(0.2, 2.9, 0.76), "mat": &"wand"},
-	{"pos": Vector3(2.1, 2.51, 2.81), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
-	{"pos": Vector3(2.1, 2.51, 5.73), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
+	{"pos": Vector3(2.1, 1.45, 4.27), "size": Vector3(0.2, 2.9, 1.9), "mat": &"f_stucwerk"},
+	{"pos": Vector3(2.1, 1.45, 6.62), "size": Vector3(0.2, 2.9, 0.76), "mat": &"f_stucwerk"},
+	{"pos": Vector3(2.1, 2.51, 2.81), "size": Vector3(0.2, 0.78, 1.02), "mat": &"f_stucwerk"},
+	{"pos": Vector3(2.1, 2.51, 5.73), "size": Vector3(0.2, 0.78, 1.02), "mat": &"f_stucwerk"},
 	# Hal-west: deur naar de kleedkamergang.
-	{"pos": Vector3(-2.1, 1.45, 3.05), "size": Vector3(0.2, 2.9, 1.5), "mat": &"wand"},
-	{"pos": Vector3(-2.1, 1.45, 5.91), "size": Vector3(0.2, 2.9, 2.18), "mat": &"wand"},
-	{"pos": Vector3(-2.1, 2.51, 4.31), "size": Vector3(0.2, 0.78, 1.02), "mat": &"wand"},
+	{"pos": Vector3(-2.1, 1.45, 3.05), "size": Vector3(0.2, 2.9, 1.5), "mat": &"f_stucwerk"},
+	{"pos": Vector3(-2.1, 1.45, 5.91), "size": Vector3(0.2, 2.9, 2.18), "mat": &"f_stucwerk"},
+	{"pos": Vector3(-2.1, 2.51, 4.31), "size": Vector3(0.2, 0.78, 1.02), "mat": &"f_stucwerk"},
 	# Hal-noord (dicht).
-	{"pos": Vector3(0.0, 1.45, 2.2), "size": Vector3(4.4, 2.9, 0.2), "mat": &"wand"},
+	{"pos": Vector3(0.0, 1.45, 2.2), "size": Vector3(4.4, 2.9, 0.2), "mat": &"f_stucwerk"},
 	# Kantine-zuid: keukendeur + doorgeefluik boven de bar.
 	{"pos": Vector3(5.5, 1.45, 3.6), "size": Vector3(6.6, 2.9, 0.2), "mat": &"wand"},
 	{"pos": Vector3(9.91, 1.45, 3.6), "size": Vector3(0.18, 2.9, 0.2), "mat": &"wand"},
@@ -190,37 +213,37 @@ const INTERIEUR: Array[Dictionary] = [
 	{"pos": Vector3(10.75, 0.525, 3.6), "size": Vector3(1.5, 1.05, 0.2), "mat": &"wand"},
 	{"pos": Vector3(10.75, 2.425, 3.6), "size": Vector3(1.5, 0.95, 0.2), "mat": &"wand"},
 	# Bestuurskamer- en keukenwanden.
-	{"pos": Vector3(6.1, 1.45, 5.35), "size": Vector3(0.2, 2.9, 3.3), "mat": &"wand"},
+	{"pos": Vector3(6.1, 1.45, 5.35), "size": Vector3(0.2, 2.9, 3.3), "mat": &"f_stucwerk"},
 	{"pos": Vector3(8.5, 1.45, 5.35), "size": Vector3(0.2, 2.9, 3.3), "mat": &"wand"},
 	# Gang-noord: deuren kleedkamer 3, kleedkamer 4 en onderhoudsruimte.
-	{"pos": Vector3(-14.21, 1.45, 3.3), "size": Vector3(1.58, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-11.11, 1.45, 3.3), "size": Vector3(2.58, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-6.61, 1.45, 3.3), "size": Vector3(4.38, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-2.8, 1.45, 3.3), "size": Vector3(1.2, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-12.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-9.31, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-3.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-14.21, 1.45, 3.3), "size": Vector3(1.58, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-11.11, 1.45, 3.3), "size": Vector3(2.58, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-6.61, 1.45, 3.3), "size": Vector3(4.38, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-2.8, 1.45, 3.3), "size": Vector3(1.2, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-12.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-9.31, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-3.91, 2.51, 3.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"f_metselwerk_wit"},
 	# Gang-zuid: toilettendeur + open schoonmaaknis.
-	{"pos": Vector3(-11.8, 1.45, 5.3), "size": Vector3(6.4, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-6.5, 1.45, 5.3), "size": Vector3(1.8, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-3.39, 1.45, 5.3), "size": Vector3(2.38, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-5.09, 2.51, 5.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-8.0, 2.55, 5.3), "size": Vector3(1.2, 0.7, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-11.8, 1.45, 5.3), "size": Vector3(6.4, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-6.5, 1.45, 5.3), "size": Vector3(1.8, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-3.39, 1.45, 5.3), "size": Vector3(2.38, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-5.09, 2.51, 5.3), "size": Vector3(1.02, 0.78, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-8.0, 2.55, 5.3), "size": Vector3(1.2, 0.7, 0.2), "mat": &"f_metselwerk_wit"},
 	# Kleedkamerblok: oostwand, tussenwand, leidingkoker tussen de douches.
-	{"pos": Vector3(-2.3, 1.45, -0.65), "size": Vector3(0.2, 2.9, 7.7), "mat": &"wand"},
-	{"pos": Vector3(-7.1, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"wand"},
-	{"pos": Vector3(-6.4, 1.45, -3.0), "size": Vector3(2.4, 2.9, 3.0), "mat": &"wand"},
+	{"pos": Vector3(-2.3, 1.45, -0.65), "size": Vector3(0.2, 2.9, 7.7), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-7.1, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-6.4, 1.45, -3.0), "size": Vector3(2.4, 2.9, 3.0), "mat": &"f_metselwerk_wit"},
 	# Kleedkamer 3 → douche 3 (open doorgang, geen deur).
-	{"pos": Vector3(-5.75, 1.45, -1.4), "size": Vector3(2.5, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-2.95, 1.45, -1.4), "size": Vector3(1.1, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-4.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"wand"},
+	{"pos": Vector3(-5.75, 1.45, -1.4), "size": Vector3(2.5, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-2.95, 1.45, -1.4), "size": Vector3(1.1, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-4.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"f_metselwerk_wit"},
 	# Kleedkamer 4 → douche 4.
-	{"pos": Vector3(-10.45, 1.45, -1.4), "size": Vector3(1.9, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-7.85, 1.45, -1.4), "size": Vector3(1.3, 2.9, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-9.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"wand"},
-	{"pos": Vector3(-10.5, 1.45, -3.0), "size": Vector3(0.2, 2.9, 3.0), "mat": &"wand"},
+	{"pos": Vector3(-10.45, 1.45, -1.4), "size": Vector3(1.9, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-7.85, 1.45, -1.4), "size": Vector3(1.3, 2.9, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-9.0, 2.475, -1.4), "size": Vector3(1.0, 0.85, 0.2), "mat": &"f_metselwerk_wit"},
+	{"pos": Vector3(-10.5, 1.45, -3.0), "size": Vector3(0.2, 2.9, 3.0), "mat": &"f_metselwerk_wit"},
 	# Onderhoudsruimte (west van kleedkamer 4).
-	{"pos": Vector3(-11.5, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"wand"},
+	{"pos": Vector3(-11.5, 1.45, 0.95), "size": Vector3(0.2, 2.9, 4.5), "mat": &"f_metselwerk_wit"},
 	{"pos": Vector3(-13.2, 1.45, -1.0), "size": Vector3(3.6, 2.9, 0.2), "mat": &"wand"},
 	# Toiletten + schoonmaaknis (zuid van de gang).
 	{"pos": Vector3(-6.7, 1.45, 6.2), "size": Vector3(0.2, 2.9, 1.6), "mat": &"wand"},
@@ -376,6 +399,108 @@ const NIGHT_TLS: Array[Dictionary] = [
 		"settings": {"state": 1}},
 ]
 
+## Afwerkingslaag (fase G, tier F1) — puur visueel, altijd zonder
+## collision: dunne panelen dáár waar één wandvolume twee gezichten
+## nodig heeft (tegels in de douche, stucwerk op de gevel-binnenkant),
+## tegelbanden halfhoog in de kleedkamers, clubblauwe kozijnen rond de
+## focusdeuren, lambrisering en de kabelgoot. Architectuur onaangetast.
+const AFWERKING: Array[Dictionary] = [
+	# Hal: stucwerk op de binnenkant van de zuidgevel (rond deur + raam).
+	{"pos": Vector3(-1.255, 1.3, 6.985), "size": Vector3(1.49, 2.6, 0.03), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(0.755, 1.3, 6.985), "size": Vector3(0.49, 2.6, 0.03), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(0.0, 2.36, 6.985), "size": Vector3(1.02, 0.48, 0.03), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(1.45, 0.45, 6.985), "size": Vector3(0.9, 0.9, 0.03), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(1.45, 2.4, 6.985), "size": Vector3(0.9, 0.4, 0.03), "mat": &"f_stucwerk", "nc": true},
+	# Bestuurskamer: stucwerk op gevel- en scheidingswand-binnenkanten.
+	{"pos": Vector3(4.1, 1.2, 6.985), "size": Vector3(3.8, 2.4, 0.03), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(5.985, 1.2, 5.35), "size": Vector3(0.03, 2.4, 3.3), "mat": &"f_stucwerk", "nc": true},
+	{"pos": Vector3(4.1, 1.2, 3.715), "size": Vector3(3.8, 2.4, 0.03), "mat": &"f_stucwerk", "nc": true},
+	# Gang: geschilderd metselwerk op de westgevel-binnenkant (nooddeur).
+	{"pos": Vector3(-14.985, 1.2, 3.6), "size": Vector3(0.03, 2.4, 0.4), "mat": &"f_metselwerk_wit", "nc": true},
+	{"pos": Vector3(-14.985, 1.2, 5.01), "size": Vector3(0.03, 2.4, 0.38), "mat": &"f_metselwerk_wit", "nc": true},
+	{"pos": Vector3(-14.985, 2.26, 4.31), "size": Vector3(0.03, 0.28, 1.02), "mat": &"f_metselwerk_wit", "nc": true},
+	# Kleedkamer 3: tegelband halfhoog (1,4 m) rondom.
+	{"pos": Vector3(-2.415, 0.7, 0.95), "size": Vector3(0.03, 1.4, 4.5), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-6.985, 0.7, 0.95), "size": Vector3(0.03, 1.4, 4.5), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-5.71, 0.7, 3.185), "size": Vector3(2.58, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-2.9, 0.7, 3.185), "size": Vector3(1.0, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-5.75, 0.7, -1.285), "size": Vector3(2.5, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-2.95, 0.7, -1.285), "size": Vector3(1.1, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	# Kleedkamer 4: idem.
+	{"pos": Vector3(-7.215, 0.7, 0.95), "size": Vector3(0.03, 1.4, 4.5), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-11.385, 0.7, 0.95), "size": Vector3(0.03, 1.4, 4.5), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-10.61, 0.7, 3.185), "size": Vector3(1.58, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-8.0, 0.7, 3.185), "size": Vector3(1.6, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-10.45, 0.7, -1.285), "size": Vector3(1.9, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-7.85, 0.7, -1.285), "size": Vector3(1.3, 1.4, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	# Douche 3: volledig betegeld (vier zijden, rond kiepraam en doorgang).
+	{"pos": Vector3(-4.9, 1.15, -4.485), "size": Vector3(0.6, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-2.8, 1.15, -4.485), "size": Vector3(0.8, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-3.9, 0.9, -4.485), "size": Vector3(1.4, 1.8, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-4.85, 1.15, -1.515), "size": Vector3(0.7, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-2.95, 1.15, -1.515), "size": Vector3(1.1, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-4.0, 2.175, -1.515), "size": Vector3(1.0, 0.25, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-2.415, 1.15, -3.0), "size": Vector3(0.03, 2.3, 3.0), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-5.185, 1.15, -3.0), "size": Vector3(0.03, 2.3, 3.0), "mat": &"f_tegel_wand", "nc": true},
+	# Douche 4: idem.
+	{"pos": Vector3(-10.1, 1.15, -4.485), "size": Vector3(0.6, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-8.0, 1.15, -4.485), "size": Vector3(0.8, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-9.1, 0.9, -4.485), "size": Vector3(1.4, 1.8, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-9.95, 1.15, -1.515), "size": Vector3(0.9, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-8.05, 1.15, -1.515), "size": Vector3(0.9, 2.3, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-9.0, 2.175, -1.515), "size": Vector3(1.0, 0.25, 0.03), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-7.615, 1.15, -3.0), "size": Vector3(0.03, 2.3, 3.0), "mat": &"f_tegel_wand", "nc": true},
+	{"pos": Vector3(-10.385, 1.15, -3.0), "size": Vector3(0.03, 2.3, 3.0), "mat": &"f_tegel_wand", "nc": true},
+	# Hal: houten lambrisering achter de kapstok; gang: kabelgoot.
+	{"pos": Vector3(0.0, 0.6, 2.315), "size": Vector3(3.8, 1.0, 0.03), "mat": &"f_lambrisering", "nc": true},
+	{"pos": Vector3(-8.6, 2.3, 5.08), "size": Vector3(12.6, 0.08, 0.1), "mat": &"f_metaal", "nc": true},
+	# Kozijnen (clubblauw; nooddeur staal) rond de focusdeuren.
+	{"pos": Vector3(-0.555, 1.065, 7.1), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(0.555, 1.065, 7.1), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(0.0, 2.16, 7.1), "size": Vector3(1.16, 0.07, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 1.065, 2.255), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 1.065, 3.365), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 2.16, 2.81), "size": Vector3(0.26, 0.07, 1.16), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 1.065, 5.175), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 1.065, 6.285), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(2.1, 2.16, 5.73), "size": Vector3(0.26, 0.07, 1.16), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-2.1, 1.065, 3.755), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-2.1, 1.065, 4.865), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-2.1, 2.16, 4.31), "size": Vector3(0.26, 0.07, 1.16), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-4.465, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-3.355, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-3.91, 2.16, 3.3), "size": Vector3(1.16, 0.07, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-9.865, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-8.755, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-9.31, 2.16, 3.3), "size": Vector3(1.16, 0.07, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-13.465, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-12.355, 1.065, 3.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-12.91, 2.16, 3.3), "size": Vector3(1.16, 0.07, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-5.645, 1.065, 5.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-4.535, 1.065, 5.3), "size": Vector3(0.07, 2.13, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-5.09, 2.16, 5.3), "size": Vector3(1.16, 0.07, 0.26), "mat": &"f_kozijn_blauw", "nc": true},
+	{"pos": Vector3(-15.1, 1.065, 3.755), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_staal", "nc": true},
+	{"pos": Vector3(-15.1, 1.065, 4.865), "size": Vector3(0.26, 2.13, 0.07), "mat": &"f_kozijn_staal", "nc": true},
+	{"pos": Vector3(-15.1, 2.16, 4.31), "size": Vector3(0.26, 0.07, 1.16), "mat": &"f_kozijn_staal", "nc": true},
+]
+
+## Bewegwijzering (fase G, tier F1): gegenereerde tekstborden
+## (tools/genereer_bordjes.sh), wit op clubblauw (D-031). "emissie" > 0
+## maakt het bord zelf lichtgevend (alleen NOODUITGANG — puur emissief,
+## geen Light3D: het schaduwbudget blijft onaangeraakt).
+const BORDJES: Array[Dictionary] = [
+	{"tex": "naambord", "pos": Vector3(0.0, 2.78, 7.225), "size": Vector2(2.6, 0.46), "rot": 0.0},
+	{"tex": "kleedkamers", "pos": Vector3(-1.972, 2.3, 4.31), "size": Vector2(0.95, 0.19), "rot": 90.0},
+	{"tex": "kantine", "pos": Vector3(1.972, 2.3, 2.81), "size": Vector2(0.85, 0.19), "rot": -90.0},
+	{"tex": "bestuur", "pos": Vector3(1.972, 2.3, 5.73), "size": Vector2(0.65, 0.17), "rot": -90.0},
+	{"tex": "kleedkamer3", "pos": Vector3(-2.9, 1.8, 3.428), "size": Vector2(0.55, 0.16), "rot": 0.0},
+	{"tex": "kleedkamer4", "pos": Vector3(-8.42, 1.8, 3.428), "size": Vector2(0.55, 0.16), "rot": 0.0},
+	{"tex": "toiletten", "pos": Vector3(-4.17, 1.8, 5.172), "size": Vector2(0.55, 0.16), "rot": 180.0},
+	{"tex": "onderhoud", "pos": Vector3(-11.9, 1.8, 3.428), "size": Vector2(0.7, 0.13), "rot": 0.0},
+	{"tex": "nooduitgang", "pos": Vector3(-14.972, 2.3, 4.31), "size": Vector2(0.75, 0.17), "rot": 90.0, "emissie": 1.4},
+	{"tex": "gevonden_voorwerpen", "pos": Vector3(-12.15, 1.42, 3.425), "size": Vector2(0.21, 0.3), "rot": 0.0},
+]
+
 var _materials := {}
 var _unit_mesh: BoxMesh
 
@@ -386,9 +511,11 @@ var _unit_mesh: BoxMesh
 
 func _ready() -> void:
 	_unit_mesh = BoxMesh.new()
-	for table in [SCHIL, VLOEREN, PLAFONDS, BUITEN, INTERIEUR, MEUBELS]:
+	for table in [SCHIL, VLOEREN, PLAFONDS, BUITEN, INTERIEUR, MEUBELS, AFWERKING]:
 		for solid in table:
 			_build_solid(solid)
+	for bord in BORDJES:
+		_build_bord(bord)
 	_place_doors()
 	_place_night_tls()
 	_werklicht_rig.visible = werklicht
@@ -422,15 +549,62 @@ func _build_solid(solid: Dictionary) -> void:
 
 
 func _material(key: StringName) -> StandardMaterial3D:
-	if not _materials.has(key):
-		var material := StandardMaterial3D.new()
-		var color: Color = MATERIALS[key]
-		material.albedo_color = color
+	if _materials.has(key):
+		return _materials[key]
+	var material := StandardMaterial3D.new()
+	var spec: Variant = MATERIALS[key]
+	if spec is Color:
+		material.albedo_color = spec
 		material.roughness = 0.9
-		if color.a < 1.0:
+		if spec.a < 1.0:
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		_materials[key] = material
+	else:
+		var tint: Color = spec.get("tint", Color.WHITE)
+		material.albedo_color = tint
+		material.roughness = spec.get("rough", 1.0)
+		if spec.has("tex"):
+			# Wereld-triplanair: de greybox-volumes zijn geschaalde
+			# unit-boxen, dus alleen wereldruimte geeft een gelijkmatige
+			# textuurdichtheid over elke maat (TD-007 blijft geldig).
+			var tex: String = spec["tex"]
+			var base := "res://assets/textures/%s/%s" % [tex, tex]
+			material.albedo_texture = load(base + "_color.jpg")
+			material.normal_enabled = true
+			material.normal_texture = load(base + "_normal.jpg")
+			material.roughness_texture = load(base + "_rough.jpg")
+			material.uv1_triplanar = true
+			material.uv1_world_triplanar = true
+			var texture_scale: float = spec.get("scale", 0.5)
+			material.uv1_scale = Vector3(texture_scale, texture_scale, texture_scale)
+		if tint.a < 1.0:
+			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_materials[key] = material
 	return _materials[key]
+
+
+## Eén bord = QuadMesh zonder collision met zijn eigen tekst-texture
+## (een quad heeft één vlak met volledige UV — een box versnippert de
+## tekst over zijn atlas). "rot" draait het vlak naar de kijkrichting;
+## NOODUITGANG gloeit emissief (geen Light3D, budget onaangetast).
+func _build_bord(bord: Dictionary) -> void:
+	var mesh := MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = bord["size"]
+	mesh.mesh = quad
+	var material := StandardMaterial3D.new()
+	var texture: Texture2D = load(
+		"res://assets/textures/bordjes/%s.png" % bord["tex"])
+	material.albedo_texture = texture
+	material.roughness = 0.35
+	var emissie: float = bord.get("emissie", 0.0)
+	if emissie > 0.0:
+		material.emission_enabled = true
+		material.emission_texture = texture
+		material.emission_energy_multiplier = emissie
+	mesh.material_override = material
+	_greybox.add_child(mesh)
+	mesh.position = bord["pos"]
+	mesh.rotation_degrees.y = bord.get("rot", 0.0)
 
 
 ## Deuren zijn de echte interactie-props, als data geplaatst met
