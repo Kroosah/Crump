@@ -425,7 +425,7 @@ dwingend waar afhankelijkheden staan; B kan parallel aan C.*
   (documenten mogen onvolledig zijn). · **GD-test**: briefje openen,
   bewegen geblokkeerd, Esc herstelt alles.
 
-### Fase C — Greybox van alle ruimtes en de hoofdroute 🟡 gebouwd (2026-07-28) — wacht op lokale GD-test
+### Fase C — Greybox van alle ruimtes en de hoofdroute ✅ (gebouwd 2026-07-28; lokaal goedgekeurd door de GD 2026-07-29)
 - **Doel**: de zeven ruimtes van §2 op menselijke maat, loopbaar als
   één route.
 - **Scope**: hal, kantine, gang, kleedkamers 3+4, onderhoudsruimte,
@@ -460,7 +460,16 @@ dwingend waar afhankelijkheden staan; B kan parallel aan C.*
   greybox en pacing** — de poort naar F–I. · **Pijlers**: P6. ·
   **GD-test**: volledige doorloop, klok ernaast.
 
-### Fase F — Art-direction- en assetplan
+### Fase F — Art-direction- en assetplan 🔵 (naar voren gehaald op GD-besluit 2026-07-29; ontwerp in tasks/008_artdirection.md)
+
+> **Volgorde-besluit GD (2026-07-29)**: de artpass (F→G) gaat vóór de
+> gameplayflow (D) en de pacing-gate (E) — de GD wil eerst grafische
+> stappen richting een speelbare demo (±10 min) en bewust nog geen
+> monster-AI of nieuwe gameplay. D en E blijven bestaan en volgen
+> daarna; de fase-E-gate verschuift mee (pacing wordt beoordeeld op de
+> aangeklede wereld). TD-007 (greybox → ruimte-scènes) wordt in G
+> afgelost zoals gepland.
+
 - **Doel**: vastleggen hoe de slice eruit gaat zien vóór er assets
   ontstaan.
 - **Scope**: visuele richting per ruimte (referenties, paletten,

@@ -12,7 +12,7 @@ iets veranderde en in welke commit.
 ---
 
 ## v0.0.19 — 2026-07-28
-**VS-fase C: greybox clubgebouw — de eerste echte locatie** *(gebouwd; wacht op lokale GD-test)*
+**VS-fase C: greybox clubgebouw — de eerste echte locatie** *(lokaal goedgekeurd door de GD, 2026-07-29: "de basis staat")*
 - **`game/levels/clubgebouw/`**: het clubhuis onder de hoofdtribune van
   VV Drechtstreek, 's nachts. Twaalf ruimtes/zones op menselijke maat
   (plafonds 2,3–2,7 m): entree/hal, kantine met bar + doorgeefluik +

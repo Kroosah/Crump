@@ -27,7 +27,7 @@ De volledige visie staat in [docs/GAME_BIBLE.md](docs/GAME_BIBLE.md).
 | Audio-fundament | ✅ [tasks/005](tasks/005_audio.md) |
 | Licht & sfeer | ✅ [tasks/006](tasks/006_lighting.md) |
 | Minimale documentlezer | ✅ [tasks/007](tasks/007_document_reader.md) |
-| Vertical Slice 01 "De vergeten tas" | 🟡 fase C (greybox) gebouwd, wacht op GD-test — [tasks/008](tasks/008_vertical_slice_01.md) |
+| Vertical Slice 01 "De vergeten tas" | 🔵 fase C (greybox) ✅ goedgekeurd · fase F (art-direction) in ontwerp — [tasks/008](tasks/008_vertical_slice_01.md) |
 | Monster-AI | ⬜ [tasks/009](tasks/009_monster_ai.md) |
 | Hoofdstuk 1 | ⬜ [tasks/010](tasks/010_chapter1.md) |
 
