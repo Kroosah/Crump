@@ -30,7 +30,24 @@ signal toggled(is_open: bool)
 @export var prompt_close := "Sluit deur"
 @export var prompt_locked := "Op slot"
 
+@export_group("Uiterlijk")
+## Tint over het houtmateriaal (taak 008G, artplan §7): wit = blank
+## hardhout; staalgrijs maakt er de nooddeur van, licht aluminium de
+## entree. Puur visueel — gedrag en contract raken dit nooit.
+@export var panel_tint := Color.WHITE
+
 var _is_open := false
+
+@onready var _panel_mesh: MeshInstance3D = $Mesh
+
+
+func _ready() -> void:
+	if panel_tint != Color.WHITE:
+		# Per-instantie kopie: de gedeelde deurlook blijft ongemoeid.
+		var tinted: StandardMaterial3D = \
+			_panel_mesh.get_surface_override_material(0).duplicate()
+		tinted.albedo_color = panel_tint
+		_panel_mesh.set_surface_override_material(0, tinted)
 
 
 func interact(_by: Node) -> void:

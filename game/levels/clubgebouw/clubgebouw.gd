@@ -349,7 +349,8 @@ const MEUBELS: Array[Dictionary] = [
 ## zijn wereldgrenzen, geen route.
 const DEUREN: Array[Dictionary] = [
 	{"name": "DeurHoofdentree", "pos": Vector3(-0.52, 0.0, 7.1),
-		"settings": {"prompt_open": "Open buitendeur", "prompt_close": "Sluit buitendeur"}},
+		"settings": {"prompt_open": "Open buitendeur", "prompt_close": "Sluit buitendeur",
+			"panel_tint": Color(0.72, 0.75, 0.78)}},
 	{"name": "DeurHalKantine", "pos": Vector3(2.1, 0.0, 3.32), "rot": 90.0},
 	{"name": "DeurBestuurskamer", "pos": Vector3(2.1, 0.0, 6.24), "rot": 90.0,
 		"settings": {"locked": true, "prompt_locked": "Op slot — Bestuurskamer"}},
@@ -363,7 +364,8 @@ const DEUREN: Array[Dictionary] = [
 	{"name": "DeurOnderhoudsruimte", "pos": Vector3(-13.42, 0.0, 3.3)},
 	{"name": "DeurToiletten", "pos": Vector3(-5.62, 0.0, 5.3)},
 	{"name": "Nooddeur", "pos": Vector3(-15.1, 0.0, 4.82), "rot": 90.0,
-		"settings": {"prompt_open": "Duw nooddeur open", "prompt_close": "Trek nooddeur dicht"}},
+		"settings": {"prompt_open": "Duw nooddeur open", "prompt_close": "Trek nooddeur dicht",
+			"panel_tint": Color(0.46, 0.48, 0.51)}},
 ]
 
 ## TL-armaturen: weinig werkend licht is het punt (kader 006). Stabiel:
@@ -382,7 +384,7 @@ const NIGHT_TLS: Array[Dictionary] = [
 	{"name": "TlGangOost", "pos": Vector3(-3.8, 2.32, 4.3),
 		"settings": {"cast_shadow": true}},
 	{"name": "TlGangFlikker", "pos": Vector3(-7.2, 2.32, 4.3),
-		"settings": {"state": 2, "flicker_seed": 11}},
+		"settings": {"state": 2, "flicker_seed": 11, "scorched": true}},
 	{"name": "TlGangDefect", "pos": Vector3(-10.6, 2.32, 4.3),
 		"settings": {"state": 1}},
 	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3)},

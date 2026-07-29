@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://game/props/light_tl/light_tl.gd" id="1"]
 [ext_resource type="Shader" path="res://assets/shaders/flicker_light.gdshader" id="2"]
@@ -9,8 +9,34 @@ size = Vector3(1.2, 0.06, 0.12)
 [sub_resource type="ShaderMaterial" id="tube_mat"]
 shader = ExtResource("2")
 
+[sub_resource type="BoxMesh" id="housing_mesh"]
+size = Vector3(1.32, 0.09, 0.2)
+
+[sub_resource type="BoxMesh" id="cap_mesh"]
+size = Vector3(0.06, 0.13, 0.19)
+
+[sub_resource type="StandardMaterial3D" id="mat_housing"]
+albedo_color = Color(0.82, 0.83, 0.85, 1)
+metallic = 0.4
+roughness = 0.5
+
 [node name="LightTl" type="Node3D" groups=["light_tl"]]
 script = ExtResource("1")
+
+[node name="Housing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+mesh = SubResource("housing_mesh")
+surface_material_override/0 = SubResource("mat_housing")
+
+[node name="KapLinks" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63, 0.02, 0)
+mesh = SubResource("cap_mesh")
+surface_material_override/0 = SubResource("mat_housing")
+
+[node name="KapRechts" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.63, 0.02, 0)
+mesh = SubResource("cap_mesh")
+surface_material_override/0 = SubResource("mat_housing")
 
 [node name="Tube" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true

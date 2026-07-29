@@ -27,6 +27,11 @@ enum TlState { STABIEL, DEFECT, FLIKKEREND }
 ## schaduw (dossier 006 §5) — dus bewust default uit.
 @export var cast_shadow := false
 
+@export_group("Uiterlijk")
+## Zwartgeblakerd buiseinde (taak 008G, artplan §8): de zichtbare
+## wereld-oorzaak van een haperende buis. Puur visueel, per lamp gekozen.
+@export var scorched := false
+
 @export_group("Flikker")
 ## Vaste seed: zelfde seed = identiek patroonverloop, frame voor frame
 ## (physics-tick is de klok) — reproduceerbaar en headless testbaar.
@@ -51,6 +56,8 @@ func _ready() -> void:
 	_light.light_color = light_color
 	_light.omni_range = light_range
 	_light.shadow_enabled = cast_shadow
+	if scorched:
+		_add_scorch_mark()
 	_apply_state()
 
 
@@ -106,6 +113,21 @@ func _level_at(time: float) -> float:
 		if time < cursor:
 			return segment.y
 	return 1.0
+
+
+## Klein donker overzetje over het buiseinde — geen licht, geen gedrag.
+func _add_scorch_mark() -> void:
+	var mark := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = Vector3(0.2, 0.068, 0.128)
+	mark.mesh = box
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.07, 0.06, 0.06, 0.88)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.roughness = 0.6
+	mark.material_override = material
+	_tube.add_child(mark)
+	mark.position = Vector3(0.5, 0.0, 0.0)
 
 
 func _set_level(level: float) -> void:
