@@ -207,9 +207,12 @@ koffiezetapparaat op het dressoir met opgedroogde kan; de clubvlag
 opgevouwen over een stoelleuning; radiator met vensterbank. De
 dichtste, meest "bewoonde" ruimte van de demo — en 's nachts kijken
 al die foto's terug; we doen er niets mee, de ruimte zelf is genoeg
-(P7). **Consequentie**: de bestuurskamerdeur gaat in het
-demo-focusgebied **van het slot**; de VS-deurtabel (tasks/008 §3)
-wordt hierop bij fase D herijkt.
+(P7). **Consequentie (herzien bij het fase G-startsein, D-032)**: de
+bestuurskamer blijft tijdens de demo **op slot** — de speler bereikt
+haar pas met de gevonden sleutel. Ze is de beloning van de demo en de
+demo eindigt hier met de eerste ontmoeting met CRUMP (silhouet-rig,
+fase I). De ruimte wordt desondanks volledig uitgewerkt; de
+VS-deurtabel is herzien en de fase-D-flow werkt de sleutelroute uit.
 
 ## 6. Ramen
 

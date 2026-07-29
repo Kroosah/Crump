@@ -114,7 +114,7 @@ willekeur, het vertelt wie hier het laatst was.
 | Hal ↔ kantine | open op een kier | licht en tv-gemompel lekken de hal in; lokt de eerste omweg (P6: verleiden, niet dwingen) |
 | Kantine → terras | **op slot**, blijft dicht | begrenst de slice; glas toont het natte terras — zien wél, kunnen niet |
 | Keuken (achter de bar) | **op slot**, blijft dicht | wereld groter dan de slice (P5) |
-| Bestuurskamer (hal) | **op slot**, blijft dicht | idem; het naambordje is het enige verhaal |
+| Bestuurskamer (hal) | **op slot** → sleutel (demo-flow, fase D; D-032) | de beloning van de demo: volledig ingericht (artplan §5.8), en de demo eindigt hier met de eerste ontmoeting met CRUMP (fase I) |
 | Hal → gang | dicht, niet op slot | drempel tussen licht en TL-schemer |
 | Kleedkamer 3 (thuis) | niet op slot | zijn eigen kleedkamer; hier begint en kantelt het doel |
 | Kleedkamer 4 (uit) | dicht, niet op slot | de beheerder was hier bezig; de deur staat later ánders (op een kier) dan de speler hem aantrof |

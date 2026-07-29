@@ -11,6 +11,34 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.20 — 2026-07-29
+**VS-fase G, tier F1: de eerste grote visuele sprong** *(gebouwd; wacht op lokale GD-test)*
+- **CC0-materialen** (13 PBR-sets, 1K; ambientCG + Poly Haven, met
+  volledige herkomst in `assets/textures/LICENSE.md`, D-031) via een
+  wereld-triplanaire materiaal-motor op de greybox: 56 vlakken in het
+  demo-focusgebied omgezet (zeil, stucwerk, witgeschilderd metselwerk,
+  systeemplafond, kleedkamercoating, witte wandtegel + grijze
+  vloertegel, tapijt, gevelmetselwerk, nat asfalt).
+- **Afwerkingslaag** (zonder collision): douches volledig betegeld,
+  tegelbanden halfhoog in de kleedkamers, stuc-liners op
+  gevel-binnenkanten, clubblauwe kozijnen rond negen deuren
+  (nooddeur staal), lambrisering, kabelgoot.
+- **Bewegwijzering**: tien gegenereerde borden (wit-op-clubblauw,
+  `tools/genereer_bordjes.sh`), incl. clubnaambord buiten en emissief
+  NOODUITGANG-bordje (geen Light3D — budget onaangetast).
+- **Prop-artpass**: deuren in echt hardhout met RVS-krukken en
+  tint-varianten (entree aluminium, nooddeur staal); TL-armaturen met
+  metalen behuizing; de gang-flikkerbuis heeft een zwartgeblakerd
+  uiteinde (zichtbare wereld-oorzaak).
+- **Renderpijplijn op de VPS**: `tools/maak_screenshots.gd` maakt via
+  software-Vulkan (lavapipe + xvfb) echte 1280×720-renders van elf
+  standpunten — voor GD-review én eigen kwaliteitscontrole.
+- **D-032**: de bestuurskamer blijft op slot (sleutel = demo-flow
+  fase D) en is de beloning van de demo, die daar eindigt met de
+  eerste CRUMP-ontmoeting (fase I); VS-deurtabel herzien.
+- Architectuur, gameplay, routing, schaduwbudget en 006-tuning
+  aantoonbaar ongewijzigd (suite 250 groen). `config/version` → 0.0.20.
+
 ## v0.0.19 — 2026-07-28
 **VS-fase C: greybox clubgebouw — de eerste echte locatie** *(lokaal goedgekeurd door de GD, 2026-07-29: "de basis staat")*
 - **`game/levels/clubgebouw/`**: het clubhuis onder de hoofdtribune van

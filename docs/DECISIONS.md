@@ -359,3 +359,18 @@ douches en bestuurskamer — dat eerst volledig áf moet voelen (gate)
 voordat de rest tier-gewijs volgt. Consequentie: de bestuurskamer
 wordt betreedbaar (deur van het slot) en ingericht; de VS-deurtabel
 (tasks/008 §3) wordt daarop bij fase D herijkt.
+
+## D-032 — De bestuurskamer is de beloning van de demo (op slot achter de sleutel)
+**Datum**: 2026-07-29 · **Wie**: GD (startsein fase G) · **Status**: actief
+Wijziging op de v1.1-consequentie van het artplan (deur zou van het
+slot): de bestuurskamer **blijft tijdens de demo op slot**; de speler
+bereikt haar pas nadat de sleutel is gevonden. De ruimte wordt volledig
+uitgewerkt (artplan §5.8) en vormt de beloning van de demo, die daar
+eindigt met de **eerste ontmoeting met CRUMP** (representatie: het
+tijdelijke silhouet-rig, D-031; de ontmoeting zelf is fase I-werk).
+Consequenties: de VS-deurtabel (tasks/008 §3) is herzien
+(bestuurskamer: op slot → sleutel); de demo-flow van fase D werkt de
+sleutelroute uit en herijkt daarbij de slotbeats van de slice (de
+buitenglimp bij mast 3 en de ketting uit tasks/008 §4) op dit nieuwe
+einde — dat is een fase-D-ontwerpbeslissing, niet iets dat de artpass
+nu vastlegt.

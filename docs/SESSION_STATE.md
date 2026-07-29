@@ -5,11 +5,11 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-29 (fase F-artplan **goedgekeurd, v1.1**
-met vier GD-besluiten (D-031): clubkleuren blauw-wit, CC0-bronnen
-akkoord, CRUMP-silhouet-rig tijdelijk, en **demo = extreem hoogwaardig
-focusgebied** (entree/hal/gang/kleedkamers/douches/bestuurskamer) —
-**wacht op expliciete go voor fase G, tier F1**)
+**Laatst bijgewerkt**: 2026-07-29 (fase G **tier F1 gebouwd** — de
+eerste grote visuele sprong van het demo-focusgebied; suite 250 groen,
+renders gemaakt — status: **wacht op lokale GD-test**; D-032:
+bestuurskamer blijft op slot, beloning van de demo, eerste
+CRUMP-ontmoeting daar)
 
 ---
 
@@ -96,7 +96,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · **F ✅ plan goedgekeurd (v1.1, D-031)** · **G 🔵 wacht op go (tier F1)** · D/E/H–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 🟡 gebouwd, wacht op GD-test** (F2–F4 ⬜) · D/E/H–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
@@ -122,20 +122,21 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**Fase G: de artpass van het demo-focusgebied — wacht op expliciet
-GD-startsein.** Volgorde per tasks/008_artdirection.md §13 (v1.1):
-tier F1 (materialen + deuren + TL-behuizingen + bewegwijzering binnen
-het focusgebied entree/hal/gang/kleedkamers/douches/bestuurskamer) →
-F2 (kleedkamers + douches bewoond) → F3 (bestuurskamer + hal +
-entree-buitenkant) → F4 (sfeerlak; gate: GD verklaart de demo-zone
-áf) → daarna pas de rest van het gebouw tier-gewijs. Bij de start van
-G: CC0-bronnen binnenhalen mét licenties (D-031), bestuurskamerdeur
-van het slot + inrichting, TD-007 per focusruimte aflossen (ruimte →
-eigen scène), suite bewaakt architectuur/budget/staten. **D (flow) en
-E (pacing) volgen ná de artpass; geen AI of nieuwe gameplay.**
-Overige haken: monster-AI (009), TD-005, TD-004, save-integratie,
-inventory-UI/HUD (TD-006), canonvraag "derde helft als proloog"
-(STORY §8), KI-004.
+**De GD test tier F1 lokaal** (F5 → voorplein): de renders uit het
+F1-rapport naast het eigen beeld leggen; beoordelen op materialen,
+kleurgebruik (clubblauw), leesbaarheid van de bewegwijzering en het
+"echte club"-gevoel van entree/hal/gang/kleedkamers/douches. Bekende
+F1-kanttekeningen (bewust gelaten): banken/kapstokken/meubels zijn nog
+greybox (F2/F3), de bestuurskamer is kaal en donker (inrichting F3,
+geen werkende TL bewust), plafond-tuning in de kleedkamers mag
+GD-feedback krijgen. Na akkoord: **tier F2** (kleedkamers + douches
+bewoond: banken/lockers/kapstokken echt, tactiekbord, vergeten
+details). TD-007 (tabellen → scènes) lost per goedgekeurde ruimte af
+vanaf F2. **D (flow) en E (pacing) volgen ná de artpass** — let op
+D-032: de fase-D-flow herijkt de slotbeats (buitenglimp/ketting) op
+het nieuwe demo-einde in de bestuurskamer. Overige haken: monster-AI
+(009), TD-005, TD-004, save-integratie, inventory-UI/HUD (TD-006),
+canonvraag "derde helft als proloog" (STORY §8), KI-004.
 
 ## 6. Open aandachtspunten
 
