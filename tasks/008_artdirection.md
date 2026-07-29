@@ -1,0 +1,382 @@
+# Vertical Slice — Art Direction & Assetplan (fase F)
+
+**Type**: Game Director/Art Director-ontwerpdocument · **Status**: 🔵
+ter review (GD), geen implementatie · **Hoort bij**: tasks/008 §15,
+fase F · **Datum**: 2026-07-29
+
+*Dit document legt vast hoe het clubgebouw van VV Drechtstreek van
+greybox naar geloofwaardige Nederlandse amateurvoetbalvereniging gaat —
+zonder één wijziging aan architectuur, gameplay of systemen. De
+goedgekeurde greybox (fase C) is de maatvaste onderlaag: elke muur,
+deur en zichtlijn blijft exact waar hij staat. De artpass kleedt aan,
+verandert niets. Na GD-review volgt pas implementatie (fase G), in
+prioriteitsvolgorde (§12).*
+
+---
+
+## 1. De artstijl in één alinea
+
+**Gegrond Nederlands realisme, 's nachts gefotografeerd.** Geen
+stylized look, geen overdreven grunge, geen game-achtige overdaad. De
+maatstaf is een foto: als een screenshot niet zou kunnen doorgaan voor
+een foto die een clublid om half één 's nachts in het clubhuis maakte,
+is het te veel of te weinig. De horror komt niet uit de art — die komt
+uit het licht (006), de stilte (005) en wat er *mist* (de mensen). De
+art heeft één taak: deze plek zó echt en zó gewoon maken dat de
+afwijkingen straks pijn doen (P5: de wereld is de hoofdrolspeler;
+HORROR §7: het vertrouwde is het paard van Troje).
+
+**Silent Hill-achtig** betekent hier wat het in het 006-ontwerp al
+betekende: tonaliteit, niet iconografie. Lage lichtvloer, verte die in
+fog oplost, kleuren die door schaars TL-licht gefilterd worden, near-
+black met leesbare silhouetten. Géén roest-en-bloed-textuur, géén
+industrieel verval — ons "Otherworld" bestaat niet; ons normaal is al
+genoeg.
+
+## 2. Wereldregels (bindend voor elke asset)
+
+1. **De vereniging is onderhouden, niet vervallen.** Dit clubhuis
+   wordt gerund door vrijwilligers die er trots op zijn. Veroudering
+   is **gebruikssporen, geen verwaarlozing**: glans die weg is op de
+   plekken waar handen en schoenen komen, niet afbladderende muren.
+   Concreet: slijtage op deurkrukken, plintranden, zitranden van
+   banken, de looplijn in de gang (donkerder pad in het zeil), koffie-
+   kringen op de bar, kalkaanslag in de douches, voegen die nét
+   donkerder zijn. Verboden: graffiti, kapotte ruiten, gaten, schimmel-
+   pluizen, zwerfvuil. Eén verbleekt element per ruimte mag (een
+   poster, een gordijn) — meer wordt decor.
+2. **Alles heeft een eigenaar.** Elke prop moet de vraag "wie heeft
+   dit hier neergezet, en waarom?" kunnen beantwoorden. Niets staat er
+   "voor de sfeer" (P4/P2-parallel: geen visuele opvulling).
+3. **Rood is gereserveerd.** Het palet (§3) is koel en gedempt; rood
+   bestaat alleen als signaal met betekenis (brandblusser, nooddeur-
+   bordje, het slot op de ketting). Zo blijft rood later bruikbaar als
+   stille alarmkleur. Sponsorborden en clubkleuren blijven van dit
+   verbod weg (§3).
+4. **Tekst is Nederlands, alledaags en schaars leesbaar.** Bordjes en
+   posters bestaan, maar alleen wat de speler ván dichtbij bekijkt
+   hoeft echt leesbaar te zijn. Geen lorem ipsum — onleesbaar-op-
+   afstand is prima, nep-tekst-van-dichtbij breekt alles.
+5. **Geen echte merken, geen echte namen.** Alle sponsors, logo's en
+   producten zijn fictief (§10). Geen naam die de speler-identiteit
+   invult (STORY §2).
+6. **De architectuur is heilig.** Collision, deuropeningen, plafond-
+   hoogtes, zichtlijnen en het schaduwbudget (D-026) blijven exact
+   zoals goedgekeurd. Detailgeometrie (plinten, kozijnen, tegels) mag
+   erbovenop, maar mag nooit een doorgang versmallen of een zichtlijn
+   blokkeren.
+
+## 3. Kleurgebruik
+
+**Clubkleuren VV Drechtstreek: blauw-wit** *(voorstel, GD beslist —
+zie §14)*. Motivatie: klassieke dorpsclub-kleuren, ze overleven het
+koele nachtlicht zonder te schreeuwen, en ze laten rood vrij als
+signaalkleur (regel §2.3). Het clubblauw (richting RAL 5010,
+gedempt) komt terug in: deuren-accenten, de bewegwijzering, de banken-
+zitting, teamfoto-lijsten, de boarding-rand en het logo.
+
+**Kleurscript over de route** — de speler loopt van koud naar warm
+naar koud; kleur vertelt waar je bent:
+
+| Zone | Temperatuur | Dominant | Accent |
+|---|---|---|---|
+| Buiten (voorplein, pad, veld) | koud, blauwzwart | nat asfaltgrijs, donkergroen gras | natriumwarm entreelampje |
+| Hal | neutraal-warm | gebroken wit, grijs zeil | clubblauw bewegwijzering, houten prikbord |
+| Kantine | **het warmste punt van het spel** | hout, crème, bruintinten | clubblauw + gedempte sponsorkleuren |
+| Gang | koel, TL-groenig | grijsgroen zeil, witgrijze wand | clubblauwe deurkaders |
+| Kleedkamers | neutraal, functioneel | grijsblauwe vloercoating, wit | clubblauwe bankzittingen |
+| Douches/toiletten | koudst binnen | cyaanwitte tegel, voeggrijs | — (bewust accentloos) |
+| Onderhoudsruimte | bruin-donker | beton, ongeschilderd hout, metaal | veiligheidsgeel op de meterkast-sticker |
+
+De kantine als warmste punt is een bewuste valstrik: het hart van de
+club voelt veilig (P7: suggestie, nooit garantie). Hoe dieper de
+route, hoe kouder en kaler — de onderhoudsruimte is het eind van de
+warmte.
+
+## 4. Materialen per ruimte (vloer / wand / plafond)
+
+*Alle materialen PBR, gedekt en mat (roughness hoog); glans alleen op
+natte buitenvlakken, tegelwerk en de bar. Resoluties en bronnen: §11.*
+
+| Ruimte | Vloer | Wand | Plafond |
+|---|---|---|---|
+| **Hal** | grijs linoleum/zeil, lichte spikkel; donkere looplijn richting gang | gebroken wit stucwerk; lambrisering (hout, 1,1 m) rond de kapstok | wit systeemplafond (600×600-platen, subtiel oneffen) |
+| **Kantine** | eiken-look laminaat, gebruikssporen bij bar en deuren | crème geschilderd stucwerk; houten lambrisering onderlangs | wit systeemplafond; boven de bar donkerder geschilderde koof |
+| **Gang** | grijsgroen zeil met donkere looplijn in het midden | witgrijs geschilderd metselwerk (blokverband voelbaar) | betongrijs, laag; kabelgoot langslopend |
+| **Kleedkamer 3 & 4** | antislip-coating, grijsblauw, gevlekt bij de douche-ingang | halfhoog betegeld (wit, 15×15) met geschilderd metselwerk erboven | geschilderd beton, licht vochtgevlekt in de hoeken |
+| **Douches** | kleine antisliptegel (5×5, cyaangrijs), donkerder rond de putten, kalkrand | volledig betegeld (wit/cyaan, 15×15), kalksluier op ooghoogte, donkere voeg | geschilderd beton met licht condensspoor |
+| **Toiletten** | zelfde tegel als douches, iets lichter | halfhoog wit betegeld, daarboven geschilderd | geschilderd beton |
+| **Onderhoudsruimte** | kaal beton met olievlek-schaduw bij de cv | ongeschilderd kalkzandsteen, stofsluier | ruw beton, zichtbare leidingen |
+| **Bestuurskamer/keuken** (alleen door glas/kier zichtbaar) | vergrijsd tapijt / grijze tegel | wit | wit |
+| **Buitenzijde** | nat asfalt (voorplein/pad), gras met kale doellijn-plekken (veld) | schoon metselwerk (bruinrood genuanceerd), betonplint; tribune-beton erboven | — (dakrand: donkere boeiboord) |
+
+**Nat is het buiten-materiaal.** Het regent: asfalt spiegelt het
+entreelampje en mast 3, het gras is donker verzadigd, metselwerk heeft
+een natte onderrand, het gaashek glimt. Binnen is droog — op de
+druppelsporen bij de entree-mat na.
+
+## 5. Per ruimte: sfeer en props
+
+*Asset-budget per ruimte in §12; hier staat wát er staat en waarom.*
+
+### 5.1 Kantine — "de derde helft is net afgelopen"
+Het bewijs van leven, bevroren. Props: de **bar** (§8) met krukken;
+tafels met **stapelstoelen** (twee net aangeschoven, één schuin — zoals
+mensen ze achterlaten); een paar **glazen en flesjes** op één tafel en
+op de bar (half leeg — geen overdaad: één tafel vertelt meer dan
+tien); **onderzetters/bierviltjes** (fictief merk); de **tv** aan de
+wand (gloeit, fase H maakt hem betekenisvol); **sponsorborden** (§9)
+als fries boven de lambrisering; **trofeeënkast** (§9); **prikbord**
+met wedstrijdschema en kantinerooster; teamfoto's-wand (kleine lijsten,
+clubblauw passe-partout); darts-hoek (bord + krijtscorebord — typisch,
+goedkoop, vertelt veel); kassa/pin-blokje op de bar; koelkast-glow
+achter de bar (dichte deur, lampje); plant in de hoek (iets te droog);
+radiator onder de ramen; gordijnvouw langs de veldramen (open).
+
+### 5.2 Kleedkamers — "zijn wereld"
+Kleedkamer 3 (thuis) is de emotionele kern: hier hing zijn tas.
+Props: de bestaande **bankjes** en **kapstokken** (§8) aangekleed;
+**lockers** (§8, alleen kk3); vloerrooster bij de douche-ingang;
+**tactiekbord** (whiteboard met halfuitgeveegde opstelling — magneten
+blijven); pupillenposter ("normen & waarden"-poster van de bond,
+fictief); één vergeten **scheenbeschermer** onder een bank en één
+**sok** (het detail dat iedereen herkent); waterfles op een bank;
+afvalbakje met tape-resten; deurhaakje met een vergeten aanvoerders-
+band. Kleedkamer 4 (uit) is dezelfde ruimte maar **kaler**: geen
+lockers, geen poster, leger — bezoekers laten niets achter. Het
+verschil tussen 3 en 4 ís de vertelling.
+
+### 5.3 Douches — "kalk en echo"
+Bijna leeg, en dat hoort: doucheknoppen en koppen (bestaand volume →
+echte armaturen), kalksluier, één vergeten **shampoofles** (fictief
+merk, op zijn kop — zuinig clublid), zeepbakje, het rooster van de
+putten. De leegte is het punt; hier geen extra props.
+
+### 5.4 Toiletten — "TL uit, klein en koud"
+Potten en wasbak (bestaand → echte modellen), spiegel (licht
+beslagen randje), handdoekrol-automaat (jaren-negentig-model),
+zeeppompje, prullenbakje, bordjes M/V op de hokjes, één hokdeur op
+een kier. Meer niet.
+
+### 5.5 Gang — "de ruggengraat"
+De gang moet vooral **ritme** krijgen: deurkaders in clubblauw,
+**bewegwijzering** (§10), de kabelgoot, de brandblusser (bestaand
+volume → echt model + keuringskaartje), deurmatten bij kleedkamers,
+een lage houten bank tussen kleedkamer 3 en 4 (wachtende ouders),
+ingelijste **elftalfoto's door de jaren heen** langs de wand (de club
+heeft geschiedenis — en de foto's kijken de speler na, zonder dat we
+daar íéts mee doen. Nu niet.). De schoonmaaknis (bestaand) krijgt
+echte emmer, mop, wringer en een fles allesreiniger (fictief).
+
+### 5.6 Onderhoudsruimte — "het einde van de warmte"
+Stellingen (bestaand → echt rek) met kalkzakken, lijnenverf-emmers
+("veldwit"), een slang op haspel, de **kalkkar/belijningskar** (icoon
+van elk sportpark), reserve-cornervlagstokken in een hoek, de cv-ketel
+(bestaand → echt model met typeplaatje), gevonden-voorwerpen-krat
+(nog zonder gameplay-betekenis — fase D), doelnetten aan een haak,
+een oude teamfoto zonder lijst tegen de muur gezet (afgedankt — het
+enige "verhaal-fluistertje" dat deze pass zich permitteert).
+
+### 5.7 Buitenzijde — "sportpark bij nacht"
+Metselwerk-gevel met betonplint en boeiboord; **ramen** (§6) met
+kozijnen; de entree met clubnaambord boven de deur (**"v.v.
+DRECHTSTREEK — Sportpark Oostpolder"**, aanlichtbaar door het
+entreelampje); vlaggenmast zonder vlag (tikkend koord — audio is er
+al in het nulpunt-palet, fase H koppelt); fietsenrek (bestaand →
+echt model, één achtergebleven fiets? **nee** — de parkeerplaats-
+leegte is canon, ook geen fiets); de **boarding** langs het veld met
+sponsordoeken (§9, verweerd); het gaashek met ketting en hangslot
+(bestaand volume → echt gaas-materiaal met transparantie); lichtmast 3
+als echt vakwerkmast-silhouet; dug-outs zijn er niet (bewust: budget
+en zichtlijn — heroverwegen in fase G als het veld te leeg voelt);
+containerhoek naast de onderhoudsruimte-gevel (kliko's, netjes op
+een rij — vrijwilligersnetheid).
+
+## 6. Ramen
+
+Kozijnen: kunststof wit (jaren-2000-renovatie — herkenbaar NL),
+binnenzijde vensterbank met een enkele plant of wedstrijdbeker.
+Kantineramen: groot, met **condensrand onderin** en regendruppels op
+het buitenglas (shader-detail, subtiel, geen streaming-druppels).
+Douche-kiepramen: melkglas, op de kiepstand — er hoort 's nachts
+tocht doorheen te kunnen (audio-haak, fase H). Hal-raam: gordijntje
+half dicht. Glas-materiaal: licht groenige reflectie binnen, buiten
+spiegelend richting de natte nacht; de bestaande transparante volumes
+worden vervangen door echte glas-materialen met dezelfde maat.
+
+## 7. Deuren
+
+De bestaande deur-props krijgen een artpass (zelfde scène, nieuw
+uiterlijk — gameplay en scharnierpunt onaangetast): binnendeuren als
+**vlakke hardhouten deuren, clubblauw geschilderd kozijn**, RVS-kruk
+met slijtglans, kunststof naambordje per deur (§10); kleedkamerdeuren
+met stootplaat onderaan (schoenen); de **nooddeur** als staaldeur met
+panieksluiting en groen "NOODUITGANG"-bordje erboven (de enige groene
+lichtbron binnen — hij mag zachtjes gloeien, dat is realistisch én een
+oriëntatie-anker); de **hoofdentree** als aluminium/glas-deur met
+"TREKKEN"-sticker en openingstijden-bordje; terras- en keukendeur
+zoals binnendeuren; bestuurskamerdeur met bordje "BESTUUR" en
+melkglas-ruitje (er is níéts achter te zien — melkglas verkoopt dat).
+
+## 8. De hero-props (custom, definitiegevend)
+
+- **De bar**: houten front met panelen, RVS blad-rand, koffiekringen,
+  tapkraan-unit (fictief biermerk "Polderbier" op de taphendel),
+  spoelbakje, hangende glazenrekjes boven, doorgeefluik met roldeur-
+  suggestie (dicht). De bar is het gezicht van de kantine — hoogste
+  detailprioriteit van het hele plan.
+- **Lockers (kk3)**: zes smalle stalen lockers, clubblauw, twee met
+  hangslotje, één deurtje op een kier (leeg), sticker-restanten.
+- **Bankjes**: hardhouten latten op stalen schragen, clubblauw
+  gelakte zitting met slijtage op de rand; zelfde model binnen de
+  hele accommodatie (consistentie = geloofwaardigheid).
+- **Kapstokken**: houten rail met dubbele stalen haken (het bestaande
+  volume + haakjes wordt één echt model); in kk3 hangt op één haak
+  een vergeten trainingsjack (clubblauw) — het enige kledingstuk in
+  het gebouw. *(Bewust: de sporttas zelf komt pas in fase D — geen
+  gameplay-props in de artpass.)*
+- **TL-armaturen**: het bestaande light_tl-prop krijgt een echte
+  behuizing: opbouwarmatuur met geprismatiseerde kap (kantine/hal) en
+  kale dubbele buis op ketting-ophang (gang/onderhoud); de flikkerbuis
+  krijgt een zichtbaar **zwartgeblakerd uiteinde** (de wereld-oorzaak
+  van 006 wordt zichtbaar). Gedrag, staten en budget: onaangetast.
+
+## 9. Sponsorborden en trofeeën
+
+- **Sponsorborden binnen** (kantine-fries, ±8 stuks): geschilderd/
+  gedrukt op PVC, licht verschillende stijlen en leeftijden (de een
+  strak, de ander duidelijk uit 2009). Fictieve lokale sponsors:
+  *Bakkerij Van der Kolk · Autobedrijf Oostpolder · Kozijnen De Waard ·
+  Snackbar 't Doelpunt · Installatiebedrijf Drechtstreek · Notariaat
+  Hoogland · Polderbier · Bouwbedrijf Verhagen & Zn.* Kleuren gedempt
+  (regel §2.3: geen fel rood).
+- **Boarding buiten** (±6 doeken): zelfde sponsors, verweerde druk,
+  natte glans; één doek half losgeschoten onderaan (de wind — subtiel).
+- **Trofeeënkast**: glazen kast met ~12 bekers in verschillende
+  maten/leeftijden (drie modellen, geschaald en gevarieerd), twee
+  medaille-linten, een oude wisselbeker met graveerplaatjes, één
+  ingelijste krantenpagina (onleesbaar op afstand, koppen suggereren
+  "kampioenschap 4e klasse"), pupil-van-de-week-fotolijstje. De kast
+  krijgt een eigen klein lampje **niet** — hij leeft van de TL boven
+  de bar (budget D-026 blijft heilig).
+
+## 10. Bewegwijzering en Nederlandse clubdetails
+
+- **Bewegwijzering**: kunststof bordjes wit-op-clubblauw, consequent
+  systeem: "KANTINE", "KLEEDKAMERS →", "KLEEDKAMER 3", "KLEEDKAMER 4",
+  "TOILETTEN", "BESTUUR", "ONDERHOUD — verboden voor onbevoegden",
+  "NOODUITGANG" (groen), "GEVONDEN VOORWERPEN → ONDERHOUDSRUIMTE"
+  (het gangbordje dat in fase D gameplay-betekenis krijgt — hij hangt
+  er vast alvast, als wereld, niet als systeem).
+- **NL-clubdetails** (de dingen die iedereen herkent): het krijt-/
+  kantinerooster op het prikbord; "wie het laatst weggaat doet het
+  licht uit"-briefje bij de meterkast; pupil-van-de-week-poster;
+  KNVB-achtige (fictieve bond: "NVVB") gedragsregels-poster; ballen-
+  pomp aan een touwtje; sleutelkastje achter de bar (bestaat al als
+  fase-D-haak — krijgt nu zijn echte kastje); collectebus van de
+  clubactie op de bar; deurmat met clublogo in de hal; verjaardags-
+  slinger-restje boven de bar (één punaise losgelaten — de vorige
+  week leeft nog).
+
+## 11. Assetstrategie: custom vs. bibliotheek
+
+**Bronnenbeleid** *(vraagt GD-akkoord, CLAUDE.md: geen third-party
+zonder akkoord; licenties komen per bron in `addons/`/`assets/` met
+LICENSE-bestand)*: uitsluitend **CC0/publiek domein** zodat er nooit
+attributie- of licentierisico in de build zit. Voorgestelde bronnen:
+**Poly Haven** (PBR-texturen + enkele modellen, CC0) en **ambientCG**
+(PBR-texturen, CC0). Geen Sketchfab-scrapes, geen "free for personal
+use". Alles wat tekst, logo of club-identiteit draagt is per definitie
+custom.
+
+| Categorie | Route |
+|---|---|
+| Alle vloer-/wand-/plafond-/buitenmaterialen (§4) | **bibliotheek** (CC0 PBR-sets), afgestemd in Godot |
+| Generieke props: stoelen, tafels, krukken, radiator, sanitair, emmer/mop, kliko's, pallets/kratten, cv-ketel, brandblusser | **bibliotheek** waar een CC0-model de lat haalt; anders custom-eenvoudig |
+| Hero-props §8 (bar, lockers, bankjes, kapstok+jack, TL-behuizingen) | **custom** (definitiegevend voor de identiteit) |
+| Alles met tekst/identiteit: clubnaambord, bewegwijzering, sponsorborden, boarding, posters, prikbord-papier, teamfoto's, trofee-graveringen, deurbordjes, stickers | **custom** (2D-werk: teksturen/decals — het meeste hiervan is grafisch ontwerp, geen 3D) |
+| Teamfoto's/elftalfoto's | **custom, gegenereerd/gestileerd onherkenbaar** — geen echte gezichten, op afstand leesbaar als "team", van dichtbij bewust net-niet-scherp (P7 en privacy tegelijk) |
+| Doel, vlaggenmast, lichtmast, gaashek | **custom-eenvoudig** (buizen + gaas-alpha — dichtbij de bestaande volumes) |
+| CRUMP-representatie (glimp, fase I) | **besluit in dit document uitgesteld naar een eigen GD-sessie** — de glimp staat op afstand in flikkerlicht; een silhouet-rig (donkere humanoïde, verkeerde verhoudingen, geen detail) volstaat voor de demo en voorkomt dat we het definitieve ontwerp overhaasten. Voorstel: silhouet-rig als tijdelijke representatie, apart GD-akkoord vóór fase I. |
+
+**Werkverdeling eerlijk benoemd**: de VPS kan texturen/decals/
+materialen, kitbash-modellen uit primitieven en alle Godot-integratie
+leveren; organisch modelleerwerk (stoelen die écht mooi zijn, het
+trainingsjack) komt uit CC0-bibliotheken of wordt een GD-besluit
+(aankopen/laten maken). Het plan is zo gesneden dat **geen enkele
+demo-kritieke asset** van extern modelleerwerk afhangt.
+
+**Technische kaders**: texturen 1K standaard, 2K alleen voor de bar,
+vloeren en de gevel; alles in atlassen waar het kan; tri-planair op
+grote vlakken tot fase G de ruimtes tot scènes ombouwt (TD-007 wordt
+in G per goedgekeurde ruimte afgelost); prop-budget ~2–6k tris hero,
+~300–1500 generiek; **het schaduwbudget (D-026) en alle 006-tuning
+blijven onaangeraakt** — de artpass voegt geen enkel realtime
+schaduwlicht toe; emissieve materialen (tv, nooduitgang-bordje,
+koelkast-glow) zijn de enige nieuwe "lichten" en zijn puur emissief,
+geen Light3D. Geen nieuwe systemen, geen shaders met gedrag; alleen
+`flicker_light.gdshader`-hergebruik en statische materialen.
+
+## 12. Asset-budget per ruimte
+
+*"Uniek" = nieuw te maken/halen asset (model of decal-set); instanties
+zijn gratis. Totaal ±78 unieke assets, waarvan ±30 puur 2D/decal.*
+
+| Ruimte | Uniek 3D | Uniek 2D/decals | Zwaartepunt |
+|---|---|---|---|
+| Kantine | 14 | 12 | bar, sponsorfries, trofeeënkast |
+| Gang | 4 | 8 | bewegwijzering, elftalfoto's, deurbordjes |
+| Kleedkamer 3 | 8 | 4 | lockers, tactiekbord, bank/kapstok |
+| Kleedkamer 4 | 0 (hergebruik) | 1 | leegte is het ontwerp |
+| Douches | 4 | 2 | armaturen, kalk-decals |
+| Toiletten | 5 | 2 | sanitair-set |
+| Onderhoudsruimte | 7 | 3 | belijningskar, stellinginhoud |
+| Hal | 3 | 5 | prikbord-papier, deurmat, lambrisering |
+| Buiten | 9 | 8 | gevel-set, clubnaambord, boarding, mast |
+| Materialen (§4, gebouwbreed) | 16 texture-sets | — | vloer/wand/tegel/asfalt/gras |
+
+## 13. Prioriteitenlijst voor de eerste speelbare demo
+
+*Volgorde van bouwen in fase G; elke tier is apart opleverbaar en
+GD-testbaar. De demo-route (aankomst → kantine → gang → kleedkamers →
+onderhoud → buiten) bepaalt de volgorde: wat de speler het langst en
+van het dichtstbij ziet, eerst.*
+
+1. **Tier 1 — het fundament (demo-kritiek)**: alle materialen uit §4
+   over de bestaande volumes (gebouwbreed, incl. buiten-nat); deuren-
+   artpass (§7); TL-behuizingen (§8); bewegwijzering (§10). *Dit
+   alleen al haalt de "kubussen-gevoel"-klacht weg.*
+2. **Tier 2 — de hero-ruimtes**: de bar + kantine-props (§5.1);
+   kleedkamer 3 volledig (§5.2); gang-aankleding (§5.5). 
+3. **Tier 3 — de omlijsting**: buitenzijde (gevel, clubnaambord,
+   boarding, mast, hek-gaas); douches en toiletten (§5.3/§5.4).
+4. **Tier 4 — de diepte**: onderhoudsruimte (§5.6); kleedkamer 4-
+   verschilling; trofeeënkast-inhoud verfijning; teamfoto's.
+5. **Buiten de demo-kritieke lijn** (mag doorschuiven): dug-outs-
+   heroverweging, containerhoek, gordijnen, plant, darts-hoek.
+
+## 14. Openstaande GD-keuzes in dit plan
+
+1. **Clubkleuren**: blauw-wit (advies, §3) — of anders?
+2. **Bronnen-akkoord**: Poly Haven + ambientCG (CC0) als toegestane
+   bibliotheken, licenties in de repo?
+3. **CRUMP-representatie**: akkoord met "silhouet-rig als tijdelijke
+   glimp-representatie, definitief ontwerp in eigen sessie" (§11)?
+4. **Demo-scope**: bevestiging dat de demo de hele route gebruikt
+   (tier-volgorde §13) en niet kleedkamer-only — de tiers zijn er op
+   gebouwd dat je na elke tier kunt stoppen en tóch iets heels hebt.
+
+## 15. Wat deze pass uitdrukkelijk níét doet
+
+Geen architectuur- of collisionwijzigingen; geen gameplay, flow,
+documenten of sleutels (fase D); geen sfeerbeats of audio-events
+(fase H); geen AI en geen CRUMP (fase I is apart, na representatie-
+besluit); geen nieuwe systemen of gedragsshaders; geen presets-werk
+(TD-002 blijft fase 6). Alleen de wereld geloofwaardiger maken.
+
+**Exit fase F**: GD-akkoord op dit document (incl. §14-keuzes) →
+implementatie in tier-volgorde (fase G), commit per tier, met na elke
+tier een lokale GD-blik. De suite bewaakt tijdens de hele artpass dat
+architectuur (schaalmetingen), deurstaten, TL-staten en schaduwbudget
+niet bewegen — de artpass is pas geslaagd als álles nog exact staat
+waar jij het goedkeurde.

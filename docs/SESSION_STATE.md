@@ -5,16 +5,18 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-28 (VS-fase C **greybox clubgebouw
-gebouwd**, suite 250 groen — status: **wacht op lokale GD-test**; nog
-niet goedgekeurd markeren)
+**Laatst bijgewerkt**: 2026-07-29 (fase C **goedgekeurd door de GD**
+("de basis staat"); GD-besluit: **artpass F→G naar voren**, vóór
+gameplayflow D/E — richtdoel: speelbare demo ±10 min; **fase
+F-ontwerp (art direction) in tasks/008_artdirection.md ter review**)
 
 ---
 
 ## 1. Laatste taak
 
-**VS-fase C — Greybox clubgebouw (taak 008)** 🟡 gebouwd, **wacht op
-lokale GD-test**. `game/levels/clubgebouw/`: het clubhuis onder de
+**VS-fase C — Greybox clubgebouw (taak 008)** ✅ gebouwd (2026-07-28)
+en **lokaal goedgekeurd door de GD (2026-07-29: "de basis staat")** —
+geen maatcorrecties gevraagd. `game/levels/clubgebouw/`: het clubhuis onder de
 hoofdtribune van VV Drechtstreek, 's nachts — 12 ruimtes/zones op
 menselijke maat (plafonds 2,3–2,7 m), 214 volumes, 11 echte deuren
 (bestuurskamer/keuken/terras op slot; onderhoudsruimte in fase C bewust
@@ -93,7 +95,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | fase A ✅ · fase B ✅ · **fase C 🟡 gebouwd, wacht op GD-test** · D–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · **F 🔵 ontwerp ter review** (naar voren gehaald vóór D/E, GD-besluit 2026-07-29) · D/E/G–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
@@ -119,17 +121,20 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD loopt de greybox lokaal** (F5 start direct op het voorplein bij
-het hek): de volledige route, afstanden, zichtlijnen, ruimtegevoel en
-oriëntatie — in nacht én werklicht (editor-export `werklicht` op de
-Clubgebouw-root; terugzetten vóór commit, de suite bewaakt de default).
-Maatcorrecties zijn per definitie kleine tabel-wijzigingen (TD-007:
-greybox = data). Na GD-akkoord op de architectuur volgt **fase D
-(gameplay-objectieven en sleutel-/zaklampflow)** — wacht op expliciet
-startsein. Daarna fase E: de pacing-gate. Overige haken: monster-AI
-(009), TD-005, TD-004, save-integratie, inventory-UI/HUD (TD-006; erft
-het D-029-patroon), canonvraag "derde helft als proloog" (STORY §8),
-KI-004.
+**De GD reviewt het fase F-ontwerp** in `tasks/008_artdirection.md`
+(art direction + assetplan voor de artpass), inclusief de vier
+§14-keuzes: clubkleuren (advies blauw-wit), bronnen-akkoord (Poly
+Haven + ambientCG, CC0, licenties in de repo), de tijdelijke
+CRUMP-silhouet-representatie voor de latere glimp, en de demo-scope
+(hele route, tier-gewijs). Na akkoord (+ evt. correctierondes, alleen
+docs) volgt **fase G: de artpass in tier-volgorde** (§13 van het plan;
+tier 1 = materialen + deuren + TL-behuizingen + bewegwijzering,
+gebouwbreed), commit per tier, GD-blik na elke tier, TD-007 lost
+gaandeweg af. **GD-besluit vastgelegd: D (flow) en E (pacing-gate)
+volgen ná de artpass; geen monster-AI of nieuwe gameplay nu.**
+Overige haken: monster-AI (009), TD-005, TD-004, save-integratie,
+inventory-UI/HUD (TD-006), canonvraag "derde helft als proloog"
+(STORY §8), KI-004.
 
 ## 6. Open aandachtspunten
 
