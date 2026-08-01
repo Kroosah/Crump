@@ -22,30 +22,39 @@ extends Node3D
 
 const LIGHT_TL_SCENE := "res://game/props/light_tl/light_tl.tscn"
 const DOOR_SCENE := "res://game/props/door_wooden/door_wooden.tscn"
+## De F2-detaillaag (kleedkamer 3 + gang). Aanwezig = de echte props;
+## afwezig = de F1-greybox draait ongewijzigd door (D-015).
+const F2_DETAIL_SCENE := "res://game/levels/clubgebouw/f2_detail/f2_detail.tscn"
 
 ## Materialen. Twee vormen (fase G, tier F1):
 ## - Color: vlakke greybox-kleur (niet-focusruimtes blijven zo);
 ## - Dictionary: PBR-materiaal uit assets/textures/ (CC0, D-031) met
 ##   "tex" (setnaam), "tint" (albedo-vermenigvuldiging), "scale"
-##   (wereld-triplanair: herhaling per meter) en "rough" (factor).
+##   (wereld-triplanair: herhaling per meter), "rough" (factor) en sinds
+##   tier F2 "normal" (sterkte normal map) en "metallic".
 ## Focus-materialen dragen het voorvoegsel f_ (artplan §4).
+##
+## Tier F2 heeft de schaal van de focusmaterialen geijkt op echte maten
+## (tegel 15 cm, baksteen 21 cm): tier F1 gebruikte te grove herhalingen,
+## waardoor elke ruimte groter oogde dan hij is. Verder is de blauwzweem
+## uit wanden en plafonds gehaald — nachtlicht is al koel genoeg.
 const MATERIALS := {
-	# — Focusgebied (artplan §4, tier F1) —
+	# — Focusgebied (artplan §4, tier F1, geijkt in F2) —
 	&"f_zeil_hal": {"tex": "beton", "tint": Color(0.60, 0.61, 0.64), "scale": 0.3, "rough": 0.65},
-	&"f_zeil_gang": {"tex": "beton", "tint": Color(0.52, 0.58, 0.53), "scale": 0.3, "rough": 0.7},
-	&"f_stucwerk": {"tex": "stucwerk", "tint": Color(0.93, 0.92, 0.88), "scale": 0.5},
-	&"f_metselwerk_wit": {"tex": "metselwerk_wit", "tint": Color(0.78, 0.79, 0.77), "scale": 0.45},
+	&"f_zeil_gang": {"tex": "granito", "tint": Color(0.34, 0.36, 0.34), "scale": 1.1, "rough": 0.74, "normal": 0.5},
+	&"f_stucwerk": {"tex": "stucwerk", "tint": Color(0.90, 0.89, 0.85), "scale": 0.8},
+	&"f_metselwerk_wit": {"tex": "metselwerk_wit", "tint": Color(0.76, 0.74, 0.67), "scale": 1.3, "normal": 0.8},
 	&"f_systeemplafond": {"tex": "systeemplafond", "tint": Color(0.95, 0.95, 0.95), "scale": 0.55},
-	&"f_betonplafond": {"tex": "stucwerk", "tint": Color(0.60, 0.60, 0.63), "scale": 0.5, "rough": 0.95},
-	&"f_coating": {"tex": "beton", "tint": Color(0.55, 0.60, 0.68), "scale": 0.4, "rough": 0.8},
-	&"f_tegel_wand": {"tex": "tegel_wit", "tint": Color(0.92, 0.94, 0.96), "scale": 0.6, "rough": 0.55},
-	&"f_tegel_vloer": {"tex": "tegel_vloer_grijs", "tint": Color(0.72, 0.76, 0.80), "scale": 0.7, "rough": 0.5},
+	&"f_betonplafond": {"tex": "plafondverf", "tint": Color(0.70, 0.70, 0.68), "scale": 0.4, "rough": 0.95, "normal": 0.1},
+	&"f_coating": {"tex": "coating_glad", "tint": Color(0.40, 0.43, 0.45), "scale": 0.5, "rough": 0.74, "normal": 0.8},
+	&"f_tegel_wand": {"tex": "tegel_klein_wit", "tint": Color(0.76, 0.75, 0.71), "scale": 0.62, "rough": 0.58},
+	&"f_tegel_vloer": {"tex": "tegel_vloer_grijs", "tint": Color(0.68, 0.71, 0.73), "scale": 1.6, "rough": 0.5},
 	&"f_tapijt": {"tex": "tapijt", "tint": Color(0.55, 0.58, 0.66), "scale": 0.6},
 	&"f_gevel": {"tex": "gevel", "tint": Color(0.92, 0.90, 0.88), "scale": 0.4},
 	&"f_asfalt_nat": {"tex": "asfalt", "tint": Color(0.80, 0.83, 0.88), "scale": 0.28, "rough": 0.4},
 	&"f_lambrisering": {"tex": "planken", "tint": Color(0.80, 0.72, 0.62), "scale": 0.7},
 	&"f_metaal": {"tex": "metaal", "scale": 0.5, "rough": 0.6},
-	&"f_kozijn_blauw": {"tint": Color(0.05, 0.25, 0.48), "rough": 0.5},
+	&"f_kozijn_blauw": {"tint": Color(0.06, 0.17, 0.32), "rough": 0.62},
 	&"f_kozijn_staal": {"tint": Color(0.42, 0.44, 0.47), "rough": 0.45},
 	# — Greybox (niet-focus, ongewijzigd) —
 	&"wand": Color(0.62, 0.62, 0.64),
@@ -292,11 +301,11 @@ const MEUBELS: Array[Dictionary] = [
 	{"pos": Vector3(10.6, 0.325, 2.2), "size": Vector3(0.35, 0.65, 0.35), "mat": &"hout_donker"},
 	{"pos": Vector3(11.4, 0.325, 2.2), "size": Vector3(0.35, 0.65, 0.35), "mat": &"hout_donker"},
 	# Kleedkamer 3: banken, kapstokrails, lockers.
-	{"pos": Vector3(-6.77, 0.24, 0.95), "size": Vector3(0.34, 0.48, 3.9), "mat": &"hout"},
-	{"pos": Vector3(-2.63, 0.24, 0.45), "size": Vector3(0.34, 0.48, 2.9), "mat": &"hout"},
-	{"pos": Vector3(-6.88, 1.68, 0.95), "size": Vector3(0.1, 0.08, 3.9), "mat": &"hout", "nc": true},
-	{"pos": Vector3(-2.52, 1.68, 0.45), "size": Vector3(0.1, 0.08, 2.9), "mat": &"hout", "nc": true},
-	{"pos": Vector3(-2.78, 0.9, 2.6), "size": Vector3(0.6, 1.8, 1.0), "mat": &"metaal"},
+	{"pos": Vector3(-6.77, 0.24, 0.95), "size": Vector3(0.34, 0.48, 3.9), "mat": &"hout", "f2": true},
+	{"pos": Vector3(-2.63, 0.24, 0.45), "size": Vector3(0.34, 0.48, 2.9), "mat": &"hout", "f2": true},
+	{"pos": Vector3(-6.88, 1.68, 0.95), "size": Vector3(0.1, 0.08, 3.9), "mat": &"hout", "nc": true, "f2": true},
+	{"pos": Vector3(-2.52, 1.68, 0.45), "size": Vector3(0.1, 0.08, 2.9), "mat": &"hout", "nc": true, "f2": true},
+	{"pos": Vector3(-2.78, 0.9, 2.6), "size": Vector3(0.6, 1.8, 1.0), "mat": &"metaal", "f2": true},
 	# Douche 3: douchekoppen (hoog) + afvoerputten.
 	{"pos": Vector3(-4.8, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
 	{"pos": Vector3(-4.0, 1.9, -4.42), "size": Vector3(0.08, 0.08, 0.12), "mat": &"metaal", "nc": true},
@@ -339,7 +348,7 @@ const MEUBELS: Array[Dictionary] = [
 	{"pos": Vector3(-8.0, 1.5, 5.8), "size": Vector3(1.3, 0.05, 0.7), "mat": &"hout"},
 	{"pos": Vector3(-8.3, 0.15, 5.75), "size": Vector3(0.28, 0.3, 0.28), "mat": &"metaal"},
 	{"pos": Vector3(-7.6, 0.65, 5.6), "size": Vector3(0.04, 1.3, 0.04), "mat": &"hout", "nc": true},
-	{"pos": Vector3(-6.1, 1.0, 5.34), "size": Vector3(0.16, 0.45, 0.14), "mat": &"accent_rood", "nc": true},
+	{"pos": Vector3(-6.1, 1.0, 5.34), "size": Vector3(0.16, 0.45, 0.14), "mat": &"accent_rood", "nc": true, "f2": true},
 ]
 
 ## Deuren: begintoestanden volgen tasks/008 §3, met één bewuste
@@ -359,10 +368,14 @@ const DEUREN: Array[Dictionary] = [
 		"settings": {"locked": true, "prompt_locked": "Op slot — Keuken"}},
 	{"name": "DeurTerras", "pos": Vector3(12.3, 0.0, -2.48), "rot": 90.0,
 		"settings": {"locked": true, "prompt_locked": "Op slot — Terras"}},
-	{"name": "DeurKleedkamer3", "pos": Vector3(-4.42, 0.0, 3.3)},
-	{"name": "DeurKleedkamer4", "pos": Vector3(-9.82, 0.0, 3.3)},
-	{"name": "DeurOnderhoudsruimte", "pos": Vector3(-13.42, 0.0, 3.3)},
-	{"name": "DeurToiletten", "pos": Vector3(-5.62, 0.0, 5.3)},
+	{"name": "DeurKleedkamer3", "pos": Vector3(-4.42, 0.0, 3.3),
+		"settings": {"panel_tint": Color(0.62, 0.58, 0.54)}},
+	{"name": "DeurKleedkamer4", "pos": Vector3(-9.82, 0.0, 3.3),
+		"settings": {"panel_tint": Color(0.62, 0.58, 0.54)}},
+	{"name": "DeurOnderhoudsruimte", "pos": Vector3(-13.42, 0.0, 3.3),
+		"settings": {"panel_tint": Color(0.55, 0.52, 0.49)}},
+	{"name": "DeurToiletten", "pos": Vector3(-5.62, 0.0, 5.3),
+		"settings": {"panel_tint": Color(0.62, 0.58, 0.54)}},
 	{"name": "Nooddeur", "pos": Vector3(-15.1, 0.0, 4.82), "rot": 90.0,
 		"settings": {"prompt_open": "Duw nooddeur open", "prompt_close": "Trek nooddeur dicht",
 			"panel_tint": Color(0.46, 0.48, 0.51)}},
@@ -387,8 +400,10 @@ const NIGHT_TLS: Array[Dictionary] = [
 		"settings": {"state": 2, "flicker_seed": 11, "scorched": true}},
 	{"name": "TlGangDefect", "pos": Vector3(-10.6, 2.32, 4.3),
 		"settings": {"state": 1}},
-	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3)},
-	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0)},
+	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3),
+		"settings": {"state": 1}},
+	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0),
+		"settings": {"light_energy_on": 1.0, "light_range": 4.8}},
 	{"name": "TlDouche3", "pos": Vector3(-3.8, 2.22, -3.0),
 		"settings": {"state": 1}},
 	{"name": "TlKleedkamer4", "pos": Vector3(-9.3, 2.42, 1.0),
@@ -499,7 +514,7 @@ const BORDJES: Array[Dictionary] = [
 	{"tex": "kleedkamer4", "pos": Vector3(-8.42, 1.8, 3.428), "size": Vector2(0.55, 0.16), "rot": 0.0},
 	{"tex": "toiletten", "pos": Vector3(-4.17, 1.8, 5.172), "size": Vector2(0.55, 0.16), "rot": 180.0},
 	{"tex": "onderhoud", "pos": Vector3(-11.9, 1.8, 3.428), "size": Vector2(0.7, 0.13), "rot": 0.0},
-	{"tex": "nooduitgang", "pos": Vector3(-14.972, 2.3, 4.31), "size": Vector2(0.75, 0.17), "rot": 90.0, "emissie": 1.4},
+	{"tex": "nooduitgang", "pos": Vector3(-14.972, 2.3, 4.31), "size": Vector2(0.75, 0.17), "rot": 90.0, "emissie": 1.0},
 	{"tex": "gevonden_voorwerpen", "pos": Vector3(-12.15, 1.42, 3.425), "size": Vector2(0.21, 0.3), "rot": 0.0},
 ]
 
@@ -513,13 +528,17 @@ var _unit_mesh: BoxMesh
 
 func _ready() -> void:
 	_unit_mesh = BoxMesh.new()
+	var f2_aanwezig := ResourceLoader.exists(F2_DETAIL_SCENE)
 	for table in [SCHIL, VLOEREN, PLAFONDS, BUITEN, INTERIEUR, MEUBELS, AFWERKING]:
 		for solid in table:
+			if f2_aanwezig and solid.get("f2", false):
+				continue
 			_build_solid(solid)
 	for bord in BORDJES:
 		_build_bord(bord)
 	_place_doors()
 	_place_night_tls()
+	_place_f2_detail(f2_aanwezig)
 	_werklicht_rig.visible = werklicht
 	_night_lights.visible = not werklicht
 	if werklicht:
@@ -576,8 +595,10 @@ func _material(key: StringName) -> StandardMaterial3D:
 			material.roughness_texture = load(base + "_rough.jpg")
 			material.uv1_triplanar = true
 			material.uv1_world_triplanar = true
+			material.normal_scale = spec.get("normal", 1.0)
 			var texture_scale: float = spec.get("scale", 0.5)
 			material.uv1_scale = Vector3(texture_scale, texture_scale, texture_scale)
+		material.metallic = spec.get("metallic", 0.0)
 		if tint.a < 1.0:
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_materials[key] = material
@@ -645,6 +666,18 @@ func _place_night_tls() -> void:
 		node.position = tl["pos"]
 	if not NIGHT_TLS.is_empty():
 		Log.info("Clubgebouw: %d TL-armaturen geplaatst" % NIGHT_TLS.size())
+
+
+## De F2-detaillaag (tier F2): kleedkamer 3 en de gang van greybox naar
+## bewoonde ruimte. Ontbreekt de map, dan bouwt het level de vervangen
+## F1-volumes gewoon zelf — geen enkele afhankelijkheid de andere kant op
+## (D-015; de vlag "f2" in de tabellen hierboven is de enige koppeling).
+func _place_f2_detail(aanwezig: bool) -> void:
+	if not aanwezig:
+		Log.info("Clubgebouw: F2-detaillaag afwezig — tier F1-staat (D-015)")
+		return
+	var packed: PackedScene = load(F2_DETAIL_SCENE)
+	add_child(packed.instantiate())
 
 
 ## Het stilte-nulpunt van het gebouw (005): koeling/tl-zoem. Null-veilig

@@ -1846,8 +1846,10 @@ func _check_clubgebouw(tree: SceneTree, bootstrap: Node, failures: int) -> int:
 		"speler staat op het voorplein bij het hek (%s)"
 		% str(player.global_position.round()), failures)
 
-	# TL-samenstelling: weinig werkend licht is het punt (5 stabiel,
-	# 1 flikkerbuis in de gang, rest defect).
+	# TL-samenstelling: weinig werkend licht is het punt (4 stabiel,
+	# 1 flikkerbuis in de gang, rest defect). Sinds de F2-lichtpass is
+	# ook de westelijkste gang-TL defect: het einde van de gang moet
+	# in het donker weglopen (tier F2, GD-brief §3/§4).
 	if ResourceLoader.exists(LIGHT_TL_SCENE):
 		var stable := 0
 		var flickering := 0
@@ -1859,8 +1861,8 @@ func _check_clubgebouw(tree: SceneTree, bootstrap: Node, failures: int) -> int:
 				0: stable += 1
 				1: broken += 1
 				2: flickering += 1
-		failures = _check(stable == 5 and flickering == 1 and broken == 8,
-			"nachtstaat clubgebouw: 5 stabiel / 1 flikkerend / 8 defect (%d/%d/%d)"
+		failures = _check(stable == 4 and flickering == 1 and broken == 9,
+			"nachtstaat clubgebouw: 4 stabiel / 1 flikkerend / 9 defect (%d/%d/%d)"
 			% [stable, flickering, broken], failures)
 
 	# Schaduwbudget: max 3 level-lampen (bar-TL + gang-TL + lichtmast);
