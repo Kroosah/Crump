@@ -134,3 +134,17 @@ Bovenop alle bovenstaande, voor een build die naar buiten gaat:
   doorloop op de minimale doel-hardware.
 - Bevindingen worden bugs met een taaknummer; niets "af" met een bekende
   immersie-breker open.
+
+## Geometrie- en materiaalintegriteit (sinds 2026-08-01, D-039)
+
+Na elke bouwtaak aan een level, naast import en smoke-test:
+
+1. `godot --headless --path . -s tools/controleer_geometrie.gd`
+   — kieren, samenvallende vlakken, verzonken/doorstekende panelen,
+   colliders die niet om hun mesh passen, materiaalfouten. Het aantal
+   bevindingen mag niet stijgen; elke nieuwe melding beoordelen.
+2. `tools/maak_inspectie.gd` (met lavapipe + xvfb) — 50 standpunten
+   langs alle deuropeningen, ramen, gevels en donkere ruimtes, met en
+   zonder zaklamp. Doornemen als contactvel.
+3. Bij twijfel: het gebied ook zonder zaklamp bekijken. Lichtlekken en
+   zwevende strips zie je in het donker vaak eerder dan in het licht.

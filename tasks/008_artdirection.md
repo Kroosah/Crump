@@ -499,3 +499,43 @@ de 006-referentie — juist omdat elke globale knop ook de gang raakt).
 opnieuw gedaan. **Wacht op art-direction-review** (zes verplichte
 renders + twee voor/na-vergelijkingen).
 
+---
+
+## 18. Integriteitspass (2026-08-01) — vóór F3, op GD-opdracht
+
+**Aanleiding**: de GD trof zichtbare geometrie- en materiaalfouten aan,
+binnen én buiten, en gaf opdracht te stoppen met lokaal patchen en eerst
+de gemeenschappelijke bron in de generatielogica te zoeken.
+
+**Bevonden bronnen (drie, niet één)**:
+1. **Een wandblok heeft één materiaal.** Het buitenmetselwerk stond
+   daardoor óók in de toiletten, de onderhoudsruimte en de gang; de
+   handmatige "liners" die dat moesten oplossen dekten maar een deel.
+2. **Kozijnen en lijsten waren met de hand uitgerekend.** Rond elke deur
+   stond 10 mm spleet tussen kozijn en blad (zichtbare naad én
+   lichtlek); raamopeningen hadden helemaal geen kozijn, dus je keek van
+   binnen tegen de gevel aan.
+3. **"Precies aanliggend" is geen constructie.** Zittingen, haken,
+   grepen, lijsten, beugels en de entreeluifel stonden 2–11 mm van hun
+   drager.
+
+**Oplossing in de bron** (D-038): binnenafwerking, deurkozijnen en
+raamkozijnen worden afgeleid uit respectievelijk het wandsegment, de
+deurtabel en het glaspaneel; alles wat ergens aan hangt overlapt zijn
+drager met een vaste marge in plaats van hem te raken. Handmatige
+varianten zijn verwijderd, geen afdekgeometrie toegevoegd.
+
+**Ook opgelost**: schakelaar en stopcontact zaten volledig in de
+tegelband, poster en tactiekbord hingen los van de wand,
+roosterlamellen zaten in de muur, de entreedeur hing 10 mm naast zijn
+eigen opening, hekpalen lagen in het vlak van het gaas, vloeren en
+plafonds liepen door tot in het buitenvlak van de gevel, de latei liep
+over de stijlen heen, en een cilindercollider was zo groot als zijn
+straal. De noord- en oostgevel stonden nog in greyboxgrijs en dragen nu
+hetzelfde metselwerk als de rest.
+
+**Gereedschap dat blijft** (D-039): `tools/controleer_geometrie.gd`
+(rekenkundige controle mét coördinaten) en `tools/maak_inspectie.gd`
+(50 standpunten langs alle deuren, ramen, gevels en donkere ruimtes,
+met en zonder zaklamp). Opgenomen in QA_CHECKLIST.
+

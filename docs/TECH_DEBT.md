@@ -129,6 +129,20 @@ kosten.
 **Aflossing**: herhaalde elementen (haken, latten, tegels) naar
 MultiMeshInstance3D zodra een ruimte er honderden krijgt.
 
+## TD-009 — Geometriecontrole meldt nog bouwnaden die geen fout zijn
+**Datum**: 2026-08-01 · **Status**: Laag · **Aflosmoment**: wanneer de tool als harde poort in CI moet staan
+**Waar**: tools/controleer_geometrie.gd
+**Schuld**: de controle werkt op wereld-AABB's en weet niet welke
+vlakken de speler kán zien. Daardoor blijven er ~150 meldingen staan
+die aantoonbaar onzichtbaar zijn: hoekaansluitingen van tegelpanelen,
+kopse kanten van plinten bij een deuropening, en elementen die in hun
+eigen drager verdwijnen (haken in een rail, radiatorribben in hun
+paneel). Die zijn stuk voor stuk visueel nagelopen in de
+inspectiesweep.
+**Aflossing**: zichtbaarheid meewegen (raycast of occlusietest) zodra
+we de tool als blokkerende stap willen gebruiken; nu is hij een
+triage-lijst die met de hand beoordeeld wordt.
+
 ## Afgeloste schuld
 
 *Nog geen.*

@@ -11,6 +11,50 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.23 — 2026-08-01
+**Geometrie- en materiaalintegriteit over het hele clubgebouw** *(vóór F3, op GD-opdracht)*
+- **Nieuw gereedschap `tools/controleer_geometrie.gd`**: bouwt het level
+  zoals het spel dat doet en trekt alle 584 zichtbare meshes na op
+  kieren, samenvallende vlakken, verzonken panelen, doorstekende
+  elementen, colliders die niet om hun mesh passen en materiaalfouten.
+  Elke bevinding komt met coördinaat en maat, zodat hij terug te vinden
+  is in de datatabellen.
+- **Nieuw gereedschap `tools/maak_inspectie.gd`**: 50 vaste standpunten
+  langs elke deuropening (van beide kanten), elk raam (binnen en buiten),
+  alle vier de gevels, dakrand, terrein en de donkere ruimtes met én
+  zonder zaklamp.
+- **Bron 1 — een muur is één blok met één materiaal.** Daardoor stond
+  het buitenmetselwerk óók in de toiletten, de onderhoudsruimte en langs
+  de gang. Opgelost met een afgeleide binnenafwerking (`"binnen"` /
+  `"buiten"` op een wandsegment): het level plakt zelf een 2 cm
+  afwerkingslaag op de juiste zijde. De negen handgemaakte liners zijn
+  verwijderd — die liepen per definitie achter op de tabellen.
+- **Bron 2 — kozijnen waren met de hand ingetikt.** Alle 30 stijlen zijn
+  vervangen door kozijnen die uit de deurtabel worden gerekend (D-038):
+  het blad is 1,00 m, de opening 1,02 m, en het kozijn overlapt het blad
+  nu altijd 4 mm. Dat sluit de 10 mm-spleet die om elke deur stond — een
+  zichtbare naad én een lichtlek. Ramen kregen hetzelfde: zes
+  raamkozijnen dekken de dagkant af, waar je eerst tegen het
+  buitenmetselwerk aankeek.
+- **Bron 3 — onderdelen raakten hun drager net niet.** Bankzittingen
+  zweefden 5 mm boven hun schragen, kapstokhaken 5 mm van de rail,
+  lockergrepen 2,5 mm van de deur, de entreeluifel 5 mm boven zijn
+  staanders, elftalfoto's 7 mm van de wand, leidingbeugels 11 mm onder
+  het plafond. Alles vastgezet met overlap in plaats van "net aan".
+- **Verder opgelost**: de lichtschakelaar en het stopcontact zaten
+  volledig ín de tegelband (onzichtbaar), poster en tactiekbord hingen
+  17–22 mm van de wand, roosterlamellen zaten in de muur, de entreedeur
+  hing 10 mm naast zijn eigen opening, hekpalen lagen exact in het vlak
+  van het gaas (z-fighting), vloeren en plafonds liepen door tot in het
+  buitenvlak van de gevel (z-fighting op de gevel), en de latei liep over
+  de stijlen heen (z-fighting in elke kozijnhoek).
+- **Noord- en oostgevel** stonden nog in greyboxgrijs; het hele gebouw
+  heeft nu hetzelfde metselwerk met greybox-binnenafwerking.
+- **Bouwerfout**: een cilinder kreeg een collider ter grootte van zijn
+  straal in plaats van zijn doorsnede (afvalbak, emmer).
+- Suite 250/250 groen, performance ongewijzigd (105 vs 104 draw calls in
+  de kleedkamer). `config/version` → 0.0.23.
+
 ## v0.0.22 — 2026-08-01
 **VS-fase G, tier F2.1: realism correction pass op de kleedkamer** *(gebouwd; wacht op art-direction-review)*
 - **Grounding**: 30 nieuwe contactdecals (`ao_vlek`, `ao_lijn`) zetten

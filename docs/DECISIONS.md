@@ -439,3 +439,32 @@ polygonen, geen randafschuiningen, geen nieuwe props. Reden: decals
 kosten vrijwel niets, zijn per stuk één tabelregel en zijn daarmee net
 zo makkelijk terug te draaien als bij te stellen — precies wat een
 polish-ronde nodig heeft die nog een paar keer langs de GD gaat.
+
+## D-038 — Afgeleide geometrie: kozijnen en binnenafwerking komen uit de data, niet uit de hand
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (opdracht GD: integriteitspass) · **Status**: actief
+De GD trof zichtbare bouwfouten aan binnen én buiten. De oorzaak was
+niet één fout object maar twee gewoontes: (1) een wand is één blok met
+één materiaal, dus het buitenmetselwerk stond ook binnen, en dat werd
+per ruimte met de hand bijgeplakt; (2) kozijnen, strips en lijsten
+werden met de hand uitgerekend, waardoor ze millimeters naast hun
+drager stonden. Besluit: alles wat **uit iets anders volgt** wordt
+voortaan **afgeleid**. Concreet: een wandsegment krijgt zijn
+binnenafwerking via `"binnen"`/`"buiten"`; deurkozijnen worden gerekend
+uit scharnier, bladmaat en draairichting; raamkozijnen uit het
+glaspaneel. Handmatige varianten zijn verwijderd, niet toegevoegd.
+Regel voor de toekomst: hangt een element aan een ander element, dan
+overlapt het dat met een vaste marge (`KOZIJN_OVERLAP`, 4 mm) — nooit
+"precies aanliggend", want dan is de eerstvolgende maatwijziging weer
+een kier.
+
+## D-039 — Geometriecontrole is een vaste stap, geen eenmalige actie
+**Datum**: 2026-08-01 · **Wie**: Lead Developer · **Status**: actief
+`tools/controleer_geometrie.gd` blijft in de repo en hoort bij de
+oplevering van elke bouwtaak, naast import en smoke-test (opgenomen in
+QA_CHECKLIST). De tool meldt kieren, samenvallende vlakken, verzonken
+en doorstekende panelen, verkeerde colliders en materiaalfouten mét
+coördinaat. Hij is bewust een **triage-instrument** en geen orakel: hij
+kan niet zien of een vlak zichtbaar is, dus bouwnaden onder de vloer en
+hoekaansluitingen van panelen blijven als melding staan (TD-009). De
+regel is: het aantal bevindingen mag na een taak niet stijgen, en elke
+nieuwe melding wordt beoordeeld — niet weggeklikt.

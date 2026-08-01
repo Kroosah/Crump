@@ -72,10 +72,8 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-2.43, 0.05, 0.95), "size": Vector3(0.06, 0.1, 4.5), "mat": &"plint"},
 	{"pos": Vector3(-6.97, 0.05, 0.95), "size": Vector3(0.06, 0.1, 4.5), "mat": &"plint"},
 
-	# Deurkozijn aan de kamerzijde + drempelstrip in de doorgang.
-	{"pos": Vector3(-4.455, 1.065, 3.175), "size": Vector3(0.07, 2.13, 0.06), "mat": &"kunststof_wit"},
-	{"pos": Vector3(-3.365, 1.065, 3.175), "size": Vector3(0.07, 2.13, 0.06), "mat": &"kunststof_wit"},
-	{"pos": Vector3(-3.91, 2.16, 3.175), "size": Vector3(1.16, 0.07, 0.06), "mat": &"kunststof_wit"},
+	# Drempelstrips in beide doorgangen. Het kozijn zelf tekent het
+	# level uit de deurtabel (clubgebouw.gd §_build_kozijn).
 	{"pos": Vector3(-3.91, 0.006, 3.3), "size": Vector3(1.02, 0.012, 0.22), "mat": &"alu"},
 	# Doorgang naar douche 3: dorpel en een aluminium hoekprofiel.
 	{"pos": Vector3(-4.0, 0.008, -1.4), "size": Vector3(1.0, 0.016, 0.22), "mat": &"alu"},
@@ -85,15 +83,15 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-6.81, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-6.72, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat"},
 	{"pos": Vector3(-6.63, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat_b"},
-	{"pos": Vector3(-6.88, 0.205, -0.75), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.66, 0.205, -0.75), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.77, 0.39, -0.75), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.88, 0.205, 0.95), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.66, 0.205, 0.95), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.77, 0.39, 0.95), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.88, 0.205, 2.65), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.66, 0.205, 2.65), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-6.77, 0.39, 2.65), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.88, 0.209, -0.75), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.66, 0.209, -0.75), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.77, 0.398, -0.75), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.88, 0.209, 0.95), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.66, 0.209, 0.95), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.77, 0.398, 0.95), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.88, 0.209, 2.65), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.66, 0.209, 2.65), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-6.77, 0.398, 2.65), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-6.77, 0.24, 0.95), "size": Vector3(0.36, 0.48, 3.9), "col": true, "verborgen": true},
 
 	# ── Bank oost ──
@@ -101,47 +99,47 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-2.67, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-2.58, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat"},
 	{"pos": Vector3(-2.49, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat_b"},
-	{"pos": Vector3(-2.74, 0.205, -0.70), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.52, 0.205, -0.70), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.63, 0.39, -0.70), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.74, 0.205, 0.45), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.52, 0.205, 0.45), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.63, 0.39, 0.45), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.74, 0.205, 1.60), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.52, 0.205, 1.60), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-2.63, 0.39, 1.60), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.74, 0.209, -0.70), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.52, 0.209, -0.70), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.63, 0.398, -0.70), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.74, 0.209, 0.45), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.52, 0.209, 0.45), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.63, 0.398, 0.45), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.74, 0.209, 1.60), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.52, 0.209, 1.60), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-2.63, 0.398, 1.60), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-2.63, 0.24, 0.45), "size": Vector3(0.36, 0.48, 2.9), "col": true, "verborgen": true},
 
 	# ── Kapstokrails met dubbele haken (west: 8, oost: 6) ──
 	{"pos": Vector3(-6.98, 1.68, 0.95), "size": Vector3(0.04, 0.16, 3.9), "mat": &"kapstok_hout"},
 	{"pos": Vector3(-2.42, 1.68, 0.45), "size": Vector3(0.04, 0.16, 2.9), "mat": &"kapstok_hout"},
-	{"pos": Vector3(-6.945, 1.66, -0.70), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, -0.70), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, -0.70), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, -0.25), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, -0.25), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, -0.25), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 0.20), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 0.20), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 0.20), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 0.65), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 0.65), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 0.65), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 1.10), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 1.10), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 1.10), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 1.55), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 1.55), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 1.55), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 2.00), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 2.00), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 2.00), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-6.945, 1.66, 2.45), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-6.952, 1.66, 2.45), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-6.89, 1.615, 2.45), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, -0.55), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, -0.55), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, -0.55), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, -0.10), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, -0.10), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, -0.10), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, 0.35), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, 0.35), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, 0.35), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, 0.80), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, 0.80), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, 0.80), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, 1.25), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, 1.25), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, 1.25), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
-	{"pos": Vector3(-2.455, 1.66, 1.70), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
+	{"pos": Vector3(-2.448, 1.66, 1.70), "size": Vector3(0.02, 0.10, 0.03), "mat": &"staal"},
 	{"pos": Vector3(-2.51, 1.615, 1.70), "size": Vector3(0.11, 0.022, 0.022), "mat": &"staal"},
 
 	# Het enige kledingstuk in het gebouw: een vergeten trainingsjack
@@ -158,10 +156,10 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-3.075, 0.93, 2.60), "size": Vector3(0.015, 1.60, 0.30), "mat": &"locker_blauw"},
 	{"pos": Vector3(-2.80, 0.93, 2.94), "size": Vector3(0.52, 1.58, 0.28), "mat": &"locker_diep"},
 	{"pos": Vector3(-3.139, 0.93, 2.952), "size": Vector3(0.015, 1.60, 0.30), "mat": &"locker_blauw", "rot": Vector3(0.0, 25.0, 0.0)},
-	{"pos": Vector3(-3.09, 1.00, 2.14), "size": Vector3(0.025, 0.11, 0.02), "mat": &"staal"},
-	{"pos": Vector3(-3.09, 1.00, 2.48), "size": Vector3(0.025, 0.11, 0.02), "mat": &"staal"},
-	{"pos": Vector3(-3.10, 0.90, 2.15), "size": Vector3(0.03, 0.05, 0.035), "mat": &"staal_donker"},
-	{"pos": Vector3(-3.10, 0.90, 2.49), "size": Vector3(0.03, 0.05, 0.035), "mat": &"staal_donker"},
+	{"pos": Vector3(-3.0875, 1.00, 2.14), "size": Vector3(0.025, 0.11, 0.02), "mat": &"staal"},
+	{"pos": Vector3(-3.0875, 1.00, 2.48), "size": Vector3(0.025, 0.11, 0.02), "mat": &"staal"},
+	{"pos": Vector3(-3.0975, 0.90, 2.15), "size": Vector3(0.03, 0.05, 0.035), "mat": &"staal_donker"},
+	{"pos": Vector3(-3.0975, 0.90, 2.49), "size": Vector3(0.03, 0.05, 0.035), "mat": &"staal_donker"},
 
 	# ── Radiator met leidingen en kraan (noordwand) ──
 	{"pos": Vector3(-5.75, 0.42, -1.245), "size": Vector3(0.90, 0.55, 0.08), "mat": &"email_wit"},
@@ -172,37 +170,37 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-5.40, 0.42, -1.20), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
 	{"pos": Vector3(-6.05, 0.72, -1.26), "size": Vector3(0.04, 0.10, 0.06), "mat": &"staal_donker"},
 	{"pos": Vector3(-5.45, 0.72, -1.26), "size": Vector3(0.04, 0.10, 0.06), "mat": &"staal_donker"},
-	{"vorm": "cyl", "pos": Vector3(-6.15, 0.08, -1.22), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
-	{"vorm": "cyl", "pos": Vector3(-5.35, 0.08, -1.22), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
-	{"vorm": "cyl", "pos": Vector3(-6.15, 0.19, -1.22), "size": Vector3(0.032, 0.07, 0.032), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(-6.15, 0.08, -1.238), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(-5.35, 0.08, -1.238), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(-6.15, 0.19, -1.238), "size": Vector3(0.032, 0.07, 0.032), "mat": &"staal_donker"},
 
 	# Verwarmingsleiding in de noordoosthoek, met beugels.
-	{"vorm": "cyl", "pos": Vector3(-2.52, 1.25, -1.21), "size": Vector3(0.028, 2.5, 0.028), "mat": &"staal"},
-	{"pos": Vector3(-2.50, 0.45, -1.24), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
-	{"pos": Vector3(-2.50, 1.40, -1.24), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
-	{"pos": Vector3(-2.50, 2.25, -1.24), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(-2.52, 1.25, -1.242), "size": Vector3(0.028, 2.5, 0.028), "mat": &"staal"},
+	{"pos": Vector3(-2.50, 0.45, -1.252), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
+	{"pos": Vector3(-2.50, 1.40, -1.252), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
+	{"pos": Vector3(-2.50, 2.25, -1.282), "size": Vector3(0.05, 0.03, 0.05), "mat": &"staal_donker"},
 
 	# ── Schakelaar en dubbel stopcontact naast de deur ──
-	{"pos": Vector3(-4.62, 1.05, 3.183), "size": Vector3(0.085, 0.085, 0.014), "mat": &"kunststof_wit"},
-	{"pos": Vector3(-4.62, 1.05, 3.172), "size": Vector3(0.055, 0.055, 0.010), "mat": &"kunststof_wit"},
-	{"pos": Vector3(-4.90, 0.32, 3.183), "size": Vector3(0.150, 0.080, 0.014), "mat": &"kunststof_wit"},
+	{"pos": Vector3(-4.62, 1.05, 3.166), "size": Vector3(0.085, 0.085, 0.014), "mat": &"kunststof_wit"},
+	{"pos": Vector3(-4.62, 1.05, 3.152), "size": Vector3(0.055, 0.055, 0.010), "mat": &"kunststof_wit"},
+	{"pos": Vector3(-4.90, 0.32, 3.166), "size": Vector3(0.150, 0.080, 0.014), "mat": &"kunststof_wit"},
 
 	# ── Ventilatierooster boven de doucheopening ──
 	{"pos": Vector3(-4.00, 2.30, -1.29), "size": Vector3(0.34, 0.24, 0.02), "mat": &"staal_donker"},
-	{"pos": Vector3(-4.00, 2.375, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
-	{"pos": Vector3(-4.00, 2.335, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
-	{"pos": Vector3(-4.00, 2.295, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
-	{"pos": Vector3(-4.00, 2.255, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
-	{"pos": Vector3(-4.00, 2.215, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
+	{"pos": Vector3(-4.00, 2.375, -1.284), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
+	{"pos": Vector3(-4.00, 2.335, -1.284), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
+	{"pos": Vector3(-4.00, 2.295, -1.284), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
+	{"pos": Vector3(-4.00, 2.255, -1.284), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
+	{"pos": Vector3(-4.00, 2.215, -1.284), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
 
 	# ── Afvalbak bij de deur ──
 	{"vorm": "cyl", "pos": Vector3(-3.66, 0.21, 3.01), "size": Vector3(0.17, 0.42, 0.17), "mat": &"kunststof_grijs", "col": true, "rot": Vector3(0.0, 0.0, 1.4)},
 	{"vorm": "torus", "pos": Vector3(-3.66, 0.427, 3.01), "size": Vector3(0.155, 0.185, 0.155), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 22.0, 1.4)},
 
 	# ── Tactiekbord (noordwand) met alu-lijst en stiftgoot ──
-	{"pos": Vector3(-6.20, 1.90, -1.268), "size": Vector3(1.16, 0.81, 0.03), "mat": &"alu", "rot": Vector3(0.0, 0.0, 0.5)},
-	{"pos": Vector3(-6.20, 1.485, -1.26), "size": Vector3(0.50, 0.025, 0.05), "mat": &"alu"},
-	{"vorm": "cyl", "pos": Vector3(-6.32, 1.508, -1.24), "size": Vector3(0.008, 0.12, 0.008), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(-6.20, 1.90, -1.2915), "size": Vector3(1.16, 0.81, 0.03), "mat": &"alu", "rot": Vector3(0.0, 0.0, 0.5)},
+	{"pos": Vector3(-6.20, 1.485, -1.2765), "size": Vector3(0.50, 0.025, 0.05), "mat": &"alu"},
+	{"vorm": "cyl", "pos": Vector3(-6.32, 1.508, -1.2565), "size": Vector3(0.008, 0.12, 0.008), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
 
 	# ── Achtergelaten spullen: schaars, en elk met een eigenaar ──
 	# Vergeten sok onder de westbank.
@@ -228,14 +226,14 @@ const SOLIDS: Array[Dictionary] = [
 	# duidelijkste CG-verklikkers. Aansluitdoos, buis naar de wand en
 	# twee beugels — meer niet.
 	{"pos": Vector3(-4.70, 2.465, 1.62), "size": Vector3(0.11, 0.07, 0.09), "mat": &"kunststof_wit"},
-	{"vorm": "cyl", "pos": Vector3(-4.70, 2.468, 2.40), "size": Vector3(0.013, 1.52, 0.013), "mat": &"kunststof_wit", "rot": Vector3(90.0, 0.0, 0.0)},
-	{"pos": Vector3(-4.70, 2.478, 2.05), "size": Vector3(0.035, 0.022, 0.03), "mat": &"kunststof_wit"},
-	{"pos": Vector3(-4.70, 2.478, 2.85), "size": Vector3(0.035, 0.022, 0.03), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(-4.70, 2.484, 2.40), "size": Vector3(0.013, 1.52, 0.013), "mat": &"kunststof_wit", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"pos": Vector3(-4.70, 2.4915, 2.05), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
+	{"pos": Vector3(-4.70, 2.4915, 2.85), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
 
 	# ── F2.1: papier heeft dikte ──
 	# Achterblad achter de poster: zonder dat is het een texture op een
 	# vlak, mét is het een vel dat tegen de muur hangt en schaduw vangt.
-	{"pos": Vector3(-5.20, 1.85, 3.186), "size": Vector3(0.435, 0.605, 0.004), "mat": &"papier", "rot": Vector3(0.0, 0.0, 1.5)},
+	{"pos": Vector3(-5.20, 1.85, 3.197), "size": Vector3(0.435, 0.605, 0.006), "mat": &"papier", "rot": Vector3(0.0, 0.0, 1.5)},
 
 	# ══════════════ GANG — het horrorbeeld ══════════════
 	# Plinten langs beide wanden, netjes onderbroken bij elke doorgang.
@@ -266,12 +264,12 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-7.60, 0.43, 3.56), "size": Vector3(1.40, 0.035, 0.075), "mat": &"bank_lat"},
 	{"pos": Vector3(-7.60, 0.43, 3.65), "size": Vector3(1.40, 0.035, 0.075), "mat": &"bank_lat"},
 	{"pos": Vector3(-7.60, 0.43, 3.74), "size": Vector3(1.40, 0.035, 0.075), "mat": &"bank_lat"},
-	{"pos": Vector3(-8.15, 0.205, 3.58), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-8.15, 0.205, 3.72), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-8.15, 0.39, 3.65), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
-	{"pos": Vector3(-7.05, 0.205, 3.58), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-7.05, 0.205, 3.72), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-7.05, 0.39, 3.65), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(-8.15, 0.209, 3.58), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-8.15, 0.209, 3.72), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-8.15, 0.398, 3.65), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(-7.05, 0.209, 3.58), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-7.05, 0.209, 3.72), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-7.05, 0.398, 3.65), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
 	{"pos": Vector3(-7.60, 0.24, 3.65), "size": Vector3(1.40, 0.48, 0.30), "col": true, "verborgen": true},
 
 	# Twee gestapelde kantinestoelen tegen de zuidwand — de natuurlijke
@@ -308,15 +306,15 @@ const SOLIDS: Array[Dictionary] = [
 ## of foto het werk doet. "rot" = graden; een quad kijkt standaard naar +z.
 const PANELEN: Array[Dictionary] = [
 	# Kleedkamer 3: tactiekbord, poster en het formulier op de vloer.
-	{"tex": "f2/tactiekbord", "pos": Vector3(-6.20, 1.90, -1.252), "size": Vector2(1.10, 0.75), "rot": Vector3(0.0, 0.0, 0.5)},
-	{"tex": "f2/poster_normen", "pos": Vector3(-5.20, 1.85, 3.178), "size": Vector2(0.42, 0.59), "rot": Vector3(0.0, 180.0, 1.5)},
+	{"tex": "f2/tactiekbord", "pos": Vector3(-6.20, 1.90, -1.2745), "size": Vector2(1.10, 0.75), "rot": Vector3(0.0, 0.0, 0.5)},
+	{"tex": "f2/poster_normen", "pos": Vector3(-5.20, 1.85, 3.1925), "size": Vector2(0.42, 0.59), "rot": Vector3(0.0, 180.0, 1.5)},
 	{"tex": "f2/formulier", "pos": Vector3(-4.15, 0.007, 2.60), "size": Vector2(0.15, 0.21), "rot": Vector3(-90.0, 0.0, 14.0)},
 	# Gang: elftalfoto's door de jaren heen — twee in het licht bij de
 	# toiletten, twee in het donkere westdeel (die vind je pas met de lamp).
-	{"tex": "f2/elftalfoto_1", "pos": Vector3(-6.95, 1.74, 5.168), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, 0.0)},
-	{"tex": "f2/elftalfoto_2", "pos": Vector3(-6.25, 1.72, 5.168), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, -1.2)},
-	{"tex": "f2/elftalfoto_3", "pos": Vector3(-10.20, 1.75, 5.168), "size": Vector2(0.50, 0.37), "rot": Vector3(0.0, 180.0, 0.0)},
-	{"tex": "f2/elftalfoto_1", "pos": Vector3(-11.40, 1.71, 5.168), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, 1.8)},
+	{"tex": "f2/elftalfoto_1", "pos": Vector3(-6.95, 1.74, 5.1845), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, 0.0)},
+	{"tex": "f2/elftalfoto_2", "pos": Vector3(-6.25, 1.72, 5.1845), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, -1.2)},
+	{"tex": "f2/elftalfoto_3", "pos": Vector3(-10.20, 1.75, 5.1845), "size": Vector2(0.50, 0.37), "rot": Vector3(0.0, 180.0, 0.0)},
+	{"tex": "f2/elftalfoto_1", "pos": Vector3(-11.40, 1.71, 5.1845), "size": Vector2(0.44, 0.32), "rot": Vector3(0.0, 180.0, 1.8)},
 	# Keuringskaartje naast de brandblusser.
 	{"tex": "f2/keuringskaart", "pos": Vector3(-5.82, 1.32, 5.184), "size": Vector2(0.10, 0.14), "rot": Vector3(0.0, 180.0, 0.0)},
 ]
@@ -324,10 +322,10 @@ const PANELEN: Array[Dictionary] = [
 ## Lijstjes achter de gangfoto's (aparte tabel: één regel per foto,
 ## zodat de fotomaat en de lijst nooit uit elkaar lopen).
 const FOTO_LIJSTEN: Array[Dictionary] = [
-	{"pos": Vector3(-6.95, 1.74, 5.186), "size": Vector3(0.48, 0.36, 0.014)},
-	{"pos": Vector3(-6.25, 1.72, 5.186), "size": Vector3(0.48, 0.36, 0.014)},
-	{"pos": Vector3(-10.20, 1.75, 5.186), "size": Vector3(0.54, 0.41, 0.014)},
-	{"pos": Vector3(-11.40, 1.71, 5.186), "size": Vector3(0.48, 0.36, 0.014)},
+	{"pos": Vector3(-6.95, 1.74, 5.1935), "size": Vector3(0.48, 0.36, 0.014)},
+	{"pos": Vector3(-6.25, 1.72, 5.1935), "size": Vector3(0.48, 0.36, 0.014)},
+	{"pos": Vector3(-10.20, 1.75, 5.1935), "size": Vector3(0.54, 0.41, 0.014)},
+	{"pos": Vector3(-11.40, 1.71, 5.1935), "size": Vector3(0.48, 0.36, 0.014)},
 ]
 
 ## Decals: material breakup. "vlak" bepaalt de projectierichting
@@ -481,7 +479,13 @@ func _bouw_solid(solid: Dictionary) -> void:
 	if solid.get("col", false):
 		var shape := CollisionShape3D.new()
 		var box := BoxShape3D.new()
+		# Bij een cilinder of bol is size.x de stráál; de collider moet om
+		# de hele doorsnede passen, anders loopt de speler half door de
+		# prullenbak heen.
 		box.size = size
+		var vorm_naam: String = solid.get("vorm", "box")
+		if vorm_naam == "cyl" or vorm_naam == "bol":
+			box.size = Vector3(size.x * 2.0, size.y, size.z * 2.0)
 		shape.shape = box
 		body.add_child(shape)
 	_wortel.add_child(body)

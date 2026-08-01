@@ -5,15 +5,36 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2.1 gebouwd** — de
-realism correction pass op de kleedkamer, na de F2-review; de gang is
-onaangeroerd en geldt als **beschermde art-direction-referentie**; suite
-250 groen — status: **F2.1 READY FOR ART-DIRECTION REVIEW**, niets
-doorpakken naar F3 zonder startsein)
+**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2.1 + integriteitspass**
+— na de realism correction pass is op GD-opdracht het volledige
+clubgebouw nagetrokken op geometrie- en materiaalfouten; drie
+gemeenschappelijke bronnen gevonden en in de generatielogica opgelost
+(D-038). Suite 250 groen — status: **F2.1 READY FOR ART-DIRECTION
+REVIEW**, niets doorpakken naar F3 zonder startsein)
 
 ---
 
 ## 1. Laatste taak
+
+**Integriteitspass geometrie/materiaal (taak 008, vóór F3)** ✅ uitgevoerd
+(2026-08-01) op GD-opdracht na zichtbare bouwfouten binnen én buiten.
+Niet lokaal gepatcht: eerst de bron gezocht. Drie gewoontes bleken de
+oorzaak — (1) een wandblok heeft één materiaal, dus buitenmetselwerk
+stond binnen; (2) kozijnen waren met de hand ingetikt en lieten 10 mm
+spleet om elk deurblad, ramen hadden geen kozijn; (3) onderdelen stonden
+"precies aanliggend" en dus 2–11 mm van hun drager. Opgelost in de
+generatielogica (D-038): binnenafwerking uit het wandsegment,
+deurkozijnen uit de deurtabel, raamkozijnen uit het glaspaneel, en een
+vaste overlapmarge voor alles wat ergens aan hangt. Negen handmatige
+liners en dertig handmatige kozijnstijlen verwijderd. Verder opgelost:
+schakelaar/stopcontact zaten ín de tegelband, poster en tactiekbord
+hingen los, roosterlamellen in de muur, entreedeur 10 mm naast zijn
+opening, hekpalen in het vlak van het gaas, vloeren/plafonds tot in het
+gevelvlak, latei over de stijlen, cilindercollider ter grootte van zijn
+straal, en de noord-/oostgevel stonden nog in greyboxgrijs.
+Nieuw gereedschap (D-039, in QA_CHECKLIST): `controleer_geometrie.gd`
+en `maak_inspectie.gd` (50 standpunten, met en zonder zaklamp).
+Suite 250/250, performance ongewijzigd. TD-009 genoteerd. v0.0.23.
 
 **VS-fase G, tier F2.1 — realism correction pass (taak 008)** 🟡 gebouwd
 (2026-08-01), **wacht op art-direction-review**. De GD keurde F2
@@ -146,7 +167,7 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **250/250
-groen**. `config/version` = 0.0.22. Rendermeters van de demo-zone (uit
+groen**. `config/version` = 0.0.23. Rendermeters van de demo-zone (uit
 `tools/maak_screenshots.gd`): piek 152 draw calls en ~7k primitieven
 per beeld — ruim binnen budget. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
 dev room), zonder documentlezer 209, zonder interactie-unit incl.
@@ -169,30 +190,22 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD beoordeelt tier F2.1**: zes verplichte renders
-(01_F21_kleedkamer_wide, 02_F21_kleedkamer_deuropening,
-03_F21_vloer_wand_bank_detail, 04_F21_kast_kozijn,
-05_F21_gang_reference, 06_F21_gang_donkerste — de eerste vier en de twee
-gangbeelden op exact dezelfde camera's als hun F2-tegenhangers) plus
-twee voor/na-vergelijkingen (07 kleedkamer, 08 detail).
+**De GD beoordeelt tier F2.1 opnieuw**, nu inclusief de integriteitspass:
+zes AD-renders (01–06, dezelfde camera's als F2), twee
+voor/na-vergelijkingen, en drie contactvellen uit de inspectiesweep
+(gevels, deuropeningen, donkere ruimtes met zaklamp).
 
-Toetsen: oogt de kleedkamer minder als een game-level, voelen objecten
-gegrond, is de vloer minder uniform, hebben tegels/wanden/plafond
-natuurlijke imperfectie, ogen bank en kast minder als simpele assets,
-voelt de TL als lokale bron — en heeft **de gang zijn sfeer behouden**
-(dat was de expliciete eis; 05 en 06 zijn daarvoor de referentie).
-
-Bekend en bewust gelaten: de flashlight-hotspot blijft rond en hard
-(GD-notitie: F3); kleedkamer 4, de douches en de hal staan nog op tier
-F1; de globale environment (ambient/fog/tonemap/SSAO) is niet aangeraakt
-omdat elke globale knop ook de beschermde gang raakt.
+Toetsen: (a) de F2.1-criteria — minder CG-look, gegronde objecten,
+minder uniforme vloer, natuurlijke imperfectie, TL als lokale bron, en
+de gang die zijn beschermde sfeer behoudt; (b) de integriteit — geen
+zwevende strips, geen spleten om deuren, geen buitenmetselwerk binnen,
+geen z-fighting op gevels of in kozijnhoeken.
 
 **Pas ná expliciet startsein: F3** (bestuurskamer, hal-aankleding,
-entree-buitenkant, plus het flashlight-gedrag). D (flow) en E (pacing)
-volgen ná de artpass; let op D-032. Overige haken: monster-AI (009),
-TD-004/005/008, save-integratie, inventory-UI/HUD (TD-006), canonvraag
-"derde helft als proloog" (STORY §8), KI-004, en de canon-ronde over
-CRUMP zelf.
+entree-buitenkant, plus flashlight-gedrag). Overige haken: monster-AI
+(009), TD-004/005/008/009, save-integratie, inventory-UI/HUD (TD-006),
+canonvraag "derde helft als proloog" (STORY §8), KI-004, en de
+canon-ronde over CRUMP zelf.
 
 ## 6. Open aandachtspunten
 
