@@ -190,5 +190,76 @@ magick -size 260x360 xc:'#f7f5ee' \
 	-annotate +0+110 'brandblusser\n\nvolgende keuring:\nmaart' \
 	"$F2/keuringskaart.png"
 
+echo "· F2.1 — grounding en materiaalbreukvlakken"
+
+# 10. Contactvlek: de zachte donkere aanzet waar een object de vloer of
+#     wand raakt. Dit is géén slagschaduw maar het vuil-en-occlusie-randje
+#     dat elk gebruikt meubel heeft; zonder dit "zweeft" een prop.
+magick -size 256x256 radial-gradient:white-black -blur 0x6 \
+	-level 8%,72% /tmp/f2_mask.png
+kleur_masker "$DEC/ao_vlek.png" '#17171a' /tmp/f2_mask.png
+
+# 11. Contactlijn: hetzelfde effect langs een rand (plint, kozijn,
+#     tegelrand, wand/plafond-naad).
+magick -size 512x128 gradient:'#ffffff'-'#000000' -blur 0x3 \
+	\( -size 512x128 plasma:fractal -blur 0x6 -normalize -level 45%,100% \) \
+	-compose multiply -composite -level 0%,78% /tmp/f2_mask.png
+kleur_masker "$DEC/ao_lijn.png" '#191919' /tmp/f2_mask.png
+
+# 12. Verfvariatie: de wolkerige ongelijkheid van een muur die met de
+#     roller is bijgewerkt. Zeer zwak — je moet het voelen, niet zien.
+magick -size 512x512 plasma:fractal -blur 0x14 -normalize \
+	-level 35%,88% -evaluate multiply 0.55 /tmp/f2_mask.png
+kleur_masker "$DEC/verfrol.png" '#8d8b84' /tmp/f2_mask.png
+
+# 13. Reparatieplek: ooit iets afgehaald, opgevuld en overgeschilderd —
+#     net een andere tint dan de rest.
+magick -size 256x256 xc:black -fill white \
+	-draw 'roundrectangle 60,70 200,180 18,18' -blur 0x14 \
+	\( -size 256x256 plasma:fractal -blur 0x3 -normalize -level 40%,100% \) \
+	-compose multiply -composite -level 0%,64% /tmp/f2_mask.png
+kleur_masker "$DEC/verfvlek.png" '#96938a' /tmp/f2_mask.png
+
+# 14. Vloerverkleuring: grote, zachte vlekken die het uniforme vlak breken.
+magick -size 512x512 plasma:fractal -blur 0x18 -normalize \
+	-level 42%,92% -evaluate multiply 0.6 /tmp/f2_mask.png
+kleur_masker "$DEC/vloervlek.png" '#34342e' /tmp/f2_mask.png
+
+# 15. Tegelvuil: grauwsluier langs voegen en randen, licht strepend.
+magick -size 256x512 xc:black -fill white \
+	-draw 'rectangle 0,340 256,512' -blur 0x30 \
+	\( -size 256x512 plasma:fractal -blur 0x1 -normalize -level 38%,100% \) \
+	-compose multiply -composite -level 0%,52% /tmp/f2_mask.png
+kleur_masker "$DEC/tegelvuil.png" '#5f5c52' /tmp/f2_mask.png
+
+# 16. Roet/stof rond de TL-buis op het plafond.
+magick -size 512x256 xc:black -fill white \
+	-draw 'roundrectangle 60,80 452,176 48,48' -blur 0x26 \
+	\( -size 512x256 plasma:fractal -blur 0x5 -normalize -level 40%,100% \) \
+	-compose multiply -composite -level 0%,46% /tmp/f2_mask.png
+kleur_masker "$DEC/roet.png" '#2b2924' /tmp/f2_mask.png
+
+# 17b. Tegelvlek: ongelijk gepoetste tegels — een paar zachte velden die
+#      bewust niet op het voegenraster vallen, zodat de wand niet als één
+#      perfect vlak leest.
+magick -size 512x512 xc:black -fill white \
+	-draw 'roundrectangle 40,60 210,240 40,40' \
+	-draw 'roundrectangle 260,300 470,470 50,50' \
+	-draw 'roundrectangle 150,330 260,430 30,30' \
+	-blur 0x26 \
+	\( -size 512x512 plasma:fractal -blur 0x6 -normalize -level 40%,100% \) \
+	-compose multiply -composite -level 0%,44% /tmp/f2_mask.png
+kleur_masker "$DEC/tegelvlek.png" '#6f6f68' /tmp/f2_mask.png
+
+# 17. Slijtglans: waar iedereen loopt is de vloer gládder, niet donkerder.
+#     Twee bestanden: een masker (alpha bepaalt wáár) en een ORM-kaart
+#     (groen kanaal = ruwheid). De decal mengt alleen ruwheid, geen kleur.
+magick -size 512x512 xc:black -fill white \
+	-draw 'roundrectangle 120,-60 392,572 110,110' -blur 0x44 \
+	\( -size 512x512 plasma:fractal -blur 0x10 -normalize -level 25%,100% \) \
+	-compose multiply -composite -level 0%,70% /tmp/f2_mask.png
+kleur_masker "$DEC/slijtglans.png" '#808080' /tmp/f2_mask.png
+magick -size 512x512 xc:'#ff5900' "$DEC/slijtglans_orm.png"
+
 rm -f /tmp/f2_mask.png
 echo "Klaar: $(ls "$DEC" | wc -l) decals in $DEC, $(ls "$F2" | wc -l) texturen in $F2"

@@ -5,14 +5,32 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2 gebouwd** —
-kleedkamer 3 als hero room en de gang als horrorbeeld; suite 250 groen,
-zestien renders van 1600×900 — status: **F2 READY FOR ART-DIRECTION
-REVIEW**, niets doorpakken naar F3 zonder startsein)
+**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2.1 gebouwd** — de
+realism correction pass op de kleedkamer, na de F2-review; de gang is
+onaangeroerd en geldt als **beschermde art-direction-referentie**; suite
+250 groen — status: **F2.1 READY FOR ART-DIRECTION REVIEW**, niets
+doorpakken naar F3 zonder startsein)
 
 ---
 
 ## 1. Laatste taak
+
+**VS-fase G, tier F2.1 — realism correction pass (taak 008)** 🟡 gebouwd
+(2026-08-01), **wacht op art-direction-review**. De GD keurde F2
+technisch goed maar visueel nog niet: de gang is sfeervol genoeg en
+**beschermd** (niet lichter, voller, schoner of leesbaarder maken), de
+kleedkamer oogde nog te veel als een nette 3D-scène. Opgeleverd, alleen
+in kleedkamer 3: 30 contactdecals voor grounding, het derde schaduwslot
+verhuisd van de kantinebar naar de kleedkamer-TL (D-036, budget
+onveranderd), `light_attenuation` als nieuwe TL-export plus een
+zichtbare elektrische aansluiting, 18 breukvlak-decals (verfrol,
+reparatie, tegelvuil/-vlek, vloerverkleuring, roet) en twee ORM-decals
+die het looppad gladder maken in plaats van donkerder (D-037), twee
+lattinten voor de bank, een donkerdere en mattere kast, en zes props die
+alleen verplaatst of gedraaid zijn. Geen nieuwe props, geen
+geometrie-pass, geen wijziging aan de gang of aan de globale
+environment. Suite 250/250, verwijderbaarheidstest opnieuw gedaan,
+performance vrijwel gelijk (piek 104 vs 101 draw calls). v0.0.22.
 
 **VS-fase G, tier F2 — kleedkamer 3 + gang (taak 008)** 🟡 gebouwd
 (2026-08-01), **wacht op art-direction-review**. Uitgevoerd op de
@@ -122,13 +140,13 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 ✅ · tier F2 🟡 gebouwd, wacht op art-direction-review** (F3–F4 ⬜) · D/E/H–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 ✅ · F2 ✅ gebouwd · F2.1 🟡 wacht op art-direction-review** (F3–F4 ⬜) · D/E/H–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **250/250
-groen**. `config/version` = 0.0.21. Rendermeters van de demo-zone (uit
+groen**. `config/version` = 0.0.22. Rendermeters van de demo-zone (uit
 `tools/maak_screenshots.gd`): piek 152 draw calls en ~7k primitieven
 per beeld — ruim binnen budget. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
 dev room), zonder documentlezer 209, zonder interactie-unit incl.
@@ -151,27 +169,30 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD beoordeelt tier F2 als art-direction-review**: zestien renders
-(1600×900) staan klaar, waaronder de tien verplichte beelden —
-kleedkamer wide, vanaf de deuropening, materiaaldetail, banken/props,
-blik richting gang, gang vanaf de kleedkamer, gang midden, donkerste
-gang, en het zaklamp-paar (aan/uit). Beoordelen op: voelt de kleedkamer
-als een échte gebruikte ruimte, is de greybox-look weg, oogt de gang
-dreigend zónder monster, zijn de materialen niet repetitief of steriel,
-klopt de schaal, hangen licht/materiaal/props in één stijl.
+**De GD beoordeelt tier F2.1**: zes verplichte renders
+(01_F21_kleedkamer_wide, 02_F21_kleedkamer_deuropening,
+03_F21_vloer_wand_bank_detail, 04_F21_kast_kozijn,
+05_F21_gang_reference, 06_F21_gang_donkerste — de eerste vier en de twee
+gangbeelden op exact dezelfde camera's als hun F2-tegenhangers) plus
+twee voor/na-vergelijkingen (07 kleedkamer, 08 detail).
 
-Bekende, bewust gelaten punten: kleedkamer 4 en de douches staan nog op
-tier F1 (zichtbaar vanuit gang en kleedkamer 3 — bewust, §13 van het
-artplan); de hal is nog F1 en oogt daardoor warmer/geler; de sporttas
-onder de bank is generieke aankleding (D-035); drie lockers in plaats
-van zes wegens ruimte (tasks/008_artdirection §16).
+Toetsen: oogt de kleedkamer minder als een game-level, voelen objecten
+gegrond, is de vloer minder uniform, hebben tegels/wanden/plafond
+natuurlijke imperfectie, ogen bank en kast minder als simpele assets,
+voelt de TL als lokale bron — en heeft **de gang zijn sfeer behouden**
+(dat was de expliciete eis; 05 en 06 zijn daarvoor de referentie).
 
-**Pas ná expliciet startsein: tier F3** (bestuurskamer volledig,
-hal-aankleding, entree-buitenkant). Daarna F4 (sfeerlak + gate). D
-(flow) en E (pacing) volgen ná de artpass; let op D-032. Overige haken:
-monster-AI (009), TD-005, TD-004, TD-008, save-integratie,
-inventory-UI/HUD (TD-006), canonvraag "derde helft als proloog"
-(STORY §8), KI-004, en de canon-ronde over CRUMP zelf.
+Bekend en bewust gelaten: de flashlight-hotspot blijft rond en hard
+(GD-notitie: F3); kleedkamer 4, de douches en de hal staan nog op tier
+F1; de globale environment (ambient/fog/tonemap/SSAO) is niet aangeraakt
+omdat elke globale knop ook de beschermde gang raakt.
+
+**Pas ná expliciet startsein: F3** (bestuurskamer, hal-aankleding,
+entree-buitenkant, plus het flashlight-gedrag). D (flow) en E (pacing)
+volgen ná de artpass; let op D-032. Overige haken: monster-AI (009),
+TD-004/005/008, save-integratie, inventory-UI/HUD (TD-006), canonvraag
+"derde helft als proloog" (STORY §8), KI-004, en de canon-ronde over
+CRUMP zelf.
 
 ## 6. Open aandachtspunten
 

@@ -460,3 +460,42 @@ gang respectievelijk vanuit kleedkamer 3, en dat verschil is bewust
 gedaan. **Wacht op art-direction-review door de GD** (zestien renders,
 1600×900). Tier F3 (bestuurskamer, hal-aankleding, entree-buitenkant)
 begint pas na expliciet startsein.
+
+---
+
+## 17. Uitvoering tier F2.1 (2026-08-01) — realism correction pass
+
+**Opdracht** (GD-review van F2): technisch sterk, visueel nog niet
+approved. De gang is **beschermde art-direction-referentie** en mag niet
+lichter, voller, schoner of leesbaarder worden. De kleedkamer moet
+minder als een nette 3D-scène ogen — niet door méér props, maar door
+grounding, materiaalbreuk en een minder egale TL.
+
+**Wat gedaan is** (alles binnen kleedkamer 3, tenzij anders vermeld):
+1. **Grounding**: contactvlekken en -lijnen als decals onder en achter
+   bank, kast, afvalbak, tas, radiator, leidingvoet; langs kozijnen,
+   plint, tegelrand en de wand/plafond-naden. Plus echte contactschaduw
+   door het derde schaduwslot naar deze ruimte te verhuizen (D-036).
+2. **TL als lokale bron**: nieuwe prop-export `light_attenuation`,
+   energie/bereik/attenuatie op 1,2 / 3,9 / 2,1, en een zichtbare
+   elektrische aansluiting (doos, buis, twee beugels).
+3. **Materiaalbreuk**: verfrol- en reparatievariatie op de bovenwand,
+   grauwsluier en ongelijk gepoetste velden op de tegels, drie grote
+   vloerverkleuringen, roet rond de buis, en ORM-decals die het looppad
+   gladder maken in plaats van donkerder (D-037).
+4. **Bank en kast**: twee lattinten met verschillende ruwheid, matter
+   lakwerk, krasspoor over de zitting; kast donkerder, matter, minder
+   metallic — hij trekt het beeld niet meer naar zich toe.
+5. **Props uitsluitend verplaatst/gedraaid** (afvalbak, handdoek,
+   flesje, tas, jack, tactiekbord). Toegevoegd: alleen de
+   TL-aansluiting en een achterblad achter de poster.
+
+**Niet gedaan, bewust**: geen nieuwe props, geen bevel-pass, geen
+flashlight-herontwerp (staat voor F3), geen wijziging aan de gang, geen
+wijziging aan de globale environment (ambient/fog/tonemap/SSAO blijven
+de 006-referentie — juist omdat elke globale knop ook de gang raakt).
+
+**Status**: gebouwd, suite 250/250 groen, verwijderbaarheidstest
+opnieuw gedaan. **Wacht op art-direction-review** (zes verplichte
+renders + twee voor/na-vergelijkingen).
+

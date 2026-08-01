@@ -24,12 +24,15 @@ extends Node3D
 ## "metallic" en "normal" (sterkte van de normal map).
 const MATERIALEN := {
 	# — Hout, staal en kunststof van de inrichting —
-	&"bank_lat": {"tex": "planken", "tint": Color(0.17, 0.30, 0.49), "scale": 1.6, "rough": 0.38, "normal": 0.8, "vlak_gelakt": true},
+	&"bank_lat": {"tex": "planken", "tint": Color(0.17, 0.30, 0.49), "scale": 1.6, "rough": 0.52, "normal": 0.9, "vlak_gelakt": true},
+	# Tweede latkleur: geen twee planken van een clubbank zijn even vaak
+	# overgeschilderd (F2.1 — één materiaal maakte de bank een game-prop).
+	&"bank_lat_b": {"tex": "planken", "tint": Color(0.15, 0.26, 0.43), "scale": 1.9, "rough": 0.62, "normal": 0.9, "vlak_gelakt": true},
 	&"bank_frame": {"tex": "metaal", "tint": Color(0.38, 0.40, 0.43), "scale": 1.2, "rough": 0.5, "metallic": 0.6},
 	&"kapstok_hout": {"tex": "planken", "tint": Color(0.42, 0.36, 0.29), "scale": 1.4, "rough": 0.66},
-	&"locker_blauw": {"tex": "metaal", "tint": Color(0.13, 0.27, 0.45), "scale": 0.9, "rough": 0.42, "metallic": 0.35},
+	&"locker_blauw": {"tex": "metaal", "tint": Color(0.10, 0.19, 0.32), "scale": 0.9, "rough": 0.58, "metallic": 0.2},
 	&"locker_diep": Color(0.035, 0.04, 0.05),
-	&"staal": {"tex": "metaal", "tint": Color(0.52, 0.54, 0.57), "scale": 1.1, "rough": 0.35, "metallic": 0.75},
+	&"staal": {"tex": "metaal", "tint": Color(0.50, 0.52, 0.54), "scale": 1.1, "rough": 0.45, "metallic": 0.7},
 	&"staal_donker": {"tex": "metaal", "tint": Color(0.26, 0.27, 0.29), "scale": 1.0, "rough": 0.55, "metallic": 0.5},
 	&"email_wit": Color(0.74, 0.74, 0.71),
 	&"kunststof_wit": Color(0.78, 0.78, 0.75),
@@ -41,7 +44,7 @@ const MATERIALEN := {
 	&"rood_blusser": Color(0.42, 0.09, 0.08),
 	&"tegel_trim": Color(0.30, 0.33, 0.38),
 	&"plint": Color(0.26, 0.28, 0.31),
-	&"alu": {"tex": "metaal", "tint": Color(0.60, 0.62, 0.64), "scale": 1.3, "rough": 0.3, "metallic": 0.8},
+	&"alu": {"tex": "metaal", "tint": Color(0.56, 0.58, 0.59), "scale": 1.3, "rough": 0.45, "metallic": 0.7},
 	# — Textiel en achtergelaten spullen —
 	&"jack_blauw": {"tex": "tapijt", "tint": Color(0.16, 0.28, 0.46), "scale": 1.0, "rough": 0.85, "normal": 0.6},
 	&"handdoek": {"tex": "tapijt", "tint": Color(0.58, 0.60, 0.60), "scale": 1.1, "rough": 0.9, "normal": 0.6},
@@ -79,9 +82,9 @@ const SOLIDS: Array[Dictionary] = [
 
 	# ── Bank west (langs de tussenwand) — vier latten op drie schragen ──
 	{"pos": Vector3(-6.90, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat"},
-	{"pos": Vector3(-6.81, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat"},
+	{"pos": Vector3(-6.81, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-6.72, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat"},
-	{"pos": Vector3(-6.63, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat"},
+	{"pos": Vector3(-6.63, 0.4325, 0.95), "size": Vector3(0.075, 0.035, 3.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-6.88, 0.205, -0.75), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-6.66, 0.205, -0.75), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-6.77, 0.39, -0.75), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
@@ -95,9 +98,9 @@ const SOLIDS: Array[Dictionary] = [
 
 	# ── Bank oost ──
 	{"pos": Vector3(-2.76, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat"},
-	{"pos": Vector3(-2.67, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat"},
+	{"pos": Vector3(-2.67, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-2.58, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat"},
-	{"pos": Vector3(-2.49, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat"},
+	{"pos": Vector3(-2.49, 0.4325, 0.45), "size": Vector3(0.075, 0.035, 2.9), "mat": &"bank_lat_b"},
 	{"pos": Vector3(-2.74, 0.205, -0.70), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-2.52, 0.205, -0.70), "size": Vector3(0.045, 0.41, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-2.63, 0.39, -0.70), "size": Vector3(0.30, 0.04, 0.045), "mat": &"bank_frame"},
@@ -143,8 +146,8 @@ const SOLIDS: Array[Dictionary] = [
 
 	# Het enige kledingstuk in het gebouw: een vergeten trainingsjack
 	# (artplan §8) — hangt scheef, zoals iemand hem ophing.
-	{"pos": Vector3(-6.855, 1.30, 1.10), "size": Vector3(0.11, 0.60, 0.34), "mat": &"jack_blauw", "rot": Vector3(0.0, 5.0, 2.0)},
-	{"pos": Vector3(-6.87, 1.585, 1.10), "size": Vector3(0.09, 0.10, 0.26), "mat": &"jack_blauw", "rot": Vector3(0.0, 5.0, 0.0)},
+	{"pos": Vector3(-6.855, 1.29, 1.12), "size": Vector3(0.11, 0.60, 0.34), "mat": &"jack_blauw", "rot": Vector3(0.0, 9.0, 3.5)},
+	{"pos": Vector3(-6.87, 1.585, 1.12), "size": Vector3(0.09, 0.10, 0.26), "mat": &"jack_blauw", "rot": Vector3(0.0, 9.0, 1.0)},
 
 	# ── Lockers (drie stuks; de ruimte tussen bank en zuidwand laat er
 	#    geen zes toe — zie het uitvoeringsverslag) ──
@@ -193,11 +196,11 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-4.00, 2.215, -1.30), "size": Vector3(0.30, 0.016, 0.012), "mat": &"staal"},
 
 	# ── Afvalbak bij de deur ──
-	{"vorm": "cyl", "pos": Vector3(-3.70, 0.21, 2.98), "size": Vector3(0.17, 0.42, 0.17), "mat": &"kunststof_grijs", "col": true},
-	{"vorm": "torus", "pos": Vector3(-3.70, 0.425, 2.98), "size": Vector3(0.155, 0.185, 0.155), "mat": &"kunststof_zwart"},
+	{"vorm": "cyl", "pos": Vector3(-3.66, 0.21, 3.01), "size": Vector3(0.17, 0.42, 0.17), "mat": &"kunststof_grijs", "col": true, "rot": Vector3(0.0, 0.0, 1.4)},
+	{"vorm": "torus", "pos": Vector3(-3.66, 0.427, 3.01), "size": Vector3(0.155, 0.185, 0.155), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 22.0, 1.4)},
 
 	# ── Tactiekbord (noordwand) met alu-lijst en stiftgoot ──
-	{"pos": Vector3(-6.20, 1.90, -1.268), "size": Vector3(1.16, 0.81, 0.03), "mat": &"alu"},
+	{"pos": Vector3(-6.20, 1.90, -1.268), "size": Vector3(1.16, 0.81, 0.03), "mat": &"alu", "rot": Vector3(0.0, 0.0, 0.5)},
 	{"pos": Vector3(-6.20, 1.485, -1.26), "size": Vector3(0.50, 0.025, 0.05), "mat": &"alu"},
 	{"vorm": "cyl", "pos": Vector3(-6.32, 1.508, -1.24), "size": Vector3(0.008, 0.12, 0.008), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
 
@@ -206,19 +209,33 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(-6.55, 0.028, 1.62), "size": Vector3(0.13, 0.055, 0.09), "mat": &"sok_wit", "rot": Vector3(0.0, 34.0, 0.0)},
 	{"pos": Vector3(-6.60, 0.022, 1.68), "size": Vector3(0.07, 0.04, 0.06), "mat": &"sok_wit", "rot": Vector3(0.0, 12.0, 0.0)},
 	# Handdoek over de oostbank.
-	{"pos": Vector3(-2.63, 0.468, 1.05), "size": Vector3(0.35, 0.028, 0.46), "mat": &"handdoek"},
-	{"pos": Vector3(-2.795, 0.33, 1.05), "size": Vector3(0.03, 0.30, 0.44), "mat": &"handdoek"},
+	{"pos": Vector3(-2.645, 0.468, 1.02), "size": Vector3(0.35, 0.028, 0.46), "mat": &"handdoek", "rot": Vector3(0.0, 7.0, 0.0)},
+	{"pos": Vector3(-2.80, 0.32, 1.09), "size": Vector3(0.03, 0.32, 0.44), "mat": &"handdoek", "rot": Vector3(0.0, 7.0, 2.0)},
 	# Twee flesjes: één omgevallen op de vloer, één op de bank.
 	{"vorm": "cyl", "pos": Vector3(-5.60, 0.034, 0.60), "size": Vector3(0.034, 0.20, 0.034), "mat": &"kunststof_blauw", "rot": Vector3(90.0, 18.0, 0.0)},
 	{"vorm": "cyl", "pos": Vector3(-5.60, 0.034, 0.49), "size": Vector3(0.021, 0.03, 0.021), "mat": &"kunststof_wit", "rot": Vector3(90.0, 18.0, 0.0)},
-	{"vorm": "cyl", "pos": Vector3(-2.63, 0.555, -0.20), "size": Vector3(0.034, 0.21, 0.034), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(-2.715, 0.555, -0.26), "size": Vector3(0.034, 0.21, 0.034), "mat": &"kunststof_wit", "rot": Vector3(0.0, 0.0, 1.0)},
 	# Scheenbeschermer onder de oostbank.
 	{"pos": Vector3(-2.68, 0.012, -0.50), "size": Vector3(0.10, 0.02, 0.15), "mat": &"scheenbeschermer", "rot": Vector3(0.0, 18.0, 6.0)},
 	# Sporttas onder de westbank — bewust een neutrale, generieke tas:
 	# de vergeten sporttas uit D-028 is een fase-D-gameplayprop.
-	{"pos": Vector3(-6.72, 0.14, 0.10), "size": Vector3(0.30, 0.28, 0.60), "mat": &"tas_grijs", "rot": Vector3(0.0, 6.0, 0.0)},
-	{"pos": Vector3(-6.72, 0.29, 0.10), "size": Vector3(0.26, 0.06, 0.52), "mat": &"tas_grijs", "rot": Vector3(0.0, 6.0, 0.0)},
-	{"pos": Vector3(-6.70, 0.325, 0.10), "size": Vector3(0.05, 0.03, 0.30), "mat": &"staal_donker", "rot": Vector3(0.0, 6.0, 0.0)},
+	{"pos": Vector3(-6.69, 0.14, 0.06), "size": Vector3(0.30, 0.28, 0.60), "mat": &"tas_grijs", "rot": Vector3(0.0, 15.0, 0.0)},
+	{"pos": Vector3(-6.69, 0.29, 0.06), "size": Vector3(0.26, 0.06, 0.52), "mat": &"tas_grijs", "rot": Vector3(0.0, 15.0, 1.5)},
+	{"pos": Vector3(-6.67, 0.325, 0.06), "size": Vector3(0.05, 0.03, 0.30), "mat": &"staal_donker", "rot": Vector3(0.0, 15.0, 1.5)},
+
+	# ── F2.1: de TL is ergens op aangesloten ──
+	# Een armatuur die uit het niets aan het plafond hangt is een van de
+	# duidelijkste CG-verklikkers. Aansluitdoos, buis naar de wand en
+	# twee beugels — meer niet.
+	{"pos": Vector3(-4.70, 2.465, 1.62), "size": Vector3(0.11, 0.07, 0.09), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(-4.70, 2.468, 2.40), "size": Vector3(0.013, 1.52, 0.013), "mat": &"kunststof_wit", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"pos": Vector3(-4.70, 2.478, 2.05), "size": Vector3(0.035, 0.022, 0.03), "mat": &"kunststof_wit"},
+	{"pos": Vector3(-4.70, 2.478, 2.85), "size": Vector3(0.035, 0.022, 0.03), "mat": &"kunststof_wit"},
+
+	# ── F2.1: papier heeft dikte ──
+	# Achterblad achter de poster: zonder dat is het een texture op een
+	# vlak, mét is het een vel dat tegen de muur hangt en schaduw vangt.
+	{"pos": Vector3(-5.20, 1.85, 3.186), "size": Vector3(0.435, 0.605, 0.004), "mat": &"papier", "rot": Vector3(0.0, 0.0, 1.5)},
 
 	# ══════════════ GANG — het horrorbeeld ══════════════
 	# Plinten langs beide wanden, netjes onderbroken bij elke doorgang.
@@ -291,7 +308,7 @@ const SOLIDS: Array[Dictionary] = [
 ## of foto het werk doet. "rot" = graden; een quad kijkt standaard naar +z.
 const PANELEN: Array[Dictionary] = [
 	# Kleedkamer 3: tactiekbord, poster en het formulier op de vloer.
-	{"tex": "f2/tactiekbord", "pos": Vector3(-6.20, 1.90, -1.252), "size": Vector2(1.10, 0.75)},
+	{"tex": "f2/tactiekbord", "pos": Vector3(-6.20, 1.90, -1.252), "size": Vector2(1.10, 0.75), "rot": Vector3(0.0, 0.0, 0.5)},
 	{"tex": "f2/poster_normen", "pos": Vector3(-5.20, 1.85, 3.178), "size": Vector2(0.42, 0.59), "rot": Vector3(0.0, 180.0, 1.5)},
 	{"tex": "f2/formulier", "pos": Vector3(-4.15, 0.007, 2.60), "size": Vector2(0.15, 0.21), "rot": Vector3(-90.0, 0.0, 14.0)},
 	# Gang: elftalfoto's door de jaren heen — twee in het licht bij de
@@ -337,6 +354,71 @@ const DECALS: Array[Dictionary] = [
 	{"tex": "krassen", "vlak": "x-", "pos": Vector3(-3.11, 1.10, 2.60), "size": Vector3(0.9, 1.4, 0.35), "alpha": 0.35},
 	{"tex": "veeg", "vlak": "z+", "pos": Vector3(-4.30, 1.05, 3.16), "size": Vector3(0.8, 0.6, 0.4), "alpha": 0.5},
 	{"tex": "veeg", "vlak": "x-", "pos": Vector3(-6.96, 1.30, 1.10), "size": Vector3(0.9, 0.7, 0.4), "alpha": 0.4},
+
+	# ── F2.1 · grounding: waar een object de vloer of wand raakt ──
+	# Geen slagschaduw (die komt van de TL) maar de donkere aanzet van
+	# stof en occlusie die elk gebruikt meubel om zich heen heeft.
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.80, 0.015, -0.40), "size": Vector3(0.7, 0.3, 1.7), "alpha": 0.45},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.80, 0.015, 0.95), "size": Vector3(0.7, 0.3, 1.7), "alpha": 0.4},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.80, 0.015, 2.35), "size": Vector3(0.7, 0.3, 1.7), "alpha": 0.45},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.77, 0.012, -0.75), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.77, 0.012, 0.95), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.77, 0.012, 2.65), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.66, 0.015, 0.45), "size": Vector3(0.7, 0.3, 3.0), "alpha": 0.4},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.63, 0.012, -0.70), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.63, 0.012, 0.45), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.63, 0.012, 1.60), "size": Vector3(0.34, 0.25, 0.34), "alpha": 0.6},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.86, 0.015, 2.60), "size": Vector3(0.9, 0.3, 1.3), "alpha": 0.55},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-3.66, 0.014, 3.01), "size": Vector3(0.5, 0.25, 0.5), "alpha": 0.55},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-6.69, 0.014, 0.06), "size": Vector3(0.6, 0.25, 0.85), "alpha": 0.4},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-2.52, 0.014, -1.18), "size": Vector3(0.36, 0.25, 0.36), "alpha": 0.5},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-5.75, 0.014, -1.12), "size": Vector3(1.0, 0.25, 0.45), "alpha": 0.35},
+	{"tex": "ao_vlek", "vlak": "z-", "pos": Vector3(-5.75, 0.45, -1.27), "size": Vector3(1.15, 0.35, 0.75), "alpha": 0.35},
+	{"tex": "ao_vlek", "vlak": "x+", "pos": Vector3(-2.44, 1.20, -1.10), "size": Vector3(0.36, 0.3, 2.3), "alpha": 0.3},
+	# Kozijn ↔ wand en de doorgang naar de douche.
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(-4.49, 1.10, 3.16), "size": Vector3(0.22, 0.35, 2.1), "alpha": 0.35, "hoek": 90.0},
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(-3.33, 1.10, 3.16), "size": Vector3(0.22, 0.35, 2.1), "alpha": 0.35, "hoek": -90.0},
+	{"tex": "ao_lijn", "vlak": "z-", "pos": Vector3(-4.00, 2.05, -1.27), "size": Vector3(1.2, 0.35, 0.3), "alpha": 0.4},
+	# Wand ↔ plafond: een plafondrand is nooit even licht als het midden.
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(-4.70, 2.24, 3.16), "size": Vector3(4.6, 0.4, 0.52), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "z-", "pos": Vector3(-4.70, 2.24, -1.27), "size": Vector3(4.6, 0.4, 0.52), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "x+", "pos": Vector3(-2.44, 2.24, 0.95), "size": Vector3(4.5, 0.4, 0.52), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-6.96, 2.24, 0.95), "size": Vector3(4.5, 0.4, 0.52), "alpha": 0.45},
+	# Onder de tegelrand en boven de plint: twee dunne schaduwaanzetten.
+	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-6.96, 1.29, 0.95), "size": Vector3(4.5, 0.35, 0.24), "alpha": 0.3},
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(-4.70, 1.29, 3.16), "size": Vector3(4.6, 0.35, 0.24), "alpha": 0.3},
+	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-6.96, 0.16, 0.95), "size": Vector3(4.5, 0.35, 0.22), "alpha": 0.4, "hoek": 180.0},
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(-4.70, 0.16, 3.16), "size": Vector3(4.6, 0.35, 0.22), "alpha": 0.4, "hoek": 180.0},
+	# Poster en tactiekbord raken de muur echt aan.
+	{"tex": "ao_vlek", "vlak": "z+", "pos": Vector3(-5.20, 1.83, 3.17), "size": Vector3(0.62, 0.25, 0.8), "alpha": 0.3},
+	{"tex": "ao_vlek", "vlak": "z-", "pos": Vector3(-6.20, 1.88, -1.26), "size": Vector3(1.4, 0.25, 1.0), "alpha": 0.28},
+
+	# ── F2.1 · materiaalbreukvlakken: niets is overal even schoon ──
+	{"tex": "verfrol", "vlak": "x-", "pos": Vector3(-6.96, 1.95, 0.20), "size": Vector3(2.8, 0.4, 1.05), "alpha": 0.5},
+	{"tex": "verfrol", "vlak": "z+", "pos": Vector3(-5.40, 1.95, 3.16), "size": Vector3(2.6, 0.4, 1.05), "alpha": 0.45},
+	{"tex": "verfrol", "vlak": "x+", "pos": Vector3(-2.44, 1.95, 1.60), "size": Vector3(2.8, 0.4, 1.05), "alpha": 0.5},
+	{"tex": "verfrol", "vlak": "z-", "pos": Vector3(-4.90, 1.95, -1.27), "size": Vector3(2.4, 0.4, 1.05), "alpha": 0.4},
+	{"tex": "verfvlek", "vlak": "z-", "pos": Vector3(-3.05, 1.75, -1.27), "size": Vector3(0.65, 0.3, 0.55), "alpha": 0.5},
+	{"tex": "verfvlek", "vlak": "x-", "pos": Vector3(-6.96, 2.10, 2.30), "size": Vector3(0.6, 0.3, 0.5), "alpha": 0.45},
+	{"tex": "tegelvuil", "vlak": "x-", "pos": Vector3(-6.96, 0.62, 1.90), "size": Vector3(2.2, 0.35, 1.3), "alpha": 0.7},
+	{"tex": "tegelvlek", "vlak": "x-", "pos": Vector3(-6.96, 0.85, 0.10), "size": Vector3(2.6, 0.3, 1.5), "alpha": 0.55},
+	{"tex": "tegelvlek", "vlak": "z+", "pos": Vector3(-4.60, 0.85, 3.16), "size": Vector3(2.4, 0.3, 1.4), "alpha": 0.5, "hoek": 180.0},
+	{"tex": "tegelvlek", "vlak": "x+", "pos": Vector3(-2.44, 0.85, 0.80), "size": Vector3(2.6, 0.3, 1.5), "alpha": 0.5, "hoek": 90.0},
+	{"tex": "tegelvuil", "vlak": "z+", "pos": Vector3(-3.20, 0.62, 3.16), "size": Vector3(1.4, 0.35, 1.3), "alpha": 0.7},
+	{"tex": "tegelvuil", "vlak": "x+", "pos": Vector3(-2.44, 0.62, -0.60), "size": Vector3(1.8, 0.35, 1.3), "alpha": 0.65},
+	{"tex": "vloervlek", "vlak": "vloer", "pos": Vector3(-4.10, 0.018, 0.30), "size": Vector3(2.8, 0.3, 2.8), "alpha": 0.5},
+	{"tex": "vloervlek", "vlak": "vloer", "pos": Vector3(-5.80, 0.018, 2.20), "size": Vector3(2.6, 0.3, 2.6), "alpha": 0.4, "hoek": 115.0},
+	{"tex": "vloervlek", "vlak": "vloer", "pos": Vector3(-3.30, 0.018, 1.90), "size": Vector3(2.2, 0.3, 2.2), "alpha": 0.35, "hoek": 230.0},
+	# Roet en stof rond de buis: het plafond is geen schone plaat.
+	{"tex": "roet", "vlak": "plafond", "pos": Vector3(-4.70, 2.48, 1.05), "size": Vector3(2.1, 0.25, 0.85), "alpha": 0.5},
+	{"tex": "verfvlek", "vlak": "plafond", "pos": Vector3(-5.85, 2.48, 2.10), "size": Vector3(0.9, 0.25, 0.8), "alpha": 0.4},
+	# Slijtglans: het looppad is gládder, niet donkerder (ORM, geen kleur).
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(-4.30, 0.02, 1.50), "size": Vector3(2.4, 0.3, 3.4), "alpha": 0.8, "hoek": 12.0},
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(-5.90, 0.02, 0.40), "size": Vector3(2.0, 0.3, 3.0), "alpha": 0.7, "hoek": 78.0},
+	# Gebruikssporen op de bankzitting en bij de kastgrepen.
+	{"tex": "krassen", "vlak": "vloer", "pos": Vector3(-6.77, 0.45, 1.20), "size": Vector3(0.4, 0.12, 2.2), "alpha": 0.3},
+	{"tex": "krassen", "vlak": "vloer", "pos": Vector3(-2.63, 0.45, 0.60), "size": Vector3(0.4, 0.12, 1.8), "alpha": 0.25},
+	{"tex": "veeg", "vlak": "x-", "pos": Vector3(-3.10, 1.00, 2.35), "size": Vector3(0.5, 0.3, 0.6), "alpha": 0.4},
 
 	# ── Gang: de looplijn is hier het belangrijkste breukvlak ──
 	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(-4.50, 0.02, 4.30), "size": Vector3(5.0, 0.6, 1.7), "alpha": 0.8, "hoek": 90.0},
@@ -505,9 +587,15 @@ func _bouw_decal(spec: Dictionary) -> void:
 	var decal := Decal.new()
 	decal.texture_albedo = load(
 		"res://assets/textures/decals/%s.png" % spec["tex"])
+	if spec.has("orm"):
+		# ORM-decal (F2.1): groen kanaal = ruwheid. Met "mix": 0.0 verft
+		# hij niets, hij verandert alleen hoe glad het oppervlak reageert
+		# — precies wat een looppad met een vloer doet.
+		decal.texture_orm = load(
+			"res://assets/textures/decals/%s.png" % spec["orm"])
 	decal.size = spec["size"]
 	decal.modulate = Color(1.0, 1.0, 1.0, spec.get("alpha", 0.6))
-	decal.albedo_mix = 1.0
+	decal.albedo_mix = spec.get("mix", 1.0)
 	decal.upper_fade = 0.6
 	decal.lower_fade = 0.35
 	decal.normal_fade = 0.25

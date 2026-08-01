@@ -412,3 +412,30 @@ generieke tas (grijsgroen, geen clubkleur, geen interactie) puur als
 bewijs van gebruik; de premisse-tas blijft ongebouwd tot fase D en
 krijgt daar zijn eigen plek en materiaal. Als de GD ook die
 dubbelzinnigheid niet wil, is de tas één tabelregel verwijderen.
+
+## D-036 — Het derde schaduwslot hoort in de hero room, niet in de kantine
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (uitvoering GD-brief F2.1 §3) · **Status**: actief
+De GD-review van F2 wees grounding aan als belangrijkste bron van de
+CG-look. Het schaduwbudget (D-026) staat vast op drie level-lampen plus
+het zaklampslot, en die drie waren: kantinebar, gang-oost, lichtmast.
+De kantine ligt buiten de demo-zone en is nog greybox — daar kost een
+schaduw niets op en levert hij niets op. Het slot is daarom verhuisd
+naar de TL van kleedkamer 3, waar bankpoten, kast, jack en losse
+spullen zichtbaar contact met de ruimte krijgen. Budget, telling en
+suite-controle blijven ongewijzigd. Aanvullend, want schaduw alleen is
+niet genoeg: contactvlekken als decals onder en achter elk meubel —
+dat is geen schaduw maar het vuil-en-occlusierandje dat elk gebruikt
+object heeft, en het werkt ook waar geen lamp schijnt.
+
+## D-037 — Realism-polish gaat via decals en materiaalrespons, niet via geometrie
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (uitvoering GD-brief F2.1) · **Status**: actief
+De F2.1-opdracht vroeg om minder CG-look zonder prop-pass en zonder
+bevel-pass. Gekozen middel: (1) decals voor alles wat "gebruikt" moet
+lezen — verfvariatie, reparatieplekken, tegelvuil, vloerverkleuring,
+roet, contactvlekken; (2) ORM-decals voor ruwheidsvariatie, zodat een
+looppad glánzender wordt in plaats van donkerder; (3) materiaalrespons
+(ruwheid, metallic, twee tinten voor dezelfde banklatten). Geen extra
+polygonen, geen randafschuiningen, geen nieuwe props. Reden: decals
+kosten vrijwel niets, zijn per stuk één tabelregel en zijn daarmee net
+zo makkelijk terug te draaien als bij te stellen — precies wat een
+polish-ronde nodig heeft die nog een paar keer langs de GD gaat.

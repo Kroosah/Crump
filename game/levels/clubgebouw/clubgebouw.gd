@@ -47,7 +47,7 @@ const MATERIALS := {
 	&"f_systeemplafond": {"tex": "systeemplafond", "tint": Color(0.95, 0.95, 0.95), "scale": 0.55},
 	&"f_betonplafond": {"tex": "plafondverf", "tint": Color(0.70, 0.70, 0.68), "scale": 0.4, "rough": 0.95, "normal": 0.1},
 	&"f_coating": {"tex": "coating_glad", "tint": Color(0.40, 0.43, 0.45), "scale": 0.5, "rough": 0.74, "normal": 0.8},
-	&"f_tegel_wand": {"tex": "tegel_klein_wit", "tint": Color(0.76, 0.75, 0.71), "scale": 0.62, "rough": 0.58},
+	&"f_tegel_wand": {"tex": "tegel_klein_wit", "tint": Color(0.76, 0.75, 0.71), "scale": 0.62, "rough": 0.58, "normal": 0.8},
 	&"f_tegel_vloer": {"tex": "tegel_vloer_grijs", "tint": Color(0.68, 0.71, 0.73), "scale": 1.6, "rough": 0.5},
 	&"f_tapijt": {"tex": "tapijt", "tint": Color(0.55, 0.58, 0.66), "scale": 0.6},
 	&"f_gevel": {"tex": "gevel", "tint": Color(0.92, 0.90, 0.88), "scale": 0.4},
@@ -382,14 +382,16 @@ const DEUREN: Array[Dictionary] = [
 ]
 
 ## TL-armaturen: weinig werkend licht is het punt (kader 006). Stabiel:
-## hal, kantine-bar (schaduwslot 2), gang-oost (schaduwslot 3) en
-## gang-west als ankers plus kleedkamer 3; de flikkerbuis hangt
-## halverwege de gang (tasks/008 §4); de rest is defect. Schaduwbudget:
-## bar + gang-oost + lichtmast = 3, zaklampslot blijft vrij (D-026).
+## hal, kantine-bar, gang-oost (schaduwslot 2) en kleedkamer 3
+## (schaduwslot 3); de flikkerbuis hangt halverwege de gang (tasks/008
+## §4), gang-west is sinds F2 defect, de rest ook. Schaduwbudget:
+## gang-oost + kleedkamer 3 + lichtmast = 3, zaklampslot blijft vrij
+## (D-026). F2.1 verplaatste het derde slot van de kantinebar (buiten de
+## demo-zone, nog greybox) naar kleedkamer 3: daar moeten bankpoten,
+## kast en losse spullen echte contactschaduw krijgen.
 const NIGHT_TLS: Array[Dictionary] = [
 	{"name": "TlHal", "pos": Vector3(0.0, 2.52, 4.6)},
-	{"name": "TlKantineBar", "pos": Vector3(10.6, 2.62, 2.4),
-		"settings": {"cast_shadow": true}},
+	{"name": "TlKantineBar", "pos": Vector3(10.6, 2.62, 2.4)},
 	{"name": "TlKantineMidden", "pos": Vector3(7.2, 2.62, -0.5),
 		"settings": {"state": 1}},
 	{"name": "TlKantineWest", "pos": Vector3(4.0, 2.62, -2.5),
@@ -403,7 +405,8 @@ const NIGHT_TLS: Array[Dictionary] = [
 	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3),
 		"settings": {"state": 1}},
 	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0),
-		"settings": {"light_energy_on": 1.0, "light_range": 4.8}},
+		"settings": {"light_energy_on": 1.2, "light_range": 3.9,
+			"light_attenuation": 2.1, "cast_shadow": true}},
 	{"name": "TlDouche3", "pos": Vector3(-3.8, 2.22, -3.0),
 		"settings": {"state": 1}},
 	{"name": "TlKleedkamer4", "pos": Vector3(-9.3, 2.42, 1.0),

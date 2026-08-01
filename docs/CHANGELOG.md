@@ -11,6 +11,44 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.22 — 2026-08-01
+**VS-fase G, tier F2.1: realism correction pass op de kleedkamer** *(gebouwd; wacht op art-direction-review)*
+- **Grounding**: 30 nieuwe contactdecals (`ao_vlek`, `ao_lijn`) zetten
+  bankpoten, kast, afvalbak, tas, radiator, leidingvoet, kozijnen,
+  plint- en tegelrand en de wand/plafond-naden vast in hun omgeving.
+  Geen zwarte AO-randen: alles blijft onder de helft van de
+  dekkingsschaal.
+- **Echte contactschaduw**: het derde schaduwslot is verhuisd van de
+  kantinebar (buiten de demo-zone, nog greybox) naar de TL van
+  kleedkamer 3 (D-036). Bank, kast, jack en losse spullen werpen nu
+  schaduw; schaduwbudget onveranderd 3 + zaklampslot (D-026).
+- **De TL is een lokale lichtbron**: nieuwe export `light_attenuation`
+  op het TL-prop (default = engine-gedrag, dus geen enkele andere lamp
+  verandert); kleedkamer 3 staat op energie 1,2 / bereik 3,9 /
+  attenuatie 2,1 — pool onder de buis, zachte val naar de hoeken. En de
+  buis hangt niet meer in het niets: aansluitdoos, buis naar de wand en
+  twee beugels.
+- **Materiaalbreukvlakken** (18 nieuwe decals, alleen kleedkamer 3):
+  verfrolvariatie en een reparatieplek op de bovenwand, grauwsluier en
+  ongelijk gepoetste velden op de tegels, drie grote vloerverkleuringen,
+  roet rond de TL, en twee ORM-decals die het looppad *gladder* maken in
+  plaats van donkerder (ruwheidsvariatie zonder kleurverandering).
+- **Bank en kast minder "asset"**: banklatten om en om in twee tinten en
+  ruwheden, matter gelakt hout, krasspoor over de zitting; de kast is
+  donkerder, matter en minder metallisch — hij domineert het beeld niet
+  meer.
+- **Props alleen verplaatst, niet toegevoegd**: afvalbak scheef bij de
+  hoek, handdoek schuin over de bank, flesje aan de rand, tas verder
+  onder de bank gedraaid, jack schever aan zijn haak, tactiekbord een
+  halve graad uit het lood. Nul nieuwe props behalve de TL-aansluiting
+  en het achterblad van de poster (papier heeft dikte).
+- **De gang is niet aangeraakt** — lichtcompositie, decoratie en
+  materialen van de gang staan exact zoals in F2 goedgekeurd; de enige
+  gedeelde wijziging (tegelnormaal 0,8) raakt geen gangoppervlak.
+- Performance vrijwel gelijk (piek 104 vs 101 draw calls in de
+  kleedkamer). Suite 250/250 groen, verwijderbaarheidstest opnieuw
+  gedaan. `config/version` → 0.0.22.
+
 ## v0.0.21 — 2026-08-01
 **VS-fase G, tier F2: kleedkamer 3 en de gang** *(gebouwd; wacht op art-direction-review)*
 - **Kleedkamer 3 als hero room**: banken van latten op stalen schragen,

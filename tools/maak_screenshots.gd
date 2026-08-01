@@ -21,26 +21,27 @@ const LEVEL := "res://game/levels/clubgebouw/clubgebouw.tscn"
 const BREEDTE := 1600
 const HOOGTE := 900
 
-## [naam, camerapositie, kijkdoel, zaklamp aan]. De eerste tien volgen de
-## verplichte lijst uit de F2-opdracht; daarna staan de contextbeelden.
+## [naam, camerapositie, kijkdoel, zaklamp aan]. De eerste zes volgen de
+## verplichte lijst uit de F2.1-opdracht en gebruiken exact dezelfde
+## camera's als hun F2-tegenhangers (01=F2/01, 02=F2/02, 03=F2/03,
+## 04=F2/13, 05=F2/07, 06=F2/08), zodat voor/na objectief te vergelijken
+## is. Daarna staan de contextbeelden.
 const SHOTS := [
-	["01_kleedkamer_wide", Vector3(-2.95, 1.62, -0.55), Vector3(-6.50, 1.05, 2.30), false],
-	["02_kleedkamer_vanaf_deuropening", Vector3(-3.88, 1.62, 3.28), Vector3(-6.40, 1.10, -0.30), false],
-	["03_detail_materiaal", Vector3(-6.00, 1.05, 1.65), Vector3(-6.95, 0.50, 0.95), false],
-	["04_banken_props", Vector3(-5.30, 1.25, 1.95), Vector3(-6.78, 0.28, 0.45), false],
-	["05_blik_richting_gang", Vector3(-5.70, 1.65, 0.85), Vector3(-3.80, 1.42, 3.60), false],
-	["06_gang_vanaf_kleedkamer", Vector3(-3.15, 1.65, 4.40), Vector3(-14.00, 1.32, 4.34), false],
-	["07_gang_midden", Vector3(-8.00, 1.65, 4.25), Vector3(-15.00, 1.30, 4.32), false],
-	["08_gang_donkerste", Vector3(-10.20, 1.65, 4.85), Vector3(-14.90, 1.20, 4.20), false],
-	["09_zaklamp_aan", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), true],
-	["10_zaklamp_uit", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), false],
-	# Context: aanloop, tegenblik en de aangrenzende ruimtes.
-	["11_gang_oost", Vector3(-2.60, 1.65, 4.30), Vector3(-14.50, 1.30, 4.30), false],
-	["12_gang_west_terug", Vector3(-13.60, 1.65, 4.50), Vector3(-2.40, 1.40, 4.20), false],
-	["13_kleedkamer_lockers", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), false],
-	["14_kleedkamer_zaklamp", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), true],
-	["15_kleedkamer3_douche", Vector3(-4.20, 1.65, 0.40), Vector3(-3.90, 1.20, -3.60), false],
-	["16_hal_naar_gang", Vector3(1.20, 1.65, 4.80), Vector3(-2.20, 1.40, 4.30), false],
+	["01_F21_kleedkamer_wide", Vector3(-2.95, 1.62, -0.55), Vector3(-6.50, 1.05, 2.30), false],
+	["02_F21_kleedkamer_deuropening", Vector3(-3.88, 1.62, 3.28), Vector3(-6.40, 1.10, -0.30), false],
+	["03_F21_vloer_wand_bank_detail", Vector3(-6.00, 1.05, 1.65), Vector3(-6.95, 0.50, 0.95), false],
+	["04_F21_kast_kozijn", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), false],
+	["05_F21_gang_reference", Vector3(-8.00, 1.65, 4.25), Vector3(-15.00, 1.30, 4.32), false],
+	["06_F21_gang_donkerste", Vector3(-10.20, 1.65, 4.85), Vector3(-14.90, 1.20, 4.20), false],
+	# Context: banken, doorkijk, zaklamp en de gang van beide kanten.
+	["11_banken_props", Vector3(-5.30, 1.25, 1.95), Vector3(-6.78, 0.28, 0.45), false],
+	["12_blik_richting_gang", Vector3(-5.70, 1.65, 0.85), Vector3(-3.80, 1.42, 3.60), false],
+	["13_gang_vanaf_kleedkamer", Vector3(-3.15, 1.65, 4.40), Vector3(-14.00, 1.32, 4.34), false],
+	["14_zaklamp_aan", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), true],
+	["15_zaklamp_uit", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), false],
+	["16_kleedkamer_zaklamp", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), true],
+	["17_gang_oost", Vector3(-2.60, 1.65, 4.30), Vector3(-14.50, 1.30, 4.30), false],
+	["18_kleedkamer3_douche", Vector3(-4.20, 1.65, 0.40), Vector3(-3.90, 1.20, -3.60), false],
 ]
 
 var _spot: SpotLight3D

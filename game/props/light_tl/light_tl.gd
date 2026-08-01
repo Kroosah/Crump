@@ -23,6 +23,10 @@ enum TlState { STABIEL, DEFECT, FLIKKEREND }
 ## Koel TL-wit; de warme zaklampbundel steekt hier bewust tegen af (§1).
 @export var light_color := Color(0.82, 0.88, 1.0)
 @export var light_range := 7.0
+## Afvalcurve van de lamp. Hoger = het licht dooft sneller uit richting
+## de rand van zijn bereik, waardoor de armatuur als lokale lichtbron
+## voelt in plaats van als egale kamerverlichting (F2.1).
+@export var light_attenuation := 1.0
 ## Schaduw is een budgetkeuze per lamp: maximaal 3 level-lampen werpen
 ## schaduw (dossier 006 §5) — dus bewust default uit.
 @export var cast_shadow := false
@@ -55,6 +59,7 @@ var _pattern_time := 0.0
 func _ready() -> void:
 	_light.light_color = light_color
 	_light.omni_range = light_range
+	_light.omni_attenuation = light_attenuation
 	_light.shadow_enabled = cast_shadow
 	if scorched:
 		_add_scorch_mark()
