@@ -90,7 +90,16 @@ func _run() -> void:
 		var image := root.get_texture().get_image()
 		var path: String = "user://screenshots/%s.png" % shot[0]
 		image.save_png(path)
-		print("  → %s" % ProjectSettings.globalize_path(path))
+		# Meteen de rendermeters van dít standpunt: zo staat de
+		# performance-impact van een artpass zwart-op-wit in het rapport.
+		print("  → %s  [objecten %d · draw calls %d · primitieven %d]" % [
+			ProjectSettings.globalize_path(path),
+			RenderingServer.get_rendering_info(
+				RenderingServer.RENDERING_INFO_TOTAL_OBJECTS_IN_FRAME),
+			RenderingServer.get_rendering_info(
+				RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
+			RenderingServer.get_rendering_info(
+				RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)])
 	print("Screenshots klaar (%d standpunten)." % SHOTS.size())
 	quit(0)
 

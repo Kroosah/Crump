@@ -11,6 +11,44 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.21 — 2026-08-01
+**VS-fase G, tier F2: kleedkamer 3 en de gang** *(gebouwd; wacht op art-direction-review)*
+- **Kleedkamer 3 als hero room**: banken van latten op stalen schragen,
+  kapstokrails met dubbele haken (incl. het vergeten trainingsjack),
+  stalen lockers met een deurtje op een kier, radiator met leidingen en
+  kraan, verwarmingsleiding in de hoek, lichtschakelaar, stopcontact,
+  ventilatierooster, afvalbak, tactiekbord met stiftgoot, NVVB-poster,
+  en schaars achtergelaten spullen (sok, handdoek, twee flesjes,
+  scheenbeschermer, wedstrijdformulier, generieke sporttas — D-035).
+- **Geometriedetail**: tegelrand op 1,40 m, plinten rondom, deurkozijn
+  aan de kamerzijde, drempelstrips in beide doorgangen.
+- **De gang als horrorbeeld**: plinten, leidingen alleen langs de
+  noordzijde (asymmetrie), deurmatten, wachtbank, gestapelde stoelen als
+  natuurlijke obstructie, doos aan het donkere westeinde, echte
+  brandblusser met keuringskaartje, schoonmaaknis met emmer en mop,
+  vier ingelijste elftalfoto's (geen echte gezichten).
+- **Material breakup**: negen zelfgegenereerde decals
+  (`tools/genereer_f2_textures.sh`) in 34 plaatsingen — vuilranden langs
+  wandvoeten, looplijnen, schoenstrepen, vochtplekken, verfschade,
+  krassen, veegsporen, kalk. Ze projecteren over álles, ook over de
+  deuren.
+- **Materialen op echte maat geijkt**: tegel 15 cm en baksteen 21 cm
+  (tier F1 herhaalde te grof, waardoor elke ruimte te groot oogde),
+  blauwzweem uit wanden en plafonds, granito in de gang, gladde
+  plafondverf, mattere deuren, dieper clubblauw kozijn. Vijf nieuwe
+  CC0-sets (ambientCG) via `tools/haal_cc0_textures.sh`.
+- **Lokale lichtpass** (D-034): kleedkamer-TL wordt een echte lichtpool,
+  westelijkste gang-TL defect — de gang loopt het donker in met alleen
+  de groene gloed van het nooduitgangbord. SSAO aan voor contactschaduw.
+  Schaduwbudget en 006-referentiewaarden onaangeraakt.
+- **Architectuur**: alles in één verwijderbare eenheid
+  `game/levels/clubgebouw/f2_detail/` (D-033, D-015-test gedaan: map weg
+  = tier F1-staat, suite groen). Nieuwe TD-008 (geen instancing/LOD).
+- **Renders**: 1600×900, zestien standpunten incl. de tien verplichte
+  beelden en een zaklamp-equivalent; de rendermeters staan per beeld in
+  de log (piek 152 draw calls, ~7k primitieven).
+- Suite 250/250 groen (TL-verwachting bijgewerkt). `config/version` → 0.0.21.
+
 ## v0.0.20 — 2026-07-29
 **VS-fase G, tier F1: de eerste grote visuele sprong** *(gebouwd; wacht op lokale GD-test)*
 - **CC0-materialen** (13 PBR-sets, 1K; ambientCG + Poly Haven, met

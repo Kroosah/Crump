@@ -111,6 +111,23 @@ de hele plattegrond nog omgooien — scènes bouwen vóór die gate is werk
 dat sneuvelt. De echte props (deuren, TL's) zijn al scène-instanties.
 **Aflossing**: in fase G worden de goedgekeurde ruimtes omgezet naar
 eigen scènes met echte meshes; de tabellen verdwijnen dan volledig.
+**Update 2026-08-01 (tier F2)**: bewust nóg niet afgelost (D-033). De
+detaillaag is óók een tabel, om dezelfde reden: zolang de GD nog aan de
+inrichting kan sleutelen is één getal wijzigen sneller dan een scène
+herbouwen. Nieuw aflosmoment: zodra de GD de demo-zone visueel áf
+verklaart (F4-gate).
+
+## TD-008 — F2-props zijn losse kitbash-bodies zonder instancing of LOD
+**Datum**: 2026-08-01 · **Status**: Laag · **Aflosmoment**: bij de eerste propdichte ruimte buiten de demo-zone (kantine), of zodra een echte GPU een meetbaar probleem laat zien
+**Waar**: game/levels/clubgebouw/f2_detail/f2_detail.gd
+**Schuld**: elke lat, haak en buis is een eigen StaticBody3D met een
+MeshInstance3D. Meshes en materialen worden gedeeld (één unit-box, één
+cilinder per maat), maar er is geen MultiMesh en geen LOD. Gemeten in
+de demo-zone is dat ruim binnen budget (piek 152 draw calls, ~7k
+primitieven per beeld), dus optimaliseren zou nu alleen leesbaarheid
+kosten.
+**Aflossing**: herhaalde elementen (haken, latten, tegels) naar
+MultiMeshInstance3D zodra een ruimte er honderden krijgt.
 
 ## Afgeloste schuld
 

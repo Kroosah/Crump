@@ -5,17 +5,43 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-07-29 (fase G **tier F1 gebouwd** — de
-eerste grote visuele sprong van het demo-focusgebied; suite 250 groen,
-renders gemaakt — status: **wacht op lokale GD-test**; D-032:
-bestuurskamer blijft op slot, beloning van de demo, eerste
-CRUMP-ontmoeting daar)
+**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2 gebouwd** —
+kleedkamer 3 als hero room en de gang als horrorbeeld; suite 250 groen,
+zestien renders van 1600×900 — status: **F2 READY FOR ART-DIRECTION
+REVIEW**, niets doorpakken naar F3 zonder startsein)
 
 ---
 
 ## 1. Laatste taak
 
-**VS-fase C — Greybox clubgebouw (taak 008)** ✅ gebouwd (2026-07-28)
+**VS-fase G, tier F2 — kleedkamer 3 + gang (taak 008)** 🟡 gebouwd
+(2026-08-01), **wacht op art-direction-review**. Uitgevoerd op de
+GD-brief van dezelfde dag, die de F2-scope verlegde naar *de kleedkamer
+als hero room plus de aangrenzende gang* (kleedkamer 4 en de douches
+blijven voorlopig tier F1). Opgeleverd:
+`game/levels/clubgebouw/f2_detail/` als losse verwijdereenheid (D-033)
+met een kitbash-bouwer (box/cilinder/bol/torus/vlak, rotatie,
+collision-optie, decals) en vier datatabellen — 218 onderdelen.
+Kleedkamer 3: banken van latten op schragen, kapstokrails met haken +
+trainingsjack, lockers met openstaand deurtje, radiator met leidingen,
+schakelaar/stopcontact, ventilatierooster, afvalbak, tactiekbord,
+poster, en zeven achtergelaten spullen (D-035: de sporttas is
+generiek — de premisse-tas blijft fase D). Gang: plinten, asymmetrische
+plafondleidingen, matten, wachtbank, gestapelde stoelen, doos,
+brandblusser met keuringskaart, schoonmaaknis, vier elftalfoto's.
+34 decals voor material breakup. Materialen geijkt op echte maat
+(tegel 15 cm, baksteen 21 cm — F1 herhaalde te grof) plus vijf nieuwe
+CC0-sets. Lichtpass (D-034): kleedkamer-TL als lichtpool, westelijkste
+gang-TL defect → de gang loopt het donker in met alleen de groene
+nooduitgangsgloed; SSAO aan. Schaduwbudget (D-026) en de
+006-referentiewaarden onaangeraakt. Suite 250/250; TL-verwachting
+bijgewerkt naar 4 stabiel / 1 flikkerend / 9 defect.
+Verwijderbaarheidstest gedaan: map weg = tier F1-staat (292 volumes),
+suite groen. Nieuw: TD-008 (geen instancing/LOD op de kitbash-props);
+TD-007 bewust nog niet afgelost (D-033). v0.0.21.
+
+
+Eerder: **VS-fase C — Greybox clubgebouw (taak 008)** ✅ gebouwd (2026-07-28)
 en **lokaal goedgekeurd door de GD (2026-07-29: "de basis staat")** —
 geen maatcorrecties gevraagd. `game/levels/clubgebouw/`: het clubhuis onder de
 hoofdtribune van VV Drechtstreek, 's nachts — 12 ruimtes/zones op
@@ -73,7 +99,7 @@ goedgekeurd (v1 → v2 → v2.1, zie het dossier).
 ## 2. Laatste commit
 
 ```
-[docs] Werk administratie bij voor taak 006 (gebouwd, wacht op GD-test)
+[docs] Werk administratie bij voor tier F2 (gebouwd, wacht op AD-review)
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -96,16 +122,19 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 🟡 gebouwd, wacht op GD-test** (F2–F4 ⬜) · D/E/H–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 ✅ · tier F2 🟡 gebouwd, wacht op art-direction-review** (F3–F4 ⬜) · D/E/H–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
 **Technische staat**: import schoon (exit 0), smoke-suite **250/250
-groen**. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
+groen**. `config/version` = 0.0.21. Rendermeters van de demo-zone (uit
+`tools/maak_screenshots.gd`): piek 152 draw calls en ~7k primitieven
+per beeld — ruim binnen budget. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
 dev room), zonder documentlezer 209, zonder interactie-unit incl.
 documentprops 172, zonder zaklampsysteem 188, zonder complete lighting
-176, zonder inventory 169. `config/version` = 0.0.19. Warnings in de suite-output zijn
+176, zonder inventory 169; zonder de F2-detaillaag valt het clubgebouw
+terug op de tier F1-staat (292 volumes). Warnings in de suite-output zijn
 uitsluitend de bewust geteste luide faalpaden — normale opstart is
 schoon (geverifieerd). Incidentele exit-leak-warning van de ambience is
 pre-existent en geregistreerd als KI-004. Debug-prompt (TD-006) blijft
@@ -122,21 +151,27 @@ hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD test tier F1 lokaal** (F5 → voorplein): de renders uit het
-F1-rapport naast het eigen beeld leggen; beoordelen op materialen,
-kleurgebruik (clubblauw), leesbaarheid van de bewegwijzering en het
-"echte club"-gevoel van entree/hal/gang/kleedkamers/douches. Bekende
-F1-kanttekeningen (bewust gelaten): banken/kapstokken/meubels zijn nog
-greybox (F2/F3), de bestuurskamer is kaal en donker (inrichting F3,
-geen werkende TL bewust), plafond-tuning in de kleedkamers mag
-GD-feedback krijgen. Na akkoord: **tier F2** (kleedkamers + douches
-bewoond: banken/lockers/kapstokken echt, tactiekbord, vergeten
-details). TD-007 (tabellen → scènes) lost per goedgekeurde ruimte af
-vanaf F2. **D (flow) en E (pacing) volgen ná de artpass** — let op
-D-032: de fase-D-flow herijkt de slotbeats (buitenglimp/ketting) op
-het nieuwe demo-einde in de bestuurskamer. Overige haken: monster-AI
-(009), TD-005, TD-004, save-integratie, inventory-UI/HUD (TD-006),
-canonvraag "derde helft als proloog" (STORY §8), KI-004.
+**De GD beoordeelt tier F2 als art-direction-review**: zestien renders
+(1600×900) staan klaar, waaronder de tien verplichte beelden —
+kleedkamer wide, vanaf de deuropening, materiaaldetail, banken/props,
+blik richting gang, gang vanaf de kleedkamer, gang midden, donkerste
+gang, en het zaklamp-paar (aan/uit). Beoordelen op: voelt de kleedkamer
+als een échte gebruikte ruimte, is de greybox-look weg, oogt de gang
+dreigend zónder monster, zijn de materialen niet repetitief of steriel,
+klopt de schaal, hangen licht/materiaal/props in één stijl.
+
+Bekende, bewust gelaten punten: kleedkamer 4 en de douches staan nog op
+tier F1 (zichtbaar vanuit gang en kleedkamer 3 — bewust, §13 van het
+artplan); de hal is nog F1 en oogt daardoor warmer/geler; de sporttas
+onder de bank is generieke aankleding (D-035); drie lockers in plaats
+van zes wegens ruimte (tasks/008_artdirection §16).
+
+**Pas ná expliciet startsein: tier F3** (bestuurskamer volledig,
+hal-aankleding, entree-buitenkant). Daarna F4 (sfeerlak + gate). D
+(flow) en E (pacing) volgen ná de artpass; let op D-032. Overige haken:
+monster-AI (009), TD-005, TD-004, TD-008, save-integratie,
+inventory-UI/HUD (TD-006), canonvraag "derde helft als proloog"
+(STORY §8), KI-004, en de canon-ronde over CRUMP zelf.
 
 ## 6. Open aandachtspunten
 

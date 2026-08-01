@@ -374,3 +374,41 @@ sleutelroute uit en herijkt daarbij de slotbeats van de slice (de
 buitenglimp bij mast 3 en de ketting uit tasks/008 §4) op dit nieuwe
 einde — dat is een fase-D-ontwerpbeslissing, niet iets dat de artpass
 nu vastlegt.
+
+## D-033 — De F2-artpass is een losse detaillaag naast de greybox, geen herbouw
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (uitvoering GD-brief F2) · **Status**: actief
+Tier F2 kleedt kleedkamer 3 en de gang aan vanuit één verwijderbare
+eenheid (`game/levels/clubgebouw/f2_detail/`) met een eigen
+kitbash-bouwer (box/cilinder/bol/torus/vlak, rotatie, decals) in plaats
+van de F1-greybox te herschrijven. Reden: de goedgekeurde maatvoering
+mag niet bewegen (artplan §2.6), de artpass moet in één map te
+verwijderen zijn (D-015) en elke prop blijft één tabelregel — dus
+GD-correcties blijven één getal. De vijf F1-volumes die door echte
+props worden vervangen (twee banken, twee rails, lockers,
+brandblusser) dragen in `clubgebouw.gd` de vlag `"f2"`; is de map weg,
+dan bouwt het level ze gewoon zelf weer. Consequentie: TD-007 wordt
+hiermee **niet** afgelost — beide lagen blijven datatabellen; de
+omzetting naar ruimte-scènes verschuift naar het moment dat de GD de
+demo-zone visueel áf verklaart (F4-gate).
+
+## D-034 — Het westeinde van de gang is donker: de gang is het horrorbeeld
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (uitvoering GD-brief F2 §3/§4) · **Status**: actief
+De westelijkste gang-TL is defect gezet (nachtverdeling wordt 4
+stabiel / 1 flikkerend / 9 defect; de suite toetst die verdeling) en de
+kleedkamer-TL is teruggebracht tot een echte lichtpool (energie 1,0 /
+bereik 4,8). Daardoor loopt de gang letterlijk het donker in, met als
+enige rest de groene gloed van het nooduitgangbord — een lamp zonder
+schaduw, dus het schaduwbudget (D-026, 3 + zaklampslot) blijft
+onaangeraakt. SSAO staat aan voor contactschaduw. Dit is bewust een
+**lokale** pass: de volledige lighting phase blijft een eigen fase, en
+de 006-referentiewaarden (ambient, fog, tonemap) zijn niet aangeraakt.
+
+## D-035 — De sporttas in kleedkamer 3 is aankleding, niet de premisse-tas
+**Datum**: 2026-08-01 · **Wie**: Lead Developer (signalering aan GD) · **Status**: actief
+De GD-brief vraagt om een sporttas als aankleding; de canon (D-028)
+maakt de **vergeten sporttas** juist de openingspremisse en daarmee een
+fase-D-gameplayprop. Gekozen: onder de westbank ligt een neutrale,
+generieke tas (grijsgroen, geen clubkleur, geen interactie) puur als
+bewijs van gebruik; de premisse-tas blijft ongebouwd tot fase D en
+krijgt daar zijn eigen plek en materiaal. Als de GD ook die
+dubbelzinnigheid niet wil, is de tas één tabelregel verwijderen.

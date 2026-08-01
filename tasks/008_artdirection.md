@@ -376,6 +376,7 @@ bestuurskamer (§5.8, deur van het slot).
    binnen het focusgebied; bewegwijzering (§10) in hal en gang.
 2. **Tier F2 — de bewoonde laag**: kleedkamer 3 volledig (§5.2),
    kleedkamer 4 als kalere spiegel, douches (§5.3).
+   *(Uitgevoerd 2026-08-01 met een door de GD herziene scope — zie §16.)*
 3. **Tier F3 — de zwaartepunten**: bestuurskamer volledig (§5.8);
    hal-aankleding (prikbord, deurmat, lambrisering); entree-buitenkant
    (clubnaambord, gevelmateriaal, luifel, natte entree-zone).
@@ -425,3 +426,37 @@ tier een lokale GD-blik. De suite bewaakt tijdens de hele artpass dat
 architectuur (schaalmetingen), deurstaten, TL-staten en schaduwbudget
 niet bewegen — de artpass is pas geslaagd als álles nog exact staat
 waar jij het goedkeurde.
+
+---
+
+## 16. Uitvoering tier F2 (2026-08-01) — scope, afwijkingen, status
+
+**Opdracht**: de GD-brief van 2026-08-01 verlegde de F2-scope van
+"kleedkamer 3 + 4 + douches" naar **de kleedkamer als hero room plus de
+aangrenzende gang**, met de gang als het belangrijkste horrorbeeld
+(dreigend zonder monster). Kleedkamer 4 en de douches blijven daarmee
+op tier F1-niveau tot een volgende tier; ze zijn zichtbaar vanuit de
+gang respectievelijk vanuit kleedkamer 3, en dat verschil is bewust
+(§13: de overgang focus ↔ greybox wordt nergens verstopt).
+
+**Afwijkingen van dit plan, met reden**:
+1. **Drie lockers in plaats van zes** (§8). Tussen de oostbank en de
+   zuidwand is 1,0 m vrij; zes smalle lockers vragen ±1,9 m. Zes zou
+   ofwel de bank inkorten ofwel de doorloop versmallen — en de
+   architectuur is heilig (§2.6).
+2. **De sporttas is generiek, niet de premisse-tas** (D-035): de brief
+   vroeg om een sporttas als aankleding, de canon (D-028) reserveert de
+   vergeten tas voor fase D.
+3. **Materiaalschaal van tier F1 gecorrigeerd**: de focusmaterialen
+   herhaalden zo grof dat een tegel ±40 cm en een baksteen ±60 cm werd.
+   Dat las als "grote lege ruimte" in plaats van clubgebouw op
+   menselijke maat. Geijkt op 15 cm respectievelijk 21 cm; dit raakt
+   ook hal, douches en bestuurskamer (zelfde materiaalsleutels).
+4. **Lichtpass alleen lokaal** (D-034), conform de brief: geen
+   volledige lighting phase, geen wijziging aan de 006-referentie
+   (ambient, fog, tonemap) en geen extra schaduwlicht.
+
+**Status**: gebouwd, suite 250/250 groen, verwijderbaarheidstest
+gedaan. **Wacht op art-direction-review door de GD** (zestien renders,
+1600×900). Tier F3 (bestuurskamer, hal-aankleding, entree-buitenkant)
+begint pas na expliciet startsein.
