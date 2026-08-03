@@ -21,27 +21,31 @@ const LEVEL := "res://game/levels/clubgebouw/clubgebouw.tscn"
 const BREEDTE := 1600
 const HOOGTE := 900
 
-## [naam, camerapositie, kijkdoel, zaklamp aan]. De eerste zes volgen de
-## verplichte lijst uit de F2.1-opdracht en gebruiken exact dezelfde
-## camera's als hun F2-tegenhangers (01=F2/01, 02=F2/02, 03=F2/03,
-## 04=F2/13, 05=F2/07, 06=F2/08), zodat voor/na objectief te vergelijken
-## is. Daarna staan de contextbeelden.
+## [naam, camerapositie, kijkdoel, zaklamp aan]. Shots 01–12 volgen de
+## verplichte AD-renderlijst uit de F3-opdracht; shot 11 is de
+## vergelijkingsopname met de F2.1-hero-kleedkamer (zelfde camera als
+## F2.1/01). Daarna contextbeelden, waaronder de protected-darkness-
+## controle op de gang (F3-brief §6).
 const SHOTS := [
-	["01_F21_kleedkamer_wide", Vector3(-2.95, 1.62, -0.55), Vector3(-6.50, 1.05, 2.30), false],
-	["02_F21_kleedkamer_deuropening", Vector3(-3.88, 1.62, 3.28), Vector3(-6.40, 1.10, -0.30), false],
-	["03_F21_vloer_wand_bank_detail", Vector3(-6.00, 1.05, 1.65), Vector3(-6.95, 0.50, 0.95), false],
-	["04_F21_kast_kozijn", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), false],
-	["05_F21_gang_reference", Vector3(-8.00, 1.65, 4.25), Vector3(-15.00, 1.30, 4.32), false],
-	["06_F21_gang_donkerste", Vector3(-10.20, 1.65, 4.85), Vector3(-14.90, 1.20, 4.20), false],
-	# Context: banken, doorkijk, zaklamp en de gang van beide kanten.
-	["11_banken_props", Vector3(-5.30, 1.25, 1.95), Vector3(-6.78, 0.28, 0.45), false],
-	["12_blik_richting_gang", Vector3(-5.70, 1.65, 0.85), Vector3(-3.80, 1.42, 3.60), false],
-	["13_gang_vanaf_kleedkamer", Vector3(-3.15, 1.65, 4.40), Vector3(-14.00, 1.32, 4.34), false],
-	["14_zaklamp_aan", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), true],
-	["15_zaklamp_uit", Vector3(-11.50, 1.65, 4.35), Vector3(-15.00, 1.45, 4.31), false],
-	["16_kleedkamer_zaklamp", Vector3(-5.90, 1.60, 0.30), Vector3(-2.90, 1.10, 2.70), true],
-	["17_gang_oost", Vector3(-2.60, 1.65, 4.30), Vector3(-14.50, 1.30, 4.30), false],
-	["18_kleedkamer3_douche", Vector3(-4.20, 1.65, 0.40), Vector3(-3.90, 1.20, -3.60), false],
+	["01_bestuurskamer_deuropening", Vector3(2.30, 1.62, 5.74), Vector3(5.40, 1.05, 5.20), false],
+	["02_bestuurskamer_naar_deur", Vector3(5.35, 1.58, 6.30), Vector3(2.20, 1.25, 5.55), false],
+	["03_bestuurskamer_bureau_detail", Vector3(4.30, 1.40, 5.05), Vector3(5.40, 0.90, 4.05), false],
+	["04_bestuurskamer_donkerste", Vector3(2.55, 1.60, 6.55), Vector3(5.85, 1.35, 6.35), false],
+	["05_hal_richting_gang", Vector3(1.30, 1.62, 5.60), Vector3(-2.05, 1.25, 4.30), false],
+	["06_hal_richting_bestuurskamer", Vector3(-1.45, 1.62, 3.55), Vector3(2.10, 1.40, 6.00), false],
+	["07_entree_binnen_naar_buiten", Vector3(0.00, 1.62, 5.10), Vector3(-0.20, 1.45, 9.50), false],
+	["08_entree_buiten_naar_binnen", Vector3(-0.30, 1.62, 9.70), Vector3(0.10, 1.55, 6.90), false],
+	["09_brede_buitenopname", Vector3(-8.60, 1.70, 12.40), Vector3(2.00, 1.90, 7.30), false],
+	["10_nat_materiaal_closeup", Vector3(2.05, 1.10, 9.40), Vector3(2.75, 0.05, 8.45), false],
+	["11_F21_hero_referentie", Vector3(-2.95, 1.62, -0.55), Vector3(-6.50, 1.05, 2.30), false],
+	["12_best_shot_entree", Vector3(-3.30, 1.55, 9.90), Vector3(0.70, 2.10, 7.25), false],
+	# Context: samenhang van de route en de beschermde gang.
+	["13_hal_overzicht", Vector3(1.55, 1.60, 2.75), Vector3(-1.30, 1.30, 6.60), false],
+	["14_bestuurskamer_tl_zijde", Vector3(4.90, 1.55, 4.35), Vector3(2.60, 1.20, 6.30), false],
+	["15_gang_protected_check", Vector3(-2.30, 1.65, 4.30), Vector3(-14.50, 1.30, 4.30), false],
+	["16_voorplein_vanaf_poort", Vector3(0.40, 1.65, 13.20), Vector3(-0.40, 1.80, 7.40), false],
+	["17_historie_wand_zaklamp", Vector3(4.20, 1.55, 5.85), Vector3(5.95, 1.55, 6.30), true],
+	["18_kleedkamer_naar_gang_check", Vector3(-5.70, 1.65, 0.85), Vector3(-3.80, 1.42, 3.60), false],
 ]
 
 var _spot: SpotLight3D
@@ -63,6 +67,12 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(
 		ProjectSettings.globalize_path("user://screenshots"))
 	_open_deur("DeurKleedkamer3")
+	# F3: de bestuurskamer is in het spel op slot (sleutelflow, D-032),
+	# maar de AD-renders beoordelen de kamer zelf — dus hier open. De
+	# hoofdentree en de gangdeur staan open voor de routeshots.
+	_open_deur("DeurBestuurskamer")
+	_open_deur("DeurHoofdentree")
+	_open_deur("DeurHalGang")
 	var camera := Camera3D.new()
 	camera.fov = 70.0
 	camera.near = 0.05

@@ -60,9 +60,9 @@ const MATERIALS := {
 	&"f_coating": {"tex": "coating_glad", "tint": Color(0.40, 0.43, 0.45), "scale": 0.5, "rough": 0.74, "normal": 0.8},
 	&"f_tegel_wand": {"tex": "tegel_klein_wit", "tint": Color(0.76, 0.75, 0.71), "scale": 0.62, "rough": 0.58, "normal": 0.8},
 	&"f_tegel_vloer": {"tex": "tegel_vloer_grijs", "tint": Color(0.68, 0.71, 0.73), "scale": 1.6, "rough": 0.5},
-	&"f_tapijt": {"tex": "tapijt", "tint": Color(0.55, 0.58, 0.66), "scale": 0.6},
+	&"f_tapijt": {"tex": "tapijt", "tint": Color(0.40, 0.44, 0.52), "scale": 2.4, "rough": 0.95},
 	&"f_gevel": {"tex": "gevel", "tint": Color(0.92, 0.90, 0.88), "scale": 0.4},
-	&"f_asfalt_nat": {"tex": "asfalt", "tint": Color(0.80, 0.83, 0.88), "scale": 0.28, "rough": 0.4},
+	&"f_asfalt_nat": {"tex": "asfalt", "tint": Color(0.55, 0.60, 0.68), "scale": 0.28, "rough": 0.38},
 	&"f_lambrisering": {"tex": "planken", "tint": Color(0.80, 0.72, 0.62), "scale": 0.7},
 	&"f_metaal": {"tex": "metaal", "scale": 0.5, "rough": 0.6},
 	&"f_kozijn_blauw": {"tint": Color(0.06, 0.17, 0.32), "rough": 0.62},
@@ -437,8 +437,8 @@ const NIGHT_TLS: Array[Dictionary] = [
 	# contrast komt uit korte range en hoge attenuatie, grounding uit
 	# decals (de F2.1-techniek).
 	{"name": "TlBestuurskamer", "pos": Vector3(3.2, 2.32, 5.6),
-		"settings": {"light_energy_on": 1.1, "light_range": 3.3,
-			"light_attenuation": 2.4}},
+		"settings": {"light_energy_on": 1.0, "light_range": 2.7,
+			"light_attenuation": 2.6}},
 	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0),
 		"settings": {"light_energy_on": 1.2, "light_range": 3.9,
 			"light_attenuation": 2.1, "cast_shadow": true}},

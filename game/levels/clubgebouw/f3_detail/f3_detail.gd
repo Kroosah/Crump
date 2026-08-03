@@ -77,6 +77,7 @@ const MATERIALEN := {
 	&"kliko_groen": Color(0.16, 0.24, 0.16),
 	&"luifel_plafond": Color(0.60, 0.60, 0.57),
 	&"melkglas": Color(0.82, 0.80, 0.72),
+	&"melkglas_lamp": {"tint": Color(0.85, 0.80, 0.68), "emissie": Color(1.0, 0.85, 0.62), "energie": 0.9},
 	# — Hal —
 	&"terracotta": Color(0.42, 0.26, 0.18),
 	&"plant_groen": Color(0.18, 0.24, 0.14),
@@ -125,6 +126,10 @@ const SOLIDS: Array[Dictionary] = [
 	{"vorm": "cyl", "pos": Vector3(3.52, 0.08, 6.928), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
 	{"vorm": "cyl", "pos": Vector3(4.68, 0.08, 6.928), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
 	{"pos": Vector3(4.1, 0.875, 6.86), "size": Vector3(1.56, 0.03, 0.24), "mat": &"vensterbank"},
+	# Middenstijl en tussendorpel in het raam: een vlak van 1,4 m glas
+	# bestaat in Nederland niet — dit is een draaikiepraam.
+	{"pos": Vector3(4.1, 1.6, 7.1), "size": Vector3(0.06, 1.36, 0.08), "mat": &"kunststof_wit"},
+	{"pos": Vector3(4.1, 1.88, 7.1), "size": Vector3(1.36, 0.06, 0.08), "mat": &"kunststof_wit"},
 
 	# ── Vergadertafel: één degelijk rechthoekig blad op stalen poten —
 	#    zoals clubtafels echt zijn (geen designtafel; een tweede blad
@@ -371,10 +376,10 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(0.0, 0.43, 2.68), "size": Vector3(1.20, 0.035, 0.075), "mat": &"bank_lat"},
 	{"pos": Vector3(-0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-0.47, 0.398, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(-0.47, 0.396, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
 	{"pos": Vector3(0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(0.47, 0.398, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(0.47, 0.396, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
 	{"pos": Vector3(0.0, 0.24, 2.59), "size": Vector3(1.20, 0.48, 0.30), "col": true, "verborgen": true},
 
 	# ── Radiator met vensterbank onder het halraam; de plant is nét te
@@ -426,6 +431,94 @@ const SOLIDS: Array[Dictionary] = [
 	{"vorm": "cyl", "pos": Vector3(0.0, 2.5915, 3.45), "size": Vector3(0.013, 2.3, 0.013), "mat": &"kunststof_wit", "rot": Vector3(90.0, 0.0, 0.0)},
 	{"pos": Vector3(0.0, 2.5915, 2.9), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
 	{"pos": Vector3(0.0, 2.5915, 4.0), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
+
+	# ══════════════ ENTREE — BUITENZIJDE ══════════════
+	# Het gebouw krijgt zijn Nederlandse gevelgrammatica: betonplint
+	# onderlangs, donker boeiboord langs de dakrand, hemelwaterafvoer.
+	# De regen zelf is een aparte laag (particles + plassen-ORM).
+
+	# ── Betonplint rondom (0,35 m, steekt 3 cm vóór het metselwerk) ──
+	{"pos": Vector3(-7.85, 0.175, 7.225), "size": Vector3(14.68, 0.35, 0.05), "mat": &"beton_plint"},
+	{"pos": Vector3(6.44, 0.175, 7.225), "size": Vector3(11.90, 0.35, 0.05), "mat": &"beton_plint"},
+	{"pos": Vector3(-15.225, 0.175, -0.45), "size": Vector3(0.05, 0.35, 8.5), "mat": &"beton_plint"},
+	{"pos": Vector3(-15.225, 0.175, 6.01), "size": Vector3(0.05, 0.35, 2.38), "mat": &"beton_plint"},
+	{"pos": Vector3(12.425, 0.175, -4.1), "size": Vector3(0.05, 0.35, 1.2), "mat": &"beton_plint"},
+	{"pos": Vector3(12.425, 0.175, 2.36), "size": Vector3(0.05, 0.35, 9.68), "mat": &"beton_plint"},
+	{"pos": Vector3(-1.4, 0.175, -4.725), "size": Vector3(27.6, 0.35, 0.05), "mat": &"beton_plint"},
+
+	# ── Boeiboord langs de dakrand (antraciet, zoals elk clubgebouw) ──
+	{"pos": Vector3(-1.4, 2.95, 7.425), "size": Vector3(28.1, 0.4, 0.05), "mat": &"boeiboord"},
+	{"pos": Vector3(-1.4, 2.95, -4.925), "size": Vector3(28.1, 0.4, 0.05), "mat": &"boeiboord"},
+	{"pos": Vector3(-15.425, 2.95, 1.25), "size": Vector3(0.05, 0.4, 12.2), "mat": &"boeiboord"},
+	{"pos": Vector3(12.625, 2.95, 1.25), "size": Vector3(0.05, 0.4, 12.2), "mat": &"boeiboord"},
+
+	# ── Hemelwaterafvoer: twee zinken pijpen op de zuidgevel, met
+	#    beugels, bovenbocht en uitloop — en straks een plas eronder ──
+	{"vorm": "cyl", "pos": Vector3(-14.6, 1.6, 7.26), "size": Vector3(0.035, 2.5, 0.035), "mat": &"zink"},
+	{"pos": Vector3(-14.6, 0.9, 7.245), "size": Vector3(0.10, 0.03, 0.11), "mat": &"zink"},
+	{"pos": Vector3(-14.6, 2.3, 7.245), "size": Vector3(0.10, 0.03, 0.11), "mat": &"zink"},
+	{"vorm": "cyl", "pos": Vector3(-14.6, 2.88, 7.32), "size": Vector3(0.035, 0.14, 0.035), "mat": &"zink", "rot": Vector3(38.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(-14.6, 0.27, 7.31), "size": Vector3(0.032, 0.16, 0.032), "mat": &"zink", "rot": Vector3(55.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(11.9, 1.6, 7.26), "size": Vector3(0.035, 2.5, 0.035), "mat": &"zink"},
+	{"pos": Vector3(11.9, 0.9, 7.245), "size": Vector3(0.10, 0.03, 0.11), "mat": &"zink"},
+	{"pos": Vector3(11.9, 2.3, 7.245), "size": Vector3(0.10, 0.03, 0.11), "mat": &"zink"},
+	{"vorm": "cyl", "pos": Vector3(11.9, 2.88, 7.32), "size": Vector3(0.035, 0.14, 0.035), "mat": &"zink", "rot": Vector3(38.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(11.9, 0.27, 7.31), "size": Vector3(0.032, 0.16, 0.032), "mat": &"zink", "rot": Vector3(55.0, 0.0, 0.0)},
+
+	# ── Luifel-afwerking: randen, onderplaat en de hangende entreelamp
+	#    (armatuur om de bestaande OmniLight op 0/2,2/7,7) ──
+	{"pos": Vector3(0.0, 2.53, 8.525), "size": Vector3(3.24, 0.14, 0.05), "mat": &"boeiboord"},
+	{"pos": Vector3(-1.625, 2.53, 7.85), "size": Vector3(0.05, 0.14, 1.30), "mat": &"boeiboord"},
+	{"pos": Vector3(1.625, 2.53, 7.85), "size": Vector3(0.05, 0.14, 1.30), "mat": &"boeiboord"},
+	{"pos": Vector3(0.0, 2.445, 7.85), "size": Vector3(2.76, 0.02, 1.26), "mat": &"luifel_plafond"},
+	{"pos": Vector3(0.0, 2.4275, 7.7), "size": Vector3(0.14, 0.015, 0.14), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(0.0, 2.33, 7.7), "size": Vector3(0.012, 0.18, 0.012), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(0.0, 2.225, 7.7), "size": Vector3(0.075, 0.05, 0.075), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(0.0, 2.16, 7.7), "size": Vector3(0.052, 0.10, 0.052), "mat": &"melkglas_lamp"},
+
+	# ── Vlaggenmast zonder vlag op het voorplein (het koord tikt pas in
+	#    fase H) ──
+	{"vorm": "cyl", "pos": Vector3(-4.5, 3.0, 10.8), "size": Vector3(0.045, 6.0, 0.045), "mat": &"mast_alu", "col": true},
+	{"vorm": "cyl", "pos": Vector3(-4.5, 0.125, 10.8), "size": Vector3(0.07, 0.25, 0.07), "mat": &"staal_donker"},
+	{"pos": Vector3(-4.44, 1.2, 10.8), "size": Vector3(0.03, 0.10, 0.025), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(-4.578, 3.0, 10.79), "size": Vector3(0.006, 5.7, 0.006), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(-4.578, 3.0, 10.81), "size": Vector3(0.006, 5.7, 0.006), "mat": &"kunststof_wit"},
+
+	# ── Fietsenrek: vijf beugels op twee voetrails (vervangt de twee
+	#    F1-vlakken) ──
+	{"pos": Vector3(4.5, 0.02, 12.28), "size": Vector3(1.90, 0.04, 0.05), "mat": &"staal_donker"},
+	{"pos": Vector3(4.5, 0.02, 12.62), "size": Vector3(1.90, 0.04, 0.05), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(3.7, 0.395, 12.28), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(3.7, 0.395, 12.62), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(3.7, 0.755, 12.45), "size": Vector3(0.016, 0.40, 0.016), "mat": &"staal", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(4.1, 0.395, 12.28), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.1, 0.395, 12.62), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.1, 0.755, 12.45), "size": Vector3(0.016, 0.40, 0.016), "mat": &"staal", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(4.5, 0.395, 12.28), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.5, 0.395, 12.62), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.5, 0.755, 12.45), "size": Vector3(0.016, 0.40, 0.016), "mat": &"staal", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(4.9, 0.395, 12.28), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.9, 0.395, 12.62), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(4.9, 0.755, 12.45), "size": Vector3(0.016, 0.40, 0.016), "mat": &"staal", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(5.3, 0.395, 12.28), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(5.3, 0.395, 12.62), "size": Vector3(0.016, 0.71, 0.016), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(5.3, 0.755, 12.45), "size": Vector3(0.016, 0.40, 0.016), "mat": &"staal", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"pos": Vector3(4.5, 0.4, 12.45), "size": Vector3(1.8, 0.8, 0.5), "col": true, "verborgen": true},
+
+	# ── Containerhoek bij de westgevel: twee kliko's, netjes op een rij
+	#    (vrijwilligersnetheid — artplan §5.7) ──
+	{"pos": Vector3(-15.55, 0.51, 0.35), "size": Vector3(0.56, 1.02, 0.66), "mat": &"kliko_grijs", "col": true, "rot": Vector3(0.0, 4.0, 0.0)},
+	{"pos": Vector3(-15.55, 1.05, 0.33), "size": Vector3(0.58, 0.06, 0.68), "mat": &"kliko_grijs", "rot": Vector3(-3.0, 4.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(-15.72, 0.09, 0.12), "size": Vector3(0.09, 0.04, 0.09), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"vorm": "cyl", "pos": Vector3(-15.72, 0.09, 0.58), "size": Vector3(0.09, 0.04, 0.09), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(-15.55, 0.51, 1.15), "size": Vector3(0.56, 1.02, 0.66), "mat": &"kliko_groen", "col": true, "rot": Vector3(0.0, -3.0, 0.0)},
+	{"pos": Vector3(-15.55, 1.05, 1.13), "size": Vector3(0.58, 0.06, 0.68), "mat": &"kliko_groen", "rot": Vector3(-3.0, -3.0, 0.0)},
+	{"vorm": "cyl", "pos": Vector3(-15.72, 0.09, 0.92), "size": Vector3(0.09, 0.04, 0.09), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"vorm": "cyl", "pos": Vector3(-15.72, 0.09, 1.38), "size": Vector3(0.09, 0.04, 0.09), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+
+	# ── Hangslot aan de ketting van de poort ──
+	{"pos": Vector3(0.0, 1.06, 13.94), "size": Vector3(0.055, 0.07, 0.022), "mat": &"staal_donker"},
+	{"vorm": "torus", "pos": Vector3(0.0, 1.098, 13.94), "size": Vector3(0.012, 0.024, 0.012), "mat": &"staal"},
 ]
 
 ## Getextureerde panelen (QuadMesh). Een quad kijkt standaard naar +z;
@@ -508,8 +601,8 @@ const DECALS: Array[Dictionary] = [
 	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(-0.9, 0.02, 5.5), "size": Vector3(2.2, 0.6, 1.6), "alpha": 0.7, "hoek": 35.0},
 	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(1.0, 0.02, 4.7), "size": Vector3(1.8, 0.5, 1.4), "alpha": 0.5, "hoek": -40.0},
 	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(-1.5, 0.02, 4.4), "size": Vector3(1.4, 0.5, 1.2), "alpha": 0.6, "hoek": 80.0},
-	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(-0.6, 0.02, 5.3), "size": Vector3(2.2, 0.3, 2.0), "alpha": 0.7, "hoek": 35.0},
-	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(0.9, 0.02, 4.5), "size": Vector3(1.6, 0.3, 1.6), "alpha": 0.6, "hoek": -40.0},
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(-0.6, 0.02, 5.3), "size": Vector3(2.2, 0.3, 2.0), "alpha": 0.5, "hoek": 35.0},
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(0.9, 0.02, 4.5), "size": Vector3(1.6, 0.3, 1.6), "alpha": 0.45, "hoek": -40.0},
 	# Binnen is droog — op de druppelsporen bij de entree-mat na
 	# (artplan §4).
 	{"tex": "druppelspoor", "vlak": "vloer", "pos": Vector3(0.0, 0.018, 5.95), "size": Vector3(1.1, 0.3, 0.9), "alpha": 0.6},
@@ -543,6 +636,37 @@ const DECALS: Array[Dictionary] = [
 	{"tex": "ao_lijn", "vlak": "x+", "pos": Vector3(1.94, 2.46, 4.6), "size": Vector3(4.6, 0.4, 0.5), "alpha": 0.45},
 	{"tex": "ao_lijn", "vlak": "z-", "pos": Vector3(0.0, 0.14, 2.36), "size": Vector3(3.9, 0.3, 0.2), "alpha": 0.35, "hoek": 180.0},
 	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-1.94, 0.14, 5.9), "size": Vector3(2.1, 0.3, 0.2), "alpha": 0.35, "hoek": 180.0},
+
+	# ── Buiten · plassen: albedo maakt het asfalt donkerder, de ORM
+	#    maakt het glad — alleen waar water logisch samenkomt, en nooit
+	#    onder de luifel ──
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.45, "vlak": "vloer", "pos": Vector3(2.6, 0.02, 8.6), "size": Vector3(1.8, 0.3, 1.2), "alpha": 0.85, "hoek": 15.0},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.45, "vlak": "vloer", "pos": Vector3(-3.6, 0.02, 9.2), "size": Vector3(2.4, 0.3, 1.6), "alpha": 0.85, "hoek": 70.0},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.45, "vlak": "vloer", "pos": Vector3(-9.8, 0.02, 8.3), "size": Vector3(1.6, 0.3, 1.1), "alpha": 0.8, "hoek": 130.0},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.45, "vlak": "vloer", "pos": Vector3(0.4, 0.02, 12.6), "size": Vector3(2.0, 0.3, 1.3), "alpha": 0.8, "hoek": 40.0},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.5, "vlak": "vloer", "pos": Vector3(-14.55, 0.02, 7.9), "size": Vector3(1.0, 0.3, 0.9), "alpha": 0.95},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.5, "vlak": "vloer", "pos": Vector3(11.85, 0.02, 7.9), "size": Vector3(0.9, 0.3, 0.8), "alpha": 0.9, "hoek": 200.0},
+	{"tex": "plas", "orm": "plas_orm", "mix": 0.45, "vlak": "vloer", "pos": Vector3(5.2, 0.02, 10.4), "size": Vector3(1.5, 0.3, 1.0), "alpha": 0.7, "hoek": 100.0},
+	# Natte gevelvoet: opgetrokken vocht boven de plint; onder de luifel
+	# bewust zwakker (droger onder de overkapping).
+	{"tex": "nat_rand", "vlak": "z-", "pos": Vector3(-8.0, 0.5, 7.23), "size": Vector3(9.5, 0.9, 0.5), "alpha": 0.5},
+	{"tex": "nat_rand", "vlak": "z-", "pos": Vector3(6.5, 0.5, 7.23), "size": Vector3(9.0, 0.9, 0.5), "alpha": 0.45},
+	{"tex": "nat_rand", "vlak": "z-", "pos": Vector3(0.0, 0.45, 7.23), "size": Vector3(2.6, 0.8, 0.5), "alpha": 0.3},
+	{"tex": "nat_rand", "vlak": "x+", "pos": Vector3(-15.24, 0.5, -0.4), "size": Vector3(8.0, 0.9, 0.5), "alpha": 0.5},
+	# Lekspoor van de hemelwaterafvoer op het metselwerk.
+	{"tex": "vocht", "vlak": "z-", "pos": Vector3(-14.6, 1.5, 7.23), "size": Vector3(0.5, 2.6, 0.4), "alpha": 0.4},
+	{"tex": "vocht", "vlak": "z-", "pos": Vector3(11.9, 1.5, 7.23), "size": Vector3(0.5, 2.6, 0.4), "alpha": 0.35},
+	# Onkruid in de naad tussen plint en bestrating, en bij het hek.
+	{"tex": "onkruid", "vlak": "vloer", "pos": Vector3(-11.0, 0.02, 7.34), "size": Vector3(5.0, 0.3, 0.45), "alpha": 0.55},
+	{"tex": "onkruid", "vlak": "vloer", "pos": Vector3(3.5, 0.02, 7.34), "size": Vector3(4.0, 0.3, 0.4), "alpha": 0.5, "hoek": 180.0},
+	{"tex": "onkruid", "vlak": "vloer", "pos": Vector3(9.5, 0.02, 7.34), "size": Vector3(3.0, 0.3, 0.4), "alpha": 0.45},
+	{"tex": "onkruid", "vlak": "vloer", "pos": Vector3(-1.2, 0.02, 13.75), "size": Vector3(1.6, 0.3, 0.5), "alpha": 0.5},
+	{"tex": "onkruid", "vlak": "vloer", "pos": Vector3(5.85, 0.02, 11.0), "size": Vector3(0.5, 0.3, 2.0), "alpha": 0.45, "hoek": 90.0},
+	# Grounding buiten: rek, mast, kliko's; schoenstrepen vóór de deur.
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(4.5, 0.014, 12.45), "size": Vector3(2.0, 0.3, 0.7), "alpha": 0.4},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-4.5, 0.013, 10.8), "size": Vector3(0.4, 0.25, 0.4), "alpha": 0.5},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(-15.55, 0.014, 0.75), "size": Vector3(0.85, 0.3, 1.6), "alpha": 0.5},
+	{"tex": "schoenstreep", "vlak": "vloer", "pos": Vector3(0.0, 0.02, 7.7), "size": Vector3(1.2, 0.4, 0.9), "alpha": 0.45},
 ]
 
 var _materialen := {}
@@ -714,13 +838,53 @@ func _bouw_decal(spec: Dictionary) -> void:
 
 
 ## Regen boven het voorplein: twee GPUParticles3D-volumes (dichtbij +
-## verte-laag achter het hek) — wereldregen, geen camera-effect. Unlit
-## en zwak: hij leest als beweging in het licht van de entreelamp, niet
-## als wit confetti. Volgt in F3.4; zonder texture gebeurt er niets.
+## verte-laag achter het hek) — wereldregen die valt waar hij valt, geen
+## camera-effect. Unlit en zwak: hij leest als beweging in het licht van
+## de entreelamp, niet als wit confetti. Zonder texture gebeurt er niets
+## (D-015-contract binnen de eigen laag).
 func _bouw_regen() -> void:
 	if not ResourceLoader.exists(REGEN_TEXTURE):
 		return
-	pass  # F3.4 vult dit in.
+	_bouw_regen_volume("RegenVoorplein", Vector3(-3.0, 5.8, 10.2),
+		Vector3(13.0, 0.5, 4.2), 1200, 0.35)
+	_bouw_regen_volume("RegenVerte", Vector3(0.0, 6.5, 17.5),
+		Vector3(12.0, 0.5, 4.0), 450, 0.22)
+
+
+func _bouw_regen_volume(naam: String, pos: Vector3, extents: Vector3,
+		aantal: int, alpha: float) -> void:
+	var particles := GPUParticles3D.new()
+	particles.name = naam
+	particles.amount = aantal
+	particles.lifetime = 0.75
+	particles.preprocess = 1.2
+	particles.visibility_aabb = AABB(
+		Vector3(-extents.x - 2.0, -pos.y - 1.0, -extents.z - 2.0),
+		Vector3(extents.x * 2.0 + 4.0, pos.y + 2.0, extents.z * 2.0 + 4.0))
+	var proces := ParticleProcessMaterial.new()
+	proces.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	proces.emission_box_extents = extents
+	proces.direction = Vector3(0.0, -1.0, 0.0)
+	proces.spread = 1.5
+	proces.initial_velocity_min = 8.5
+	proces.initial_velocity_max = 10.5
+	proces.gravity = Vector3(0.0, -9.8, 0.0)
+	proces.scale_min = 0.8
+	proces.scale_max = 1.2
+	particles.process_material = proces
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.014, 0.26)
+	var materiaal := StandardMaterial3D.new()
+	materiaal.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	materiaal.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	materiaal.albedo_texture = load(REGEN_TEXTURE)
+	materiaal.albedo_color = Color(0.72, 0.78, 0.88, alpha)
+	materiaal.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
+	quad.material = materiaal
+	particles.draw_pass_1 = quad
+	particles.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_wortel.add_child(particles)
+	particles.position = pos
 
 
 ## Ruimtelijke regen-audio: drie emitters langs de gevel. Zonder de
