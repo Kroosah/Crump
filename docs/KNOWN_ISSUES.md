@@ -104,3 +104,16 @@ runs van de ongewijzigde 005-code — geen regressie van 006.
 **Verwacht**: een afsluitpad zonder leak-warning (ambience expliciet
 stoppen vóór `quit()` in `Bootstrap.shutdown()` is de voor de hand
 liggende kandidaat; batchen bij de eerstvolgende audio- of bootstrap-taak).
+
+## KI-005 — Speculaire spikkels op systeemplafond en stucwerk onder een werkende TL
+**Datum**: 2026-08-03 · **Ernst**: Klein · **Status**: open
+**Waar**: bestuurskamer en hal (f_systeemplafond, f_stucwerk), zichtbaar in
+de F3-renders op 1600×900 via lavapipe
+**Omschrijving**: vlak onder een aanstaande TL tonen het systeemplafond en
+het stucwerk fijne witte spikkels — speculaire aliasing van de normal maps
+op renderresolutie, geen geometrie- of materiaalfout. In beweging en op
+hogere resolutie is het minder aanwezig; op de bouw-VPS is dat niet te
+verifiëren (headless, software-Vulkan).
+**Verwacht**: beoordelen op echte hardware bij de GD-review; zonodig
+normal-sterkte van beide materialen iets terug of roughness-ondergrens
+verhogen in de F4-lichtpass.

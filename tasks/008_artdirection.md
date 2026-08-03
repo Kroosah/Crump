@@ -539,3 +539,49 @@ hetzelfde metselwerk als de rest.
 (50 standpunten langs alle deuren, ramen, gevels en donkere ruimtes,
 met en zonder zaklamp). Opgenomen in QA_CHECKLIST.
 
+
+---
+
+## 18. Uitvoering tier F3 (2026-08-03) — bestuurskamer, hal, entree-buitenkant
+
+**Opdracht**: GD-startsein na akkoord op F2/F2.1. De F2.1-kleedkamer is
+vanaf nu de minimale kwaliteitslat; F2/F2.1 worden niet herbouwd; de
+gang blijft beschermd. Werkvolgorde F3.1–F3.6 gevolgd.
+
+**Gebouwd** (v0.0.24, alles in de nieuwe verwijdereenheid
+`f3_detail/` tenzij vermeld):
+1. **F3.1/F3.2 Bestuurskamer** — architectuurlaag (plinten, kabelgoot,
+   radiator+vensterbank, TL-aansluiting, drempel, schakelaar) en de
+   volledige inrichting (§5.8): vergadertafel + zes ongelijke stoelen,
+   bureau met computer, dossierkast, ladekast+printer, dressoir met
+   archief en koffiezetapparaat, sleutelkastje, wandtelefoon,
+   historie-wand, whiteboard, vaan, clubvlag, trainersjack. Raam in de
+   zuidgevel (level, D-040), werkende TL zonder schaduwslot (level,
+   D-041). Silhouet- en occlusieplekken: dossierkast bij binnenkomst,
+   de schemerzone bij dressoir/raam, kijklijn bureau ↔ deuropening.
+2. **F3.3 Hal** — prikbord, kapstok+schoenenbank, radiator+plant,
+   gordijn, haspel, clubmat, klok, plinten; geen nieuwe lichtbronnen.
+3. **F3.4 Entree-buiten** — betonplint/boeiboord rondom, HWA-pijpen,
+   luifel-afwerking + hanglamp, vlaggenmast, fietsenrek, kliko's,
+   hangslot; plassen (albedo+ORM), natte gevelvoet, onkruid; regen als
+   wereldparticles. Naambord naar het boeiboord, aangelicht.
+4. **F3.5 Audio-micropass** — gelaagd deurgeluid en regenloop
+   (D-043, D-042), drie ruimtelijke regen-emitters.
+5. **F3.6 QA** — geometriecontrole tegen de v0.0.23-baseline (alle
+   echte fouten in de bron opgelost; nieuwe restmeldingen zijn
+   TD-009-klasse), inspectiesweep 50 standpunten, verwijderbaarheids-
+   test (map weg = F2.1-staat, suite groen), 18 AD-renders.
+
+**Afwijkingen van het plan, met reden**:
+1. **Vergadertafel rechthoekig in plaats van ovaal** (§5.8): de
+   kitbash kan geen geloofwaardige ovaal maken zonder z-fighting op de
+   bladnaad; een rechthoekige clubtafel is even geloofwaardig.
+2. **Naambord verplaatst naar het boeiboord**: op de oude gevelplek
+   verdween het achter de nieuwe dakrand; op de rand is het de
+   klassieke plek en vangt het het aanstraallicht.
+3. **Tapijt en asfalt herijkt** (F2-les schaal/tint): naaldvilt-fijn
+   respectievelijk donkerder nat zwart.
+
+**Status**: gebouwd, suite 251/251 groen, **wacht op
+art-direction-review door de GD** (twaalf verplichte renders + zes
+contextbeelden, 1600×900). F4 begint pas na expliciet startsein.

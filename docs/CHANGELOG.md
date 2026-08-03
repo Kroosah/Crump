@@ -11,6 +11,52 @@ iets veranderde en in welke commit.
 
 ---
 
+## v0.0.24 — 2026-08-03
+**Tier F3: bestuurskamer, hal en entree-buitenkant** *(VS-fase G, na GD-startsein op F2.1)*
+- **Nieuwe verwijdereenheid `game/levels/clubgebouw/f3_detail/`**
+  (zelfde D-015-contract als de F2-laag): map weg = tier F2.1-staat.
+  437 onderdelen als datatabellen, gebouwd met de bewezen kitbash plus
+  twee uitbreidingen: emissieve materialen (apparaat-LED's) en de
+  regenlaag.
+- **Bestuurskamer als hero room #2 (D-040)**: volledige inrichting —
+  vergadertafel met zes ongelijke stoelen, bureau met jaren-negentig-
+  computer, dossierkast met ordners, ladekast met printer, dressoir met
+  archiefdozen en koffiezetapparaat met opgedroogde kan, sleutelkastje,
+  wandtelefoon, historie-wand (verkleurde luchtfoto, oprichtingsakte,
+  oude elftalfoto, kampioensvaan), whiteboard met half uitgewiste
+  agenda, clubvlag en trainersjack over stoelleuningen. Het raam in de
+  zuidgevel dat het artplan al impliceerde (§5.8: vensterbank) bestaat
+  nu echt, met middenstijl en tussendorpel. Eén werkende TL uit het
+  midden, zonder schaduwslot (D-041): lichtpool boven de tafel, de
+  historie leeft in de schaduw.
+- **Hal als transition space**: echt prikbord met gevuld kurkvlak,
+  kapstokrail met dubbele haken en schoenenbank, radiator met
+  vensterbank en te droge plant, half dichtgeschoven gordijn,
+  brandslanghaspel, clublogo-deurmat met druppelsporen, stilstaande
+  klok. Geen nieuwe lichtbronnen — de darkness hierarchy richting de
+  gang is intact (renders 05/15).
+- **Entree-buitenzijde**: betonplint en antraciet boeiboord rondom,
+  zinken hemelwaterafvoeren met lekspoor, luifel-afwerking met hangende
+  entreelamp, vlaggenmast zonder vlag, beugel-fietsenrek, kliko-hoek,
+  hangslot aan de poortketting. Het clubnaambord verhuisde naar het
+  boeiboord en wordt aangelicht — de eerste indruk van het sportpark.
+- **Natte nacht (D-042)**: plassen als albedo+ORM-decals (glad waar
+  water logisch samenkomt, droger onder de luifel), natte gevelvoet,
+  onkruid in de naden; regen als twee GPU-particlevolumes plus drie
+  verstemde 3D-audio-emitters — buiten vol, binnen zakt hij met de
+  afstand weg.
+- **Audio-micropass (D-043)**: het deurgeluid is nu een keten (klink,
+  schoot, bladbeweging, zachte scharnierkraak, kozijnresonantie) uit
+  `tools/genereer_f3_audio.gd`; 1-op-1 WAV-vervanging, geen code
+  geraakt.
+- **Materiaal-ijking**: tapijt naar naaldvilt (2,4/m, grijsblauw
+  gedempt), nat asfalt donkerder.
+- **2D-werk**: `tools/genereer_f3_textures.sh` (12 panelen, 6 decals).
+- Testverwachtingen: TL-samenstelling 5/1/9, nieuw meetpunt
+  bestuurskamer. Suite **251/251** groen; geometriecontrole gedraaid
+  tegen de v0.0.23-baseline, alle echte fouten in de bron opgelost.
+  Piek 248 draw calls / ~19k primitieven (buitenshot mét regen).
+
 ## v0.0.23 — 2026-08-01
 **Geometrie- en materiaalintegriteit over het hele clubgebouw** *(vóór F3, op GD-opdracht)*
 - **Nieuw gereedschap `tools/controleer_geometrie.gd`**: bouwt het level

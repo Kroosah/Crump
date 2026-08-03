@@ -437,8 +437,8 @@ const NIGHT_TLS: Array[Dictionary] = [
 	# contrast komt uit korte range en hoge attenuatie, grounding uit
 	# decals (de F2.1-techniek).
 	{"name": "TlBestuurskamer", "pos": Vector3(3.2, 2.32, 5.6),
-		"settings": {"light_energy_on": 1.0, "light_range": 2.7,
-			"light_attenuation": 2.6}},
+		"settings": {"light_energy_on": 0.85, "light_range": 2.45,
+			"light_attenuation": 2.7}},
 	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0),
 		"settings": {"light_energy_on": 1.2, "light_range": 3.9,
 			"light_attenuation": 2.1, "cast_shadow": true}},

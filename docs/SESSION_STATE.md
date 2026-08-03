@@ -5,140 +5,67 @@ wat is de volgende stap. **Bijwerken aan het eind van elke sessie** en na elke
 afgeronde taak. Dit document is een momentopname — de bron van waarheid voor
 regels en ontwerp blijven de andere docs.*
 
-**Laatst bijgewerkt**: 2026-08-01 (fase G **tier F2.1 + integriteitspass**
-— na de realism correction pass is op GD-opdracht het volledige
-clubgebouw nagetrokken op geometrie- en materiaalfouten; drie
-gemeenschappelijke bronnen gevonden en in de generatielogica opgelost
-(D-038). Suite 250 groen — status: **F2.1 READY FOR ART-DIRECTION
-REVIEW**, niets doorpakken naar F3 zonder startsein)
+**Laatst bijgewerkt**: 2026-08-03 (fase G **tier F3** — na het
+GD-startsein zijn bestuurskamer, hal en entree-buitenkant gebouwd als
+eigen verwijdereenheid `f3_detail/`, plus de audio-micropass
+(deurgeluid, regen). Suite 251 groen — status: **F3 READY FOR
+ART-DIRECTION REVIEW**, niets doorpakken naar F4 zonder startsein)
 
 ---
 
 ## 1. Laatste taak
 
-**Integriteitspass geometrie/materiaal (taak 008, vóór F3)** ✅ uitgevoerd
-(2026-08-01) op GD-opdracht na zichtbare bouwfouten binnen én buiten.
-Niet lokaal gepatcht: eerst de bron gezocht. Drie gewoontes bleken de
-oorzaak — (1) een wandblok heeft één materiaal, dus buitenmetselwerk
-stond binnen; (2) kozijnen waren met de hand ingetikt en lieten 10 mm
-spleet om elk deurblad, ramen hadden geen kozijn; (3) onderdelen stonden
-"precies aanliggend" en dus 2–11 mm van hun drager. Opgelost in de
-generatielogica (D-038): binnenafwerking uit het wandsegment,
-deurkozijnen uit de deurtabel, raamkozijnen uit het glaspaneel, en een
-vaste overlapmarge voor alles wat ergens aan hangt. Negen handmatige
-liners en dertig handmatige kozijnstijlen verwijderd. Verder opgelost:
-schakelaar/stopcontact zaten ín de tegelband, poster en tactiekbord
-hingen los, roosterlamellen in de muur, entreedeur 10 mm naast zijn
-opening, hekpalen in het vlak van het gaas, vloeren/plafonds tot in het
-gevelvlak, latei over de stijlen, cilindercollider ter grootte van zijn
-straal, en de noord-/oostgevel stonden nog in greyboxgrijs.
-Nieuw gereedschap (D-039, in QA_CHECKLIST): `controleer_geometrie.gd`
-en `maak_inspectie.gd` (50 standpunten, met en zonder zaklamp).
-Suite 250/250, performance ongewijzigd. TD-009 genoteerd. v0.0.23.
+**VS-fase G, tier F3 — bestuurskamer, hal & entree (taak 008)** 🟡
+gebouwd (2026-08-03), **wacht op art-direction-review**. Op GD-startsein
+na akkoord op F2/F2.1; de kleedkamer is de kwaliteitslat, de gang is
+beschermd gebleven (geverifieerd in render 15). Opgeleverd in
+`game/levels/clubgebouw/f3_detail/` (D-040, zelfde D-015-contract als
+F2: map weg = F2.1-staat, geverifieerd):
+- **Bestuurskamer (hero room #2)**: volledige §5.8-inrichting —
+  vergadertafel met zes ongelijke stoelen, bureau met computer
+  (standby-LED's als apparaatlicht, puur emissief), dossierkast met
+  ordners, ladekast met printer, dressoir met archiefdozen en
+  koffiezetapparaat met opgedroogde kan, sleutelkastje, wandtelefoon,
+  historie-wand (luchtfoto/oprichtingsakte/oude elftalfoto/vaan),
+  whiteboard met half uitgewiste agenda, clubvlag en trainersjack.
+  Nieuw raam in de zuidgevel (kantinepatroon, kozijn uit de glastabel;
+  het artplan gaf de kamer al een vensterbank) en één werkende TL
+  zonder schaduwslot (D-041: lichtpool boven de tafel, 0,85/2,45/2,7 —
+  de historie leeft in de schaduw; D-026 blijft 3 + zaklamp).
+- **Hal (transition space)**: prikbord met gevuld kurkvlak, kapstok met
+  schoenenbank, radiator + te droge plant, half dicht gordijn,
+  brandslanghaspel, clublogo-deurmat met druppelsporen, stilstaande
+  klok, plinten; geen nieuwe lichtbronnen.
+- **Entree-buiten (natte nacht)**: betonplint + boeiboord rondom,
+  HWA-pijpen met lekspoor, luifel-afwerking met hanglamp, vlaggenmast,
+  beugel-fietsenrek, kliko-hoek, hangslot; plassen als albedo+ORM-
+  decals, natte gevelvoet, onkruid; regen als twee GPU-particle-
+  wereldvolumes + drie verstemde 3D-audio-loops (D-042). Het
+  clubnaambord staat nu op het boeiboord en wordt aangelicht.
+- **Audio-micropass (D-043)**: deurgeluid is een keten (klink, schoot,
+  bladbeweging, zachte kraak, resonantie) uit
+  `tools/genereer_f3_audio.gd`; 1-op-1 WAV-vervanging.
+- **IJkingen**: tapijt → naaldvilt (2,4/m), nat asfalt donkerder,
+  bestuurskamer-TL in drie rondes tegen de F2.1-referentie gelegd.
+- **QA**: geometriecontrole gedraaid tegen de v0.0.23-baseline — alle
+  echte nieuwe fouten in de bron opgelost (meubel-overlaps, zwevend
+  whiteboard, coplanaire tafelbladen, gordijn door vensterbank,
+  kabelgoot door kast, koord door mastvoet); restmeldingen zijn
+  TD-009-bouwnaden. Inspectiesweep 50 standpunten. Nieuw: TD-010
+  (regen-audio zonder occlusie), KI-005 (speculaire spikkels op
+  systeemplafond/stucwerk — beoordelen op echte hardware).
+  Suite 250 → **251** (bestuurskamer-meetpunt; TL-verwachting 5/1/9).
+  v0.0.24.
 
-**VS-fase G, tier F2.1 — realism correction pass (taak 008)** 🟡 gebouwd
-(2026-08-01), **wacht op art-direction-review**. De GD keurde F2
-technisch goed maar visueel nog niet: de gang is sfeervol genoeg en
-**beschermd** (niet lichter, voller, schoner of leesbaarder maken), de
-kleedkamer oogde nog te veel als een nette 3D-scène. Opgeleverd, alleen
-in kleedkamer 3: 30 contactdecals voor grounding, het derde schaduwslot
-verhuisd van de kantinebar naar de kleedkamer-TL (D-036, budget
-onveranderd), `light_attenuation` als nieuwe TL-export plus een
-zichtbare elektrische aansluiting, 18 breukvlak-decals (verfrol,
-reparatie, tegelvuil/-vlek, vloerverkleuring, roet) en twee ORM-decals
-die het looppad gladder maken in plaats van donkerder (D-037), twee
-lattinten voor de bank, een donkerdere en mattere kast, en zes props die
-alleen verplaatst of gedraaid zijn. Geen nieuwe props, geen
-geometrie-pass, geen wijziging aan de gang of aan de globale
-environment. Suite 250/250, verwijderbaarheidstest opnieuw gedaan,
-performance vrijwel gelijk (piek 104 vs 101 draw calls). v0.0.22.
-
-**VS-fase G, tier F2 — kleedkamer 3 + gang (taak 008)** 🟡 gebouwd
-(2026-08-01), **wacht op art-direction-review**. Uitgevoerd op de
-GD-brief van dezelfde dag, die de F2-scope verlegde naar *de kleedkamer
-als hero room plus de aangrenzende gang* (kleedkamer 4 en de douches
-blijven voorlopig tier F1). Opgeleverd:
-`game/levels/clubgebouw/f2_detail/` als losse verwijdereenheid (D-033)
-met een kitbash-bouwer (box/cilinder/bol/torus/vlak, rotatie,
-collision-optie, decals) en vier datatabellen — 218 onderdelen.
-Kleedkamer 3: banken van latten op schragen, kapstokrails met haken +
-trainingsjack, lockers met openstaand deurtje, radiator met leidingen,
-schakelaar/stopcontact, ventilatierooster, afvalbak, tactiekbord,
-poster, en zeven achtergelaten spullen (D-035: de sporttas is
-generiek — de premisse-tas blijft fase D). Gang: plinten, asymmetrische
-plafondleidingen, matten, wachtbank, gestapelde stoelen, doos,
-brandblusser met keuringskaart, schoonmaaknis, vier elftalfoto's.
-34 decals voor material breakup. Materialen geijkt op echte maat
-(tegel 15 cm, baksteen 21 cm — F1 herhaalde te grof) plus vijf nieuwe
-CC0-sets. Lichtpass (D-034): kleedkamer-TL als lichtpool, westelijkste
-gang-TL defect → de gang loopt het donker in met alleen de groene
-nooduitgangsgloed; SSAO aan. Schaduwbudget (D-026) en de
-006-referentiewaarden onaangeraakt. Suite 250/250; TL-verwachting
-bijgewerkt naar 4 stabiel / 1 flikkerend / 9 defect.
-Verwijderbaarheidstest gedaan: map weg = tier F1-staat (292 volumes),
-suite groen. Nieuw: TD-008 (geen instancing/LOD op de kitbash-props);
-TD-007 bewust nog niet afgelost (D-033). v0.0.21.
-
-
-Eerder: **VS-fase C — Greybox clubgebouw (taak 008)** ✅ gebouwd (2026-07-28)
-en **lokaal goedgekeurd door de GD (2026-07-29: "de basis staat")** —
-geen maatcorrecties gevraagd. `game/levels/clubgebouw/`: het clubhuis onder de
-hoofdtribune van VV Drechtstreek, 's nachts — 12 ruimtes/zones op
-menselijke maat (plafonds 2,3–2,7 m), 214 volumes, 11 echte deuren
-(bestuurskamer/keuken/terras op slot; onderhoudsruimte in fase C bewust
-open — slot is fase-D-flow), 14 TL's (5 stabiel/1 flikkerend/8 defect;
-schaduw bar+gang+mast = 3/3, zaklampslot vrij), voorplein met dichte
-poort + ketting, pad langs het veld, veld met doel-silhouet in de fog,
-lichtmast 3, dak met tribune-treden. Greybox als datatabellen (TD-007,
-aflossen fase G). Bootstrap: normale runs starten in het clubgebouw,
-suite draait op de dev room en wisselt aan het einde zelf (D-030).
-Suite **230 → 250**; zonder clubgebouw 230 (terugval). v0.0.19.
-GD-teststappen: zie het vier-vragen-rapport van deze sessie / §5.
-
-Eerder vandaag: **taak 007 — minimale documentlezer (VS-fase B)** ✅ afgerond en
-**lokaal goedgekeurd door de GD (2026-07-28)**: alle acceptatiepunten
-bevestigd (één-E-druk-gedrag, Esc zonder gelijktijdige pauze,
-muisherstel, betrouwbare inputblokkering, leesbaarheid nachtstaat,
-F5 warning-vrij); geen presentatienotities. Gebouwd conform ontwerp
-v1.1 (twee reviewrondes, expliciete go). Opgeleverd: `document_opened` eenmalig gecorrigeerd naar 3
-argumenten (id/titel/tekst, D-029 — vanaf nu geconsumeerd contract);
-`DocumentResource` runtime read-only bij de prop met validatie aan de
-bron; `game/ui/document_reader/` als verwijdereenheid: deferred arming
-(één E-druk kan nooit openen én sluiten), sluit-input opgegeten in
-`_input` (één Esc raakt nooit tegelijk de pauze), exact
-pauze-/muisownership met idempotent herstel, atomaire vervanging bij
-een tweede feit, ScrollContainer met vaste paneelmaat, sluithint uit de
-InputMap. Suite **208 → 230**; D-015: zonder reader 209, zonder
-interactie-unit incl. documentprops 172 (reader stabiel), alles 230.
-`config/version` = 0.0.18. GD-teststappen: tasks/007 §Lokale
-GD-acceptatie.
-
-Eerder vandaag: **taak 006 afgerond en lokaal goedgekeurd** (donkerte
-overtuigend, zaklamp correct — waarden zijn de referentie). Gebouwd
-conform ontwerp v2.1. Opgeleverd:
-nacht-environment op de dev room (near-black, koele ambient-vloer > 0,
-diepte-fog, filmische tonemap, debanding) met verborgen werklicht-rig
-(export, default uit); `game/systems/flashlight/` (camera-volgend,
-betrouwbaar — flikkert nooit, D-025; gesloten bezit-gate op het
-zaklamp-item via eventgedreven `has_item`-hercontrole; toggle = exact één
-emissie per kanaal: nieuw busfeit `flashlight_toggled(is_on)` + klik-cue +
-noise op de spelerpositie; `debug_bezit_bypass` default uit);
-`game/props/light_tl/` (staten STABIEL/DEFECT/FLIKKEREND, seed-
-deterministisch patroon mét rust; dev room: 2 stabiel + 1 flikkerend + 5
-defect, als data geplaatst); `game/systems/light_budget/` (max 3
-level-schaduwlichten + gereserveerd zaklampslot, deterministische
-degradatie op boomvolgorde, D-026); brightness werkt (0.8–1.2, D-027,
-TD-003 afgelost) via `environment_tuner`; zaklamp-pickup via de echte
-flow; F3-regels `zaklamp:` en `licht:`. Suite **166 → 208**.
-
-Eerder vandaag: taken 002 t/m 005 afgerond en lokaal goedgekeurd; fase 1
-compleet; Design Pillars vastgesteld; 006-ontwerp in drie rondes
-goedgekeurd (v1 → v2 → v2.1, zie het dossier).
+Eerder: **integriteitspass** ✅ (2026-08-01, D-038/D-039, v0.0.23) en
+**tier F2/F2.1** (kleedkamer 3 + gang) — door de GD goedgekeurd op
+2026-08-03; de kleedkamer is sindsdien de visuele baseline en de
+donkere gang is beschermde referentie.
 
 ## 2. Laatste commit
 
 ```
-[docs] Werk administratie bij voor tier F2 (gebouwd, wacht op AD-review)
+[docs] Werk administratie bij voor tier F3 (gebouwd, wacht op AD-review)
 ```
 
 Werkmap schoon; `main` gepusht naar `origin/main`.
@@ -161,85 +88,75 @@ Werkmap schoon; `main` gepusht naar `origin/main`.
 | Taken 001–006 | ✅ afgerond en lokaal goedgekeurd |
 | **Fase 1 — De wandeling** | ✅ **compleet** (GD-akkoord 2026-07-28) |
 | **Fase 2 — Het gereedschap** | ✅ taken 004–006 alle afgerond (git-lfs-beslismoment nog open) |
-| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: tier F1 ✅ · F2 ✅ gebouwd · F2.1 🟡 wacht op art-direction-review** (F3–F4 ⬜) · D/E/H–J ⬜ |
+| **Fase 2½ — Vertical Slice 01** | A ✅ · B ✅ · C ✅ · F ✅ (v1.1, D-031) · **G: F1 ✅ · F2/F2.1 ✅ GD-akkoord · F3 🟡 wacht op art-direction-review** (F4 ⬜) · D/E/H–J ⬜ |
 | Taak 007 — Minimale documentlezer (VS-fase B) | ✅ afgerond en lokaal goedgekeurd |
 | Taak 009 — Monster-AI (was 007) | ⬜ open |
 | Taak 010 — Hoofdstuk 1 (was 008) | ⬜ open; skelet-beats achterhaald door D-028, herontwerp na de VS |
 
-**Technische staat**: import schoon (exit 0), smoke-suite **250/250
-groen**. `config/version` = 0.0.23. Rendermeters van de demo-zone (uit
-`tools/maak_screenshots.gd`): piek 152 draw calls en ~7k primitieven
-per beeld — ruim binnen budget. D-015 geverifieerd (0 fouten): zonder clubgebouw 230 (terugval
-dev room), zonder documentlezer 209, zonder interactie-unit incl.
-documentprops 172, zonder zaklampsysteem 188, zonder complete lighting
-176, zonder inventory 169; zonder de F2-detaillaag valt het clubgebouw
-terug op de tier F1-staat (292 volumes). Warnings in de suite-output zijn
-uitsluitend de bewust geteste luide faalpaden — normale opstart is
-schoon (geverifieerd). Incidentele exit-leak-warning van de ambience is
-pre-existent en geregistreerd als KI-004. Debug-prompt (TD-006) blijft
-tot de echte HUD. Codecommentaar-taaknummers zijn bijgewerkt naar de
-D-028-nummering (aandachtspunt uit §6 afgehandeld).
+**Technische staat**: import schoon (exit 0), smoke-suite **251/251
+groen**. `config/version` = 0.0.24. Rendermeters demo-zone (uit
+`tools/maak_screenshots.gd`, 18 standpunten): piek 248 draw calls en
+~19k primitieven — het zwaarste beeld is het voorplein mét regen;
+binnenshots blijven onder de 231. D-015 geverifieerd voor de nieuwe
+laag: zonder `f3_detail/` valt het clubgebouw terug op de F2.1-staat
+(suite groen); de eerdere terugvalpaden (F2-laag, clubgebouw,
+documentlezer, interactie, zaklamp, lighting, inventory) staan in de
+v0.0.23-notities en zijn ongewijzigd. Warnings in de suite-output zijn
+uitsluitend de bewust geteste luide faalpaden; KI-004 (exit-leak)
+pre-existent, nieuw KI-005 (speculaire spikkels — hardware-oordeel).
+Debug-prompt (TD-006) blijft tot de echte HUD.
 
-**Nog niet visueel beoordeeld**: de interactieronde uit het 003-dossier én
-de volledige 006-sfeerpass (het fase 2-exit-criterium "onaangenaam" is een
-hardware-oordeel) — zie de GD-testinstructie in tasks/006 §Uitvoeringsverslag.
+**Nog niet visueel beoordeeld**: tier F3 (deze oplevering — twaalf
+verplichte AD-renders + zes contextbeelden staan klaar), en de eerder
+openstaande hardware-oordelen (interactieronde 003, 006-sfeerpass).
 
 **Omgeving**: Godot 4.7.1 headless op de bouw-VPS
 (`/opt/godot/godot-4.7.1`, symlink `/usr/local/bin/godot`). Projectpad:
-`/home/kroosah/projects/crump`.
+`/home/kroosah/projects/crump`. Renders via lavapipe + xvfb
+(`tools/maak_screenshots.gd`, output `user://screenshots/`).
 
 ## 5. Volgende stap (voor de verse sessie)
 
-**De GD beoordeelt tier F2.1 opnieuw**, nu inclusief de integriteitspass:
-zes AD-renders (01–06, dezelfde camera's als F2), twee
-voor/na-vergelijkingen, en drie contactvellen uit de inspectiesweep
-(gevels, deuropeningen, donkere ruimtes met zaklamp).
+**De GD beoordeelt tier F3**: renders 01–12 (verplichte lijst uit de
+F3-brief §18) plus context 13–18. Toetsen tegen de F2.1-lat: loop je
+van de kleedkamer naar de bestuurskamer, voelt het dan als hetzelfde
+gebouw? Specifiek: (a) bestuurskamer — material realism, curated
+clutter, lichtpool met schemerzones, silhouetplekken zonder
+jumpscare-architectuur; (b) hal — leesbaar en terughoudend, darkness
+hierarchy richting gang intact (render 05/15); (c) buiten — Nederlandse
+vereniging in een natte nacht, aangelicht naambord, plassen alleen waar
+logisch; (d) audio — deurgeluid-keten en regen die per zone verandert
+(hardware-oordeel).
 
-Toetsen: (a) de F2.1-criteria — minder CG-look, gegronde objecten,
-minder uniforme vloer, natuurlijke imperfectie, TL als lokale bron, en
-de gang die zijn beschermde sfeer behoudt; (b) de integriteit — geen
-zwevende strips, geen spleten om deuren, geen buitenmetselwerk binnen,
-geen z-fighting op gevels of in kozijnhoeken.
-
-**Pas ná expliciet startsein: F3** (bestuurskamer, hal-aankleding,
-entree-buitenkant, plus flashlight-gedrag). Overige haken: monster-AI
-(009), TD-004/005/008/009, save-integratie, inventory-UI/HUD (TD-006),
-canonvraag "derde helft als proloog" (STORY §8), KI-004, en de
+**Pas ná expliciet startsein: F4** (complete lighting / atmosphere /
+horror presentation pass). Daarna G-flow (sleutel/puzzel/tension
+scripting), daarna de CRUMP-encounter. Overige haken: monster-AI (009),
+TD-004/005/008/009/010, save-integratie, inventory-UI/HUD (TD-006),
+canonvraag "derde helft als proloog" (STORY §8), KI-004/005, en de
 canon-ronde over CRUMP zelf.
 
 ## 6. Open aandachtspunten
 
-- **Nummering opgelost (D-028-besluit)**: 007 = documentlezer, 008 =
-  Vertical Slice, 009 = monster-AI, 010 = hoofdstuk 1. Codecommentaar
-  is in taak 007 mee-gecorrigeerd (✅). Historische CHANGELOG-regels
-  blijven staan (logboek herschrijven we niet).
-- **Premisse-delta opgelost**: de vergeten sporttas is canon (D-028);
-  STORY/GAME_BIBLE/HORROR/LEVEL gericht gecorrigeerd. Open canonvraag:
-  wordt "de derde helft" ooit een speelbare proloog (STORY §8)?
-  De canon-ronde over CRUMP-de-entiteit zelf (GAME_BIBLE §6/STORY §5)
-  staat ook nog open — zie de monster-notitie verderop.
-- **KI-004** (Klein, nieuw): incidentele "ObjectDB leaked"-warning bij
-  afsluiten (ambience-teardown-race); pre-existent, geen 006-regressie.
-- **TD-005** (Laag): deur/la bewegen instant — tween zodra gewenst (audio
-  geeft het ritme al).
-- **TD-004** (Laag): bukken verkleint de collider niet — aflossen bij de
-  eerste kruipruimte.
-- **TD-002** (Middel): grafische presets eerste ruwe versie — fase 6; in
-  006 bewust niet uitgebreid (kalibratie vergt beeld).
-- **TD-003**: ✅ afgelost in 006 (brightness werkt, D-027).
+- **Nummering (D-028)**: 007 = documentlezer, 008 = Vertical Slice,
+  009 = monster-AI, 010 = hoofdstuk 1.
+- **Premisse**: de vergeten sporttas is canon (D-028) en blijft een
+  fase-D-gameplayprop; de F2-tas is bewust generiek (D-035).
+- **KI-004** (Klein): incidentele "ObjectDB leaked"-warning bij
+  afsluiten (ambience-teardown-race); pre-existent.
+- **KI-005** (Klein, nieuw): speculaire spikkels op systeemplafond/
+  stucwerk onder een werkende TL — hardware-oordeel bij de GD-review.
+- **TD-010** (Laag, nieuw): regen-audio dempt op afstand, niet op
+  occlusie — aansluiten op het fase-H-audiowerk.
+- **TD-005** (Laag): deur/la bewegen instant — tween zodra gewenst.
+- **TD-004** (Laag): bukken verkleint de collider niet.
+- **TD-002** (Middel): grafische presets eerste ruwe versie — fase 6.
 - **Export-templates** (TD-001) bewust niet geïnstalleerd (~1 GB).
-- **Testcode-les (D-021)**: global classes van verwijderbare systemen nooit
-  bij naam noemen in de suite — duck-typen met `has_method()`; en (les
-  006) lambda-recorders mogen geen referenties vasthouden naar instanties
-  die de test later vriest — waarde vooraf lokaal vangen.
-- **Pushen vanaf de VPS**: de kale vorm `git push -u origin main` (zonder
-  pipes) werkt het betrouwbaarst.
-- **Canon-correctieronde nodig (geregistreerd 2026-07-28, opdracht GD bij
-  005)**: de GD heeft CRUMP nader bepaald — een **monster** dat door het
-  stadion en over het terrein zwerft, de speler achtervolgt en besluipt,
-  vaker gehoord dan gezien, met zeer zeldzaam een harde onmenselijke
-  schreeuw (geen timer-jumpscare). Dit vervangt deels "vorm en aard
-  bewust onbeschreven" in GAME_BIBLE §6 en STORY §5/§8 — die documenten in
-  een aparte, gerichte canon-ronde bijwerken; géén brede lore-herbouw.
+- **Testcode-les (D-021)**: global classes van verwijderbare systemen
+  duck-typen; lambda-recorders geen referenties laten vasthouden.
+- **Pushen vanaf de VPS**: de kale vorm `git push -u origin main`
+  (zonder pipes) werkt het betrouwbaarst.
+- **Canon-correctieronde CRUMP** (GD, 2026-07-28): monster dat zwerft,
+  achtervolgt en besluipt, vaker gehoord dan gezien — GAME_BIBLE §6 en
+  STORY §5/§8 in een aparte gerichte ronde bijwerken.
 - **Openstaande ontwerpsessie**: de verklaring achter CRUMP en de
-  verdwijning — zie `STORY.md` §8. Nodig vóór hoofdstuk 3/4.
+  verdwijning (STORY §8) — nodig vóór hoofdstuk 3/4.

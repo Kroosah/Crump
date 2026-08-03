@@ -117,9 +117,9 @@ inrichting kan sleutelen is één getal wijzigen sneller dan een scène
 herbouwen. Nieuw aflosmoment: zodra de GD de demo-zone visueel áf
 verklaart (F4-gate).
 
-## TD-008 — F2-props zijn losse kitbash-bodies zonder instancing of LOD
-**Datum**: 2026-08-01 · **Status**: Laag · **Aflosmoment**: bij de eerste propdichte ruimte buiten de demo-zone (kantine), of zodra een echte GPU een meetbaar probleem laat zien
-**Waar**: game/levels/clubgebouw/f2_detail/f2_detail.gd
+## TD-008 — F2/F3-props zijn losse kitbash-bodies zonder instancing of LOD
+**Datum**: 2026-08-01 (F3-scope 2026-08-03) · **Status**: Laag · **Aflosmoment**: bij de eerste propdichte ruimte buiten de demo-zone (kantine), of zodra een echte GPU een meetbaar probleem laat zien
+**Waar**: game/levels/clubgebouw/f2_detail/f2_detail.gd en f3_detail/f3_detail.gd
 **Schuld**: elke lat, haak en buis is een eigen StaticBody3D met een
 MeshInstance3D. Meshes en materialen worden gedeeld (één unit-box, één
 cilinder per maat), maar er is geen MultiMesh en geen LOD. Gemeten in
@@ -146,3 +146,14 @@ triage-lijst die met de hand beoordeeld wordt.
 ## Afgeloste schuld
 
 *Nog geen.*
+
+## TD-010 — Regen-audio dempt op afstand, niet op occlusie
+**Datum**: 2026-08-03 · **Status**: Laag · **Aflosmoment**: bij het audio-occlusie-/reverbwerk van fase H
+**Waar**: game/levels/clubgebouw/f3_detail/f3_detail.gd (_bouw_regen_audio)
+**Schuld**: de drie regen-emitters vallen alleen af met afstand; muren
+en een dichte entreedeur dempen niet extra. In de praktijk klopt het
+gevoel (buiten vol, hal zacht, gang bijna stil) omdat de afstanden
+groot genoeg zijn, maar wie in de hal vlak achter de dichte deur staat
+hoort de regen even luid als met de deur open.
+**Aflossing**: zodra fase H bus-effecten/occlusie introduceert, de
+emitters daarop aansluiten (lowpass + volumeval bij gesloten deur).

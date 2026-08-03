@@ -468,3 +468,50 @@ kan niet zien of een vlak zichtbaar is, dus bouwnaden onder de vloer en
 hoekaansluitingen van panelen blijven als melding staan (TD-009). De
 regel is: het aantal bevindingen mag na een taak niet stijgen, en elke
 nieuwe melding wordt beoordeeld — niet weggeklikt.
+
+## D-040 — De F3-laag is een eigen verwijdereenheid, en de bestuurskamer krijgt haar raam
+**Datum**: 2026-08-03 · **Wie**: Lead Developer (op GD-startsein F3) · **Status**: actief
+Tier F3 (bestuurskamer, hal, entree-buitenkant) leeft in
+`game/levels/clubgebouw/f3_detail/`, naast en gelijkwaardig aan de
+F2-laag: map weg = tier F2.1-staat, de `"f3"`-vlag in de leveltabellen
+is de enige koppeling (D-015). Nieuw ten opzichte van de F2-bouwer:
+emissieve materialen (apparaat-LED's — puur emissief, nooit een
+Light3D) en de regenlaag. Verder is de zuidgevel gesplitst voor een
+**bestuurskamerraam** volgens het kantinepatroon: het goedgekeurde
+artplan gaf de kamer al een vensterbank (§5.8), dus het raam bestond
+op papier — de gevel liep alleen achter. Kozijn uit de glastabel
+(D-038), middenstijl en tussendorpel omdat een vlak van 1,4 m glas in
+Nederland niet bestaat.
+
+## D-041 — De bestuurskamer-TL werkt zonder schaduwslot; contrast komt uit de val van het licht
+**Datum**: 2026-08-03 · **Wie**: Lead Developer · **Status**: actief
+Hero room #2 heeft één werkende TL nodig (F3-brief §4), maar alle drie
+de schaduwsloten zijn vergeven (gang, kleedkamer 3, lichtmast — D-026
+en D-036 blijven staan). De TL staat daarom bewust uit het midden
+(west), met korte range en hoge attenuatie (0,85 / 2,45 / 2,7): een
+lichtpool boven de vergadertafel, en de historie-wand, het bureau en de
+hoeken lopen weg in schemer. Grounding komt uit de F2.1-decaltechniek,
+niet uit slagschaduw. Gevolg voor de tests: nachtstaat is nu
+5 stabiel / 1 flikkerend / 9 defect.
+
+## D-042 — Regen is een wereldlaag van de F3-unit, geen ambience-laag en geen camera-effect
+**Datum**: 2026-08-03 · **Wie**: Lead Developer · **Status**: actief
+De regen bestaat uit twee GPU-particlevolumes boven het voorplein en
+achter het hek (wereldposities — hij valt waar hij valt, ook als de
+camera wegkijkt) plus drie licht verstemde `AudioStreamPlayer3D`-loops
+langs de gevel. Bewust géén 2D-ambiencelaag: die is overal even luid,
+terwijl regen per positie moet verschillen — buiten vol, onder de
+luifel gedempt, dieper het gebouw in zakt hij vanzelf weg met de
+afstand. Alles zit in de F3-unit en verdwijnt met de map (D-015);
+zonder de gegenereerde texture of WAV bouwt de laag stil verder.
+Beperking: de demping is puur afstand, geen occlusie (TD-010).
+
+## D-043 — Een deur is een keten van gebeurtenissen, geen kraak
+**Datum**: 2026-08-03 · **Wie**: Lead Developer (GD-brief F3 §14) · **Status**: actief
+Het deurgeluid is opgebouwd uit klink-tikken, de schoot die vrijkomt,
+de bladbeweging (lage ruis-sweep), een zachte scharnierkraak en een
+lichte kozijnresonantie — een normale deur die in een stil gebouw echt
+klinkt, geen horror-creak. De vervanging loopt via het
+005-vervangingscontract: zelfde bestandsnamen, dus SoundResources en
+props onaangeraakt. `tools/genereer_f3_audio.gd` is deterministisch en
+draait ná de placeholder-generator (die verwijst er nu naar).
