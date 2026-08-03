@@ -25,6 +25,9 @@ const DOOR_SCENE := "res://game/props/door_wooden/door_wooden.tscn"
 ## De F2-detaillaag (kleedkamer 3 + gang). Aanwezig = de echte props;
 ## afwezig = de F1-greybox draait ongewijzigd door (D-015).
 const F2_DETAIL_SCENE := "res://game/levels/clubgebouw/f2_detail/f2_detail.tscn"
+## De F3-detaillaag (bestuurskamer, hal, entree-buitenkant) — zelfde
+## contract: map weg = het level draait door in de F2.1-staat.
+const F3_DETAIL_SCENE := "res://game/levels/clubgebouw/f3_detail/f3_detail.tscn"
 
 ## Het hart van de plattegrond; bepaalt welke kant van een gevel "binnen"
 ## is. De schil is een convexe doos, dus dit ene punt volstaat.
@@ -102,7 +105,14 @@ const SCHIL: Array[Dictionary] = [
 	{"pos": Vector3(0.755, 1.45, 7.1), "size": Vector3(0.49, 2.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
 	{"pos": Vector3(1.45, 0.45, 7.1), "size": Vector3(0.9, 0.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
 	{"pos": Vector3(1.45, 2.55, 7.1), "size": Vector3(0.9, 0.7, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
-	{"pos": Vector3(7.15, 1.45, 7.1), "size": Vector3(10.5, 2.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
+	# Bestuurskamerraam (tier F3): het artplan gaf de kamer al een
+	# vensterbank (§5.8), dus de gevel krijgt het bijbehorende raam —
+	# zelfde maat en opbouw als de kantineramen, kozijn uit de glastabel.
+	{"pos": Vector3(2.65, 1.45, 7.1), "size": Vector3(1.5, 2.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
+	{"pos": Vector3(8.6, 1.45, 7.1), "size": Vector3(7.6, 2.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
+	{"pos": Vector3(4.1, 0.45, 7.1), "size": Vector3(1.4, 0.9, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
+	{"pos": Vector3(4.1, 2.6, 7.1), "size": Vector3(1.4, 0.6, 0.2), "mat": &"f_gevel", "binnen": &"f_stucwerk"},
+	{"pos": Vector3(4.1, 1.6, 7.1), "size": Vector3(1.4, 1.4, 0.05), "mat": &"glas", "kozijn": &"f_kozijn_wit"},
 	{"pos": Vector3(1.45, 1.55, 7.1), "size": Vector3(0.9, 1.3, 0.05), "mat": &"glas", "kozijn": &"f_kozijn_wit"},
 	# Noordgevel (z -4,7..-4,5): drie kantineramen op het veld + twee
 	# kiepraampjes van de douches.
@@ -419,6 +429,14 @@ const NIGHT_TLS: Array[Dictionary] = [
 		"settings": {"state": 1}},
 	{"name": "TlGangWest", "pos": Vector3(-13.8, 2.32, 4.3),
 		"settings": {"state": 1}},
+	# Tier F3: de bestuurskamer heeft één werkende TL, bewust uit het
+	# midden (west) — de oostwand met de historie leeft in de schaduw.
+	# Geen schaduwslot (D-026 zit vol: gang + kleedkamer 3 + mast);
+	# contrast komt uit korte range en hoge attenuatie, grounding uit
+	# decals (de F2.1-techniek).
+	{"name": "TlBestuurskamer", "pos": Vector3(3.2, 2.32, 5.6),
+		"settings": {"light_energy_on": 1.1, "light_range": 3.3,
+			"light_attenuation": 2.4}},
 	{"name": "TlKleedkamer3", "pos": Vector3(-4.7, 2.42, 1.0),
 		"settings": {"light_energy_on": 1.2, "light_range": 3.9,
 			"light_attenuation": 2.1, "cast_shadow": true}},
@@ -514,9 +532,12 @@ var _unit_mesh: BoxMesh
 func _ready() -> void:
 	_unit_mesh = BoxMesh.new()
 	var f2_aanwezig := ResourceLoader.exists(F2_DETAIL_SCENE)
+	var f3_aanwezig := ResourceLoader.exists(F3_DETAIL_SCENE)
 	for table in [SCHIL, VLOEREN, PLAFONDS, BUITEN, INTERIEUR, MEUBELS, AFWERKING]:
 		for solid in table:
 			if f2_aanwezig and solid.get("f2", false):
+				continue
+			if f3_aanwezig and solid.get("f3", false):
 				continue
 			_build_solid(solid)
 	for bord in BORDJES:
@@ -524,6 +545,7 @@ func _ready() -> void:
 	_place_doors()
 	_place_night_tls()
 	_place_f2_detail(f2_aanwezig)
+	_place_f3_detail(f3_aanwezig)
 	_werklicht_rig.visible = werklicht
 	_night_lights.visible = not werklicht
 	if werklicht:
@@ -788,6 +810,17 @@ func _place_f2_detail(aanwezig: bool) -> void:
 		Log.info("Clubgebouw: F2-detaillaag afwezig — tier F1-staat (D-015)")
 		return
 	var packed: PackedScene = load(F2_DETAIL_SCENE)
+	add_child(packed.instantiate())
+
+
+## De F3-detaillaag (tier F3): bestuurskamer, hal en entree-buitenkant.
+## Zelfde contract als F2 (D-015): de vlag "f3" in de tabellen is de
+## enige koppeling; zonder de map bouwt het level de F1-volumes zelf.
+func _place_f3_detail(aanwezig: bool) -> void:
+	if not aanwezig:
+		Log.info("Clubgebouw: F3-detaillaag afwezig — tier F2.1-staat (D-015)")
+		return
+	var packed: PackedScene = load(F3_DETAIL_SCENE)
 	add_child(packed.instantiate())
 
 
