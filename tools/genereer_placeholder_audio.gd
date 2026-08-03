@@ -35,6 +35,9 @@ func _init() -> void:
 			_noise_burst(0.10, 0.28, 700.0))
 
 	# Deur: lage kraak (open dalend, dicht stijgend) + slot-rammel.
+	# LET OP: de twee creak-bestanden zijn sinds tier F3 vervangen door
+	# het gelaagde deurgeluid uit tools/genereer_f3_audio.gd — draai dat
+	# script ná dit script om de F3-versie terug te krijgen.
 	_write_wav(SFX_DIR + "/sfx_door_creak_open_01.wav", _creak(0.7, 95.0, 62.0))
 	_write_wav(SFX_DIR + "/sfx_door_creak_close_01.wav", _creak(0.5, 62.0, 88.0))
 	_write_wav(SFX_DIR + "/sfx_door_rattle_01.wav", _rattle())

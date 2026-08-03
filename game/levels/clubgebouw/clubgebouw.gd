@@ -511,7 +511,10 @@ const AFWERKING: Array[Dictionary] = [
 ## maakt het bord zelf lichtgevend (alleen NOODUITGANG — puur emissief,
 ## geen Light3D: het schaduwbudget blijft onaangeraakt).
 const BORDJES: Array[Dictionary] = [
-	{"tex": "naambord", "pos": Vector3(0.0, 2.78, 7.225), "size": Vector2(2.6, 0.46), "rot": 0.0},
+	# Tier F3: het naambord verhuisde van de geveldagkant naar het
+	# boeiboord — op de oude plek verdween het achter de dakrand; op de
+	# rand zelf is het de klassieke plek en vangt het het aanstraallicht.
+	{"tex": "naambord", "pos": Vector3(0.0, 2.95, 7.452), "size": Vector2(2.6, 0.46), "rot": 0.0},
 	{"tex": "kleedkamers", "pos": Vector3(-1.972, 2.3, 4.31), "size": Vector2(0.95, 0.19), "rot": 90.0},
 	{"tex": "kantine", "pos": Vector3(1.972, 2.3, 2.81), "size": Vector2(0.85, 0.19), "rot": -90.0},
 	{"tex": "bestuur", "pos": Vector3(1.972, 2.3, 5.73), "size": Vector2(0.65, 0.17), "rot": -90.0},

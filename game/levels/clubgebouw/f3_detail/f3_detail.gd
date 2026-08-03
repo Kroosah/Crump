@@ -376,10 +376,10 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(0.0, 0.43, 2.68), "size": Vector3(1.20, 0.035, 0.075), "mat": &"bank_lat"},
 	{"pos": Vector3(-0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(-0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(-0.47, 0.396, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(-0.47, 0.398, 2.59), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
 	{"pos": Vector3(0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
 	{"pos": Vector3(0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
-	{"pos": Vector3(0.47, 0.396, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(0.47, 0.398, 2.59), "size": Vector3(0.045, 0.04, 0.22), "mat": &"bank_frame"},
 	{"pos": Vector3(0.0, 0.24, 2.59), "size": Vector3(1.20, 0.48, 0.30), "col": true, "verborgen": true},
 
 	# ── Radiator met vensterbank onder het halraam; de plant is nét te
@@ -519,6 +519,13 @@ const SOLIDS: Array[Dictionary] = [
 	# ── Hangslot aan de ketting van de poort ──
 	{"pos": Vector3(0.0, 1.06, 13.94), "size": Vector3(0.055, 0.07, 0.022), "mat": &"staal_donker"},
 	{"vorm": "torus", "pos": Vector3(0.0, 1.098, 13.94), "size": Vector3(0.012, 0.024, 0.012), "mat": &"staal"},
+
+	# ── Armatuur boven het clubnaambord op het boeiboord (het lichtje
+	#    zelf staat in _bouw_naambord_licht — zonder schaduw, D-026
+	#    onaangeraakt) ──
+	{"vorm": "cyl", "pos": Vector3(0.0, 3.17, 7.47), "size": Vector3(0.015, 1.0, 0.015), "mat": &"zink", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(-0.45, 3.155, 7.455), "size": Vector3(0.03, 0.05, 0.05), "mat": &"zink"},
+	{"pos": Vector3(0.45, 3.155, 7.455), "size": Vector3(0.03, 0.05, 0.05), "mat": &"zink"},
 ]
 
 ## Getextureerde panelen (QuadMesh). Een quad kijkt standaard naar +z;
@@ -686,6 +693,7 @@ func _ready() -> void:
 		_bouw_decal(decal)
 	_bouw_regen()
 	_bouw_regen_audio()
+	_bouw_naambord_licht()
 	Log.info("F3-detaillaag: %d onderdelen" % _wortel.get_child_count())
 
 
@@ -887,9 +895,47 @@ func _bouw_regen_volume(naam: String, pos: Vector3, extents: Vector3,
 	particles.position = pos
 
 
-## Ruimtelijke regen-audio: drie emitters langs de gevel. Zonder de
-## gegenereerde loop (F3.5) blijft het stil — geen harde afhankelijkheid.
+## Gevelverlichting op het clubnaambord (artplan §5.7: aanlichtbaar).
+## Zwak, warm en zonder schaduw — zelfde klasse als de nooduitgang-gloed
+## van de F2-laag; het schaduwbudget (D-026) blijft van het level.
+func _bouw_naambord_licht() -> void:
+	var licht := OmniLight3D.new()
+	licht.name = "NaambordLicht"
+	licht.light_color = Color(1.0, 0.86, 0.62)
+	licht.light_energy = 0.55
+	licht.omni_range = 1.9
+	licht.omni_attenuation = 1.5
+	licht.shadow_enabled = false
+	_wortel.add_child(licht)
+	licht.position = Vector3(0.0, 3.05, 7.62)
+
+
+## Ruimtelijke regen-audio: drie loops langs de gevel op het voorplein.
+## Bewust gewone AudioStreamPlayer3D's en géén ambience-laag: de
+## ambience-lagen zijn 2D en overal even luid, terwijl regen juist per
+## positie moet verschillen — buiten vol, onder de luifel gedempt door
+## afstand, en dieper het gebouw in zakt hij vanzelf weg. Drie licht
+## verstemde instanties voorkomen dat het als één puntbron leest.
+## Zonder de gegenereerde loop blijft het stil (D-015-contract).
 func _bouw_regen_audio() -> void:
 	if not ResourceLoader.exists(REGEN_AUDIO):
 		return
-	pass  # F3.5 vult dit in.
+	var stream: AudioStream = load(REGEN_AUDIO)
+	var plekken := [
+		[Vector3(0.0, 3.0, 10.0), 1.0],
+		[Vector3(-9.0, 3.0, 9.5), 0.96],
+		[Vector3(6.5, 3.0, 10.0), 1.05],
+	]
+	for plek in plekken:
+		var player := AudioStreamPlayer3D.new()
+		player.stream = stream
+		player.bus = &"Ambience"
+		player.volume_db = -9.0
+		player.max_distance = 24.0
+		player.pitch_scale = plek[1]
+		player.autoplay = true
+		# Naadloze herstart, zelfde patroon als de ambience-lagen (WAV-
+		# loopvlaggen zijn import-metadata; dit werkt altijd).
+		player.finished.connect(player.play)
+		_wortel.add_child(player)
+		player.position = plek[0]
