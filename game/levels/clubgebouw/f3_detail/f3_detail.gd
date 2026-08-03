@@ -77,6 +77,9 @@ const MATERIALEN := {
 	&"kliko_groen": Color(0.16, 0.24, 0.16),
 	&"luifel_plafond": Color(0.60, 0.60, 0.57),
 	&"melkglas": Color(0.82, 0.80, 0.72),
+	# — Hal —
+	&"terracotta": Color(0.42, 0.26, 0.18),
+	&"plant_groen": Color(0.18, 0.24, 0.14),
 }
 
 ## Vaste vormen, zelfde sleutels als de F2-laag: pos · size · mat ·
@@ -93,12 +96,12 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(5.94, 0.05, 5.355), "size": Vector3(0.06, 0.1, 3.25), "mat": &"plint_hout"},
 	{"pos": Vector3(4.085, 0.05, 6.948), "size": Vector3(3.77, 0.1, 0.06), "mat": &"plint_hout"},
 	{"pos": Vector3(2.23, 0.05, 4.485), "size": Vector3(0.06, 0.1, 1.51), "mat": &"plint_hout"},
-	{"pos": Vector3(2.23, 0.05, 6.61), "size": Vector3(0.06, 0.1, 0.74), "mat": &"plint_hout"},
+	{"pos": Vector3(2.23, 0.05, 6.625), "size": Vector3(0.06, 0.1, 0.71), "mat": &"plint_hout"},
 	# Drempelstrip in de deuropening.
 	{"pos": Vector3(2.1, 0.006, 5.74), "size": Vector3(0.22, 0.012, 1.02), "mat": &"alu"},
 	# Kabelgoot langs de noordwand (jaren-negentig kantoorinfra) met een
 	# opbouwstopcontact bij het bureau.
-	{"pos": Vector3(4.085, 0.30, 3.7525), "size": Vector3(3.77, 0.06, 0.045), "mat": &"kunststof_wit"},
+	{"pos": Vector3(4.42, 0.30, 3.7525), "size": Vector3(3.10, 0.06, 0.045), "mat": &"kunststof_wit"},
 	{"pos": Vector3(5.40, 0.30, 3.7875), "size": Vector3(0.15, 0.08, 0.025), "mat": &"kunststof_wit"},
 	# Schakelaar naast de deur.
 	{"pos": Vector3(2.234, 1.05, 6.36), "size": Vector3(0.014, 0.085, 0.085), "mat": &"kunststof_wit"},
@@ -323,6 +326,106 @@ const SOLIDS: Array[Dictionary] = [
 	{"pos": Vector3(3.60, 1.62, 3.7425), "size": Vector3(0.94, 0.64, 0.025), "mat": &"alu"},
 	{"pos": Vector3(3.60, 1.29, 3.755), "size": Vector3(0.40, 0.022, 0.05), "mat": &"alu"},
 	{"vorm": "cyl", "pos": Vector3(3.50, 1.308, 3.762), "size": Vector3(0.008, 0.11, 0.008), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+
+	# ══════════════ HAL — transition space ══════════════
+	# Interieur: x -2,0..2,0 · z 2,3..6,98 · plafond 2,6. Terughoudend:
+	# de hal verbindt en oriënteert (brief §5), hij concurreert niet met
+	# de hero rooms. Geen nieuwe lichtbronnen — de darkness hierarchy
+	# richting gang blijft van de gang.
+
+	# ── Plinten langs alle wanden, onderbroken bij de deuren ──
+	{"pos": Vector3(0.0, 0.05, 2.35), "size": Vector3(3.94, 0.1, 0.06), "mat": &"plint"},
+	{"pos": Vector3(-1.97, 0.05, 3.05), "size": Vector3(0.06, 0.1, 1.5), "mat": &"plint"},
+	{"pos": Vector3(-1.97, 0.05, 5.9), "size": Vector3(0.06, 0.1, 2.16), "mat": &"plint"},
+	{"pos": Vector3(1.97, 0.05, 4.27), "size": Vector3(0.06, 0.1, 1.9), "mat": &"plint"},
+	{"pos": Vector3(1.97, 0.05, 6.625), "size": Vector3(0.06, 0.1, 0.71), "mat": &"plint"},
+	{"pos": Vector3(-1.2575, 0.05, 6.95), "size": Vector3(1.49, 0.1, 0.06), "mat": &"plint"},
+	{"pos": Vector3(1.245, 0.05, 6.95), "size": Vector3(1.51, 0.1, 0.06), "mat": &"plint"},
+
+	# ── Prikbord (vervangt het F1-vlak): houten lijst om het gevulde
+	#    kurkvlak — het kloppend hart van elke vereniging ──
+	{"pos": Vector3(-1.3, 2.0, 6.963), "size": Vector3(1.10, 0.05, 0.03), "mat": &"kapstok_hout"},
+	{"pos": Vector3(-1.3, 1.2, 6.963), "size": Vector3(1.10, 0.05, 0.03), "mat": &"kapstok_hout"},
+	{"pos": Vector3(-1.875, 1.6, 6.963), "size": Vector3(0.05, 0.85, 0.03), "mat": &"kapstok_hout"},
+	{"pos": Vector3(-0.725, 1.6, 6.963), "size": Vector3(0.05, 0.85, 0.03), "mat": &"kapstok_hout"},
+
+	# ── Kapstok (vervangt het F1-vlak): rail met zeven dubbele haken,
+	#    en de lage schoenenbank eronder — zelfde model als de gang ──
+	{"pos": Vector3(0.0, 1.68, 2.35), "size": Vector3(3.0, 0.16, 0.04), "mat": &"kapstok_hout"},
+	{"pos": Vector3(-1.35, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(-1.35, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(-0.90, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(-0.90, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(-0.45, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(-0.45, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(0.0, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(0.0, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(0.45, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(0.45, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(0.90, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(0.90, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(1.35, 1.66, 2.38), "size": Vector3(0.03, 0.10, 0.02), "mat": &"staal"},
+	{"pos": Vector3(1.35, 1.615, 2.425), "size": Vector3(0.022, 0.022, 0.11), "mat": &"staal"},
+	{"pos": Vector3(0.0, 0.43, 2.50), "size": Vector3(1.20, 0.035, 0.075), "mat": &"bank_lat"},
+	{"pos": Vector3(0.0, 0.43, 2.59), "size": Vector3(1.20, 0.035, 0.075), "mat": &"bank_lat"},
+	{"pos": Vector3(0.0, 0.43, 2.68), "size": Vector3(1.20, 0.035, 0.075), "mat": &"bank_lat"},
+	{"pos": Vector3(-0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(-0.47, 0.398, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(0.47, 0.209, 2.52), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(0.47, 0.209, 2.66), "size": Vector3(0.045, 0.418, 0.045), "mat": &"bank_frame"},
+	{"pos": Vector3(0.47, 0.398, 2.59), "size": Vector3(0.040, 0.04, 0.22), "mat": &"bank_frame"},
+	{"pos": Vector3(0.0, 0.24, 2.59), "size": Vector3(1.20, 0.48, 0.30), "col": true, "verborgen": true},
+
+	# ── Radiator met vensterbank onder het halraam; de plant is nét te
+	#    droog (artplan §6 — één verbleekt element per ruimte) ──
+	{"pos": Vector3(1.45, 0.42, 6.9), "size": Vector3(0.80, 0.55, 0.08), "mat": &"email_wit"},
+	{"pos": Vector3(1.13, 0.42, 6.855), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
+	{"pos": Vector3(1.29, 0.42, 6.855), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
+	{"pos": Vector3(1.45, 0.42, 6.855), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
+	{"pos": Vector3(1.61, 0.42, 6.855), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
+	{"pos": Vector3(1.77, 0.42, 6.855), "size": Vector3(0.02, 0.53, 0.02), "mat": &"email_wit"},
+	{"vorm": "cyl", "pos": Vector3(1.06, 0.72, 6.90), "size": Vector3(0.030, 0.06, 0.030), "mat": &"staal_donker"},
+	{"vorm": "cyl", "pos": Vector3(1.10, 0.08, 6.928), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
+	{"vorm": "cyl", "pos": Vector3(1.80, 0.08, 6.928), "size": Vector3(0.014, 0.16, 0.014), "mat": &"staal"},
+	{"pos": Vector3(1.45, 0.875, 6.86), "size": Vector3(1.06, 0.03, 0.24), "mat": &"vensterbank"},
+	{"vorm": "cyl", "pos": Vector3(1.70, 0.945, 6.88), "size": Vector3(0.055, 0.11, 0.055), "mat": &"terracotta"},
+	{"pos": Vector3(1.70, 1.06, 6.88), "size": Vector3(0.02, 0.14, 0.03), "mat": &"plant_groen", "rot": Vector3(0.0, 15.0, 12.0)},
+	{"pos": Vector3(1.68, 1.05, 6.87), "size": Vector3(0.03, 0.12, 0.02), "mat": &"plant_groen", "rot": Vector3(8.0, -20.0, -14.0)},
+	{"pos": Vector3(1.72, 1.03, 6.89), "size": Vector3(0.02, 0.10, 0.02), "mat": &"plant_groen", "rot": Vector3(-6.0, 40.0, 20.0)},
+
+	# ── Gordijn, half dicht (artplan §6) met rail boven het raam ──
+	{"vorm": "cyl", "pos": Vector3(1.45, 2.28, 6.83), "size": Vector3(0.008, 1.10, 0.008), "mat": &"alu", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(1.15, 1.60, 6.86), "size": Vector3(0.42, 1.30, 0.05), "mat": &"gordijn"},
+	{"pos": Vector3(0.97, 1.60, 6.845), "size": Vector3(0.13, 1.30, 0.075), "mat": &"gordijn"},
+
+	# ── Brandslanghaspel aan de westwand bij de gangdeur (rood is hier
+	#    signaal, geen accent — artplan §2.3) ──
+	{"pos": Vector3(-1.985, 1.30, 5.45), "size": Vector3(0.03, 0.66, 0.66), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(-1.90, 1.30, 5.45), "size": Vector3(0.27, 0.13, 0.27), "mat": &"rood_haspel", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"vorm": "cyl", "pos": Vector3(-1.825, 1.30, 5.45), "size": Vector3(0.055, 0.03, 0.055), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(-1.86, 0.98, 5.60), "size": Vector3(0.06, 0.05, 0.12), "mat": &"kunststof_zwart"},
+
+	# ── Entree-binnenzijde: deurmat (het logo is een paneel), afvalbak
+	#    en paraplubak ──
+	{"pos": Vector3(0.0, 0.007, 6.55), "size": Vector3(0.95, 0.014, 0.60), "mat": &"rubber_mat"},
+	{"vorm": "cyl", "pos": Vector3(1.60, 0.20, 6.45), "size": Vector3(0.16, 0.40, 0.16), "mat": &"kunststof_grijs", "col": true, "rot": Vector3(0.0, 0.0, 1.5)},
+	{"vorm": "torus", "pos": Vector3(1.60, 0.407, 6.45), "size": Vector3(0.146, 0.175, 0.146), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 14.0, 1.5)},
+	{"vorm": "cyl", "pos": Vector3(0.78, 0.25, 6.72), "size": Vector3(0.11, 0.50, 0.11), "mat": &"kunststof_grijs", "col": true},
+	{"vorm": "cyl", "pos": Vector3(0.80, 0.55, 6.72), "size": Vector3(0.022, 0.72, 0.022), "mat": &"kunststof_zwart", "rot": Vector3(8.0, 0.0, 6.0)},
+	{"vorm": "torus", "pos": Vector3(0.86, 0.90, 6.70), "size": Vector3(0.018, 0.032, 0.018), "mat": &"kunststof_zwart", "rot": Vector3(0.0, 0.0, 90.0)},
+
+	# ── Klok aan de oostwand (stilstaand — niemand heeft hem gelijkgezet) ──
+	{"vorm": "cyl", "pos": Vector3(1.985, 2.2, 4.27), "size": Vector3(0.14, 0.03, 0.14), "mat": &"email_wit", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"vorm": "torus", "pos": Vector3(1.968, 2.2, 4.27), "size": Vector3(0.128, 0.144, 0.128), "mat": &"staal_donker", "rot": Vector3(0.0, 0.0, 90.0)},
+	{"pos": Vector3(1.966, 2.222, 4.282), "size": Vector3(0.005, 0.055, 0.010), "mat": &"kunststof_zwart", "rot": Vector3(28.0, 0.0, 0.0)},
+	{"pos": Vector3(1.966, 2.19, 4.235), "size": Vector3(0.005, 0.075, 0.010), "mat": &"kunststof_zwart", "rot": Vector3(118.0, 0.0, 0.0)},
+
+	# ── TL-aansluiting van de hal-TL: doos, buis naar de noordwand ──
+	{"pos": Vector3(0.0, 2.565, 4.6), "size": Vector3(0.11, 0.07, 0.09), "mat": &"kunststof_wit"},
+	{"vorm": "cyl", "pos": Vector3(0.0, 2.5915, 3.45), "size": Vector3(0.013, 2.3, 0.013), "mat": &"kunststof_wit", "rot": Vector3(90.0, 0.0, 0.0)},
+	{"pos": Vector3(0.0, 2.5915, 2.9), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
+	{"pos": Vector3(0.0, 2.5915, 4.0), "size": Vector3(0.035, 0.017, 0.03), "mat": &"kunststof_wit"},
 ]
 
 ## Getextureerde panelen (QuadMesh). Een quad kijkt standaard naar +z;
@@ -339,6 +442,11 @@ const PANELEN: Array[Dictionary] = [
 	{"tex": "f3/briefje_sleutels", "pos": Vector3(2.240, 1.42, 6.86), "size": Vector2(0.10, 0.13), "rot": Vector3(0.0, 90.0, 2.0)},
 	{"tex": "f3/archief_etiket", "pos": Vector3(5.558, 1.01, 5.75), "size": Vector2(0.20, 0.085), "rot": Vector3(0.0, -90.0, 0.0)},
 	{"tex": "f3/archief_etiket_2", "pos": Vector3(5.508, 0.16, 5.28), "size": Vector2(0.20, 0.085), "rot": Vector3(0.0, -90.0, 0.0)},
+	# Hal: het gevulde prikbord, de clubmat en het keuringskaartje van
+	# de haspel.
+	{"tex": "f3/prikbord_hal", "pos": Vector3(-1.3, 1.6, 6.946), "size": Vector2(1.10, 0.75), "rot": Vector3(0.0, 180.0, 0.0)},
+	{"tex": "f3/deurmat_logo", "pos": Vector3(0.0, 0.0155, 6.55), "size": Vector2(0.88, 0.52), "rot": Vector3(-90.0, 0.0, 0.0)},
+	{"tex": "f2/keuringskaart", "pos": Vector3(-1.985, 1.32, 5.86), "size": Vector2(0.10, 0.14), "rot": Vector3(0.0, 90.0, 0.0)},
 ]
 
 ## Decals: grounding en materiaalbreuk — de F2.1-lessen toegepast op de
@@ -394,6 +502,47 @@ const DECALS: Array[Dictionary] = [
 	# Deurkozijn hecht aan de wand.
 	{"tex": "ao_lijn", "vlak": "x+", "pos": Vector3(2.21, 1.10, 5.20), "size": Vector3(0.22, 0.35, 2.1), "alpha": 0.35, "hoek": 90.0},
 	{"tex": "ao_lijn", "vlak": "x+", "pos": Vector3(2.21, 1.10, 6.28), "size": Vector3(0.22, 0.35, 2.1), "alpha": 0.35, "hoek": -90.0},
+
+	# ── Hal · looplijnen: iedereen loopt van de entree naar de gang of
+	#    de kantine — de vloer weet dat ──
+	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(-0.9, 0.02, 5.5), "size": Vector3(2.2, 0.6, 1.6), "alpha": 0.7, "hoek": 35.0},
+	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(1.0, 0.02, 4.7), "size": Vector3(1.8, 0.5, 1.4), "alpha": 0.5, "hoek": -40.0},
+	{"tex": "looplijn", "vlak": "vloer", "pos": Vector3(-1.5, 0.02, 4.4), "size": Vector3(1.4, 0.5, 1.2), "alpha": 0.6, "hoek": 80.0},
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(-0.6, 0.02, 5.3), "size": Vector3(2.2, 0.3, 2.0), "alpha": 0.7, "hoek": 35.0},
+	{"tex": "slijtglans", "orm": "slijtglans_orm", "mix": 0.0, "vlak": "vloer", "pos": Vector3(0.9, 0.02, 4.5), "size": Vector3(1.6, 0.3, 1.6), "alpha": 0.6, "hoek": -40.0},
+	# Binnen is droog — op de druppelsporen bij de entree-mat na
+	# (artplan §4).
+	{"tex": "druppelspoor", "vlak": "vloer", "pos": Vector3(0.0, 0.018, 5.95), "size": Vector3(1.1, 0.3, 0.9), "alpha": 0.6},
+	{"tex": "druppelspoor", "vlak": "vloer", "pos": Vector3(0.3, 0.018, 6.35), "size": Vector3(0.7, 0.3, 0.6), "alpha": 0.5, "hoek": 60.0},
+	{"tex": "schoenstreep", "vlak": "vloer", "pos": Vector3(0.15, 0.02, 6.1), "size": Vector3(1.3, 0.5, 1.0), "alpha": 0.5},
+	# Vuilranden, hoeken en handsporen.
+	{"tex": "vuil_rand", "vlak": "z-", "pos": Vector3(0.0, 0.22, 2.36), "size": Vector3(3.6, 0.9, 0.5), "alpha": 0.7},
+	{"tex": "vuil_rand", "vlak": "x-", "pos": Vector3(-1.94, 0.22, 5.9), "size": Vector3(2.0, 0.9, 0.5), "alpha": 0.6},
+	{"tex": "vuil_rand", "vlak": "x-", "pos": Vector3(-1.94, 0.22, 3.0), "size": Vector3(1.4, 0.9, 0.5), "alpha": 0.55},
+	{"tex": "vuil_rand", "vlak": "z+", "pos": Vector3(1.25, 0.22, 6.92), "size": Vector3(1.4, 0.9, 0.5), "alpha": 0.6},
+	{"tex": "vuil_hoek", "vlak": "vloer", "pos": Vector3(-1.75, 0.02, 6.7), "size": Vector3(0.9, 0.5, 0.9), "alpha": 0.4, "hoek": 180.0},
+	{"tex": "vuil_hoek", "vlak": "vloer", "pos": Vector3(1.75, 0.02, 2.55), "size": Vector3(0.9, 0.5, 0.9), "alpha": 0.35, "hoek": 90.0},
+	{"tex": "veeg", "vlak": "x-", "pos": Vector3(-1.96, 1.05, 4.0), "size": Vector3(0.5, 0.45, 0.4), "alpha": 0.55},
+	{"tex": "veeg", "vlak": "x+", "pos": Vector3(1.96, 1.05, 3.15), "size": Vector3(0.5, 0.45, 0.4), "alpha": 0.5},
+	{"tex": "veeg", "vlak": "z+", "pos": Vector3(0.35, 1.05, 6.94), "size": Vector3(0.5, 0.45, 0.4), "alpha": 0.5},
+	{"tex": "verfrol", "vlak": "x-", "pos": Vector3(-1.94, 1.9, 5.8), "size": Vector3(2.0, 0.4, 1.05), "alpha": 0.4},
+	{"tex": "verfrol", "vlak": "x+", "pos": Vector3(1.94, 1.9, 4.3), "size": Vector3(2.4, 0.4, 1.05), "alpha": 0.45},
+	# Grounding.
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(0.0, 0.014, 2.59), "size": Vector3(1.3, 0.3, 0.5), "alpha": 0.5},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(1.60, 0.013, 6.45), "size": Vector3(0.42, 0.25, 0.42), "alpha": 0.55},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(0.78, 0.013, 6.72), "size": Vector3(0.32, 0.25, 0.32), "alpha": 0.5},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(0.0, 0.012, 6.55), "size": Vector3(1.1, 0.25, 0.75), "alpha": 0.35},
+	{"tex": "ao_vlek", "vlak": "vloer", "pos": Vector3(1.45, 0.014, 6.75), "size": Vector3(0.95, 0.25, 0.5), "alpha": 0.35},
+	{"tex": "ao_vlek", "vlak": "z+", "pos": Vector3(1.45, 0.45, 6.93), "size": Vector3(1.0, 0.35, 0.7), "alpha": 0.3},
+	{"tex": "ao_vlek", "vlak": "z+", "pos": Vector3(-1.3, 1.6, 6.94), "size": Vector3(1.4, 0.25, 1.0), "alpha": 0.28},
+	{"tex": "ao_vlek", "vlak": "z-", "pos": Vector3(0.0, 1.68, 2.37), "size": Vector3(3.2, 0.25, 0.5), "alpha": 0.3},
+	{"tex": "ao_vlek", "vlak": "x-", "pos": Vector3(-1.95, 1.30, 5.45), "size": Vector3(0.9, 0.3, 0.9), "alpha": 0.3},
+	{"tex": "ao_lijn", "vlak": "z-", "pos": Vector3(0.0, 2.46, 2.36), "size": Vector3(3.9, 0.4, 0.5), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "z+", "pos": Vector3(0.0, 2.46, 6.92), "size": Vector3(3.9, 0.4, 0.5), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-1.94, 2.46, 4.6), "size": Vector3(4.6, 0.4, 0.5), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "x+", "pos": Vector3(1.94, 2.46, 4.6), "size": Vector3(4.6, 0.4, 0.5), "alpha": 0.45},
+	{"tex": "ao_lijn", "vlak": "z-", "pos": Vector3(0.0, 0.14, 2.36), "size": Vector3(3.9, 0.3, 0.2), "alpha": 0.35, "hoek": 180.0},
+	{"tex": "ao_lijn", "vlak": "x-", "pos": Vector3(-1.94, 0.14, 5.9), "size": Vector3(2.1, 0.3, 0.2), "alpha": 0.35, "hoek": 180.0},
 ]
 
 var _materialen := {}

@@ -195,9 +195,10 @@ const BUITEN: Array[Dictionary] = [
 	{"pos": Vector3(-1.45, 1.229, 8.42), "size": Vector3(0.12, 2.458, 0.12), "mat": &"metaal"},
 	{"pos": Vector3(1.45, 1.229, 8.42), "size": Vector3(0.12, 2.458, 0.12), "mat": &"metaal"},
 	{"pos": Vector3(0.0, 2.32, 7.14), "size": Vector3(0.3, 0.12, 0.12), "mat": &"metaal", "nc": true},
-	# Fietsenrek op het voorplein.
-	{"pos": Vector3(4.5, 0.4, 12.28), "size": Vector3(2.2, 0.8, 0.14), "mat": &"metaal"},
-	{"pos": Vector3(4.5, 0.4, 12.62), "size": Vector3(2.2, 0.8, 0.14), "mat": &"metaal"},
+	# Fietsenrek op het voorplein (tier F3 vervangt de twee vlakken door
+	# een echt beugelrek).
+	{"pos": Vector3(4.5, 0.4, 12.28), "size": Vector3(2.2, 0.8, 0.14), "mat": &"metaal", "f3": true},
+	{"pos": Vector3(4.5, 0.4, 12.62), "size": Vector3(2.2, 0.8, 0.14), "mat": &"metaal", "f3": true},
 	# Hekwerk (gaas-suggestie): zuid met poort + ketting, oost, west.
 	{"pos": Vector3(-9.4, 0.95, 13.95), "size": Vector3(16.4, 1.7, 0.1), "mat": &"gaas"},
 	{"pos": Vector3(3.6, 0.95, 13.95), "size": Vector3(4.8, 1.7, 0.1), "mat": &"gaas"},
@@ -291,14 +292,15 @@ const INTERIEUR: Array[Dictionary] = [
 
 ## Meubel- en herkenningsvolumes: de greybox vertelt de functie.
 const MEUBELS: Array[Dictionary] = [
-	# Hal: prikbord + kapstokrail met haken.
-	{"pos": Vector3(-1.3, 1.6, 6.972), "size": Vector3(1.2, 0.8, 0.06), "mat": &"hout", "nc": true},
-	{"pos": Vector3(0.0, 1.69, 2.348), "size": Vector3(3.2, 0.08, 0.1), "mat": &"hout"},
-	{"pos": Vector3(-1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
-	{"pos": Vector3(-0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
-	{"pos": Vector3(0.0, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
-	{"pos": Vector3(0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
-	{"pos": Vector3(1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true},
+	# Hal: prikbord + kapstokrail met haken (tier F3 vervangt ze door de
+	# echte props — zelfde koppeling als de F2-vlag).
+	{"pos": Vector3(-1.3, 1.6, 6.972), "size": Vector3(1.2, 0.8, 0.06), "mat": &"hout", "nc": true, "f3": true},
+	{"pos": Vector3(0.0, 1.69, 2.348), "size": Vector3(3.2, 0.08, 0.1), "mat": &"hout", "f3": true},
+	{"pos": Vector3(-1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true, "f3": true},
+	{"pos": Vector3(-0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true, "f3": true},
+	{"pos": Vector3(0.0, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true, "f3": true},
+	{"pos": Vector3(0.6, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true, "f3": true},
+	{"pos": Vector3(1.2, 1.6, 2.41), "size": Vector3(0.04, 0.12, 0.08), "mat": &"metaal", "nc": true, "f3": true},
 	# Kantine: bar met blad en doorgeefopening erachter, achterwerkblad,
 	# meterkast, tv, trofeeënkast, twee pilaren, tafels/stoelen, krukken.
 	{"pos": Vector3(10.6, 0.55, 2.9), "size": Vector3(2.4, 1.1, 0.6), "mat": &"hout"},
